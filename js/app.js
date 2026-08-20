@@ -24,6 +24,7 @@ class App {
     this.i18n.applyTranslations();
     this.bindEvents();
     this.initMessengerWidget();
+    this.initFacebookCheckout();
 
     await this.fetchSettings();
     await this.fetchProducts();
@@ -37,6 +38,7 @@ class App {
     this.renderCart();
     this.updateCartBadge();
   }
+
 
   async fetchSettings() {
     try {
@@ -280,7 +282,14 @@ class App {
     this.quickViewModalOverlay = document.getElementById('quickview-modal-overlay');
     this.btnCloseQuickView = document.getElementById('btn-close-quickview');
     this.quickViewContent = document.getElementById('quickview-content');
+
+    // Facebook Login + Messenger Opt-in
+    this.fbLoginStep = document.getElementById('fb-login-step');
+    this.fbOptinStep = document.getElementById('fb-optin-step');
+    this.btnFbLogin = document.getElementById('btn-fb-login');
+    this.fbUserName = document.getElementById('fb-user-name');
   }
+
 
   bindEvents() {
     // Language Switcher
@@ -519,7 +528,157 @@ class App {
     }
   }
 
+  // ─────────────────────────────────────────────────────────────
+  // Facebook Login + Send to Messenger + Auto Order Confirmation
+  // ─────────────────────────────────────────────────────────────
+  initFacebookCheckout() {
+    // State
+    this._fbOrderId = null;
+    this._fbOrderMsg = null;
+    this._fbOrderUrl = null;
+    this._fbLoggedIn = false;
+
+    // Listen for FB SDK ready signal (fires once FB App ID is configured in .env)
+    document.addEventListener('fb-sdk-ready', () => this._onFbSdkReady());
+
+    // Also handle btn-fb-login click (will only be visible when SDK is ready)
+    if (this.btnFbLogin) {
+      this.btnFbLogin.onclick = () => this._handleFbLogin();
+    }
+
+    // Listen for "Send to Messenger" plugin events (fired by FB SDK)
+    if (window.FB) {
+      this._subscribeSendToMessenger();
+    } else {
+      document.addEventListener('fb-sdk-ready', () => this._subscribeSendToMessenger());
+    }
+  }
+
+  _onFbSdkReady() {
+    // When cart is non-empty: replace default Messenger button with FB Login step
+    const defaultBtn = document.getElementById('btn-messenger-checkout');
+    if (defaultBtn) defaultBtn.style.display = 'none';
+
+    const fbLoginStep = this.fbLoginStep;
+    if (fbLoginStep) fbLoginStep.style.display = 'flex';
+  }
+
+  async _handleFbLogin() {
+    if (typeof FB === 'undefined') return;
+
+    return new Promise((resolve) => {
+      FB.login((response) => {
+        if (response.authResponse) {
+          this._fbLoggedIn = true;
+          FB.api('/me', { fields: 'name,first_name' }, (me) => {
+            const firstName = me.first_name || me.name || 'Vous';
+            if (this.fbUserName) this.fbUserName.textContent = `Bonjour, ${firstName} !`;
+          });
+
+          // Hide login step, show Send to Messenger step
+          if (this.fbLoginStep) this.fbLoginStep.style.display = 'none';
+
+          // Save order first, then show opt-in
+          this._saveOrderAndShowOptin().then(resolve);
+        } else {
+          this.showToast('Connexion Facebook annulée.');
+          resolve();
+        }
+      }, { scope: 'public_profile' });
+    });
+  }
+
+  async _saveOrderAndShowOptin() {
+    const name = this.customerNameInput ? this.customerNameInput.value : '';
+    const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
+    const items = this.cartManager.getCartItems();
+    if (items.length === 0) return;
+
+    // Save order to server
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customer_name: name, customer_phone: phone, items, currency: 'TND' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        this._fbOrderId = data.order_id;
+        this._fbOrderUrl = data.order_url;
+        this._fbOrderMsg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', data.order_url);
+      }
+    } catch (e) {
+      console.warn('[FB Checkout] Order save failed', e);
+    }
+
+    // Update the Send to Messenger plugin's data-ref with the order ID
+    const stmWidget = document.querySelector('.fb-send-to-messenger');
+    if (stmWidget && this._fbOrderId) {
+      stmWidget.dataset.ref = this._fbOrderId;
+      stmWidget.dataset.messengerAppId = window.FB_APP_ID;
+      // Re-parse the plugin with updated attributes
+      if (window.FB && FB.XFBML) FB.XFBML.parse(stmWidget.parentElement);
+    }
+
+    // Show Send to Messenger opt-in step
+    if (this.fbOptinStep) this.fbOptinStep.style.display = 'flex';
+  }
+
+  _subscribeSendToMessenger() {
+    if (typeof FB === 'undefined') return;
+    FB.Event.subscribe('send_to_messenger', async (e) => {
+      if (e.event !== 'opted_in') return;
+
+      const psid = e.ref || this._fbOrderId;
+      const orderId = this._fbOrderId;
+
+      // Register the opt-in on the server (links PSID to the order)
+      if (orderId) {
+        try {
+          await fetch('/api/messenger/optin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ order_id: orderId, psid: e.userRef || psid, ref: orderId })
+          });
+        } catch (err) {
+          console.warn('[FB] Opt-in save failed', err);
+        }
+
+        // Trigger server to auto-send the confirmation message
+        try {
+          const confirmRes = await fetch(`/api/orders/${orderId}/send-confirmation`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          const confirmData = await confirmRes.json();
+          if (confirmData.success) {
+            this.showToast('✅ Message de confirmation envoyé dans votre Messenger !');
+            if (this.fbOptinStep) this.fbOptinStep.innerHTML =
+              `<div style="text-align:center; padding: 16px; color: #15803D; font-weight: 700; font-size: 0.9rem;">
+                ✅ Commande envoyée ! Vérifiez votre Messenger.
+              </div>`;
+            this.telemetry.trackEvent('FB Messenger Auto-Confirmation Sent');
+          } else {
+            // Fallback: copy message to clipboard if server not configured
+            if (this._fbOrderMsg) await this._clipboardFallback(this._fbOrderMsg);
+          }
+        } catch (err) {
+          console.warn('[FB] Auto-confirm failed, falling back to clipboard', err);
+          if (this._fbOrderMsg) await this._clipboardFallback(this._fbOrderMsg);
+        }
+      }
+    });
+  }
+
+  async _clipboardFallback(msg) {
+    try {
+      if (navigator.clipboard) await navigator.clipboard.writeText(msg);
+    } catch (e) {}
+    this.showToast('📋 Message copié ! Collez-le dans Messenger.');
+  }
+
   renderDealsShowcase() {
+
     if (!this.dealsCarouselGrid) return;
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';

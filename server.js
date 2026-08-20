@@ -1,4 +1,5 @@
 // Express Backend Server with Hidden /admin Route, Real-Time Visitor Analytics & Digital Flipbook Scraper
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
@@ -7,6 +8,11 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/scraper.js';
 import { scrapeFlipbookFromUrl, getFlipbookData } from './services/flipbook-scraper.js';
+import { sendOrderConfirmation } from './services/messenger.js';
+
+// Facebook / Messenger config (loaded from .env)
+const FB_APP_ID = process.env.FB_APP_ID || '';
+const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN || '';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -602,6 +608,75 @@ app.post('/api/settings', (req, res) => {
 });
 
 // ------------------- ADMIN ORDER INSPECTION & MANAGEMENT API ------------------- //
+
+// ---- Messenger Opt-In: client clicked "Send to Messenger" on site ----
+// Saves their Page-Scoped ID (PSID) to the order so we can message them later
+app.post('/api/messenger/optin', (req, res) => {
+  try {
+    const { order_id, psid, ref } = req.body;
+    if (!psid) return res.status(400).json({ success: false, message: 'psid required' });
+
+    const targetId = order_id || ref;
+    if (targetId) {
+      const orders = getOrders();
+      const order = orders.find(o => o.order_id === targetId);
+      if (order) {
+        order.fb_psid = psid;
+        order.messenger_opted_in = true;
+        order.opted_in_at = new Date().toISOString();
+        saveOrders(orders);
+      }
+    }
+
+    res.json({ success: true, psid });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ---- Send automatic Messenger confirmation to client ----
+app.post('/api/orders/:id/send-confirmation', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const orders = getOrders();
+    const order = orders.find(o => o.order_id === id);
+
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    if (!order.fb_psid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Client has not opted in to Messenger for this order. They must click Send to Messenger first.'
+      });
+    }
+    if (!FB_PAGE_ACCESS_TOKEN || FB_PAGE_ACCESS_TOKEN === 'PASTE_YOUR_PAGE_ACCESS_TOKEN_HERE') {
+      return res.status(503).json({
+        success: false,
+        message: 'FB_PAGE_ACCESS_TOKEN is not configured in .env. Please set it up first.'
+      });
+    }
+
+    const result = await sendOrderConfirmation(order.fb_psid, order, FB_PAGE_ACCESS_TOKEN);
+
+    // Mark confirmation sent
+    order.messenger_confirmation_sent = true;
+    order.confirmation_sent_at = new Date().toISOString();
+    saveOrders(orders);
+
+    res.json({ success: true, message: 'Confirmation message sent via Messenger', fb_message_id: result.message_id });
+  } catch (err) {
+    console.error('[Messenger] Send error:', err.message);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ---- Public: return FB App ID for frontend SDK init ----
+app.get('/api/fb/config', (req, res) => {
+  res.json({
+    app_id: FB_APP_ID || null,
+    configured: !!FB_APP_ID && FB_APP_ID !== 'PASTE_YOUR_APP_ID_HERE'
+  });
+});
+
 
 app.post('/api/orders', (req, res) => {
   try {
