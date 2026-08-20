@@ -4,11 +4,11 @@
     {
       "session_id": "SES-G897688-MT1IIAKY",
       "first_seen": "2026-08-20T12:44:10.656Z",
-      "last_active": "2026-08-20T12:49:09.155Z",
+      "last_active": "2026-08-20T12:52:57.138Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 298,
+      "duration_seconds": 331,
       "activity_trail": [
         {
           "time": "2026-08-20T12:44:10.656Z",
@@ -24,6 +24,31 @@
           "time": "2026-08-20T12:44:13.087Z",
           "offset": "0m 2s",
           "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T12:49:41.469Z",
+          "offset": "5m 31s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:49:41.561Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:49:42.628Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T12:49:43.395Z",
+          "offset": "0m 2s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T12:50:36.680Z",
+          "offset": "0m 55s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
         }
       ],
       "categories_visited": [],
@@ -32,11 +57,11 @@
     {
       "session_id": "SES-FR2ZED5-MT1I8EUS",
       "first_seen": "2026-08-20T12:36:29.627Z",
-      "last_active": "2026-08-20T12:49:09.171Z",
+      "last_active": "2026-08-20T12:53:09.179Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 627,
+      "duration_seconds": 867,
       "activity_trail": [
         {
           "time": "2026-08-20T12:36:29.627Z",
@@ -85,11 +110,11 @@
     {
       "session_id": "SES-LK4N0N8-MT1I83E6",
       "first_seen": "2026-08-20T12:36:14.771Z",
-      "last_active": "2026-08-20T12:49:19.408Z",
+      "last_active": "2026-08-20T12:53:04.410Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 330,
+      "duration_seconds": 555,
       "activity_trail": [
         {
           "time": "2026-08-20T12:36:14.771Z",
@@ -158,11 +183,11 @@
     {
       "session_id": "SES-XLQRNGW-MT1H9B4N",
       "first_seen": "2026-08-20T12:09:11.836Z",
-      "last_active": "2026-08-20T12:49:09.164Z",
+      "last_active": "2026-08-20T12:53:09.271Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 2397,
+      "duration_seconds": 2637,
       "activity_trail": [
         {
           "time": "2026-08-20T12:09:11.836Z",
@@ -186,11 +211,11 @@
     {
       "session_id": "SES-GJY8A12-MT1H55ZY",
       "first_seen": "2026-08-20T12:05:58.561Z",
-      "last_active": "2026-08-20T12:49:09.191Z",
+      "last_active": "2026-08-20T12:53:09.224Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 2591,
+      "duration_seconds": 2831,
       "activity_trail": [
         {
           "time": "2026-08-20T12:05:58.561Z",
@@ -214,11 +239,11 @@
     {
       "session_id": "SES-LT3WGFC-MT1GN51D",
       "first_seen": "2026-08-20T11:51:57.525Z",
-      "last_active": "2026-08-20T12:49:09.178Z",
+      "last_active": "2026-08-20T12:53:09.164Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 2882,
+      "duration_seconds": 3122,
       "activity_trail": [
         {
           "time": "2026-08-20T11:51:57.525Z",
