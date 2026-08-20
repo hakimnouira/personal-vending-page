@@ -365,12 +365,14 @@
 
         <!-- Facebook Settings -->
         <div class="admin-form-box" style="background: #FAF8F5; margin-bottom: 24px;">
-          <h4 style="font-weight: 700; margin-bottom: 8px;" data-admin-i18n="fb_handle_title">Nom d'Utilisateur Facebook Messenger</h4>
-          <p style="font-size: 0.82rem; color: var(--admin-text-muted); margin-bottom: 12px;" data-admin-i18n="fb_handle_desc">Ce compte recevra les commandes des clients lorsqu'ils cliquent sur Commander via Messenger.</p>
-          <div style="display: flex; gap: 10px; align-items: center;">
-            <span style="font-weight: 600;">https://m.me/</span>
-            <input type="text" id="setting-fb-handle" class="form-control" style="max-width: 240px; margin-bottom: 0;" placeholder="mouna.nouira" />
-            <button id="btn-save-fb-handle" class="btn-primary" style="width: auto; padding: 10px 20px;" data-admin-i18n="btn_save_handle">Enregistrer le Nom</button>
+          <h4 style="font-weight: 700; margin-bottom: 8px;" data-admin-i18n="fb_handle_title">Page / Compte Facebook de Réception des Commandes</h4>
+          <p style="font-size: 0.82rem; color: var(--admin-text-muted); margin-bottom: 12px;" data-admin-i18n="fb_handle_desc">Entrez le nom d'utilisateur ou le lien Facebook complet de votre compte/page. C'est sur ce profil que vos clients vous enverront leurs messages de commande !</p>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="setting-fb-handle" class="form-control" style="max-width: 380px; margin-bottom: 0;" placeholder="ex: mouna.nouira1 ou https://www.facebook.com/mouna.nouira1" />
+            <button id="btn-save-fb-handle" class="btn-primary" style="width: auto; padding: 10px 20px;" data-admin-i18n="btn_save_handle">Enregistrer la Page</button>
+          </div>
+          <div id="fb-link-preview-box" style="margin-top: 10px; font-size: 0.82rem; color: #2563EB; font-weight: 600;">
+            🔗 Lien de réception Messenger actif : <a id="fb-link-preview-href" href="https://m.me/mouna.nouira1" target="_blank" style="color: #2563EB; text-decoration: underline;">https://m.me/mouna.nouira1</a>
           </div>
         </div>
 

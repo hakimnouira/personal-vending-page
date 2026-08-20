@@ -395,11 +395,21 @@ class AdminDashboard {
 
     // Save Settings
     if (this.btnSaveFbHandle && this.fbHandleInput) {
+      this.fbHandleInput.addEventListener('input', () => {
+        this.updateFbPreviewLink(this.fbHandleInput.value);
+      });
+
       this.btnSaveFbHandle.addEventListener('click', async () => {
-        const handle = this.fbHandleInput.value.trim();
-        if (!handle) return alert('Enter a valid username');
-        await this.saveSettingsAPI({ facebook_username: handle });
-        alert(this.i18n.getLang() === 'ar' ? '✅ تم حفظ اسم المستخدم بنجاح!' : '✅ Facebook Messenger handle saved!');
+        const raw = this.fbHandleInput.value.trim();
+        const clean = this.cleanFbUsername(raw);
+        if (!clean) return alert('Enter a valid Facebook username or URL');
+
+        await this.saveSettingsAPI({ facebook_username: clean });
+        this.fbHandleInput.value = clean;
+        this.updateFbPreviewLink(clean);
+
+        const isArabic = this.i18n.getLang() === 'ar';
+        alert(isArabic ? `✅ تم حفظ صفحة فيسبوك بنجاح! (${clean})` : `✅ Facebook Page saved successfully! (${clean})`);
       });
     }
 
@@ -602,12 +612,34 @@ class AdminDashboard {
     }
   }
 
+  cleanFbUsername(input) {
+    if (!input) return '';
+    let val = input.trim();
+    val = val.replace(/^https?:\/\/(www\.|m\.)?facebook\.com\/messages\/t\//i, '');
+    val = val.replace(/^https?:\/\/(www\.|m\.)?facebook\.com\//i, '');
+    val = val.replace(/^https?:\/\/m\.me\//i, '');
+    val = val.split('/')[0].split('?')[0].trim();
+    return val;
+  }
+
+  updateFbPreviewLink(username) {
+    const linkHref = document.getElementById('fb-link-preview-href');
+    if (linkHref) {
+      const clean = this.cleanFbUsername(username) || 'mouna.nouira1';
+      const url = `https://m.me/${clean}`;
+      linkHref.href = url;
+      linkHref.textContent = url;
+    }
+  }
+
   async fetchSettings() {
     try {
       const res = await fetch('/api/settings');
       const data = await res.json();
       if (data.success && this.fbHandleInput) {
-        this.fbHandleInput.value = data.data.facebook_username || 'mouna.nouira';
+        const username = data.data.facebook_username || 'mouna.nouira1';
+        this.fbHandleInput.value = username;
+        this.updateFbPreviewLink(username);
       }
     } catch (e) {}
   }
