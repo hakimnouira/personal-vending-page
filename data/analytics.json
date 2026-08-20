@@ -4,11 +4,11 @@
     {
       "session_id": "SES-LT3WGFC-MT1GN51D",
       "first_seen": "2026-08-20T11:51:57.525Z",
-      "last_active": "2026-08-20T11:54:52.133Z",
+      "last_active": "2026-08-20T12:05:09.185Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 114,
+      "duration_seconds": 261,
       "activity_trail": [
         {
           "time": "2026-08-20T11:51:57.525Z",
@@ -54,10 +54,70 @@
           "time": "2026-08-20T11:54:02.978Z",
           "offset": "0m 11s",
           "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-20T11:56:46.984Z",
+          "offset": "2m 55s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T11:56:47.050Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T11:56:48.919Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-20T11:56:49.514Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-20T11:56:49.922Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-20T11:56:51.357Z",
+          "offset": "0m 4s",
+          "description": "Opened Detailed Product Info: Crème Parfumée pour le Corps All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-20T11:56:54.307Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: Parfum All or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-20T11:57:09.318Z",
+          "offset": "0m 22s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T11:57:10.209Z",
+          "offset": "0m 23s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T12:01:07.576Z",
+          "offset": "4m 21s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:01:07.642Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
         }
       ],
-      "categories_visited": [],
-      "products_viewed": []
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Crème Parfumée pour le Corps All Or Nothing Amplified",
+        "Parfum All or Nothing Amplified"
+      ]
     },
     {
       "session_id": "SES-8JRXT6X-MT0UZQQV",

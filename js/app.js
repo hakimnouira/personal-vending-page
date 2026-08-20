@@ -13,6 +13,7 @@ class App {
     this.activeCategory = 'All';
     this.searchQuery = '';
     this.products = [];
+    this.facebookUsername = 'mouna.nouira1';
 
     window.app = this;
     this.init();
@@ -23,6 +24,7 @@ class App {
     this.i18n.applyTranslations();
     this.bindEvents();
 
+    await this.fetchSettings();
     await this.fetchProducts();
     await this.initCarousel();
     
@@ -33,6 +35,18 @@ class App {
     this.renderProducts();
     this.renderCart();
     this.updateCartBadge();
+  }
+
+  async fetchSettings() {
+    try {
+      const res = await fetch('/api/settings');
+      const data = await res.json();
+      if (data.success && data.data && data.data.facebook_username) {
+        this.facebookUsername = data.data.facebook_username;
+      }
+    } catch (e) {
+      console.warn("Could not fetch settings", e);
+    }
   }
 
   async fetchProducts() {
@@ -564,7 +578,7 @@ class App {
     if (this.cartSubtotal) this.cartSubtotal.textContent = `${subtotal} ${currencyLabel}`;
 
     if (this.btnMessengerCheckout) {
-      const fbHandle = 'mouna.nouira';
+      const fbHandle = this.facebookUsername || 'mouna.nouira1';
       const name = this.customerNameInput ? this.customerNameInput.value : '';
       const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
       this.btnMessengerCheckout.href = this.cartManager.generateMessengerLink(fbHandle, name, phone, 'TND');
