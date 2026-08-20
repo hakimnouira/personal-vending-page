@@ -1,0 +1,19 @@
+{
+  "name": "oriflame-shopping-assistant",
+  "version": "2.0.0",
+  "description": "Full-Stack Oriflame Shopping Assistant for Mouna Nouira with automated Oriflame Tunisia scraper, image uploads, trilingual support (EN/FR/AR), and Messenger integration.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "playwright": "^1.62.1"
+  }
+}

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mouna Nouira — Oriflame Sweden Luxury Beauty & Shopping Assistant</title>
+  <meta name="description" content="Official Oriflame Digital Catalog by Mouna Nouira. Explore skincare, fragrances, and wellness in Tunisia with direct Messenger ordering." />
+  
+  <!-- Luxury Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+
+  <!-- Top Luxury Announcement Bar -->
+  <div class="announcement-bar">
+    <span data-i18n="announcement">✨ Bienvenue sur l'Assistant Oriflame de Mouna Nouira | Commandez directement via Facebook Messenger</span>
+  </div>
+
+  <!-- Navigation Header (Clean Client-Side Only - No Admin Button) -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <div class="brand-logo">
+        <div class="brand-monogram">M</div>
+        <div class="brand-text">
+          <h1 data-i18n="brand_title">Mouna Nouira</h1>
+          <p data-i18n="brand_subtitle">Consultante Indépendante Oriflame</p>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Language Switcher -->
+        <select id="language-select" class="lang-selector" aria-label="Select Language">
+          <option value="fr">🇫🇷 Français</option>
+          <option value="ar">🇹🇳 العربية</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
+
+        <a href="#catalogue-section" class="nav-btn" style="background: var(--color-primary); color: white;">
+          📖 eCatalogue
+        </a>
+        <button id="btn-nav-about" class="nav-btn" data-i18n="nav_about">
+          À propos
+        </button>
+        <button id="btn-nav-privacy" class="nav-btn" data-i18n="nav_privacy">
+          Confidentialité
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Editorial Hero Banner -->
+    <section class="hero-banner">
+      <div class="hero-content">
+        <span class="hero-subtitle-tag">Oriflame Sweden • Tunisia</span>
+        <h2 data-i18n="hero_title">Catalogue Beauté & Bien-être</h2>
+        <p data-i18n="hero_desc">Découvrez l'excellence suédoise des soins de la peau, fragrances emblématiques et compléments nutritionnels sélectionnés avec soin par Mouna Nouira.</p>
+        <div class="hero-features">
+          <span class="feature-pill" data-i18n="feature_1">100% Original Oriflame</span>
+          <span class="feature-pill" data-i18n="feature_2">Commande Facile sur Messenger</span>
+          <span class="feature-pill" data-i18n="feature_3">Aucun Paiement en Ligne Requis</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE DIGITAL eCATALOGUE FLIPBOOK VIEWER -->
+    <section id="catalogue-section" class="ecatalogue-section">
+      <div class="ecatalogue-section-header">
+        <div class="ecatalogue-header-text">
+          <span class="deals-tag" style="background: var(--color-accent); color: var(--color-primary-dark);">INTERACTIVE DIGITAL FLIPBOOK</span>
+          <h3 style="font-family: var(--font-serif); font-size: 1.65rem; color: var(--color-primary); margin-bottom: 4px;">📖 eCatalogue Virtuel Officiel Oriflame (08 2026)</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-secondary);">Feuilletez les pages officielles du catalogue avec vidéo animée et cliquez directement sur les produits pour les ajouter à votre commande.</p>
+        </div>
+      </div>
+
+      <!-- eCatalogue Interactive Flipbook Box -->
+      <div id="catalogueContainer" class="ecatalogue-container">
+        <!-- Flipbook Control Bar -->
+        <div class="ecat-toolbar">
+          <div class="ecat-nav-buttons">
+            <button id="catalogue-nav-first" class="ecat-nav-btn" title="Première page">⏮</button>
+            <button id="catalogue-nav-prev" class="ecat-nav-btn" title="Page précédente">◀ Précédente</button>
+          </div>
+
+          <div class="ecat-status">
+            <span id="catalogue-page-indicator" class="ecat-page-pill">Page 1 / 150</span>
+            <span id="catalogue-spread-title" class="ecat-title-pill">Catalogue 08 2026 : Superposez vos fragrances</span>
+          </div>
+
+          <div class="ecat-nav-buttons">
+            <button id="catalogue-nav-next" class="ecat-nav-btn" title="Page suivante">Suivante ▶</button>
+            <button id="catalogue-nav-last" class="ecat-nav-btn" title="Dernière page">⏭</button>
+          </div>
+        </div>
+
+        <!-- Book Spread Display Stage -->
+        <div class="ecat-book-stage">
+          <div id="catalogue-spread-wrap" class="ecat-spread-wrap">
+            <!-- Dynamic Spread Image / Dual Pages / Hotspots Rendered Here -->
+          </div>
+        </div>
+
+        <!-- Quick Code Order Box (Order any product code from the active page) -->
+        <div class="quick-order-bar">
+          <div class="quick-order-label">
+            <span>🔍</span>
+            <span><strong>Commander par Code Produit :</strong> Vous voyez un article sur cette page ? Entrez sa référence (ex: 35665, 46980, 1276) :</span>
+          </div>
+          <form id="quick-order-form" class="quick-order-form" onsubmit="event.preventDefault(); window.app.orderProductByCode();">
+            <input type="text" id="quick-code-input" class="quick-code-input" placeholder="Réf. Produit (ex: 35665)" />
+            <button type="submit" class="btn-quick-order">Ajouter au Panier</button>
+          </form>
+        </div>
+
+        <div class="ecat-hint-footer">
+          💡 <em>Astuce : Utilisez les boutons Précédente / Suivante (ou les flèches du clavier) pour tourner les pages. Cliquez sur les pastilles 🛍️ ou entrez la référence du produit ci-dessus pour l'ajouter à votre commande.</em>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exclusive Promo Deals Carousel & Showcase -->
+    <section id="promo-showcase-section" class="deals-showcase-section">
+      <div class="deals-header">
+        <div>
+          <span class="deals-tag">CATALOGUE OFFERS • EN PROMO</span>
+          <h3 data-i18n="deals_banner_title">🔥 Offres Spéciales du Catalogue en cours</h3>
+          <p data-i18n="deals_banner_desc">Profitez des remises exclusives et des prix réduits sur les best-sellers d'Oriflame Tunisie.</p>
+        </div>
+      </div>
+      <div id="deals-carousel-grid" class="deals-carousel-grid">
+        <!-- Deals rendered here -->
+      </div>
+    </section>
+
+    <!-- Search & Category Filters -->
+    <section class="controls-section">
+      <div class="search-box">
+        <span class="search-icon">⚲</span>
+        <input type="text" id="search-input" class="search-input" data-i18n="search_placeholder" placeholder="Rechercher un produit, soin ou bienfait..." />
+      </div>
+
+      <div id="category-pills" class="category-pills">
+        <button class="category-pill active" data-category="All" data-i18n="category_all">Tous les Produits</button>
+        <button class="category-pill deal-pill" data-category="Deals" data-i18n="category_deals">🔥 Offres & Promos</button>
+        <button class="category-pill" data-category="Skincare" data-i18n="category_skincare">Soins de la peau</button>
+        <button class="category-pill" data-category="Makeup" data-i18n="category_makeup">Maquillage</button>
+        <button class="category-pill" data-category="Fragrance" data-i18n="category_fragrance">Parfums</button>
+        <button class="category-pill" data-category="Wellness" data-i18n="category_wellness">Bien-être</button>
+        <button class="category-pill" data-category="Haircare" data-i18n="category_haircare">Soins capillaires</button>
+      </div>
+    </section>
+
+    <!-- Product Catalog Header & Grid -->
+    <section>
+      <div class="products-header">
+        <h3 data-i18n="featured_catalog">Catalogue Vedette</h3>
+        <span id="products-count" class="products-count">...</span>
+      </div>
+
+      <div id="product-grid" class="product-grid">
+        <!-- Products dynamically rendered here -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating Luxury Cart Button -->
+  <button id="floating-cart-btn" class="floating-cart-btn">
+    <span data-i18n="view_cart">🛒 Voir le Panier</span>
+    <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+  </button>
+
+  <!-- Cart Drawer Overlay & Panel -->
+  <div id="cart-drawer-overlay" class="drawer-overlay">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span data-i18n="shopping_cart">Panier d'Achat</span>
+        </div>
+        <button id="btn-close-drawer" class="btn-close-drawer">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div id="cart-items-list" class="cart-items-list">
+          <!-- Cart items rendered here -->
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <div class="customer-info-box">
+          <h4 data-i18n="customer_details">Coordonnées du Client (Optionnel)</h4>
+          <div class="form-group">
+            <input type="text" id="customer-name" class="form-control" data-i18n="customer_name_placeholder" placeholder="Votre Nom Complet" />
+          </div>
+          <div class="form-group">
+            <input type="tel" id="customer-phone" class="form-control" data-i18n="customer_phone_placeholder" placeholder="Votre Numéro de Téléphone (ex: +216 ...)" />
+          </div>
+        </div>
+
+        <div class="cart-summary-line">
+          <span data-i18n="total_estimate">Total Estimé :</span>
+          <span id="cart-subtotal">0.00 TND</span>
+        </div>
+
+        <!-- Messenger Checkout Actions -->
+        <div class="messenger-actions">
+          <a id="btn-messenger-checkout" href="#" class="btn-messenger-checkout">
+            <span data-i18n="send_messenger_mobile">Ouvrir dans l'App Messenger</span>
+          </a>
+          <button id="btn-copy-order-summary" class="btn-copy-summary" style="display: none;" data-i18n="copy_order_summary">
+            Copier le Récapitulatif
+          </button>
+        </div>
+
+        <div class="no-payment-notice" data-i18n="no_payment_notice">
+          Aucun paiement en ligne requis. Paiement à la livraison / confirmation avec Mouna.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Mouna Modal -->
+  <div id="about-modal-overlay" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="about_title">À propos de Mouna Nouira</h3>
+        <button id="btn-close-about" class="btn-close-drawer">✕</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <div style="width: 86px; height: 86px; border-radius: 50%; background: var(--color-primary-dark); color: var(--color-accent); display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; margin: 0 auto 16px auto; border: 2px solid var(--color-accent);">MN</div>
+        <h4 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--color-primary);" data-i18n="brand_title">Mouna Nouira</h4>
+        <p style="color: var(--color-accent-hover); font-weight: 700; font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;" data-i18n="about_badge">Partenaire de Marque & Consultante Indépendante Oriflame</p>
+        <p style="font-size: 0.94rem; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 24px;" data-i18n="about_bio">
+          Bienvenue sur ma boutique numérique Oriflame ! En tant que consultante beauté dédiée en Tunisie, je vous propose des produits 100% authentiques. Choisissez vos articles préférés et cliquez sur Envoyer la Commande via Messenger pour me contacter directement.
+        </p>
+
+        <div style="background: #FAF8F5; padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); display: flex; justify-content: space-around; gap: 10px;">
+          <div>
+            <div style="font-family: var(--font-serif); font-weight: 700; color: var(--color-primary); font-size: 1.15rem;">100%</div>
+            <div style="font-size: 0.74rem; color: var(--color-text-muted);" data-i18n="trust_original">Produits Originaux</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-serif); font-weight: 700; color: var(--color-primary); font-size: 1.15rem;">Expert</div>
+            <div style="font-size: 0.74rem; color: var(--color-text-muted);" data-i18n="trust_advice">Conseils Beauté</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-serif); font-weight: 700; color: var(--color-primary); font-size: 1.15rem;">Direct</div>
+            <div style="font-size: 0.74rem; color: var(--color-text-muted);" data-i18n="trust_fast">Réponse Rapide</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Policy Modal -->
+  <div id="privacy-modal-overlay" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="privacy_title">Politique de Confidentialité</h3>
+        <button id="btn-close-privacy" class="btn-close-drawer">✕</button>
+      </div>
+      <div class="modal-body" style="font-size: 0.92rem; color: var(--color-text-secondary); line-height: 1.7;">
+        <h4 style="color: var(--color-primary); margin-bottom: 6px;" data-i18n="privacy_p1_title">1. Collecte des Données</h4>
+        <p style="margin-bottom: 14px;" data-i18n="privacy_p1">Ce site ne stocke aucune coordonnée sur des serveurs externes. Votre nom et numéro servent uniquement à pré-remplir le message de commande envoyé à Mouna sur Facebook Messenger.</p>
+
+        <h4 style="color: var(--color-primary); margin-bottom: 6px;" data-i18n="privacy_p2_title">2. Stockage Local</h4>
+        <p style="margin-bottom: 14px;" data-i18n="privacy_p2">Votre panier est sauvegardé dans la mémoire de votre navigateur afin de conserver vos articles si vous rechargez la page.</p>
+
+        <h4 style="color: var(--color-primary); margin-bottom: 6px;" data-i18n="privacy_p3_title">3. Garantie Zéro Paiement en Ligne</h4>
+        <p style="margin-bottom: 14px;" data-i18n="privacy_p3">Ce site ne traite aucune carte bancaire ni paiement en ligne. Toutes les transactions sont effectuées directement avec Mouna.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick View Modal -->
+  <div id="quickview-modal-overlay" class="modal-overlay">
+    <div class="modal-card" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="quickview_title">Détails du Produit</h3>
+        <button id="btn-close-quickview" class="btn-close-drawer">✕</button>
+      </div>
+      <div id="quickview-content" class="modal-body">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Editorial Footer -->
+  <footer>
+    <div class="container">
+      <p data-i18n="footer_rights">© 2026 Mouna Nouira — Consultante Indépendante Oriflame. Tous droits réservés.</p>
+      <p style="margin-top: 6px; font-size: 0.76rem; opacity: 0.7;" data-i18n="footer_disclaimer">
+        Ce site est un assistant numérique de commande directe via Facebook Messenger en Tunisie.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Application JS Modules -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

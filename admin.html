@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mouna Nouira — Private Consultant Portal</title>
+  
+  <!-- Luxury Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles/admin.css" />
+</head>
+<body>
+
+  <!-- 1. Secure Login View -->
+  <div id="admin-login-view" class="admin-login-screen">
+    <div class="login-card">
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+        <select id="admin-login-lang-select" class="admin-lang-select" aria-label="Select Language">
+          <option value="fr">🇫🇷 Français</option>
+          <option value="ar">🇹🇳 العربية</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
+      </div>
+
+      <div class="login-logo">MN</div>
+      <h2>Mouna Nouira</h2>
+      <p data-admin-i18n="portal_subtitle">Portail Privé de la Consultante</p>
+      
+      <form id="admin-login-form">
+        <input type="password" id="admin-pwd-input" class="form-control" data-admin-i18n="passcode_placeholder" placeholder="Entrez le mot de passe administrateur" required />
+        <button type="submit" class="btn-primary" data-admin-i18n="btn_access_dashboard">Accéder au Tableau de Bord</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Main Admin Dashboard View -->
+  <div id="admin-dashboard-view" class="admin-layout" style="display: none;">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <div class="admin-monogram">MN</div>
+        <div>
+          <h3>Mouna Nouira</h3>
+          <p style="font-size: 0.72rem; color: #A1A1AA; text-transform: uppercase; font-weight: 700;">Oriflame Portal</p>
+        </div>
+      </div>
+
+      <!-- Language Selector inside Sidebar -->
+      <div style="padding: 0 8px 16px 8px;">
+        <select id="admin-lang-select" class="admin-lang-select" style="width: 100%;" aria-label="Select Language">
+          <option value="fr">🇫🇷 Français</option>
+          <option value="ar">🇹🇳 العربية</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-target="section-analytics" data-admin-i18n="tab_analytics">
+          📊 Statistiques & Visiteurs
+        </div>
+        <div class="nav-item" data-target="section-stock" data-admin-i18n="tab_stock">
+          📦 Gestion du Stock & Produits
+        </div>
+        <div class="nav-item" data-target="section-scraper" data-admin-i18n="tab_scraper">
+          🤖 Scrapers Oriflame & Flipbook
+        </div>
+        <div class="nav-item" data-target="section-settings" data-admin-i18n="tab_settings">
+          ⚙️ Paramètres & Import/Export CSV
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/" target="_blank" class="open-storefront-link" data-admin-i18n="open_storefront">
+          ↗ Ouvrir la Boutique Client
+        </a>
+        <button id="btn-admin-logout" class="btn-logout" data-admin-i18n="btn_logout">
+          Se déconnecter
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+
+      <!-- SECTION 1: VISITOR ANALYTICS & TIME SPENT -->
+      <section id="section-analytics" class="admin-section active">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" data-admin-i18n="analytics_title">Statistiques & Parcours des Visiteurs</h2>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted);" data-admin-i18n="analytics_desc">Consultez qui a visité votre boutique, combien de temps ils y sont restés et quels produits ils ont consultés.</p>
+          </div>
+          <button id="btn-refresh-analytics" class="btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.82rem;" data-admin-i18n="btn_refresh_stats">
+            🔄 Actualiser les Statistiques
+          </button>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-title" data-admin-i18n="stat_total_visits">Total des Visites</div>
+            <div id="stat-total-visits" class="stat-value">0</div>
+            <div class="stat-subtext" data-admin-i18n="stat_total_visits_sub">Sessions clients enregistrées</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-title" data-admin-i18n="stat_avg_duration">Temps Moyen Passé</div>
+            <div id="stat-avg-duration" class="stat-value">0s</div>
+            <div class="stat-subtext" data-admin-i18n="stat_avg_duration_sub">Durée moyenne sur le site</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-title" data-admin-i18n="stat_devices">Mobiles vs Ordinateurs</div>
+            <div id="stat-devices" class="stat-value">0 / 0</div>
+            <div class="stat-subtext" data-admin-i18n="stat_devices_sub">Smartphones / Ordinateurs</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-title" data-admin-i18n="stat_top_categories">Catégories les Plus Vues</div>
+            <div id="stat-top-categories" style="font-size: 0.88rem; font-weight: 600; color: #18181B; margin-top: 6px;">
+              Chargement...
+            </div>
+          </div>
+        </div>
+
+        <!-- Visitor Sessions Log Table -->
+        <h3 style="font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 14px;" data-admin-i18n="table_journey_title">Journal en Direct des Visites & Temps Passé</h3>
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th data-admin-i18n="th_session_id">ID de Session Visiteur</th>
+                <th data-admin-i18n="th_device_lang">Appareil & Langue</th>
+                <th data-admin-i18n="th_time_spent">Temps Passé sur le Site</th>
+                <th data-admin-i18n="th_activity_trail">Parcours de Navigation (Où ils ont cliqué)</th>
+                <th data-admin-i18n="th_last_active">Dernière Activité</th>
+              </tr>
+            </thead>
+            <tbody id="analytics-table-body">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 2: STOCK & CATALOG MANAGER -->
+      <section id="section-stock" class="admin-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" data-admin-i18n="stock_title">Gestion du Stock & des Produits</h2>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted);" data-admin-i18n="stock_desc">Gérez votre inventaire Oriflame, activez/désactivez la disponibilité ou ajoutez de nouveaux produits.</p>
+          </div>
+        </div>
+
+        <!-- Stock Summary Cards -->
+        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="stat-card">
+            <div class="stat-title" data-admin-i18n="stat_total_products">Total Produits au Catalogue</div>
+            <div id="stat-total-products" class="stat-value">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title" data-admin-i18n="stat_in_stock">Disponibles en Stock</div>
+            <div id="stat-in-stock" class="stat-value" style="color: var(--admin-success);">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title" data-admin-i18n="stat_out_stock">En Rupture de Stock</div>
+            <div id="stat-out-stock" class="stat-value" style="color: var(--admin-danger);">0</div>
+          </div>
+        </div>
+
+        <!-- Add New Product Form (With Direct File Upload) -->
+        <details class="admin-form-box">
+          <summary style="font-weight: 700; color: #18181B; cursor: pointer; font-size: 0.95rem;" data-admin-i18n="add_product_toggle">➕ Ajouter un Nouveau Produit (Photo ou Lien Direct)</summary>
+          <form id="admin-add-product-form" style="margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div style="grid-column: span 2;">
+              <label style="font-size: 0.82rem; font-weight: 600;" data-admin-i18n="lbl_product_title">Nom du Produit *</label>
+              <input type="text" name="name" class="form-control" required placeholder="ex: NovAge Ecollagen Crème de Jour" />
+            </div>
+
+            <div>
+              <label style="font-size: 0.82rem; font-weight: 600;" data-admin-i18n="lbl_category">Catégorie *</label>
+              <select name="category" class="form-control">
+                <option value="Skincare">Soins de la peau</option>
+                <option value="Makeup">Maquillage</option>
+                <option value="Fragrance">Parfums</option>
+                <option value="Wellness">Bien-être</option>
+                <option value="Haircare">Soins capillaires</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 0.82rem; font-weight: 600;" data-admin-i18n="lbl_price_tnd">Prix Catalogue (en TND) *</label>
+              <input type="number" step="0.01" name="price" class="form-control" required placeholder="85.00" />
+            </div>
+
+            <div>
+              <label style="font-size: 0.82rem; font-weight: 600;" data-admin-i18n="lbl_original_price">Prix d'Origine avant remise (Optionnel)</label>
+              <input type="number" step="0.01" name="original_price" class="form-control" placeholder="110.00" />
+            </div>
+
+            <div>
+              <label style="font-size: 0.82rem; font-weight: 600;" data-admin-i18n="lbl_size">Contenance / Format</label>
+              <input type="text" name="size" class="form-control" placeholder="50 ml / 1.6 fl.oz." />
+            </div>
+
+            <div style="grid-column: span 2;">
+              <label style="font-size: 0.82rem; font-weight: 600;" data-admin-i18n="lbl_upload_image">Photo du Produit (Fichier local ou URL de l'image)</label>
+              <input type="file" id="admin-file-picker" name="image_file" accept="image/*" class="form-control" style="padding: 6px;" />
+              <input type="url" name="image_url" class="form-control" placeholder="Ou entrez l'URL directe de l'image..." />
+              <img id="admin-image-preview" style="max-width: 90px; border-radius: 8px; display: none; margin-top: 8px; border: 1px solid var(--admin-border);" alt="Preview" />
+            </div>
+
+            <div style="grid-column: span 2;">
+              <label style="font-size: 0.82rem; font-weight: 600;" data-admin-i18n="lbl_description">Description & Bienfaits</label>
+              <textarea name="description" class="form-control" rows="2" placeholder="Soin anti-rides hydratant aux extraits de cellules souches végétales..."></textarea>
+            </div>
+
+            <div style="grid-column: span 2;">
+              <button type="submit" class="btn-primary" data-admin-i18n="btn_save_product">Enregistrer le Produit dans la Boutique</button>
+            </div>
+          </form>
+        </details>
+
+        <!-- Product Table -->
+        <h3 style="font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 14px;">Inventaire en Direct</h3>
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th data-admin-i18n="th_prod_id">Réf Produit</th>
+                <th data-admin-i18n="th_photo_name">Photo & Nom</th>
+                <th data-admin-i18n="th_category">Catégorie</th>
+                <th data-admin-i18n="th_price">Prix (TND)</th>
+                <th data-admin-i18n="th_stock_status">Disponibilité</th>
+                <th data-admin-i18n="th_actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-stock-table-body">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 3: DIGITAL FLIPBOOK & ORIFLAME SCRAPERS -->
+      <section id="section-scraper" class="admin-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" data-admin-i18n="scraper_title">Scrapers Automatiques d'eCatalogue & Flipbook</h2>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted);" data-admin-i18n="scraper_desc">Scrapez l'intégralité du Digital Flipbook avec ses 150 pages, ou synchronisez les offres de tn.oriflame.com.</p>
+          </div>
+        </div>
+
+        <!-- 1. FULL DIGITAL FLIPBOOK SCRAPER -->
+        <div class="admin-form-box" style="background: #FAF8F5; margin-bottom: 24px;">
+          <span class="badge badge-accent" style="margin-bottom: 8px; font-size: 0.76rem;" data-admin-i18n="badge_new">NOUVEAU</span>
+          <h4 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 6px; color: #18181B;" data-admin-i18n="flipbook_scraper_title">📖 Scraper le Digital Flipbook Complet (Toutes les Pages)</h4>
+          <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 14px;" data-admin-i18n="flipbook_scraper_desc">
+            Collez n'importe quel lien du catalogue officiel Oriflame pour extraire automatiquement toutes les pages, photos haute résolution, vidéo et pastilles interactives.
+          </p>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="url" id="admin-flipbook-url-input" class="form-control" style="margin-bottom: 0; flex: 1; min-width: 280px;" value="https://tn.oriflame.com/catalogue?cataloguecode=2026008&PageNumber=1&store=TN-oriflame_1" placeholder="https://tn.oriflame.com/catalogue?cataloguecode=2026008..." />
+            <button id="btn-scraper-flipbook" class="btn-primary" style="width: auto; white-space: nowrap; padding: 0 24px; background: #C1121F; border-color: #C1121F;" data-admin-i18n="btn_scrape_flipbook">
+              🚀 Scraper le Flipbook & Toutes ses Pages
+            </button>
+          </div>
+
+          <div id="flipbook-scrape-status" style="margin-top: 12px; font-size: 0.85rem; font-weight: 600; color: var(--admin-success); display: none;"></div>
+        </div>
+
+        <!-- 2. COMPREHENSIVE MULTI-CATEGORY PRODUCT & DEALS SCRAPER -->
+        <div class="admin-form-box" style="background: #FFFFFF; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
+            <h4 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 0;" data-admin-i18n="sync_title">🤖 Scraping Global de Toutes les Catégories & Produits</h4>
+            <span class="badge badge-accent" style="font-size: 0.76rem;" data-admin-i18n="badge_multi_cat">MULTI-CATÉGORIES + DIFF</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 16px;" data-admin-i18n="sync_desc">
+            Scrapez l'intégralité des produits de toutes les catégories (Parfums, Soins, Maquillage, Wellness, Cheveux, Homme) avec leurs références exactes, prix en TND et remises.
+          </p>
+          
+          <button id="btn-scraper-sync-all" class="btn-primary" style="width: auto; padding: 12px 28px; background: #18181B; border-color: #C5A880; color: #FFFFFF;" data-admin-i18n="btn_sync_catalog">
+            ⚡ Lancer le Scraping Global & Synchroniser le Catalogue
+          </button>
+
+          <!-- Live Sync Progress & Diff Report Container -->
+          <div id="sync-report-container" style="margin-top: 18px; display: none;">
+            <div id="sync-report-status" style="font-size: 0.88rem; font-weight: 700; margin-bottom: 12px; color: var(--admin-primary);"></div>
+            
+            <!-- Statistics Badges Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px;">
+              <div style="background: #F4F4F5; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #E4E4E7;">
+                <div style="font-size: 0.74rem; color: #71717A; text-transform: uppercase;" data-admin-i18n="stat_total_scraped">Total Scrappé</div>
+                <div id="report-total-scraped" style="font-size: 1.35rem; font-weight: 800; color: #18181B;">0</div>
+              </div>
+              <div style="background: #ECFDF5; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #A7F3D0;">
+                <div style="font-size: 0.74rem; color: #047857; text-transform: uppercase;" data-admin-i18n="stat_new_added">Nouveaux</div>
+                <div id="report-new-count" style="font-size: 1.35rem; font-weight: 800; color: #059669;">+0</div>
+              </div>
+              <div style="background: #FFFBEB; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #FDE68A;">
+                <div style="font-size: 0.74rem; color: #B45309; text-transform: uppercase;" data-admin-i18n="stat_modified">Modifiés (Prix/Promo)</div>
+                <div id="report-modified-count" style="font-size: 1.35rem; font-weight: 800; color: #D97706;">0</div>
+              </div>
+              <div style="background: #FEF2F2; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #FECACA;">
+                <div style="font-size: 0.74rem; color: #B91C1C; text-transform: uppercase;" data-admin-i18n="stat_deleted">Supprimés</div>
+                <div id="report-deleted-count" style="font-size: 1.35rem; font-weight: 800; color: #DC2626;">0</div>
+              </div>
+              <div style="background: #EFF6FF; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #BFDBFE;">
+                <div style="font-size: 0.74rem; color: #1D4ED8; text-transform: uppercase;" data-admin-i18n="stat_unchanged">Inchangés</div>
+                <div id="report-unchanged-count" style="font-size: 1.35rem; font-weight: 800; color: #2563EB;">0</div>
+              </div>
+            </div>
+
+            <!-- Categories Breakdown -->
+            <div id="report-categories-pills" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;"></div>
+
+            <!-- Preview Table of New / Updated Products -->
+            <div id="report-preview-box" style="display: none; background: #FAF8F5; padding: 14px; border-radius: 8px; border: 1px solid #E4E4E7;">
+              <h5 style="font-size: 0.88rem; font-weight: 700; margin-bottom: 8px;" data-admin-i18n="lbl_diff_preview">Détails des Modifications Récentes :</h5>
+              <div class="table-responsive">
+                <table class="custom-table" style="font-size: 0.8rem;">
+                  <thead>
+                    <tr>
+                      <th data-admin-i18n="th_code">Réf.</th>
+                      <th data-admin-i18n="th_name">Nom du Produit</th>
+                      <th data-admin-i18n="th_status">Statut</th>
+                      <th data-admin-i18n="th_price_diff">Prix / Modification</th>
+                    </tr>
+                  </thead>
+                  <tbody id="report-diff-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. SINGLE PRODUCT URL SCRAPER -->
+        <div class="admin-form-box" style="background: #FAF8F5;">
+          <h4 style="font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 6px;" data-admin-i18n="single_scrape_title">Scraper une Page Produit Oriflame Unique</h4>
+          <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 14px;" data-admin-i18n="single_scrape_desc">Collez le lien direct d'un produit Oriflame Tunisie pour l'ajouter automatiquement.</p>
+          
+          <div style="display: flex; gap: 10px;">
+            <input type="url" id="admin-single-url-input" class="form-control" style="margin-bottom: 0;" placeholder="https://tn.oriflame.com/products/product?code=42548" />
+            <button id="btn-scraper-single-url" class="btn-primary" style="width: auto; white-space: nowrap; padding: 0 20px;" data-admin-i18n="btn_scrape_single">
+              Scraper & Ajouter le Produit
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: SETTINGS & CSV DATA -->
+      <section id="section-settings" class="admin-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" data-admin-i18n="settings_title">Paramètres & Gestion Massive CSV</h2>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted);" data-admin-i18n="settings_desc">Configurez votre lien Messenger, modifiez vos identifiants et exportez/importez votre catalogue.</p>
+          </div>
+        </div>
+
+        <!-- Facebook Settings -->
+        <div class="admin-form-box" style="background: #FAF8F5; margin-bottom: 24px;">
+          <h4 style="font-weight: 700; margin-bottom: 8px;" data-admin-i18n="fb_handle_title">Nom d'Utilisateur Facebook Messenger</h4>
+          <p style="font-size: 0.82rem; color: var(--admin-text-muted); margin-bottom: 12px;" data-admin-i18n="fb_handle_desc">Ce compte recevra les commandes des clients lorsqu'ils cliquent sur Commander via Messenger.</p>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <span style="font-weight: 600;">https://m.me/</span>
+            <input type="text" id="setting-fb-handle" class="form-control" style="max-width: 240px; margin-bottom: 0;" placeholder="mouna.nouira" />
+            <button id="btn-save-fb-handle" class="btn-primary" style="width: auto; padding: 10px 20px;" data-admin-i18n="btn_save_handle">Enregistrer le Nom</button>
+          </div>
+        </div>
+
+        <!-- Passcode Change -->
+        <div class="admin-form-box" style="background: #FAF8F5; margin-bottom: 24px;">
+          <h4 style="font-weight: 700; margin-bottom: 8px;" data-admin-i18n="pwd_title">Code d'Accès Administrateur</h4>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="password" id="setting-new-pwd" class="form-control" style="max-width: 240px; margin-bottom: 0;" placeholder="Nouveau mot de passe (min 4 car.)" />
+            <button id="btn-save-pwd" class="btn-primary" style="width: auto; padding: 10px 20px;" data-admin-i18n="btn_save_pwd">Mettre à Jour le Mot de Passe</button>
+          </div>
+        </div>
+
+        <!-- CSV Bulk Tools -->
+        <div class="admin-form-box" style="background: #FFFFFF;">
+          <h4 style="font-weight: 700; margin-bottom: 12px;" data-admin-i18n="csv_title">Opérations Massives en CSV</h4>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <label class="btn-primary" style="width: auto; padding: 10px 20px; cursor: pointer;" data-admin-i18n="btn_import_csv">
+              📥 Importer des Produits depuis CSV
+              <input type="file" id="admin-csv-file" accept=".csv" style="display: none;" />
+            </label>
+            <button id="btn-export-csv" class="btn-primary" style="background: #27272A; width: auto; padding: 10px 20px;" data-admin-i18n="btn_export_csv">
+              📤 Exporter le Catalogue en CSV
+            </button>
+            <button id="btn-download-sample-csv" class="btn-primary" style="background: #27272A; width: auto; padding: 10px 20px;" data-admin-i18n="btn_sample_csv">
+              📄 Télécharger un Modèle CSV
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="js/admin-page.js"></script>
+</body>
+</html>

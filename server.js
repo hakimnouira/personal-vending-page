@@ -1,0 +1,418 @@
+// Express Backend Server with Hidden /admin Route, Real-Time Visitor Analytics & Digital Flipbook Scraper
+import express from 'express';
+import cors from 'cors';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/scraper.js';
+import { scrapeFlipbookFromUrl, getFlipbookData } from './services/flipbook-scraper.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Ensure directories exist
+const DATA_DIR = path.join(__dirname, 'data');
+const UPLOADS_DIR = path.join(__dirname, 'uploads');
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
+const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
+const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
+
+// Middleware
+app.use(cors());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Static files
+app.use(express.static(__dirname));
+app.use('/uploads', express.static(UPLOADS_DIR));
+
+// Direct /admin Route to Admin Portal
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Multer Storage Configuration for Product Image Uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, UPLOADS_DIR);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname) || '.jpg';
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, `product-${uniqueSuffix}${ext}`);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed'));
+    }
+  }
+});
+
+// Data Helpers
+function getProducts() {
+  try {
+    if (fs.existsSync(PRODUCTS_FILE)) {
+      return JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
+    }
+    return [];
+  } catch (err) {
+    return [];
+  }
+}
+
+function saveProducts(products) {
+  try {
+    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function getSettings() {
+  try {
+    if (fs.existsSync(SETTINGS_FILE)) {
+      return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+    }
+    return { facebook_username: 'mouna.nouira', currency: 'TND', admin_pwd: 'mouna2026' };
+  } catch (err) {
+    return { facebook_username: 'mouna.nouira', currency: 'TND', admin_pwd: 'mouna2026' };
+  }
+}
+
+function saveSettings(settings) {
+  try {
+    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function getAnalytics() {
+  try {
+    if (fs.existsSync(ANALYTICS_FILE)) {
+      return JSON.parse(fs.readFileSync(ANALYTICS_FILE, 'utf8'));
+    }
+    return { total_visits: 0, sessions: [] };
+  } catch (err) {
+    return { total_visits: 0, sessions: [] };
+  }
+}
+
+function saveAnalytics(analytics) {
+  try {
+    fs.writeFileSync(ANALYTICS_FILE, JSON.stringify(analytics, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+// ------------------- ANALYTICS API ------------------- //
+
+app.post('/api/analytics/ping', (req, res) => {
+  try {
+    const { session_id, event, category, product_name, duration_seconds, device, language } = req.body;
+    if (!session_id) return res.status(400).json({ error: 'Missing session_id' });
+
+    const analytics = getAnalytics();
+    let session = analytics.sessions.find(s => s.session_id === session_id);
+    const now = new Date().toISOString();
+
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'Local';
+
+    if (!session) {
+      analytics.total_visits = (analytics.total_visits || 0) + 1;
+      session = {
+        session_id,
+        first_seen: now,
+        last_active: now,
+        ip: String(clientIp).replace('::ffff:', ''),
+        device: device || 'Desktop',
+        language: language || 'fr',
+        duration_seconds: duration_seconds || 0,
+        activity_trail: [],
+        categories_visited: [],
+        products_viewed: []
+      };
+      analytics.sessions.unshift(session);
+    }
+
+    session.last_active = now;
+    session.duration_seconds = Math.max(session.duration_seconds || 0, duration_seconds || 0);
+
+    if (event) {
+      const timeOffset = `${Math.floor((duration_seconds || 0) / 60)}m ${Math.floor((duration_seconds || 0) % 60)}s`;
+      session.activity_trail.push({
+        time: now,
+        offset: timeOffset,
+        description: event
+      });
+    }
+
+    if (category && !session.categories_visited.includes(category)) {
+      session.categories_visited.push(category);
+    }
+
+    if (product_name && !session.products_viewed.includes(product_name)) {
+      session.products_viewed.push(product_name);
+    }
+
+    if (analytics.sessions.length > 500) {
+      analytics.sessions = analytics.sessions.slice(0, 500);
+    }
+
+    saveAnalytics(analytics);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/analytics/stats', (req, res) => {
+  const analytics = getAnalytics();
+  const sessions = analytics.sessions || [];
+
+  const totalSessions = sessions.length;
+  const totalDuration = sessions.reduce((acc, s) => acc + (s.duration_seconds || 0), 0);
+  const avgDuration = totalSessions > 0 ? Math.round(totalDuration / totalSessions) : 0;
+
+  const categoryCounts = {};
+  sessions.forEach(s => {
+    (s.categories_visited || []).forEach(c => {
+      categoryCounts[c] = (categoryCounts[c] || 0) + 1;
+    });
+  });
+
+  let mobileCount = 0;
+  let desktopCount = 0;
+  sessions.forEach(s => {
+    if (s.device === 'Mobile') mobileCount++;
+    else desktopCount++;
+  });
+
+  res.json({
+    success: true,
+    total_visits: analytics.total_visits || totalSessions,
+    active_sessions_count: totalSessions,
+    avg_duration_seconds: avgDuration,
+    mobile_count: mobileCount,
+    desktop_count: desktopCount,
+    category_popularity: categoryCounts,
+    recent_sessions: sessions.slice(0, 50)
+  });
+});
+
+app.post('/api/analytics/reset', (req, res) => {
+  saveAnalytics({ total_visits: 0, sessions: [] });
+  res.json({ success: true, message: 'Analytics reset' });
+});
+
+// ------------------- FLIPBOOK eCATALOGUE API ------------------- //
+
+app.get('/api/flipbook', (req, res) => {
+  const data = getFlipbookData();
+  if (data) {
+    res.json({ success: true, data });
+  } else {
+    res.status(404).json({ success: false, message: 'No flipbook data found' });
+  }
+});
+
+app.post('/api/scrape/flipbook', async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) return res.status(400).json({ success: false, message: 'Catalog URL is required' });
+
+    console.log("Admin triggering flipbook scrape for:", url);
+    const flipbookData = await scrapeFlipbookFromUrl(url);
+
+    res.json({
+      success: true,
+      message: `Successfully scraped Digital Flipbook (${flipbookData.totalPages} pages, ${flipbookData.totalSpreads} spreads).`,
+      data: flipbookData
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ------------------- PRODUCT & SETTINGS API ------------------- //
+
+app.get('/api/products', (req, res) => {
+  res.json({ success: true, data: getProducts() });
+});
+
+app.post('/api/products', upload.single('image_file'), (req, res) => {
+  try {
+    const { name, category, price, description, in_stock, image_url, size, suitable_for, benefits, how_to_use, ingredients, original_price, is_promo, discount_percent } = req.body;
+    if (!name || !price) {
+      return res.status(400).json({ success: false, message: 'Name and Price are required' });
+    }
+
+    let finalImageUrl = image_url;
+    if (req.file) {
+      finalImageUrl = `/uploads/${req.file.filename}`;
+    } else if (!finalImageUrl) {
+      finalImageUrl = 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80';
+    }
+
+    const newProduct = {
+      product_id: req.body.product_id || `ORF-PROD-${Date.now()}`,
+      name: name.trim(),
+      category: category || 'Skincare',
+      price: parseFloat(price) || 0,
+      original_price: original_price ? parseFloat(original_price) : null,
+      is_promo: is_promo === true || is_promo === 'true',
+      discount_percent: discount_percent ? parseInt(discount_percent) : 0,
+      size: size || 'Format Standard',
+      suitable_for: suitable_for || 'Tous types de peaux • Testé dermatologiquement',
+      image_url: finalImageUrl,
+      description: description ? description.trim() : '',
+      benefits: Array.isArray(benefits) ? benefits : [
+        "100% Produit original Oriflame Suède",
+        "Formule haute performance aux actifs bienfaisants"
+      ],
+      how_to_use: how_to_use || "Appliquer selon les recommandations de la gamme.",
+      ingredients: ingredients || "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+      in_stock: in_stock === true || in_stock === 'true'
+    };
+
+    const products = getProducts();
+    products.unshift(newProduct);
+    saveProducts(products);
+
+    res.status(201).json({ success: true, message: 'Product added', data: newProduct });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.put('/api/products/:id', upload.single('image_file'), (req, res) => {
+  try {
+    const { id } = req.params;
+    const products = getProducts();
+    const index = products.findIndex(p => p.product_id === id);
+
+    if (index === -1) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    const { name, category, price, description, in_stock, image_url, size, suitable_for } = req.body;
+    let finalImageUrl = products[index].image_url;
+    if (req.file) finalImageUrl = `/uploads/${req.file.filename}`;
+    else if (image_url) finalImageUrl = image_url;
+
+    products[index] = {
+      ...products[index],
+      name: name !== undefined ? name.trim() : products[index].name,
+      category: category || products[index].category,
+      price: price !== undefined ? parseFloat(price) : products[index].price,
+      size: size || products[index].size,
+      suitable_for: suitable_for || products[index].suitable_for,
+      image_url: finalImageUrl,
+      description: description !== undefined ? description.trim() : products[index].description,
+      in_stock: in_stock !== undefined ? (in_stock === true || in_stock === 'true') : products[index].in_stock
+    };
+
+    saveProducts(products);
+    res.json({ success: true, message: 'Product updated', data: products[index] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.delete('/api/products/:id', (req, res) => {
+  const { id } = req.params;
+  let products = getProducts();
+  const initialLen = products.length;
+  products = products.filter(p => p.product_id !== id);
+
+  if (products.length === initialLen) {
+    return res.status(404).json({ success: false, message: 'Product not found' });
+  }
+
+  saveProducts(products);
+  res.json({ success: true, message: 'Product deleted' });
+});
+
+app.post('/api/products/toggle-stock/:id', (req, res) => {
+  const { id } = req.params;
+  const products = getProducts();
+  const product = products.find(p => p.product_id === id);
+
+  if (!product) {
+    return res.status(404).json({ success: false, message: 'Product not found' });
+  }
+
+  product.in_stock = !product.in_stock;
+  saveProducts(products);
+  res.json({ success: true, message: 'Stock toggled', in_stock: product.in_stock });
+});
+
+// SCRAPER APIs
+app.post('/api/scrape/url', async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) return res.status(400).json({ success: false, message: 'URL is required' });
+
+    const scrapedData = await scrapeProductFromUrl(url);
+    if (req.body.auto_add === true || req.body.auto_add === 'true') {
+      const products = getProducts();
+      products.unshift(scrapedData);
+      saveProducts(products);
+    }
+    res.json({ success: true, message: 'Product scraped', data: scrapedData });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/scrape/oriflame-catalog', async (req, res) => {
+  try {
+    console.log("Admin initiated comprehensive multi-category product scrape...");
+    const result = await scrapeAllOriflameCategories();
+    res.json({
+      success: true,
+      message: `Scraping complete: ${result.report.total_scraped} products scraped (${result.report.new_count} new, ${result.report.modified_count} updated, ${result.report.deleted_count} deleted).`,
+      report: result.report,
+      data: result.products
+    });
+  } catch (error) {
+    console.error("Scrape error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/settings', (req, res) => {
+  res.json({ success: true, data: getSettings() });
+});
+
+app.post('/api/settings', (req, res) => {
+  const current = getSettings();
+  const updated = { ...current, ...req.body };
+  saveSettings(updated);
+  res.json({ success: true, message: 'Settings saved', data: updated });
+});
+
+app.listen(PORT, () => {
+  console.log(`===================================================`);
+  console.log(`  Oriflame Assistant Server running on http://localhost:${PORT}`);
+  console.log(`  Admin Portal URL: http://localhost:${PORT}/admin`);
+  console.log(`===================================================`);
+});

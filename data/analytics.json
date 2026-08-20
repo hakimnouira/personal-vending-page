@@ -1,0 +1,2329 @@
+{
+  "total_visits": 10,
+  "sessions": [
+    {
+      "session_id": "SES-3517MEE-MSZ9WPR5",
+      "first_seen": "2026-08-18T23:07:54.608Z",
+      "last_active": "2026-08-18T23:08:25.134Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 31,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T23:07:54.608Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T23:07:55.951Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-18T23:07:57.987Z",
+          "offset": "0m 3s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
+    {
+      "session_id": "SES-HJ19X8C-MSZ9T845",
+      "first_seen": "2026-08-18T23:05:11.771Z",
+      "last_active": "2026-08-18T23:08:09.230Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 177,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T23:05:11.771Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T23:05:13.398Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T23:05:13.560Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T23:05:13.722Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T23:05:13.882Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T23:05:14.923Z",
+          "offset": "0m 3s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Femme Weekend"
+        },
+        {
+          "time": "2026-08-18T23:05:24.736Z",
+          "offset": "0m 13s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-18T23:05:26.140Z",
+          "offset": "0m 14s",
+          "description": "Clicked Messenger Checkout (2 items, Total: 88 TND)"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Eau de Toilette Eclat Femme Weekend"
+      ]
+    },
+    {
+      "session_id": "SES-3VGEZNE-MSZ9J2UK",
+      "first_seen": "2026-08-18T22:57:18.386Z",
+      "last_active": "2026-08-18T23:05:12.796Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 474,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T22:57:18.386Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T22:57:21.506Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T22:57:22.233Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T22:57:22.597Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T22:57:23.419Z",
+          "offset": "0m 5s",
+          "description": "Opened Detailed Product Info: Crème Parfumée pour le Corps All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-18T22:57:25.041Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: Parfum All or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-18T22:57:26.378Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T22:57:26.539Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T22:57:26.695Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T22:57:26.834Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T22:57:26.965Z",
+          "offset": "0m 9s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T22:57:27.072Z",
+          "offset": "0m 9s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T22:57:27.980Z",
+          "offset": "0m 10s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Homme Weekend Azur"
+        },
+        {
+          "time": "2026-08-18T22:57:29.854Z",
+          "offset": "0m 11s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Greater pour Lui"
+        },
+        {
+          "time": "2026-08-18T22:57:31.294Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T22:57:31.452Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 12"
+        },
+        {
+          "time": "2026-08-18T22:57:31.600Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 13"
+        },
+        {
+          "time": "2026-08-18T22:57:31.729Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-18T22:57:31.857Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 15"
+        },
+        {
+          "time": "2026-08-18T22:57:32.540Z",
+          "offset": "0m 14s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Joyce Jade"
+        },
+        {
+          "time": "2026-08-18T22:57:34.376Z",
+          "offset": "0m 16s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Giordani Gold Miss Giordani Floral"
+        },
+        {
+          "time": "2026-08-18T22:57:36.407Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 16"
+        },
+        {
+          "time": "2026-08-18T22:57:36.565Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 17"
+        },
+        {
+          "time": "2026-08-18T22:57:36.704Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 18"
+        },
+        {
+          "time": "2026-08-18T22:57:36.831Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 19"
+        },
+        {
+          "time": "2026-08-18T22:57:36.981Z",
+          "offset": "0m 19s",
+          "description": "Browsed eCatalogue Spread 20"
+        },
+        {
+          "time": "2026-08-18T22:57:38.049Z",
+          "offset": "0m 20s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Volare"
+        },
+        {
+          "time": "2026-08-18T22:57:39.479Z",
+          "offset": "0m 21s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Love Potion Secrets"
+        },
+        {
+          "time": "2026-08-18T22:57:41.547Z",
+          "offset": "0m 23s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Women's Collection White Lilac"
+        },
+        {
+          "time": "2026-08-18T22:57:43.082Z",
+          "offset": "0m 25s",
+          "description": "Browsed eCatalogue Spread 21"
+        },
+        {
+          "time": "2026-08-18T22:57:43.547Z",
+          "offset": "0m 25s",
+          "description": "Browsed eCatalogue Spread 22"
+        },
+        {
+          "time": "2026-08-18T22:57:43.750Z",
+          "offset": "0m 25s",
+          "description": "Browsed eCatalogue Spread 23"
+        },
+        {
+          "time": "2026-08-18T22:57:45.111Z",
+          "offset": "0m 27s",
+          "description": "Opened Detailed Product Info: Pinceau à Poudre Dreamy"
+        },
+        {
+          "time": "2026-08-18T22:57:54.348Z",
+          "offset": "0m 36s",
+          "description": "Opened Detailed Product Info: Ombre à paupières liquide longue tenue THE ONE Metallic Rosy Peach"
+        },
+        {
+          "time": "2026-08-18T22:57:58.984Z",
+          "offset": "0m 41s",
+          "description": "Browsed eCatalogue Spread 24"
+        },
+        {
+          "time": "2026-08-18T22:58:00.171Z",
+          "offset": "0m 42s",
+          "description": "Opened Detailed Product Info: Fard à paupières THE ONE Cool Grip Sunlit Glow"
+        },
+        {
+          "time": "2026-08-18T22:58:02.408Z",
+          "offset": "0m 44s",
+          "description": "Opened Detailed Product Info: Huile à lèvres Jelly THE ONE Coastal Kiss"
+        },
+        {
+          "time": "2026-08-18T22:58:04.092Z",
+          "offset": "0m 46s",
+          "description": "Browsed eCatalogue Spread 25"
+        },
+        {
+          "time": "2026-08-18T22:58:05.295Z",
+          "offset": "0m 47s",
+          "description": "Opened Detailed Product Info: Mascara 5-en-1 Wonder Lash Ultra THE ONE"
+        },
+        {
+          "time": "2026-08-18T22:58:07.137Z",
+          "offset": "0m 49s",
+          "description": "Opened Detailed Product Info: Pince à épiler Ultra Précision"
+        },
+        {
+          "time": "2026-08-18T22:58:09.289Z",
+          "offset": "0m 51s",
+          "description": "Browsed eCatalogue Spread 26"
+        },
+        {
+          "time": "2026-08-18T22:58:27.660Z",
+          "offset": "1m 9s",
+          "description": "Filtered by Category: Deals"
+        },
+        {
+          "time": "2026-08-18T22:58:31.974Z",
+          "offset": "1m 14s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-18T23:05:12.796Z",
+          "offset": "7m 54s",
+          "description": "Left Storefront"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance",
+        "Makeup",
+        "Skincare",
+        "Deals"
+      ],
+      "products_viewed": [
+        "Crème Parfumée pour le Corps All Or Nothing Amplified",
+        "Parfum All or Nothing Amplified",
+        "Eau de Toilette Eclat Homme Weekend Azur",
+        "Eau de Toilette Greater pour Lui",
+        "Eau de Toilette Joyce Jade",
+        "Eau de Parfum Giordani Gold Miss Giordani Floral",
+        "Eau de Parfum Volare",
+        "Eau de Parfum Love Potion Secrets",
+        "Eau de Toilette Women's Collection White Lilac",
+        "Pinceau à Poudre Dreamy",
+        "Ombre à paupières liquide longue tenue THE ONE Metallic Rosy Peach",
+        "Fard à paupières THE ONE Cool Grip Sunlit Glow",
+        "Huile à lèvres Jelly THE ONE Coastal Kiss",
+        "Mascara 5-en-1 Wonder Lash Ultra THE ONE",
+        "Pince à épiler Ultra Précision"
+      ]
+    },
+    {
+      "session_id": "SES-PCZ1CZ5-MSZ987QC",
+      "first_seen": "2026-08-18T22:48:51.497Z",
+      "last_active": "2026-08-18T23:08:09.223Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 1158,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T22:48:51.497Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T22:48:55.023Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T22:48:56.957Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T22:48:58.185Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:49:01.297Z",
+          "offset": "0m 10s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:49:03.297Z",
+          "offset": "0m 12s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:49:08.931Z",
+          "offset": "0m 17s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:49:18.162Z",
+          "offset": "0m 27s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:49:21.558Z",
+          "offset": "0m 30s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T22:49:23.448Z",
+          "offset": "0m 32s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-18T22:49:26.122Z",
+          "offset": "0m 35s",
+          "description": "Opened Detailed Product Info: Crème Parfumée pour le Corps All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-18T22:49:28.806Z",
+          "offset": "0m 37s",
+          "description": "Opened Detailed Product Info: Parfum All or Nothing Amplified"
+        }
+      ],
+      "categories_visited": [
+        "Catalogue Oriflame"
+      ],
+      "products_viewed": [
+        "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
+        "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
+        "Parfum Giordani Gold Essenza Supreme",
+        "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
+        "Crème Parfumée pour le Corps All Or Nothing Amplified",
+        "Parfum All or Nothing Amplified"
+      ]
+    },
+    {
+      "session_id": "SES-OO0LJ3B-MSZ8USC0",
+      "first_seen": "2026-08-18T22:38:25.012Z",
+      "last_active": "2026-08-18T23:08:09.177Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 1784,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T22:38:25.012Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T22:38:29.061Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T22:38:29.928Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T22:38:31.567Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:38:32.971Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T22:38:34.144Z",
+          "offset": "0m 9s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-18T22:38:35.526Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T22:38:36.426Z",
+          "offset": "0m 11s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Femme Weekend"
+        },
+        {
+          "time": "2026-08-18T22:38:38.412Z",
+          "offset": "0m 13s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Homme"
+        },
+        {
+          "time": "2026-08-18T22:38:39.811Z",
+          "offset": "0m 15s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T22:38:40.933Z",
+          "offset": "0m 16s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Signature Man"
+        },
+        {
+          "time": "2026-08-18T22:38:42.268Z",
+          "offset": "0m 17s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T22:38:42.474Z",
+          "offset": "0m 17s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T22:38:43.249Z",
+          "offset": "0m 18s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza"
+        },
+        {
+          "time": "2026-08-18T22:38:44.978Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T22:38:45.108Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T22:38:45.268Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T22:38:45.386Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 12"
+        },
+        {
+          "time": "2026-08-18T22:38:45.537Z",
+          "offset": "0m 21s",
+          "description": "Browsed eCatalogue Spread 13"
+        },
+        {
+          "time": "2026-08-18T22:38:46.531Z",
+          "offset": "0m 22s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Love Potion Cherry on Top"
+        },
+        {
+          "time": "2026-08-18T22:38:48.670Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-18T22:38:48.848Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 15"
+        },
+        {
+          "time": "2026-08-18T22:38:48.970Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 16"
+        },
+        {
+          "time": "2026-08-18T22:38:49.121Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 17"
+        },
+        {
+          "time": "2026-08-18T22:38:49.877Z",
+          "offset": "0m 25s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Femme Weekend Riviera"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
+        "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
+        "Eau de Toilette Eclat Femme Weekend",
+        "Eau de Toilette Eclat Homme",
+        "Eau de Toilette Signature Man",
+        "Parfum Giordani Gold Essenza",
+        "Eau de Parfum Love Potion Cherry on Top",
+        "Eau de Toilette Eclat Femme Weekend Riviera"
+      ]
+    },
+    {
+      "session_id": "SES-TT7SNCC-MSZ8J843",
+      "first_seen": "2026-08-18T22:29:25.610Z",
+      "last_active": "2026-08-18T23:08:09.202Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 2324,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T22:29:25.610Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T22:29:35.392Z",
+          "offset": "0m 10s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T22:29:36.906Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T22:29:38.057Z",
+          "offset": "0m 12s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:29:39.693Z",
+          "offset": "0m 14s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:29:41.403Z",
+          "offset": "0m 16s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T22:29:42.142Z",
+          "offset": "0m 17s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux All or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-18T22:29:43.688Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T22:29:44.964Z",
+          "offset": "0m 19s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Femme Weekend"
+        },
+        {
+          "time": "2026-08-18T22:29:49.634Z",
+          "offset": "0m 24s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Homme pour Lui"
+        },
+        {
+          "time": "2026-08-18T22:29:52.442Z",
+          "offset": "0m 27s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T22:29:53.858Z",
+          "offset": "0m 28s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Dark Wood Men's Collection"
+        },
+        {
+          "time": "2026-08-18T22:29:55.516Z",
+          "offset": "0m 30s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Signature Man"
+        },
+        {
+          "time": "2026-08-18T22:29:57.953Z",
+          "offset": "0m 32s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Toujours"
+        },
+        {
+          "time": "2026-08-18T22:30:04.428Z",
+          "offset": "0m 39s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T22:30:06.881Z",
+          "offset": "0m 41s",
+          "description": "Browsed eCatalogue Spread 8"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
+        "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
+        "Brume Parfumée pour le Corps et les Cheveux All or Nothing Amplified",
+        "Eau de Toilette Eclat Femme Weekend",
+        "Eau de Toilette Eclat Homme pour Lui",
+        "Eau de Toilette Dark Wood Men's Collection",
+        "Eau de Toilette Signature Man",
+        "Eau de Toilette Eclat Toujours"
+      ]
+    },
+    {
+      "session_id": "SES-9DFLYFO-MSZ6WFUO",
+      "first_seen": "2026-08-18T21:43:42.917Z",
+      "last_active": "2026-08-18T23:08:09.194Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 5066,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T21:43:42.917Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T21:43:46.494Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:43:47.567Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 1"
+        },
+        {
+          "time": "2026-08-18T21:43:57.912Z",
+          "offset": "0m 15s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:43:58.592Z",
+          "offset": "0m 16s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:43:59.650Z",
+          "offset": "0m 17s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:44:00.165Z",
+          "offset": "0m 17s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:44:00.374Z",
+          "offset": "0m 17s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:44:00.612Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T21:44:00.775Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T21:44:00.954Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T21:44:01.109Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T21:44:01.277Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T21:44:01.444Z",
+          "offset": "0m 19s",
+          "description": "Browsed eCatalogue Spread 12"
+        },
+        {
+          "time": "2026-08-18T21:44:01.620Z",
+          "offset": "0m 19s",
+          "description": "Browsed eCatalogue Spread 13"
+        },
+        {
+          "time": "2026-08-18T21:44:01.901Z",
+          "offset": "0m 19s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-18T21:44:03.005Z",
+          "offset": "0m 20s",
+          "description": "Opened Detailed Product Info: Brume Parfumée Love Nature Mangue & Fruit de la Passion"
+        },
+        {
+          "time": "2026-08-18T21:44:05.090Z",
+          "offset": "0m 22s",
+          "description": "Browsed eCatalogue Spread 15"
+        },
+        {
+          "time": "2026-08-18T21:44:05.806Z",
+          "offset": "0m 23s",
+          "description": "Opened Detailed Product Info: Crème Parfumée pour le Corps Divine"
+        },
+        {
+          "time": "2026-08-18T21:44:07.600Z",
+          "offset": "0m 25s",
+          "description": "Browsed eCatalogue Spread 16"
+        },
+        {
+          "time": "2026-08-18T21:44:08.439Z",
+          "offset": "0m 26s",
+          "description": "Opened Detailed Product Info: Déodorant Spray Corps Eclat Homme"
+        },
+        {
+          "time": "2026-08-18T21:44:10.047Z",
+          "offset": "0m 27s",
+          "description": "Browsed eCatalogue Spread 17"
+        },
+        {
+          "time": "2026-08-18T21:44:10.724Z",
+          "offset": "0m 28s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Venture Power"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Brume Parfumée Love Nature Mangue & Fruit de la Passion",
+        "Crème Parfumée pour le Corps Divine",
+        "Déodorant Spray Corps Eclat Homme",
+        "Eau de Toilette Venture Power"
+      ]
+    },
+    {
+      "session_id": "SES-VNAYTEQ-MSZ64YNG",
+      "first_seen": "2026-08-18T21:22:20.917Z",
+      "last_active": "2026-08-18T23:08:35.798Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 4965,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T21:22:20.917Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T21:22:25.469Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:22:26.679Z",
+          "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:22:27.975Z",
+          "offset": "0m 7s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:22:29.125Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:22:35.285Z",
+          "offset": "0m 14s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:22:37.507Z",
+          "offset": "0m 17s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T21:22:38.652Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:22:38.922Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:22:39.120Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:22:40.240Z",
+          "offset": "0m 19s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé à bille Glacier Men"
+        },
+        {
+          "time": "2026-08-18T21:22:42.272Z",
+          "offset": "0m 21s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:22:42.614Z",
+          "offset": "0m 22s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:22:42.786Z",
+          "offset": "0m 22s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T21:22:43.953Z",
+          "offset": "0m 23s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T21:22:44.348Z",
+          "offset": "0m 23s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T21:22:44.491Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T21:22:44.633Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T21:22:44.785Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 12"
+        },
+        {
+          "time": "2026-08-18T21:22:44.919Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 13"
+        },
+        {
+          "time": "2026-08-18T21:22:45.066Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-18T21:22:46.319Z",
+          "offset": "0m 25s",
+          "description": "Browsed eCatalogue Spread 15"
+        },
+        {
+          "time": "2026-08-18T21:22:48.848Z",
+          "offset": "0m 28s",
+          "description": "Browsed eCatalogue Spread 16"
+        },
+        {
+          "time": "2026-08-18T21:25:24.652Z",
+          "offset": "3m 4s",
+          "description": "Filtered by Category: Skincare"
+        },
+        {
+          "time": "2026-08-18T21:25:25.088Z",
+          "offset": "3m 4s",
+          "description": "Filtered by Category: Deals"
+        },
+        {
+          "time": "2026-08-18T21:25:26.276Z",
+          "offset": "3m 5s",
+          "description": "Filtered by Category: Fragrance"
+        },
+        {
+          "time": "2026-08-18T21:25:26.978Z",
+          "offset": "3m 6s",
+          "description": "Filtered by Category: Makeup"
+        },
+        {
+          "time": "2026-08-18T21:25:27.464Z",
+          "offset": "3m 7s",
+          "description": "Filtered by Category: Wellness"
+        },
+        {
+          "time": "2026-08-18T21:25:27.793Z",
+          "offset": "3m 7s",
+          "description": "Filtered by Category: Haircare"
+        },
+        {
+          "time": "2026-08-18T21:25:28.339Z",
+          "offset": "3m 7s",
+          "description": "Filtered by Category: Wellness"
+        },
+        {
+          "time": "2026-08-18T21:25:28.760Z",
+          "offset": "3m 8s",
+          "description": "Filtered by Category: Fragrance"
+        },
+        {
+          "time": "2026-08-18T21:25:31.741Z",
+          "offset": "3m 11s",
+          "description": "Filtered by Category: Wellness"
+        },
+        {
+          "time": "2026-08-18T21:25:32.486Z",
+          "offset": "3m 12s",
+          "description": "Filtered by Category: Skincare"
+        },
+        {
+          "time": "2026-08-18T21:25:33.082Z",
+          "offset": "3m 12s",
+          "description": "Filtered by Category: Deals"
+        },
+        {
+          "time": "2026-08-18T21:25:33.571Z",
+          "offset": "3m 13s",
+          "description": "Filtered by Category: All"
+        },
+        {
+          "time": "2026-08-18T21:25:35.195Z",
+          "offset": "3m 14s",
+          "description": "Added to cart: Base pour Ongles – Tenue & Adhérence"
+        },
+        {
+          "time": "2026-08-18T21:25:36.027Z",
+          "offset": "3m 15s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-18T21:25:39.351Z",
+          "offset": "3m 18s",
+          "description": "Clicked Messenger Checkout (6 items, Total: 356.5 TND)"
+        },
+        {
+          "time": "2026-08-18T21:36:38.668Z",
+          "offset": "14m 18s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T21:36:38.746Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T21:36:40.602Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:36:42.122Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:36:43.259Z",
+          "offset": "0m 5s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold"
+        },
+        {
+          "time": "2026-08-18T21:36:45.301Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T21:36:46.864Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:36:47.125Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:36:51.782Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:36:52.875Z",
+          "offset": "0m 14s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T21:36:55.557Z",
+          "offset": "0m 17s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T21:36:59.352Z",
+          "offset": "0m 21s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T21:37:00.534Z",
+          "offset": "0m 22s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T21:37:00.695Z",
+          "offset": "0m 22s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T21:37:00.847Z",
+          "offset": "0m 22s",
+          "description": "Browsed eCatalogue Spread 12"
+        },
+        {
+          "time": "2026-08-18T21:37:01.097Z",
+          "offset": "0m 22s",
+          "description": "Browsed eCatalogue Spread 13"
+        },
+        {
+          "time": "2026-08-18T21:37:01.288Z",
+          "offset": "0m 23s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-18T21:37:05.754Z",
+          "offset": "0m 27s",
+          "description": "Browsed eCatalogue Spread 15"
+        },
+        {
+          "time": "2026-08-18T21:38:58.357Z",
+          "offset": "2m 20s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T21:38:58.433Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T21:39:00.020Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:39:00.511Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:39:01.860Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:39:02.313Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:39:03.041Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:39:03.527Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T21:39:03.889Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T21:39:04.283Z",
+          "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T21:39:04.433Z",
+          "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T21:39:04.578Z",
+          "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T21:39:04.715Z",
+          "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 12"
+        },
+        {
+          "time": "2026-08-18T21:39:04.844Z",
+          "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 13"
+        },
+        {
+          "time": "2026-08-18T21:39:04.970Z",
+          "offset": "0m 7s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-18T21:39:05.107Z",
+          "offset": "0m 7s",
+          "description": "Browsed eCatalogue Spread 15"
+        },
+        {
+          "time": "2026-08-18T21:39:05.820Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: THE ONE 5-in-1 Wonder Lash Waterproof Mascara"
+        },
+        {
+          "time": "2026-08-18T21:39:08.022Z",
+          "offset": "0m 10s",
+          "description": "Opened Detailed Product Info: Giordani Gold Iconic Matte Lipstick - Royal Red"
+        },
+        {
+          "time": "2026-08-18T21:39:09.621Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 16"
+        },
+        {
+          "time": "2026-08-18T21:39:10.434Z",
+          "offset": "0m 12s",
+          "description": "Opened Detailed Product Info: Giordani Gold Essenza Parfum"
+        },
+        {
+          "time": "2026-08-18T21:41:01.123Z",
+          "offset": "2m 3s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T21:41:01.183Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T21:41:02.745Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:41:03.142Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:41:03.418Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:41:07.024Z",
+          "offset": "0m 6s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé à bille Glacier Men"
+        },
+        {
+          "time": "2026-08-18T21:41:08.937Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:41:10.905Z",
+          "offset": "0m 10s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:41:11.371Z",
+          "offset": "0m 10s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T21:41:11.595Z",
+          "offset": "0m 10s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T21:41:11.830Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T21:41:12.110Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T21:41:12.364Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T21:41:12.559Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 12"
+        },
+        {
+          "time": "2026-08-18T21:41:12.835Z",
+          "offset": "0m 12s",
+          "description": "Browsed eCatalogue Spread 13"
+        },
+        {
+          "time": "2026-08-18T21:41:13.220Z",
+          "offset": "0m 12s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-18T21:41:13.552Z",
+          "offset": "0m 12s",
+          "description": "Browsed eCatalogue Spread 15"
+        },
+        {
+          "time": "2026-08-18T21:41:14.001Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 16"
+        },
+        {
+          "time": "2026-08-18T21:41:14.403Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 17"
+        },
+        {
+          "time": "2026-08-18T21:41:15.628Z",
+          "offset": "0m 14s",
+          "description": "Browsed eCatalogue Spread 18"
+        },
+        {
+          "time": "2026-08-18T21:41:16.276Z",
+          "offset": "0m 15s",
+          "description": "Browsed eCatalogue Spread 19"
+        },
+        {
+          "time": "2026-08-18T21:41:16.848Z",
+          "offset": "0m 16s",
+          "description": "Browsed eCatalogue Spread 20"
+        },
+        {
+          "time": "2026-08-18T21:41:17.963Z",
+          "offset": "0m 17s",
+          "description": "Browsed eCatalogue Spread 21"
+        },
+        {
+          "time": "2026-08-18T21:41:19.392Z",
+          "offset": "0m 18s",
+          "description": "Browsed eCatalogue Spread 22"
+        },
+        {
+          "time": "2026-08-18T21:41:20.056Z",
+          "offset": "0m 19s",
+          "description": "Browsed eCatalogue Spread 23"
+        },
+        {
+          "time": "2026-08-18T21:41:20.586Z",
+          "offset": "0m 19s",
+          "description": "Browsed eCatalogue Spread 24"
+        },
+        {
+          "time": "2026-08-18T21:41:20.752Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 25"
+        },
+        {
+          "time": "2026-08-18T21:41:20.942Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 26"
+        },
+        {
+          "time": "2026-08-18T21:41:21.133Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 27"
+        },
+        {
+          "time": "2026-08-18T21:41:21.312Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 28"
+        },
+        {
+          "time": "2026-08-18T21:45:50.691Z",
+          "offset": "4m 50s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T21:45:50.792Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T21:45:53.075Z",
+          "offset": "0m 2s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T21:45:54.924Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:45:55.097Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:45:55.255Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:45:55.389Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:45:55.524Z",
+          "offset": "0m 5s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:46:16.337Z",
+          "offset": "0m 26s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:46:16.478Z",
+          "offset": "0m 26s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:46:19.379Z",
+          "offset": "0m 29s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé à bille Glacier Men"
+        },
+        {
+          "time": "2026-08-18T21:46:22.423Z",
+          "offset": "0m 32s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé à bille Glacier Men"
+        },
+        {
+          "time": "2026-08-18T22:41:24.824Z",
+          "offset": "55m 34s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé à bille Glacier Men"
+        },
+        {
+          "time": "2026-08-18T22:41:28.492Z",
+          "offset": "55m 38s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T22:41:28.937Z",
+          "offset": "55m 38s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T22:41:29.652Z",
+          "offset": "55m 39s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Amber Elixir Classique"
+        },
+        {
+          "time": "2026-08-18T22:41:41.194Z",
+          "offset": "55m 50s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T22:41:50.375Z",
+          "offset": "56m 0s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T22:41:54.369Z",
+          "offset": "56m 4s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Homme"
+        },
+        {
+          "time": "2026-08-18T22:41:56.979Z",
+          "offset": "56m 6s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Femme Weekend"
+        },
+        {
+          "time": "2026-08-18T22:42:01.870Z",
+          "offset": "56m 11s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T22:42:03.038Z",
+          "offset": "56m 12s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Women's Collection Innocent White Lilac"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance",
+        "Skincare",
+        "Deals",
+        "Makeup",
+        "Wellness",
+        "Haircare",
+        "All"
+      ],
+      "products_viewed": [
+        "Déodorant Parfumé à bille Glacier Men",
+        "Base pour Ongles – Tenue & Adhérence",
+        "Brume Parfumée pour le Corps et les Cheveux Giordani Gold",
+        "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
+        "THE ONE 5-in-1 Wonder Lash Waterproof Mascara",
+        "Giordani Gold Iconic Matte Lipstick - Royal Red",
+        "Giordani Gold Essenza Parfum",
+        "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
+        "Eau de Parfum Amber Elixir Classique",
+        "Eau de Toilette Eclat Homme",
+        "Eau de Toilette Eclat Femme Weekend",
+        "Eau de Toilette Women's Collection Innocent White Lilac"
+      ]
+    },
+    {
+      "session_id": "SES-VNJRZGW-MSZ3A54M",
+      "first_seen": "2026-08-18T20:02:23.739Z",
+      "last_active": "2026-08-18T23:08:26.181Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 5447,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T20:02:23.739Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:02:33.281Z",
+          "offset": "0m 10s",
+          "description": "Opened Quick View for: Novage+ Proceuticals 10% Vitamin C Solution"
+        },
+        {
+          "time": "2026-08-18T20:02:36.956Z",
+          "offset": "0m 13s",
+          "description": "Opened Quick View for: THE ONE 5-in-1 Wonder Lash Waterproof Mascara"
+        },
+        {
+          "time": "2026-08-18T20:03:23.563Z",
+          "offset": "1m 0s",
+          "description": "Viewed About Mouna Page"
+        },
+        {
+          "time": "2026-08-18T20:03:26.329Z",
+          "offset": "1m 3s",
+          "description": "Viewed Privacy Policy"
+        },
+        {
+          "time": "2026-08-18T20:03:29.036Z",
+          "offset": "1m 5s",
+          "description": "Viewed Privacy Policy"
+        },
+        {
+          "time": "2026-08-18T20:04:41.711Z",
+          "offset": "2m 18s",
+          "description": "Opened Quick View for: NovAge Ecollagen Wrinkle Power Day Cream SPF 35"
+        },
+        {
+          "time": "2026-08-18T20:05:11.024Z",
+          "offset": "2m 47s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:05:11.118Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:05:37.804Z",
+          "offset": "0m 27s",
+          "description": "Opened Detailed Product Info: NovAge Ecollagen Wrinkle Power Day Cream SPF 35"
+        },
+        {
+          "time": "2026-08-18T20:07:47.639Z",
+          "offset": "2m 37s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-18T20:08:03.443Z",
+          "offset": "2m 52s",
+          "description": "Opened Detailed Product Info: Amber Elixir Eau de Parfum"
+        },
+        {
+          "time": "2026-08-18T20:20:06.326Z",
+          "offset": "14m 55s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:20:06.399Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:20:09.201Z",
+          "offset": "0m 3s",
+          "description": "Switched Language to en"
+        },
+        {
+          "time": "2026-08-18T20:39:59.395Z",
+          "offset": "19m 53s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:39:59.480Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:40:13.256Z",
+          "offset": "0m 14s",
+          "description": "Filtered by Category: Deals"
+        },
+        {
+          "time": "2026-08-18T20:40:23.529Z",
+          "offset": "0m 24s",
+          "description": "Opened Detailed Product Info: Top coat - volume & brillance"
+        },
+        {
+          "time": "2026-08-18T20:41:19.161Z",
+          "offset": "1m 20s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-18T20:44:01.103Z",
+          "offset": "4m 2s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:44:01.164Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:44:19.573Z",
+          "offset": "0m 18s",
+          "description": "Switched Language to en"
+        },
+        {
+          "time": "2026-08-18T20:44:23.986Z",
+          "offset": "0m 23s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-18T20:44:48.459Z",
+          "offset": "0m 47s",
+          "description": "Filtered by Category: All"
+        },
+        {
+          "time": "2026-08-18T20:44:49.530Z",
+          "offset": "0m 48s",
+          "description": "Filtered by Category: Deals"
+        },
+        {
+          "time": "2026-08-18T20:44:50.219Z",
+          "offset": "0m 49s",
+          "description": "Filtered by Category: Haircare"
+        },
+        {
+          "time": "2026-08-18T20:44:51.349Z",
+          "offset": "0m 50s",
+          "description": "Filtered by Category: Wellness"
+        },
+        {
+          "time": "2026-08-18T20:44:51.794Z",
+          "offset": "0m 51s",
+          "description": "Filtered by Category: Fragrance"
+        },
+        {
+          "time": "2026-08-18T20:44:52.490Z",
+          "offset": "0m 51s",
+          "description": "Filtered by Category: Makeup"
+        },
+        {
+          "time": "2026-08-18T20:44:56.345Z",
+          "offset": "0m 55s",
+          "description": "Switched Language to en"
+        },
+        {
+          "time": "2026-08-18T20:44:56.606Z",
+          "offset": "0m 55s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:44:56.656Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:44:58.964Z",
+          "offset": "0m 2s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:44:59.023Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:45:40.548Z",
+          "offset": "0m 42s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:45:40.601Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:47:35.537Z",
+          "offset": "1m 55s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-18T20:47:42.352Z",
+          "offset": "2m 2s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-18T20:49:49.103Z",
+          "offset": "4m 9s",
+          "description": "Switched Language to fr"
+        },
+        {
+          "time": "2026-08-18T20:49:54.744Z",
+          "offset": "4m 14s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:49:54.926Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:50:23.001Z",
+          "offset": "0m 28s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T20:50:41.989Z",
+          "offset": "0m 47s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T20:51:14.159Z",
+          "offset": "1m 19s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme (50 ml)"
+        },
+        {
+          "time": "2026-08-18T20:51:47.897Z",
+          "offset": "1m 53s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-18T20:52:11.488Z",
+          "offset": "2m 17s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme (50 ml)"
+        },
+        {
+          "time": "2026-08-18T20:52:48.344Z",
+          "offset": "2m 53s",
+          "description": "Switched Language to fr"
+        },
+        {
+          "time": "2026-08-18T20:53:30.101Z",
+          "offset": "3m 35s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:53:30.517Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:53:33.363Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T20:53:40.910Z",
+          "offset": "0m 10s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T20:53:46.350Z",
+          "offset": "0m 16s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T20:53:51.587Z",
+          "offset": "0m 21s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T20:59:22.849Z",
+          "offset": "5m 52s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:59:22.978Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T20:59:25.248Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T20:59:25.649Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T20:59:25.881Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T20:59:26.106Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T20:59:26.375Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T20:59:29.183Z",
+          "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T20:59:30.541Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T20:59:31.627Z",
+          "offset": "0m 9s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T20:59:32.714Z",
+          "offset": "0m 10s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T20:59:36.154Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T20:59:38.274Z",
+          "offset": "0m 15s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-18T20:59:42.304Z",
+          "offset": "0m 19s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T20:59:42.379Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T21:01:24.622Z",
+          "offset": "1m 42s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:01:44.965Z",
+          "offset": "2m 3s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:02:14.802Z",
+          "offset": "2m 32s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:02:34.423Z",
+          "offset": "2m 52s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:12:06.689Z",
+          "offset": "12m 24s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T21:12:06.749Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T21:12:21.124Z",
+          "offset": "0m 14s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:12:36.083Z",
+          "offset": "0m 29s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:12:42.579Z",
+          "offset": "0m 36s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:12:46.028Z",
+          "offset": "0m 39s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:12:50.331Z",
+          "offset": "0m 44s",
+          "description": "Opened Detailed Product Info: Top coat - volume & brillance"
+        },
+        {
+          "time": "2026-08-18T21:12:52.690Z",
+          "offset": "0m 46s",
+          "description": "Opened Detailed Product Info: Base pour Ongles – Tenue & Adhérence"
+        },
+        {
+          "time": "2026-08-18T21:13:00.937Z",
+          "offset": "0m 54s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:13:01.970Z",
+          "offset": "0m 55s",
+          "description": "Opened Detailed Product Info: Pommade à Sourcils THE ONE"
+        },
+        {
+          "time": "2026-08-18T21:13:17.011Z",
+          "offset": "1m 10s",
+          "description": "Opened Detailed Product Info: Pommade à Sourcils THE ONE"
+        },
+        {
+          "time": "2026-08-18T21:13:20.412Z",
+          "offset": "1m 14s",
+          "description": "Opened Detailed Product Info: Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited"
+        },
+        {
+          "time": "2026-08-18T21:13:22.975Z",
+          "offset": "1m 16s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T21:13:24.096Z",
+          "offset": "1m 17s",
+          "description": "Opened Detailed Product Info: Illuminateur Multi-Usages THE ONE"
+        },
+        {
+          "time": "2026-08-18T21:13:26.304Z",
+          "offset": "1m 20s",
+          "description": "Opened Detailed Product Info: Vernis à Ongles Gel"
+        },
+        {
+          "time": "2026-08-18T21:13:28.371Z",
+          "offset": "1m 22s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T21:13:29.275Z",
+          "offset": "1m 23s",
+          "description": "Opened Detailed Product Info: Crème de Nuit Multi-Réparatrice Novage+ Restore"
+        },
+        {
+          "time": "2026-08-18T21:13:40.559Z",
+          "offset": "1m 34s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T21:13:42.259Z",
+          "offset": "1m 36s",
+          "description": "Opened Detailed Product Info: Crème de Jour Multi-Correctrice SPF 30 Novage+ Restore"
+        },
+        {
+          "time": "2026-08-18T21:14:09.387Z",
+          "offset": "2m 3s",
+          "description": "Opened Detailed Product Info: Crème de Jour Multi-Correctrice SPF 30 Novage+ Restore"
+        },
+        {
+          "time": "2026-08-18T21:14:30.173Z",
+          "offset": "2m 23s",
+          "description": "Opened Detailed Product Info: Crème de Jour Multi-Correctrice SPF 30 Novage+ Restore"
+        },
+        {
+          "time": "2026-08-18T21:17:47.463Z",
+          "offset": "5m 41s",
+          "description": "Browsed eCatalogue Spread 1"
+        },
+        {
+          "time": "2026-08-18T21:17:56.212Z",
+          "offset": "5m 49s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T21:18:06.742Z",
+          "offset": "6m 0s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T21:18:20.931Z",
+          "offset": "6m 14s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T21:18:53.833Z",
+          "offset": "6m 47s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme (50 ml)"
+        },
+        {
+          "time": "2026-08-18T21:19:35.686Z",
+          "offset": "7m 29s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T21:20:38.393Z",
+          "offset": "8m 32s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T21:20:58.766Z",
+          "offset": "8m 52s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé anti-transpirant à bille Glacier"
+        },
+        {
+          "time": "2026-08-18T21:21:49.200Z",
+          "offset": "9m 42s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T21:22:39.553Z",
+          "offset": "10m 33s",
+          "description": "Opened Detailed Product Info: Top coat - volume & brillance"
+        },
+        {
+          "time": "2026-08-18T21:23:20.867Z",
+          "offset": "11m 14s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:23:47.819Z",
+          "offset": "11m 41s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T21:28:40.812Z",
+          "offset": "16m 34s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T21:28:53.275Z",
+          "offset": "16m 47s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T22:42:53.310Z",
+          "offset": "90m 47s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T22:42:53.441Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T22:42:55.436Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T22:42:56.139Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T22:42:56.961Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T22:42:57.760Z",
+          "offset": "0m 4s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé à bille Glacier Men"
+        },
+        {
+          "time": "2026-08-18T22:43:00.856Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé à bille Giordani Gold Woman"
+        },
+        {
+          "time": "2026-08-18T22:43:03.161Z",
+          "offset": "0m 10s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-18T22:43:03.892Z",
+          "offset": "0m 10s",
+          "description": "Opened Detailed Product Info: Base pour Ongles – Tenue & Adhérence"
+        },
+        {
+          "time": "2026-08-18T22:43:06.072Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-18T22:43:06.251Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-18T22:43:06.403Z",
+          "offset": "0m 13s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-18T22:43:09.654Z",
+          "offset": "0m 16s",
+          "description": "Opened Detailed Product Info: Crème de Nuit Multi-Réparatrice Novage+ Restore"
+        },
+        {
+          "time": "2026-08-18T22:43:11.550Z",
+          "offset": "0m 18s",
+          "description": "Opened Detailed Product Info: Gelée Lèvres & Joues en Stick WAUNT Blush Worthy"
+        },
+        {
+          "time": "2026-08-18T22:43:13.843Z",
+          "offset": "0m 20s",
+          "description": "Browsed eCatalogue Spread 9"
+        },
+        {
+          "time": "2026-08-18T22:43:14.634Z",
+          "offset": "0m 21s",
+          "description": "Opened Detailed Product Info: Crème de Jour Multi-Correctrice SPF 30 Novage+ Restore"
+        },
+        {
+          "time": "2026-08-18T22:43:16.534Z",
+          "offset": "0m 23s",
+          "description": "Browsed eCatalogue Spread 10"
+        },
+        {
+          "time": "2026-08-18T22:43:16.685Z",
+          "offset": "0m 23s",
+          "description": "Browsed eCatalogue Spread 11"
+        },
+        {
+          "time": "2026-08-18T22:43:16.833Z",
+          "offset": "0m 23s",
+          "description": "Browsed eCatalogue Spread 12"
+        },
+        {
+          "time": "2026-08-18T22:43:16.956Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 13"
+        },
+        {
+          "time": "2026-08-18T22:43:17.095Z",
+          "offset": "0m 24s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-18T22:43:17.721Z",
+          "offset": "0m 24s",
+          "description": "Opened Detailed Product Info: Dentifrice Optifresh Pro white"
+        },
+        {
+          "time": "2026-08-18T22:43:21.270Z",
+          "offset": "0m 28s",
+          "description": "Opened Detailed Product Info: Dentifrice Optifresh Natural Oils"
+        },
+        {
+          "time": "2026-08-18T22:43:22.983Z",
+          "offset": "0m 30s",
+          "description": "Browsed eCatalogue Spread 15"
+        },
+        {
+          "time": "2026-08-18T22:43:26.129Z",
+          "offset": "0m 33s",
+          "description": "Opened Detailed Product Info: Déodorant Parfumé anti-transpirant à bille Possess"
+        },
+        {
+          "time": "2026-08-18T22:43:28.773Z",
+          "offset": "0m 35s",
+          "description": "Browsed eCatalogue Spread 1"
+        },
+        {
+          "time": "2026-08-18T22:43:30.079Z",
+          "offset": "0m 37s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T22:43:31.236Z",
+          "offset": "0m 38s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T22:43:32.177Z",
+          "offset": "0m 39s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:43:34.010Z",
+          "offset": "0m 41s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme (50 ml)"
+        },
+        {
+          "time": "2026-08-18T22:43:36.289Z",
+          "offset": "0m 43s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold"
+        },
+        {
+          "time": "2026-08-18T22:43:39.434Z",
+          "offset": "0m 46s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T22:55:26.078Z",
+          "offset": "12m 33s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-18T22:55:26.182Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T22:55:33.252Z",
+          "offset": "0m 7s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-18T22:55:34.891Z",
+          "offset": "0m 9s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-18T22:55:35.802Z",
+          "offset": "0m 10s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:55:39.149Z",
+          "offset": "0m 13s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-18T22:55:42.552Z",
+          "offset": "0m 16s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-18T22:55:43.772Z",
+          "offset": "0m 18s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-18T22:56:05.799Z",
+          "offset": "0m 40s",
+          "description": "Opened Detailed Product Info: Crème Parfumée pour le Corps All Or Nothing Amplified"
+        }
+      ],
+      "categories_visited": [
+        "Skincare",
+        "Makeup",
+        "Fragrance",
+        "Deals",
+        "All",
+        "Haircare",
+        "Wellness",
+        "Catalogue Oriflame"
+      ],
+      "products_viewed": [
+        "Novage+ Proceuticals 10% Vitamin C Solution",
+        "THE ONE 5-in-1 Wonder Lash Waterproof Mascara",
+        "NovAge Ecollagen Wrinkle Power Day Cream SPF 35",
+        "Amber Elixir Eau de Parfum",
+        "Top coat - volume & brillance",
+        "Parfum Giordani Gold Essenza Supreme (50 ml)",
+        "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
+        "Base pour Ongles – Tenue & Adhérence",
+        "Pommade à Sourcils THE ONE",
+        "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited",
+        "Illuminateur Multi-Usages THE ONE",
+        "Vernis à Ongles Gel",
+        "Crème de Nuit Multi-Réparatrice Novage+ Restore",
+        "Crème de Jour Multi-Correctrice SPF 30 Novage+ Restore",
+        "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
+        "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
+        "Déodorant Parfumé anti-transpirant à bille Glacier",
+        "Déodorant Parfumé à bille Glacier Men",
+        "Déodorant Parfumé à bille Giordani Gold Woman",
+        "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy",
+        "Dentifrice Optifresh Pro white",
+        "Dentifrice Optifresh Natural Oils",
+        "Déodorant Parfumé anti-transpirant à bille Possess",
+        "Brume Parfumée pour le Corps et les Cheveux Giordani Gold",
+        "Parfum Giordani Gold Essenza Supreme",
+        "Crème Parfumée pour le Corps All Or Nothing Amplified"
+      ]
+    },
+    {
+      "session_id": "SES-L93QFHY-MSZ131EG",
+      "first_seen": "2026-08-18T19:00:53.115Z",
+      "last_active": "2026-08-18T19:02:33.709Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 101,
+      "activity_trail": [
+        {
+          "time": "2026-08-18T19:00:53.115Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-18T19:01:10.360Z",
+          "offset": "0m 17s",
+          "description": "Filtered by Category: Skincare"
+        },
+        {
+          "time": "2026-08-18T19:01:35.511Z",
+          "offset": "0m 42s",
+          "description": "Opened Quick View for: NovAge Ecollagen Wrinkle Power Day Cream SPF 35"
+        },
+        {
+          "time": "2026-08-18T19:01:51.716Z",
+          "offset": "0m 59s",
+          "description": "Added to cart: NovAge Ecollagen Wrinkle Power Day Cream SPF 35"
+        },
+        {
+          "time": "2026-08-18T19:02:05.833Z",
+          "offset": "1m 13s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-18T19:02:33.709Z",
+          "offset": "1m 41s",
+          "description": "Left Storefront"
+        }
+      ],
+      "categories_visited": [
+        "Skincare"
+      ],
+      "products_viewed": [
+        "NovAge Ecollagen Wrinkle Power Day Cream SPF 35"
+      ]
+    }
+  ]
+}
