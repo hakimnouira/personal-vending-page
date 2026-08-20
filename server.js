@@ -89,9 +89,9 @@ function getSettings() {
     if (fs.existsSync(SETTINGS_FILE)) {
       return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
     }
-    return { facebook_username: 'mouna.nouira', currency: 'TND', admin_pwd: 'mouna2026' };
+    return { facebook_username: 'mouna.nouira1', currency: 'TND', admin_pwd: 'mouna2026' };
   } catch (err) {
-    return { facebook_username: 'mouna.nouira', currency: 'TND', admin_pwd: 'mouna2026' };
+    return { facebook_username: 'mouna.nouira1', currency: 'TND', admin_pwd: 'mouna2026' };
   }
 }
 

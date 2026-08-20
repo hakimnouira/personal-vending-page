@@ -130,23 +130,23 @@ export class CartManager {
   }
 
   // Smart Mobile vs Desktop Facebook / Messenger Link Generator
-  generateMessengerLink(fbUsername = 'mouna.nouira', customerName = '', customerPhone = '', currency = 'TND') {
+  generateMessengerLink(fbUsername = 'mouna.nouira1', customerName = '', customerPhone = '', currency = 'TND') {
     if (this.cart.length === 0) return '#';
 
     const message = this.generateOrderTextMessage(customerName, customerPhone, currency);
     const encodedText = encodeURIComponent(message);
 
     if (this.isMobileDevice()) {
-      // Mobile: Launches Facebook Messenger Native App directly
+      // Mobile: Launches Facebook Messenger Native App directly to mouna.nouira1
       return `https://m.me/${fbUsername}?text=${encodedText}`;
     } else {
-      // Desktop: Direct Facebook Web Messages URL (Avoids broken messenger.com standalone site)
+      // Desktop: Direct Facebook Web Messages URL to mouna.nouira1
       return `https://www.facebook.com/messages/t/${fbUsername}`;
     }
   }
 
   // Generate Direct Desktop Facebook Message URL
-  getDesktopFacebookUrl(fbUsername = 'mouna.nouira') {
+  getDesktopFacebookUrl(fbUsername = 'mouna.nouira1') {
     return `https://www.facebook.com/messages/t/${fbUsername}`;
   }
 }
