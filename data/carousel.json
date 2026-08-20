@@ -2,11 +2,15 @@
   {
     "id": "slide-1",
     "image_url": "https://scontent.ftun1-2.fna.fbcdn.net/v/t39.99422-6/778710820_1618305183237051_1204770625839587464_n.png?stp=dst-jpg_tt6&cstp=mx1912x2048&ctp=s1912x2048&_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=znBxQh6pb9IQ7kNvwFCi6lF&_nc_oc=Adqr2P8e_uH96U2_8b5IJ4ADwBWauBbTEkVTH2d9VR6B9PueDfDHaGUMjU1NMd_H8Ktk8TgzZwgOh2_OukPk77rH&_nc_zt=14&_nc_ht=scontent.ftun1-2.fna&_nc_gid=1SI2p4Q831uzyvnKhTcz0Q&_nc_ss=7b2a8&oh=00_AQEfamJ9a0Vf9Eqrxm3jeMRYu89KXXCsdw8rim5F1oxcOw&oe=6A8C0DFF",
-    "badge": "Oriflame Sweden • Catalogue Officiel 2026",
-    "title": "Catalogue Beauté & Soins Suédois",
-    "description": "Découvrez les nouvelles collections cosmétiques, fragrances d'exception et soins botaniques sélectionnés avec soin par Mouna Nouira.",
-    "button_text": "📖 Feuilleter le Catalogue Virtuel",
+    "badge": "🔥 OFFRE SPÉCIALE EN COUVERTURE",
+    "title": "Catalogue & Offre d'Élégance Oriflame",
+    "description": "Profitez de cette offre exclusive limitée ! Commandez directement cet article avec son prix promotionnel via Messenger.",
+    "button_text": "🛒 Commander cette Offre Deal",
     "button_link": "#catalogue-section",
+    "offer_product_code": "35665",
+    "offer_product_name": "Offre Spéciale Catalogue - Pack Beauté & Fragrance",
+    "offer_price": "49.900",
+    "offer_original_price": "75.000",
     "active": true
   },
   {
@@ -17,16 +21,10 @@
     "description": "Sublimez votre présence avec les fragrances exclusives Oriflame. Commandez facilement sur Messenger sans aucun paiement en ligne.",
     "button_text": "🛍️ Découvrir les Offres",
     "button_link": "#catalogue-section",
-    "active": true
-  },
-  {
-    "id": "slide-3",
-    "image_url": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1600&q=80",
-    "badge": "Soins Botaniques Suédois",
-    "title": "Une Peau Éclatante & Naturelle",
-    "description": "Des formules innovantes certifiées aux extraits naturels pour régénérer et nourrir votre peau au quotidien.",
-    "button_text": "✨ Voir la Sélection",
-    "button_link": "#catalogue-section",
+    "offer_product_code": "46980",
+    "offer_product_name": "Parfum Giordani Gold Essenza",
+    "offer_price": "85.000",
+    "offer_original_price": "120.000",
     "active": true
   }
 ]

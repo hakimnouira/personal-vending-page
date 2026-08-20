@@ -749,7 +749,13 @@ class AdminDashboard {
           <div>
             <span style="font-size: 0.72rem; font-weight: 700; color: #C5A880; text-transform: uppercase;">${slide.badge || 'Oriflame Sweden'}</span>
             <h4 style="font-size: 1.05rem; font-weight: 700; margin: 4px 0 6px 0; color: #18181B;">${slide.title || 'Diapositive'}</h4>
-            <p style="font-size: 0.82rem; color: #71717A; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${slide.description || ''}</p>
+            <p style="font-size: 0.82rem; color: #71717A; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${slide.description || ''}</p>
+
+            ${slide.offer_price ? `
+              <div style="margin: 8px 0; padding: 6px 10px; background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 6px; font-size: 0.78rem; color: #C2410C; font-weight: 600;">
+                🔥 Offre Deal: Réf <strong>${slide.offer_product_code || 'N/A'}</strong> — <strong>${slide.offer_price} DT</strong> ${slide.offer_original_price ? `<span style="text-decoration: line-through; opacity: 0.7;">(${slide.offer_original_price} DT)</span>` : ''}
+              </div>
+            ` : ''}
           </div>
           <div style="display: flex; gap: 8px; margin-top: 10px; border-top: 1px solid #F4F4F5; padding-top: 12px;">
             <button class="btn-edit-slide" data-id="${slide.id}" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #D4D4D8; background: #F4F4F5; font-size: 0.8rem; font-weight: 600; cursor: pointer;">✏️ Modifier</button>
@@ -811,6 +817,10 @@ class AdminDashboard {
         const description = document.getElementById('carousel-description').value;
         const button_text = document.getElementById('carousel-btn-text').value;
         const button_link = document.getElementById('carousel-btn-link').value;
+        const offer_product_code = document.getElementById('carousel-offer-code').value;
+        const offer_product_name = document.getElementById('carousel-offer-name').value;
+        const offer_price = document.getElementById('carousel-offer-price').value;
+        const offer_original_price = document.getElementById('carousel-offer-original-price').value;
         const active = document.getElementById('carousel-active').checked;
 
         const formData = new FormData();
@@ -821,6 +831,10 @@ class AdminDashboard {
         formData.append('description', description);
         formData.append('button_text', button_text);
         formData.append('button_link', button_link);
+        formData.append('offer_product_code', offer_product_code);
+        formData.append('offer_product_name', offer_product_name);
+        formData.append('offer_price', offer_price);
+        formData.append('offer_original_price', offer_original_price);
         formData.append('active', active);
 
         try {
@@ -855,6 +869,10 @@ class AdminDashboard {
     document.getElementById('carousel-description').value = slide.description || '';
     document.getElementById('carousel-btn-text').value = slide.button_text || '';
     document.getElementById('carousel-btn-link').value = slide.button_link || '';
+    document.getElementById('carousel-offer-code').value = slide.offer_product_code || '';
+    document.getElementById('carousel-offer-name').value = slide.offer_product_name || '';
+    document.getElementById('carousel-offer-price').value = slide.offer_price || '';
+    document.getElementById('carousel-offer-original-price').value = slide.offer_original_price || '';
     document.getElementById('carousel-active').checked = slide.active !== false;
 
     const previewBox = document.getElementById('carousel-img-preview-box');
@@ -875,6 +893,10 @@ class AdminDashboard {
     const form = document.getElementById('form-carousel-slide');
     if (form) form.reset();
     document.getElementById('carousel-slide-id').value = '';
+    document.getElementById('carousel-offer-code').value = '';
+    document.getElementById('carousel-offer-name').value = '';
+    document.getElementById('carousel-offer-price').value = '';
+    document.getElementById('carousel-offer-original-price').value = '';
     document.getElementById('carousel-img-preview-box').style.display = 'none';
     document.getElementById('carousel-form-title').textContent = '➕ Ajouter une Diapositive au Carrousel';
     document.getElementById('btn-save-carousel-slide').textContent = 'Enregistrer la Diapositive';

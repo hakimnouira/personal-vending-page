@@ -281,7 +281,7 @@ app.get('/api/carousel', (req, res) => {
 
 app.post('/api/carousel', upload.single('image_file'), (req, res) => {
   try {
-    const { image_url, badge, title, description, button_text, button_link, active } = req.body;
+    const { image_url, badge, title, description, button_text, button_link, offer_product_code, offer_product_name, offer_price, offer_original_price, active } = req.body;
     let finalImageUrl = image_url;
     if (req.file) {
       finalImageUrl = `/uploads/${req.file.filename}`;
@@ -300,6 +300,10 @@ app.post('/api/carousel', upload.single('image_file'), (req, res) => {
       description: description ? description.trim() : '',
       button_text: button_text ? button_text.trim() : 'Feuilleter le Catalogue',
       button_link: button_link ? button_link.trim() : '#catalogue-section',
+      offer_product_code: offer_product_code ? offer_product_code.trim() : '',
+      offer_product_name: offer_product_name ? offer_product_name.trim() : '',
+      offer_price: offer_price ? offer_price.trim() : '',
+      offer_original_price: offer_original_price ? offer_original_price.trim() : '',
       active: active !== undefined ? (active === true || active === 'true') : true
     };
 
@@ -321,7 +325,7 @@ app.put('/api/carousel/:id', upload.single('image_file'), (req, res) => {
       return res.status(404).json({ success: false, message: 'Slide not found' });
     }
 
-    const { image_url, badge, title, description, button_text, button_link, active } = req.body;
+    const { image_url, badge, title, description, button_text, button_link, offer_product_code, offer_product_name, offer_price, offer_original_price, active } = req.body;
     let finalImageUrl = slides[index].image_url;
     if (req.file) finalImageUrl = `/uploads/${req.file.filename}`;
     else if (image_url) finalImageUrl = image_url;
@@ -334,6 +338,10 @@ app.put('/api/carousel/:id', upload.single('image_file'), (req, res) => {
       description: description !== undefined ? description.trim() : slides[index].description,
       button_text: button_text !== undefined ? button_text.trim() : slides[index].button_text,
       button_link: button_link !== undefined ? button_link.trim() : slides[index].button_link,
+      offer_product_code: offer_product_code !== undefined ? offer_product_code.trim() : slides[index].offer_product_code,
+      offer_product_name: offer_product_name !== undefined ? offer_product_name.trim() : slides[index].offer_product_name,
+      offer_price: offer_price !== undefined ? offer_price.trim() : slides[index].offer_price,
+      offer_original_price: offer_original_price !== undefined ? offer_original_price.trim() : slides[index].offer_original_price,
       active: active !== undefined ? (active === true || active === 'true') : slides[index].active
     };
 

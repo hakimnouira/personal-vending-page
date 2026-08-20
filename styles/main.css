@@ -259,22 +259,23 @@ input, select, textarea {
   background: var(--color-surface-hover);
 }
 
-/* Dynamic Luxury Hero Carousel Banner */
+/* Dynamic Luxury Hero Carousel Banner (100% Uncropped Image View & Offer Deal Styling) */
 .hero-carousel-container {
   position: relative;
   width: 100%;
-  height: 480px;
+  height: 520px;
   border-radius: var(--radius-lg);
   margin: 1.5rem 0 2rem 0;
   overflow: hidden;
-  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.15);
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.4);
-  background: var(--color-primary-dark);
+  background: #09090B;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .hero-carousel-container {
-    height: 400px;
+    height: auto;
+    min-height: 560px;
     border-radius: var(--radius-md);
   }
 }
@@ -283,6 +284,7 @@ input, select, textarea {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 520px;
 }
 
 .carousel-slide {
@@ -290,53 +292,192 @@ input, select, textarea {
   inset: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
   opacity: 0;
-  transform: scale(1.04);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
+  overflow: hidden;
 }
 
 .carousel-slide.active {
   opacity: 1;
-  transform: scale(1);
   pointer-events: auto;
   z-index: 2;
 }
 
-.carousel-overlay {
+.carousel-ambient-backdrop {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.82) 0%, rgba(15, 23, 42, 0.45) 55%, rgba(15, 23, 42, 0.15) 100%);
+  inset: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(35px) brightness(0.4) saturate(1.4);
+  transform: scale(1.1);
   z-index: 1;
 }
 
+.carousel-slide-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  gap: 32px;
+}
+
+@media (max-width: 900px) {
+  .carousel-slide-inner {
+    flex-direction: column;
+    padding: 20px 16px 50px 16px;
+    gap: 16px;
+    justify-content: center;
+  }
+}
+
+/* 100% Uncropped Image Frame */
+.carousel-image-frame {
+  flex: 1.2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .carousel-image-frame {
+    flex: none;
+    width: 100%;
+    max-height: 280px;
+  }
+}
+
+.carousel-full-img {
+  max-width: 100%;
+  max-height: 460px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.6s ease;
+}
+
+@media (max-width: 900px) {
+  .carousel-full-img {
+    max-height: 260px;
+  }
+}
+
 .carousel-content-box {
-  position: absolute;
-  bottom: 36px;
-  left: 36px;
-  right: 36px;
-  max-width: 680px;
+  flex: 1;
+  position: relative;
   z-index: 3;
   color: #FFFFFF;
   padding: 28px 32px;
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: var(--radius-md);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-  animation: slideFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+  animation: slideFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 520px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .carousel-content-box {
-    bottom: 24px;
-    left: 16px;
-    right: 16px;
+    width: 100%;
+    max-width: 100%;
     padding: 20px 20px;
   }
+}
+
+/* Offer Deal Box */
+.carousel-offer-deal-box {
+  margin-top: 14px;
+  padding: 16px;
+  background: rgba(251, 146, 60, 0.12);
+  border: 1px solid rgba(251, 146, 60, 0.4);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.offer-deal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.offer-flame-badge {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #FFEDD5;
+  background: linear-gradient(135deg, #EA580C 0%, #C2410C 100%);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 10px rgba(234, 88, 12, 0.3);
+}
+
+.offer-code-pill {
+  font-size: 0.78rem;
+  color: #FED7AA;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.offer-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.offer-deal-price {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #FB923C;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 10px rgba(251, 146, 60, 0.3);
+}
+
+.offer-old-price {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: line-through;
+  font-weight: 600;
+}
+
+.btn-order-carousel-deal {
+  width: 100%;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.92rem;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(249, 115, 22, 0.4);
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-order-carousel-deal:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.6);
+  background: linear-gradient(135deg, #FB923C 0%, #F97316 100%);
 }
 
 .carousel-content-box .hero-subtitle-tag {

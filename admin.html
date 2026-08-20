@@ -460,6 +460,38 @@
               </div>
             </div>
 
+            <!-- Direct Offer Deal Configuration Box -->
+            <div style="background: #FFF8F0; border: 1px solid #FED7AA; padding: 16px; border-radius: 10px; margin-top: 16px;">
+              <h5 style="font-weight: 700; color: #C2410C; margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                🔥 Attacher une Offre Produit Directe à cette Diapositive
+              </h5>
+              <p style="font-size: 0.78rem; color: #9A3412; margin-bottom: 12px;">
+                Si cette diapositive présente une promo, entrez le code produit et le prix spécial. Le client pourra ajouter cette offre à son panier Messenger en 1 clic !
+              </p>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                <div>
+                  <label style="font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; display: block;">Code Produit de l'Offre (Réf ex: 35665)</label>
+                  <input type="text" id="carousel-offer-code" class="form-control" placeholder="ex: 35665 ou PACK-01" />
+                </div>
+                <div>
+                  <label style="font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; display: block;">Nom du Produit / Offre Deal</label>
+                  <input type="text" id="carousel-offer-name" class="form-control" placeholder="ex: Pack Promo Parfum & Soin" />
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px;">
+                <div>
+                  <label style="font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; display: block;">Prix Spécial Offre Deal (DT)</label>
+                  <input type="text" id="carousel-offer-price" class="form-control" placeholder="ex: 49.900" />
+                </div>
+                <div>
+                  <label style="font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; display: block;">Prix d'Origine Sans Remise (DT)</label>
+                  <input type="text" id="carousel-offer-original-price" class="form-control" placeholder="ex: 75.000" />
+                </div>
+              </div>
+            </div>
+
             <div style="margin-top: 16px; display: flex; gap: 16px; align-items: center;">
               <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer;">
                 <input type="checkbox" id="carousel-active" checked /> Activer cette diapositive

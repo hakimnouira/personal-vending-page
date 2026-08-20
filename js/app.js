@@ -97,21 +97,55 @@ class App {
     this.carouselSlides.forEach((slide, index) => {
       const slideEl = document.createElement('div');
       slideEl.className = `carousel-slide ${index === this.currentSlideIndex ? 'active' : ''}`;
-      slideEl.style.backgroundImage = `url('${slide.image_url}')`;
+
+      const hasOffer = slide.offer_price && slide.offer_price.trim().length > 0;
 
       slideEl.innerHTML = `
-        <div class="carousel-overlay"></div>
-        <div class="carousel-content-box">
-          <span class="hero-subtitle-tag">${slide.badge || 'Oriflame Sweden'}</span>
-          <h2>${slide.title || 'Catalogue Beauté'}</h2>
-          <p>${slide.description || ''}</p>
-          <div class="carousel-btn-group">
-            <a href="${slide.button_link || '#catalogue-section'}" class="btn-carousel-primary">${slide.button_text || 'Feuilleter le Catalogue'}</a>
-            <span class="feature-pill">100% Original Oriflame</span>
-            <span class="feature-pill">Commande Messenger</span>
+        <div class="carousel-ambient-backdrop" style="background-image: url('${slide.image_url}');"></div>
+        <div class="carousel-slide-inner">
+          <div class="carousel-image-frame">
+            <img src="${slide.image_url}" alt="${slide.title || 'Slide'}" class="carousel-full-img" />
+          </div>
+          
+          <div class="carousel-content-box">
+            <span class="hero-subtitle-tag">${slide.badge || 'Oriflame Sweden'}</span>
+            <h2>${slide.title || 'Catalogue Beauté'}</h2>
+            <p>${slide.description || ''}</p>
+            
+            ${hasOffer ? `
+              <div class="carousel-offer-deal-box">
+                <div class="offer-deal-header">
+                  <span class="offer-flame-badge">🔥 OFFRE SPÉCIALE</span>
+                  ${slide.offer_product_code ? `<span class="offer-code-pill">Réf. Produit : <strong>${slide.offer_product_code}</strong></span>` : ''}
+                </div>
+                <div class="offer-price-row">
+                  <span class="offer-deal-price">${slide.offer_price} DT</span>
+                  ${slide.offer_original_price ? `<span class="offer-old-price">${slide.offer_original_price} DT</span>` : ''}
+                </div>
+                <button class="btn-order-carousel-deal" data-slide-id="${slide.id}">
+                  🛒 Commander cette Offre Deal (${slide.offer_price} DT)
+                </button>
+              </div>
+            ` : `
+              <div class="carousel-btn-group">
+                <a href="${slide.button_link || '#catalogue-section'}" class="btn-carousel-primary">${slide.button_text || 'Feuilleter le Catalogue'}</a>
+                <span class="feature-pill">100% Original Oriflame</span>
+                <span class="feature-pill">Commande Messenger</span>
+              </div>
+            `}
           </div>
         </div>
       `;
+
+      // Event listener for Offer Deal Button
+      const dealBtn = slideEl.querySelector('.btn-order-carousel-deal');
+      if (dealBtn) {
+        dealBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.addOfferDealToCart(slide);
+        });
+      }
 
       wrapper.appendChild(slideEl);
 
@@ -120,6 +154,27 @@ class App {
       dot.addEventListener('click', () => this.goToSlide(index));
       dotsContainer.appendChild(dot);
     });
+  }
+
+  addOfferDealToCart(slide) {
+    if (!slide || !slide.offer_price) return;
+
+    const product = {
+      product_id: slide.offer_product_code || `OFFER-${slide.id}`,
+      name: slide.offer_product_name || slide.title || `Offre Deal (${slide.offer_product_code || 'PROMO'})`,
+      price: parseFloat(slide.offer_price) || 0,
+      image_url: slide.image_url
+    };
+
+    this.cartManager.addItem(product, 1);
+    this.renderCart();
+    this.updateCartBadge();
+
+    if (this.cartDrawerOverlay) {
+      this.cartDrawerOverlay.classList.add('open');
+    }
+
+    this.telemetry.trackEvent(`Added Carousel Offer Deal ${product.product_id} (${product.price} TND) to Cart`);
   }
 
   goToSlide(index) {

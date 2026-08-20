@@ -1,6 +1,137 @@
 {
-  "total_visits": 10,
+  "total_visits": 11,
   "sessions": [
+    {
+      "session_id": "SES-EBKCE9C-MT0TKHBX",
+      "first_seen": "2026-08-20T01:06:02.947Z",
+      "last_active": "2026-08-20T01:10:13.138Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 251,
+      "activity_trail": [
+        {
+          "time": "2026-08-20T01:06:02.947Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T01:06:31.411Z",
+          "offset": "0m 29s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-20T01:06:39.113Z",
+          "offset": "0m 37s",
+          "description": "Switched Language to en"
+        },
+        {
+          "time": "2026-08-20T01:06:43.029Z",
+          "offset": "0m 41s",
+          "description": "Switched Language to fr"
+        },
+        {
+          "time": "2026-08-20T01:06:44.120Z",
+          "offset": "0m 42s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-20T01:06:44.620Z",
+          "offset": "0m 42s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-20T01:06:46.966Z",
+          "offset": "0m 45s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-20T01:06:47.422Z",
+          "offset": "0m 45s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-20T01:06:50.784Z",
+          "offset": "0m 48s",
+          "description": "Browsed eCatalogue Spread 6"
+        },
+        {
+          "time": "2026-08-20T01:06:51.314Z",
+          "offset": "0m 49s",
+          "description": "Browsed eCatalogue Spread 7"
+        },
+        {
+          "time": "2026-08-20T01:06:51.719Z",
+          "offset": "0m 49s",
+          "description": "Browsed eCatalogue Spread 8"
+        },
+        {
+          "time": "2026-08-20T01:06:57.225Z",
+          "offset": "0m 55s",
+          "description": "Filtered by Category: Skincare"
+        },
+        {
+          "time": "2026-08-20T01:06:57.735Z",
+          "offset": "0m 55s",
+          "description": "Filtered by Category: Deals"
+        },
+        {
+          "time": "2026-08-20T01:06:58.728Z",
+          "offset": "0m 56s",
+          "description": "Filtered by Category: Makeup"
+        },
+        {
+          "time": "2026-08-20T01:06:59.593Z",
+          "offset": "0m 57s",
+          "description": "Filtered by Category: Fragrance"
+        },
+        {
+          "time": "2026-08-20T01:07:00.252Z",
+          "offset": "0m 58s",
+          "description": "Filtered by Category: Wellness"
+        },
+        {
+          "time": "2026-08-20T01:07:01.201Z",
+          "offset": "0m 59s",
+          "description": "Filtered by Category: Haircare"
+        },
+        {
+          "time": "2026-08-20T01:07:02.136Z",
+          "offset": "1m 0s",
+          "description": "Filtered by Category: Wellness"
+        },
+        {
+          "time": "2026-08-20T01:07:02.663Z",
+          "offset": "1m 0s",
+          "description": "Filtered by Category: Fragrance"
+        },
+        {
+          "time": "2026-08-20T01:07:03.056Z",
+          "offset": "1m 1s",
+          "description": "Filtered by Category: Makeup"
+        },
+        {
+          "time": "2026-08-20T01:07:03.472Z",
+          "offset": "1m 1s",
+          "description": "Filtered by Category: Skincare"
+        },
+        {
+          "time": "2026-08-20T01:07:03.996Z",
+          "offset": "1m 2s",
+          "description": "Filtered by Category: All"
+        }
+      ],
+      "categories_visited": [
+        "Skincare",
+        "Deals",
+        "Makeup",
+        "Fragrance",
+        "Wellness",
+        "Haircare",
+        "All"
+      ],
+      "products_viewed": []
+    },
     {
       "session_id": "SES-3517MEE-MSZ9WPR5",
       "first_seen": "2026-08-18T23:07:54.608Z",
