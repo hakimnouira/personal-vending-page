@@ -615,7 +615,13 @@ class AdminDashboard {
   cleanFbUsername(input) {
     if (!input) return '';
     let val = input.trim();
-    val = val.replace(/^https?:\/\/(www\.|m\.)?facebook\.com\/messages\/t\//i, '');
+
+    if (val.includes('profile.php?id=')) {
+      const match = val.match(/id=(\d+)/);
+      if (match) return match[1];
+    }
+
+    val = val.replace(/^https?:\/\/(www\.|m\.)?facebook\.com\/messages\/(e2ee\/)?t\//i, '');
     val = val.replace(/^https?:\/\/(www\.|m\.)?facebook\.com\//i, '');
     val = val.replace(/^https?:\/\/m\.me\//i, '');
     val = val.split('/')[0].split('?')[0].trim();

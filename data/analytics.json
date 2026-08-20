@@ -1,14 +1,60 @@
 {
-  "total_visits": 11,
+  "total_visits": 13,
   "sessions": [
     {
-      "session_id": "SES-EBKCE9C-MT0TKHBX",
-      "first_seen": "2026-08-20T01:06:02.947Z",
-      "last_active": "2026-08-20T01:37:13.143Z",
+      "session_id": "SES-IHOLKXD-MT0UQC4U",
+      "first_seen": "2026-08-20T01:38:35.126Z",
+      "last_active": "2026-08-20T01:42:13.156Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 1198,
+      "duration_seconds": 218,
+      "activity_trail": [
+        {
+          "time": "2026-08-20T01:38:35.126Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
+    {
+      "session_id": "SES-Q7GNZZT-MT0UPXSZ",
+      "first_seen": "2026-08-20T01:38:16.556Z",
+      "last_active": "2026-08-20T01:42:13.152Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 237,
+      "activity_trail": [
+        {
+          "time": "2026-08-20T01:38:16.556Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T01:38:17.833Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T01:38:18.647Z",
+          "offset": "0m 2s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
+    {
+      "session_id": "SES-EBKCE9C-MT0TKHBX",
+      "first_seen": "2026-08-20T01:06:02.947Z",
+      "last_active": "2026-08-20T01:42:13.160Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 1498,
       "activity_trail": [
         {
           "time": "2026-08-20T01:06:02.947Z",
