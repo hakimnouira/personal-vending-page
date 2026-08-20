@@ -47,39 +47,24 @@ class App {
   }
 
   async initCarousel() {
+    this.carouselSlides = [];
     try {
       const res = await fetch('/api/carousel');
       const data = await res.json();
-      if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+      if (data.success && Array.isArray(data.data)) {
         this.carouselSlides = data.data.filter(s => s.active !== false);
       }
     } catch (e) {
-      console.warn("Using default carousel slides", e);
+      console.warn("Could not fetch carousel slides", e);
     }
 
+    const section = document.getElementById('hero-carousel-section');
     if (!this.carouselSlides || this.carouselSlides.length === 0) {
-      this.carouselSlides = [
-        {
-          id: "slide-1",
-          image_url: "https://scontent.ftun1-2.fna.fbcdn.net/v/t39.99422-6/778710820_1618305183237051_1204770625839587464_n.png?stp=dst-jpg_tt6&cstp=mx1912x2048&ctp=s1912x2048&_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=znBxQh6pb9IQ7kNvwFCi6lF&_nc_oc=Adqr2P8e_uH96U2_8b5IJ4ADwBWauBbTEkVTH2d9VR6B9PueDfDHaGUMjU1NMd_H8Ktk8TgzZwgOh2_OukPk77rH&_nc_zt=14&_nc_ht=scontent.ftun1-2.fna&_nc_gid=1SI2p4Q831uzyvnKhTcz0Q&_nc_ss=7b2a8&oh=00_AQEfamJ9a0Vf9Eqrxm3jeMRYu89KXXCsdw8rim5F1oxcOw&oe=6A8C0DFF",
-          badge: "Oriflame Sweden • Catalogue 2026",
-          title: "Catalogue Beauté & Bien-être Premium",
-          description: "Découvrez les nouvelles collections cosmétiques, fragrances d'exception et soins suédois sélectionnés avec soin par Mouna Nouira.",
-          button_text: "📖 Feuilleter le Catalogue Virtuel",
-          button_link: "#catalogue-section"
-        },
-        {
-          id: "slide-2",
-          image_url: "https://images.unsplash.com/photo-1608248597349-8086055d28b1?auto=format&fit=crop&w=1600&q=80",
-          badge: "Offres Spéciales • Tunisie",
-          title: "Parfums & Fragrances d'Élégance",
-          description: "Sublimez votre présence avec les fragrances exclusives Oriflame. Commandez facilement sur Messenger sans aucun paiement en ligne.",
-          button_text: "🛍️ Découvrir les Offres",
-          button_link: "#catalogue-section"
-        }
-      ];
+      if (section) section.style.display = 'none';
+      return;
     }
 
+    if (section) section.style.display = 'block';
     this.currentSlideIndex = 0;
     this.renderCarousel();
     this.startCarouselAutoPlay();

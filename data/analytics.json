@@ -4,7 +4,7 @@
     {
       "session_id": "SES-EBKCE9C-MT0TKHBX",
       "first_seen": "2026-08-20T01:06:02.947Z",
-      "last_active": "2026-08-20T01:12:34.137Z",
+      "last_active": "2026-08-20T01:15:12.133Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -129,6 +129,26 @@
           "time": "2026-08-20T01:11:33.708Z",
           "offset": "0m 0s",
           "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T01:13:41.636Z",
+          "offset": "2m 8s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T01:13:41.713Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T01:13:58.465Z",
+          "offset": "0m 17s",
+          "description": "Viewed About Mouna Page"
+        },
+        {
+          "time": "2026-08-20T01:14:01.012Z",
+          "offset": "0m 19s",
+          "description": "Viewed Privacy Policy"
         }
       ],
       "categories_visited": [

@@ -54,24 +54,9 @@
   </header>
 
   <main class="container">
-    <!-- Dynamic Luxury Hero Carousel Banner -->
-    <section id="hero-carousel-section" class="hero-carousel-container">
-      <div id="carousel-slides-wrapper" class="carousel-slides-wrapper">
-        <!-- Initial Fallback Slide while JS loads -->
-        <div class="carousel-slide active" style="background-image: url('https://scontent.ftun1-2.fna.fbcdn.net/v/t39.99422-6/778710820_1618305183237051_1204770625839587464_n.png?stp=dst-jpg_tt6&cstp=mx1912x2048&ctp=s1912x2048&_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=znBxQh6pb9IQ7kNvwFCi6lF&_nc_oc=Adqr2P8e_uH96U2_8b5IJ4ADwBWauBbTEkVTH2d9VR6B9PueDfDHaGUMjU1NMd_H8Ktk8TgzZwgOh2_OukPk77rH&_nc_zt=14&_nc_ht=scontent.ftun1-2.fna&_nc_gid=1SI2p4Q831uzyvnKhTcz0Q&_nc_ss=7b2a8&oh=00_AQEfamJ9a0Vf9Eqrxm3jeMRYu89KXXCsdw8rim5F1oxcOw&oe=6A8C0DFF');">
-          <div class="carousel-overlay"></div>
-          <div class="carousel-content-box">
-            <span class="hero-subtitle-tag">Oriflame Sweden • Catalogue 2026</span>
-            <h2>Catalogue Beauté & Bien-être Premium</h2>
-            <p>Découvrez les nouvelles collections cosmétiques, fragrances d'exception et soins suédois sélectionnés avec soin par Mouna Nouira.</p>
-            <div class="carousel-btn-group">
-              <a href="#catalogue-section" class="btn-carousel-primary">📖 Feuilleter le Catalogue Virtuel</a>
-              <span class="feature-pill">100% Original Oriflame</span>
-              <span class="feature-pill">Commande Directe Messenger</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Dynamic Luxury Hero Carousel Banner (Only shown if admin adds slides) -->
+    <section id="hero-carousel-section" class="hero-carousel-container" style="display: none;">
+      <div id="carousel-slides-wrapper" class="carousel-slides-wrapper"></div>
 
       <!-- Navigation Arrows -->
       <button id="carousel-prev-btn" class="carousel-arrow carousel-arrow-prev" aria-label="Previous Slide">‹</button>
