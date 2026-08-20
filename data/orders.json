@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "order_id": "ORD-909128",
+    "customer_name": "Client Anonyme",
+    "customer_phone": "Non renseigné",
+    "items": [
+      {
+        "product_id": "ORF-MAKE-001",
+        "name": "Giordani Gold Iconic Matte Lipstick - Royal Red",
+        "price": 42,
+        "quantity": 1,
+        "image_url": "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "product_id": "ORF-TN-38600",
+        "name": "Duologi Intense Repair Hair Mask",
+        "price": 46,
+        "quantity": 1,
+        "image_url": "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=600&q=80"
+      }
+    ],
+    "total_amount": 88,
+    "currency": "TND",
+    "status": "pending",
+    "created_at": "2026-08-20T12:09:14.065Z"
+  }
+]
