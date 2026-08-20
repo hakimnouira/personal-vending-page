@@ -205,53 +205,19 @@
         </div>
 
 
-        <!-- Messenger Checkout Actions: Facebook Login + Auto-Send -->
-        <div id="fb-checkout-section" class="messenger-actions" style="flex-direction: column; gap: 10px;">
 
-          <!-- Step 1: FB Login (shown first) -->
-          <div id="fb-login-step" style="display: none; flex-direction: column; gap: 8px;">
-            <p style="font-size: 0.82rem; color: #475569; text-align: center; margin: 0 0 4px 0;">
-              🔐 Connectez-vous avec Facebook pour recevoir la confirmation de votre commande directement dans Messenger.
-            </p>
-            <button id="btn-fb-login" style="width: 100%; background: #1877F2; color: #FFF; border: none; border-radius: 10px; padding: 13px 18px; font-weight: 700; font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-              Continuer avec Facebook
-            </button>
-          </div>
-
-          <!-- Step 2: Send to Messenger opt-in (shown after login) -->
-          <div id="fb-optin-step" style="display: none; flex-direction: column; gap: 8px;">
-            <div id="fb-user-greeting" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #F0FDF4; border-radius: 8px; border: 1px solid #BBF7D0; margin-bottom: 4px;">
-              <span style="font-size: 1.4rem;">👋</span>
-              <div>
-                <div id="fb-user-name" style="font-weight: 700; font-size: 0.88rem; color: #15803D;">Bonjour !</div>
-                <div style="font-size: 0.75rem; color: #16A34A;">Connecté avec Facebook</div>
-              </div>
-            </div>
-            <p style="font-size: 0.82rem; color: #475569; text-align: center; margin: 0 0 4px 0;">
-              📨 Cliquez ci-dessous pour autoriser Mouna à vous envoyer la confirmation de commande via Messenger :
-            </p>
-            <!-- Official Meta "Send to Messenger" plugin (renders after FB SDK loads) -->
-            <div id="send-to-messenger-container" style="display: flex; justify-content: center;">
-              <div class="fb-send-to-messenger"
-                data-messenger-app-id="__FB_APP_ID__"
-                data-page-id="__FB_PAGE_ID__"
-                data-ref="__ORDER_REF__"
-                data-color="blue"
-                data-size="xlarge"
-                data-cta-text="Envoyer via Messenger">
-              </div>
-            </div>
-          </div>
-
-          <!-- Default: plain send button (before FB config is loaded) -->
+        <!-- Messenger Checkout Actions (works for 100% of clients, no login required) -->
+        <div class="messenger-actions" style="flex-direction: column; gap: 8px;">
           <a id="btn-messenger-checkout" href="#" class="btn-messenger-checkout">
-            <span data-i18n="send_messenger_mobile">Ouvrir dans l'App Messenger</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.516 3.735 7.234V22l3.385-1.86c.928.257 1.91.396 2.88.396 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.09 12.39l-2.545-2.727-4.955 2.727 5.455-5.818 2.618 2.727 4.882-2.727-5.455 5.818z"/></svg>
+            <span data-i18n="send_messenger_mobile">Envoyer la Commande via Messenger</span>
           </a>
-          <button id="btn-copy-order-summary" class="btn-copy-summary" style="display: none;" data-i18n="copy_order_summary">
-            Copier le Récapitulatif
+          <button id="btn-copy-order-summary" class="btn-copy-summary" style="display:none;" data-i18n="copy_order_summary">
+            Copier le Recapitulatif
           </button>
         </div>
+
+
 
 
         <div class="no-payment-notice" data-i18n="no_payment_notice">
@@ -455,33 +421,8 @@
   </footer>
 
   <!-- Application JS Modules -->
-  <!-- Facebook JavaScript SDK (async) -->
-  <div id="fb-root"></div>
-  <script>
-    window.fbAsyncInit = function() {
-      fetch('/api/fb/config')
-        .then(r => r.json())
-        .then(cfg => {
-          if (!cfg.app_id || !cfg.configured) return;
-          FB.init({ appId: cfg.app_id, cookie: true, xfbml: true, version: 'v20.0' });
-          // Notify app.js that FB SDK is ready
-          window.FB_APP_ID = cfg.app_id;
-          window.FB_SDK_READY = true;
-          document.dispatchEvent(new Event('fb-sdk-ready'));
-        })
-        .catch(() => { /* FB not configured yet */ });
-    };
-    (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = 'https://connect.facebook.net/fr_FR/sdk.js';
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-  </script>
-
-  <!-- Main App Script -->
   <script type="module" src="js/app.js"></script>
+
 </body>
 </html>
 
