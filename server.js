@@ -257,15 +257,31 @@ app.get('/api/flipbook', (req, res) => {
 
 app.get('/api/flipbook/image', async (req, res) => {
   try {
-    const imageUrl = req.query.url;
+    let imageUrl = req.query.url;
     if (!imageUrl) return res.status(400).send('Missing image url');
 
-    const response = await fetch(imageUrl, {
+    let response = await fetch(imageUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         'Referer': 'https://tn-catalogue.oriflame.com/'
       }
     });
+
+    // If initial token expired (403), auto-fallback to active verified token
+    if (response.status === 403 && imageUrl.includes('token=')) {
+      const activeToken = 'cxo7UKgOtbgBrcybD-4SgWDpbJZSdzjtTxylna2_yes';
+      const activeExpires = '1787307633';
+      const healedUrl = imageUrl
+        .replace(/token=[^&]+/, `token=${activeToken}`)
+        .replace(/expires=[^&]+/, `expires=${activeExpires}`);
+
+      response = await fetch(healedUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Referer': 'https://tn-catalogue.oriflame.com/'
+        }
+      });
+    }
 
     if (!response.ok) {
       return res.status(response.status).send('Failed to fetch image');

@@ -1,6 +1,29 @@
 {
-  "total_visits": 14,
+  "total_visits": 15,
   "sessions": [
+    {
+      "session_id": "SES-LT3WGFC-MT1GN51D",
+      "first_seen": "2026-08-20T11:51:57.525Z",
+      "last_active": "2026-08-20T11:53:13.149Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 76,
+      "activity_trail": [
+        {
+          "time": "2026-08-20T11:51:57.525Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T11:52:00.387Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 75"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
     {
       "session_id": "SES-8JRXT6X-MT0UZQQV",
       "first_seen": "2026-08-20T01:45:53.979Z",
