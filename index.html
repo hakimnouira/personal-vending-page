@@ -312,6 +312,59 @@
     </div>
   </div>
 
+  <!-- Floating Interactive Messenger Live Chat Widget -->
+  <div id="messenger-chat-widget" class="messenger-chat-widget">
+    <button id="btn-toggle-messenger-chat" class="messenger-chat-trigger" title="Discuter avec Mouna sur Messenger" aria-label="Messenger Chat">
+      <div class="messenger-trigger-badge">1</div>
+      <svg class="messenger-trigger-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.516 3.735 7.234V22l3.385-1.86c.928.257 1.91.396 2.88.396 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.09 12.39l-2.545-2.727-4.955 2.727 5.455-5.818 2.618 2.727 4.882-2.727-5.455 5.818z"/>
+      </svg>
+    </button>
+
+    <div id="messenger-chat-box" class="messenger-chat-box">
+      <div class="messenger-chat-header">
+        <div class="messenger-chat-user-info">
+          <div class="messenger-avatar-wrap">
+            <span class="messenger-monogram">MN</span>
+            <span class="online-indicator"></span>
+          </div>
+          <div>
+            <div class="messenger-chat-name">Mouna Nouira</div>
+            <div class="messenger-chat-status">🟢 En ligne • Consultante Oriflame</div>
+          </div>
+        </div>
+        <button id="btn-close-messenger-chat" class="messenger-chat-close-btn">&times;</button>
+      </div>
+
+      <div class="messenger-chat-body" id="messenger-chat-body">
+        <div class="chat-timestamp">Aujourd'hui</div>
+        
+        <div class="chat-msg chat-msg-received">
+          <div class="chat-msg-text">
+            Bonjour ! 👋 Je suis <strong>Mouna Nouira</strong>, votre consultante Oriflame en Tunisie.<br/>
+            Comment puis-je vous aider aujourd'hui ?
+          </div>
+          <div class="chat-msg-time">À l'instant</div>
+        </div>
+
+        <div class="chat-quick-replies">
+          <button class="chat-reply-btn" onclick="window.app.quickChatAction('order')">🛒 Passer une Commande</button>
+          <button class="chat-reply-btn" onclick="window.app.quickChatAction('catalog')">📖 Feuilletez le Catalogue</button>
+          <button class="chat-reply-btn" onclick="window.app.quickChatAction('direct')">💬 Discuter sur Messenger</button>
+        </div>
+      </div>
+
+      <form id="messenger-chat-form" class="messenger-chat-footer" onsubmit="event.preventDefault(); window.app.sendMessengerWidgetMessage();">
+        <input type="text" id="messenger-chat-input" class="messenger-chat-input" placeholder="Écrivez votre message..." autocomplete="off" />
+        <button type="submit" class="messenger-chat-send-btn" title="Envoyer sur Messenger">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Editorial Footer -->
   <footer>
     <div class="container">

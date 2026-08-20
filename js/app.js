@@ -23,6 +23,7 @@ class App {
     this.cacheDOM();
     this.i18n.applyTranslations();
     this.bindEvents();
+    this.initMessengerWidget();
 
     await this.fetchSettings();
     await this.fetchProducts();
@@ -885,6 +886,71 @@ class App {
       this.updateCartBadge();
       this.showToast(this.i18n.t('toast_added', { name: quickProd.name }));
       input.value = '';
+    }
+  }
+
+  initMessengerWidget() {
+    const triggerBtn = document.getElementById('btn-toggle-messenger-chat');
+    const closeBtn = document.getElementById('btn-close-messenger-chat');
+    const chatBox = document.getElementById('messenger-chat-box');
+
+    if (triggerBtn && chatBox) {
+      triggerBtn.addEventListener('click', () => {
+        chatBox.classList.toggle('open');
+        this.telemetry.trackEvent('Opened Messenger Live Chat Widget');
+      });
+    }
+
+    if (closeBtn && chatBox) {
+      closeBtn.addEventListener('click', () => {
+        chatBox.classList.remove('open');
+      });
+    }
+  }
+
+  async sendMessengerWidgetMessage() {
+    const input = document.getElementById('messenger-chat-input');
+    const chatBody = document.getElementById('messenger-chat-body');
+    if (!input || !input.value.trim()) return;
+
+    const userText = input.value.trim();
+    input.value = '';
+
+    if (chatBody) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'chat-msg chat-msg-sent';
+      msgDiv.innerHTML = `
+        <div class="chat-msg-text">${userText}</div>
+        <div class="chat-msg-time">À l'instant</div>
+      `;
+      chatBody.appendChild(msgDiv);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    const fbHandle = this.facebookUsername || 'mouna.nouira.906';
+    const messengerUrl = `https://m.me/${fbHandle}?text=${encodeURIComponent(userText)}`;
+
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(userText);
+      } catch (e) {}
+    }
+
+    this.showToast('📋 Message copié ! Ouverture de Messenger...');
+    setTimeout(() => {
+      window.open(messengerUrl, '_blank');
+    }, 400);
+  }
+
+  quickChatAction(action) {
+    const fbHandle = this.facebookUsername || 'mouna.nouira.906';
+    if (action === 'order') {
+      this.openCartDrawer();
+    } else if (action === 'catalog') {
+      const section = document.getElementById('catalogue-section');
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    } else if (action === 'direct') {
+      window.open(`https://m.me/${fbHandle}`, '_blank');
     }
   }
 

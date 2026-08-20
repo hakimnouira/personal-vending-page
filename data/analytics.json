@@ -4,11 +4,11 @@
     {
       "session_id": "SES-FR2ZED5-MT1I8EUS",
       "first_seen": "2026-08-20T12:36:29.627Z",
-      "last_active": "2026-08-20T12:37:45.132Z",
+      "last_active": "2026-08-20T12:42:09.151Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 76,
+      "duration_seconds": 207,
       "activity_trail": [
         {
           "time": "2026-08-20T12:36:29.627Z",
@@ -24,6 +24,31 @@
           "time": "2026-08-20T12:36:31.689Z",
           "offset": "0m 2s",
           "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T12:38:42.199Z",
+          "offset": "2m 13s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:38:42.297Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:38:43.424Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T12:38:44.052Z",
+          "offset": "0m 2s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T12:39:25.006Z",
+          "offset": "0m 43s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
         }
       ],
       "categories_visited": [],
@@ -32,11 +57,11 @@
     {
       "session_id": "SES-LK4N0N8-MT1I83E6",
       "first_seen": "2026-08-20T12:36:14.771Z",
-      "last_active": "2026-08-20T12:37:44.779Z",
+      "last_active": "2026-08-20T12:42:46.916Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 90,
+      "duration_seconds": 295,
       "activity_trail": [
         {
           "time": "2026-08-20T12:36:14.771Z",
@@ -52,6 +77,31 @@
           "time": "2026-08-20T12:36:17.125Z",
           "offset": "0m 2s",
           "description": "Clicked Facebook/Messenger Checkout (6 items, Total: 356.5 TND)"
+        },
+        {
+          "time": "2026-08-20T12:41:09.779Z",
+          "offset": "4m 55s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:41:09.921Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:41:21.231Z",
+          "offset": "0m 11s",
+          "description": "Opened Messenger Live Chat Widget"
+        },
+        {
+          "time": "2026-08-20T12:41:46.782Z",
+          "offset": "0m 37s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:41:46.899Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
         }
       ],
       "categories_visited": [],
@@ -60,11 +110,11 @@
     {
       "session_id": "SES-XLQRNGW-MT1H9B4N",
       "first_seen": "2026-08-20T12:09:11.836Z",
-      "last_active": "2026-08-20T12:37:09.145Z",
+      "last_active": "2026-08-20T12:42:09.143Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 1677,
+      "duration_seconds": 1977,
       "activity_trail": [
         {
           "time": "2026-08-20T12:09:11.836Z",
@@ -88,11 +138,11 @@
     {
       "session_id": "SES-GJY8A12-MT1H55ZY",
       "first_seen": "2026-08-20T12:05:58.561Z",
-      "last_active": "2026-08-20T12:37:09.159Z",
+      "last_active": "2026-08-20T12:42:09.186Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 1871,
+      "duration_seconds": 2171,
       "activity_trail": [
         {
           "time": "2026-08-20T12:05:58.561Z",
@@ -116,11 +166,11 @@
     {
       "session_id": "SES-LT3WGFC-MT1GN51D",
       "first_seen": "2026-08-20T11:51:57.525Z",
-      "last_active": "2026-08-20T12:37:09.155Z",
+      "last_active": "2026-08-20T12:42:09.175Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 2161,
+      "duration_seconds": 2462,
       "activity_trail": [
         {
           "time": "2026-08-20T11:51:57.525Z",
