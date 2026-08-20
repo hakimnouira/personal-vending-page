@@ -71,8 +71,8 @@ function buildOfficialFlipbookWithCenterCalculations() {
   console.log(`Shopitems grouped: ${shopItemsCount} across ${Object.keys(hotspotsByPage).length} pages.`);
 
   const paperId = "6c400931-2ccc-40e7-b3f5-40f381af161e";
-  const token = "rR0NwGgTi5OkBeEmgIEHYvBlrL-VPBqANIB6KdXLad8";
-  const expires = "1787160548";
+  const token = "cxo7UKgOtbgBrcybD-4SgWDpbJZSdzjtTxylna2_yes";
+  const expires = "1787307633";
   const catalogueCode = "2026008";
   const totalPages = 148;
 

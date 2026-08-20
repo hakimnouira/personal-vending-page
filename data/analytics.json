@@ -4,11 +4,11 @@
     {
       "session_id": "SES-LT3WGFC-MT1GN51D",
       "first_seen": "2026-08-20T11:51:57.525Z",
-      "last_active": "2026-08-20T11:53:13.149Z",
+      "last_active": "2026-08-20T11:54:52.133Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 76,
+      "duration_seconds": 114,
       "activity_trail": [
         {
           "time": "2026-08-20T11:51:57.525Z",
@@ -19,6 +19,41 @@
           "time": "2026-08-20T11:52:00.387Z",
           "offset": "0m 3s",
           "description": "Browsed eCatalogue Spread 75"
+        },
+        {
+          "time": "2026-08-20T11:53:52.020Z",
+          "offset": "1m 54s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T11:53:52.075Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T11:53:53.972Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-20T11:53:56.105Z",
+          "offset": "0m 4s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-20T11:53:59.231Z",
+          "offset": "0m 7s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-20T11:54:01.820Z",
+          "offset": "0m 10s",
+          "description": "Browsed eCatalogue Spread 5"
+        },
+        {
+          "time": "2026-08-20T11:54:02.978Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 6"
         }
       ],
       "categories_visited": [],
