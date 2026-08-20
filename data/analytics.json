@@ -1,14 +1,42 @@
 {
-  "total_visits": 13,
+  "total_visits": 14,
   "sessions": [
     {
-      "session_id": "SES-IHOLKXD-MT0UQC4U",
-      "first_seen": "2026-08-20T01:38:35.126Z",
-      "last_active": "2026-08-20T01:45:13.144Z",
+      "session_id": "SES-8JRXT6X-MT0UZQQV",
+      "first_seen": "2026-08-20T01:45:53.979Z",
+      "last_active": "2026-08-20T01:49:28.310Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 398,
+      "duration_seconds": 214,
+      "activity_trail": [
+        {
+          "time": "2026-08-20T01:45:53.979Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T01:46:10.196Z",
+          "offset": "0m 16s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T01:49:28.310Z",
+          "offset": "3m 34s",
+          "description": "Left Storefront"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
+    {
+      "session_id": "SES-IHOLKXD-MT0UQC4U",
+      "first_seen": "2026-08-20T01:38:35.126Z",
+      "last_active": "2026-08-20T01:49:13.164Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 638,
       "activity_trail": [
         {
           "time": "2026-08-20T01:38:35.126Z",
@@ -22,11 +50,11 @@
     {
       "session_id": "SES-Q7GNZZT-MT0UPXSZ",
       "first_seen": "2026-08-20T01:38:16.556Z",
-      "last_active": "2026-08-20T01:45:13.151Z",
+      "last_active": "2026-08-20T01:49:13.144Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 417,
+      "duration_seconds": 657,
       "activity_trail": [
         {
           "time": "2026-08-20T01:38:16.556Z",
@@ -50,11 +78,11 @@
     {
       "session_id": "SES-EBKCE9C-MT0TKHBX",
       "first_seen": "2026-08-20T01:06:02.947Z",
-      "last_active": "2026-08-20T01:45:13.148Z",
+      "last_active": "2026-08-20T01:49:13.155Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 1678,
+      "duration_seconds": 1918,
       "activity_trail": [
         {
           "time": "2026-08-20T01:06:02.947Z",
