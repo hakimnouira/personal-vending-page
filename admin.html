@@ -71,6 +71,9 @@
         <div class="nav-item" data-target="section-settings" data-admin-i18n="tab_settings">
           ⚙️ Paramètres & Import/Export CSV
         </div>
+        <div class="nav-item" data-target="section-carousel" data-admin-i18n="tab_carousel">
+          🖼️ Carrousel Page d'Accueil
+        </div>
       </nav>
 
       <div class="sidebar-footer">
@@ -395,6 +398,82 @@
               📄 Télécharger un Modèle CSV
             </button>
           </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: HOME CAROUSEL MANAGEMENT -->
+      <section id="section-carousel" class="admin-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🖼️ Carrousel de la Page d'Accueil</h2>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted);">Ajoutez ou modifiez les images grand format affichées en haut de la boutique client. Vous pouvez copier-coller des liens d'images (URLs Facebook, Unsplash, etc.) ou téléverser vos fichiers.</p>
+          </div>
+        </div>
+
+        <!-- Add/Edit Carousel Slide Form -->
+        <div class="admin-form-box" style="background: #FAF8F5; margin-bottom: 28px;">
+          <h4 style="font-weight: 700; margin-bottom: 12px;" id="carousel-form-title">➕ Ajouter une Diapositive au Carrousel</h4>
+          <form id="form-carousel-slide">
+            <input type="hidden" id="carousel-slide-id" />
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div>
+                <label style="font-weight: 600; font-size: 0.82rem; margin-bottom: 4px; display: block;">Lien URL de l'Image (URL Facebook, Web...)</label>
+                <input type="url" id="carousel-image-url" class="form-control" placeholder="https://scontent... ou https://..." required />
+              </div>
+              <div>
+                <label style="font-weight: 600; font-size: 0.82rem; margin-bottom: 4px; display: block;">Ou Téléverser un Fichier Image</label>
+                <input type="file" id="carousel-image-file" class="form-control" accept="image/*" />
+              </div>
+            </div>
+
+            <!-- Instant Live Thumbnail Preview -->
+            <div id="carousel-img-preview-box" style="margin: 12px 0; display: none;">
+              <p style="font-size: 0.78rem; color: var(--admin-text-muted); font-weight: 600;">Aperçu direct de l'image :</p>
+              <img id="carousel-img-preview" src="" alt="Preview" style="max-height: 140px; border-radius: 8px; border: 1px solid #DDD; object-fit: cover; margin-top: 4px;" />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
+              <div>
+                <label style="font-weight: 600; font-size: 0.82rem; margin-bottom: 4px; display: block;">Sous-titre / Badge Pill</label>
+                <input type="text" id="carousel-badge" class="form-control" placeholder="ex: Oriflame Sweden • Catalogue 2026" />
+              </div>
+              <div>
+                <label style="font-weight: 600; font-size: 0.82rem; margin-bottom: 4px; display: block;">Titre Principal</label>
+                <input type="text" id="carousel-title" class="form-control" placeholder="ex: Catalogue Beauté & Bien-être" required />
+              </div>
+            </div>
+
+            <div style="margin-top: 12px;">
+              <label style="font-weight: 600; font-size: 0.82rem; margin-bottom: 4px; display: block;">Description / Texte</label>
+              <textarea id="carousel-description" class="form-control" rows="2" placeholder="Brève description de l'offre ou de la collection..."></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
+              <div>
+                <label style="font-weight: 600; font-size: 0.82rem; margin-bottom: 4px; display: block;">Texte du Bouton</label>
+                <input type="text" id="carousel-btn-text" class="form-control" placeholder="ex: 📖 Feuilleter le Catalogue Virtuel" />
+              </div>
+              <div>
+                <label style="font-weight: 600; font-size: 0.82rem; margin-bottom: 4px; display: block;">Lien du Bouton</label>
+                <input type="text" id="carousel-btn-link" class="form-control" placeholder="ex: #catalogue-section" />
+              </div>
+            </div>
+
+            <div style="margin-top: 16px; display: flex; gap: 16px; align-items: center;">
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" id="carousel-active" checked /> Activer cette diapositive
+              </label>
+              <button type="submit" id="btn-save-carousel-slide" class="btn-primary" style="width: auto; padding: 10px 24px;">Enregistrer la Diapositive</button>
+              <button type="button" id="btn-cancel-carousel-slide" class="btn-primary" style="background: #71717A; width: auto; padding: 10px 16px; display: none;">Annuler</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Carousel Slides List Grid -->
+        <h4 style="font-weight: 700; margin-bottom: 16px;">Diapositives du Carrousel Actives (<span id="carousel-count">0</span>)</h4>
+        <div id="admin-carousel-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+          <!-- Rendered dynamically by admin-page.js -->
         </div>
       </section>
 

@@ -23,6 +23,7 @@ if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
+const CAROUSEL_FILE = path.join(DATA_DIR, 'carousel.json');
 
 // Middleware
 app.use(cors());
@@ -117,6 +118,26 @@ function getAnalytics() {
 function saveAnalytics(analytics) {
   try {
     fs.writeFileSync(ANALYTICS_FILE, JSON.stringify(analytics, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function getCarousel() {
+  try {
+    if (fs.existsSync(CAROUSEL_FILE)) {
+      return JSON.parse(fs.readFileSync(CAROUSEL_FILE, 'utf8'));
+    }
+    return [];
+  } catch (err) {
+    return [];
+  }
+}
+
+function saveCarousel(slides) {
+  try {
+    fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(slides, null, 2), 'utf8');
     return true;
   } catch (err) {
     return false;
@@ -249,6 +270,104 @@ app.post('/api/scrape/flipbook', async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ------------------- CAROUSEL BANNER API ------------------- //
+
+app.get('/api/carousel', (req, res) => {
+  res.json({ success: true, data: getCarousel() });
+});
+
+app.post('/api/carousel', upload.single('image_file'), (req, res) => {
+  try {
+    const { image_url, badge, title, description, button_text, button_link, active } = req.body;
+    let finalImageUrl = image_url;
+    if (req.file) {
+      finalImageUrl = `/uploads/${req.file.filename}`;
+    }
+
+    if (!finalImageUrl) {
+      return res.status(400).json({ success: false, message: 'Image URL or File is required' });
+    }
+
+    const slides = getCarousel();
+    const newSlide = {
+      id: req.body.id || `slide-${Date.now()}`,
+      image_url: finalImageUrl.trim(),
+      badge: badge ? badge.trim() : 'Oriflame Sweden',
+      title: title ? title.trim() : 'Nouveau Catalogue',
+      description: description ? description.trim() : '',
+      button_text: button_text ? button_text.trim() : 'Feuilleter le Catalogue',
+      button_link: button_link ? button_link.trim() : '#catalogue-section',
+      active: active !== undefined ? (active === true || active === 'true') : true
+    };
+
+    slides.push(newSlide);
+    saveCarousel(slides);
+    res.status(201).json({ success: true, message: 'Carousel slide added', data: newSlide });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.put('/api/carousel/:id', upload.single('image_file'), (req, res) => {
+  try {
+    const { id } = req.params;
+    const slides = getCarousel();
+    const index = slides.findIndex(s => s.id === id);
+
+    if (index === -1) {
+      return res.status(404).json({ success: false, message: 'Slide not found' });
+    }
+
+    const { image_url, badge, title, description, button_text, button_link, active } = req.body;
+    let finalImageUrl = slides[index].image_url;
+    if (req.file) finalImageUrl = `/uploads/${req.file.filename}`;
+    else if (image_url) finalImageUrl = image_url;
+
+    slides[index] = {
+      ...slides[index],
+      image_url: finalImageUrl ? finalImageUrl.trim() : slides[index].image_url,
+      badge: badge !== undefined ? badge.trim() : slides[index].badge,
+      title: title !== undefined ? title.trim() : slides[index].title,
+      description: description !== undefined ? description.trim() : slides[index].description,
+      button_text: button_text !== undefined ? button_text.trim() : slides[index].button_text,
+      button_link: button_link !== undefined ? button_link.trim() : slides[index].button_link,
+      active: active !== undefined ? (active === true || active === 'true') : slides[index].active
+    };
+
+    saveCarousel(slides);
+    res.json({ success: true, message: 'Slide updated', data: slides[index] });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.delete('/api/carousel/:id', (req, res) => {
+  const { id } = req.params;
+  let slides = getCarousel();
+  const initialLen = slides.length;
+  slides = slides.filter(s => s.id !== id);
+
+  if (slides.length === initialLen) {
+    return res.status(404).json({ success: false, message: 'Slide not found' });
+  }
+
+  saveCarousel(slides);
+  res.json({ success: true, message: 'Slide deleted' });
+});
+
+app.post('/api/carousel/bulk', (req, res) => {
+  try {
+    const { slides } = req.body;
+    if (!Array.isArray(slides)) {
+      return res.status(400).json({ success: false, message: 'Slides must be an array' });
+    }
+    saveCarousel(slides);
+    res.json({ success: true, message: 'Carousel updated', data: slides });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 

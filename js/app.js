@@ -23,6 +23,7 @@ class App {
     this.bindEvents();
 
     await this.fetchProducts();
+    await this.initCarousel();
     
     // Initialize Interactive Digital eCatalogue Flipbook
     window.ecatViewer = new ECatalogueViewer(this);
@@ -42,6 +43,147 @@ class App {
       }
     } catch (e) {
       console.warn("Using offline catalog fallback", e);
+    }
+  }
+
+  async initCarousel() {
+    try {
+      const res = await fetch('/api/carousel');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        this.carouselSlides = data.data.filter(s => s.active !== false);
+      }
+    } catch (e) {
+      console.warn("Using default carousel slides", e);
+    }
+
+    if (!this.carouselSlides || this.carouselSlides.length === 0) {
+      this.carouselSlides = [
+        {
+          id: "slide-1",
+          image_url: "https://scontent.ftun1-2.fna.fbcdn.net/v/t39.99422-6/778710820_1618305183237051_1204770625839587464_n.png?stp=dst-jpg_tt6&cstp=mx1912x2048&ctp=s1912x2048&_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=znBxQh6pb9IQ7kNvwFCi6lF&_nc_oc=Adqr2P8e_uH96U2_8b5IJ4ADwBWauBbTEkVTH2d9VR6B9PueDfDHaGUMjU1NMd_H8Ktk8TgzZwgOh2_OukPk77rH&_nc_zt=14&_nc_ht=scontent.ftun1-2.fna&_nc_gid=1SI2p4Q831uzyvnKhTcz0Q&_nc_ss=7b2a8&oh=00_AQEfamJ9a0Vf9Eqrxm3jeMRYu89KXXCsdw8rim5F1oxcOw&oe=6A8C0DFF",
+          badge: "Oriflame Sweden • Catalogue 2026",
+          title: "Catalogue Beauté & Bien-être Premium",
+          description: "Découvrez les nouvelles collections cosmétiques, fragrances d'exception et soins suédois sélectionnés avec soin par Mouna Nouira.",
+          button_text: "📖 Feuilleter le Catalogue Virtuel",
+          button_link: "#catalogue-section"
+        },
+        {
+          id: "slide-2",
+          image_url: "https://images.unsplash.com/photo-1608248597349-8086055d28b1?auto=format&fit=crop&w=1600&q=80",
+          badge: "Offres Spéciales • Tunisie",
+          title: "Parfums & Fragrances d'Élégance",
+          description: "Sublimez votre présence avec les fragrances exclusives Oriflame. Commandez facilement sur Messenger sans aucun paiement en ligne.",
+          button_text: "🛍️ Découvrir les Offres",
+          button_link: "#catalogue-section"
+        }
+      ];
+    }
+
+    this.currentSlideIndex = 0;
+    this.renderCarousel();
+    this.startCarouselAutoPlay();
+    this.bindCarouselEvents();
+  }
+
+  renderCarousel() {
+    const wrapper = document.getElementById('carousel-slides-wrapper');
+    const dotsContainer = document.getElementById('carousel-dots-container');
+    if (!wrapper || !dotsContainer) return;
+
+    wrapper.innerHTML = '';
+    dotsContainer.innerHTML = '';
+
+    this.carouselSlides.forEach((slide, index) => {
+      const slideEl = document.createElement('div');
+      slideEl.className = `carousel-slide ${index === this.currentSlideIndex ? 'active' : ''}`;
+      slideEl.style.backgroundImage = `url('${slide.image_url}')`;
+
+      slideEl.innerHTML = `
+        <div class="carousel-overlay"></div>
+        <div class="carousel-content-box">
+          <span class="hero-subtitle-tag">${slide.badge || 'Oriflame Sweden'}</span>
+          <h2>${slide.title || 'Catalogue Beauté'}</h2>
+          <p>${slide.description || ''}</p>
+          <div class="carousel-btn-group">
+            <a href="${slide.button_link || '#catalogue-section'}" class="btn-carousel-primary">${slide.button_text || 'Feuilleter le Catalogue'}</a>
+            <span class="feature-pill">100% Original Oriflame</span>
+            <span class="feature-pill">Commande Messenger</span>
+          </div>
+        </div>
+      `;
+
+      wrapper.appendChild(slideEl);
+
+      const dot = document.createElement('div');
+      dot.className = `carousel-dot ${index === this.currentSlideIndex ? 'active' : ''}`;
+      dot.addEventListener('click', () => this.goToSlide(index));
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  goToSlide(index) {
+    if (!this.carouselSlides || this.carouselSlides.length === 0) return;
+    this.currentSlideIndex = (index + this.carouselSlides.length) % this.carouselSlides.length;
+
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === this.currentSlideIndex);
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === this.currentSlideIndex);
+    });
+  }
+
+  nextSlide() {
+    this.goToSlide(this.currentSlideIndex + 1);
+  }
+
+  prevSlide() {
+    this.goToSlide(this.currentSlideIndex - 1);
+  }
+
+  startCarouselAutoPlay() {
+    this.stopCarouselAutoPlay();
+    this.carouselInterval = setInterval(() => this.nextSlide(), 5000);
+  }
+
+  stopCarouselAutoPlay() {
+    if (this.carouselInterval) {
+      clearInterval(this.carouselInterval);
+      this.carouselInterval = null;
+    }
+  }
+
+  bindCarouselEvents() {
+    const container = document.getElementById('hero-carousel-section');
+    const prevBtn = document.getElementById('carousel-prev-btn');
+    const nextBtn = document.getElementById('carousel-next-btn');
+
+    if (prevBtn) prevBtn.addEventListener('click', () => { this.prevSlide(); this.startCarouselAutoPlay(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { this.nextSlide(); this.startCarouselAutoPlay(); });
+
+    if (container) {
+      container.addEventListener('mouseenter', () => this.stopCarouselAutoPlay());
+      container.addEventListener('mouseleave', () => this.startCarouselAutoPlay());
+
+      let touchStartX = 0;
+      container.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      container.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 40) {
+          if (diff > 0) this.nextSlide();
+          else this.prevSlide();
+          this.startCarouselAutoPlay();
+        }
+      }, { passive: true });
     }
   }
 

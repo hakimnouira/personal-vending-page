@@ -92,6 +92,8 @@ class AdminDashboard {
     await this.fetchProducts();
     await this.fetchAnalytics();
     await this.fetchSettings();
+    await this.fetchCarousel();
+    this.bindCarouselEvents();
   }
 
   bindEvents() {
@@ -707,6 +709,193 @@ class AdminDashboard {
       event.target.value = '';
     };
     reader.readAsText(file);
+  }
+
+  async fetchCarousel() {
+    try {
+      const res = await fetch('/api/carousel');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        this.carouselSlides = data.data;
+        this.renderCarouselAdmin();
+      }
+    } catch (err) {
+      console.error("Error fetching carousel slides:", err);
+    }
+  }
+
+  renderCarouselAdmin() {
+    const grid = document.getElementById('admin-carousel-grid');
+    const countEl = document.getElementById('carousel-count');
+    if (!grid) return;
+
+    const slides = this.carouselSlides || [];
+    if (countEl) countEl.textContent = slides.length;
+
+    if (slides.length === 0) {
+      grid.innerHTML = `<div style="grid-column: 1/-1; padding: 30px; text-align: center; color: var(--admin-text-muted); background: #FAF8F5; border-radius: 12px;">Aucune diapositive configurée dans le carrousel.</div>`;
+      return;
+    }
+
+    grid.innerHTML = slides.map(slide => `
+      <div class="admin-slide-card" style="background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column;">
+        <div style="position: relative; height: 160px; background: #18181B; overflow: hidden;">
+          <img src="${slide.image_url}" alt="${slide.title || 'Slide'}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80'" />
+          <div style="position: absolute; top: 10px; right: 10px; background: ${slide.active !== false ? '#10B981' : '#6B7280'}; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700;">
+            ${slide.active !== false ? 'ACTIF' : 'INACTIF'}
+          </div>
+        </div>
+        <div style="padding: 16px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.72rem; font-weight: 700; color: #C5A880; text-transform: uppercase;">${slide.badge || 'Oriflame Sweden'}</span>
+            <h4 style="font-size: 1.05rem; font-weight: 700; margin: 4px 0 6px 0; color: #18181B;">${slide.title || 'Diapositive'}</h4>
+            <p style="font-size: 0.82rem; color: #71717A; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${slide.description || ''}</p>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 10px; border-top: 1px solid #F4F4F5; padding-top: 12px;">
+            <button class="btn-edit-slide" data-id="${slide.id}" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #D4D4D8; background: #F4F4F5; font-size: 0.8rem; font-weight: 600; cursor: pointer;">✏️ Modifier</button>
+            <button class="btn-delete-slide" data-id="${slide.id}" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #FCA5A5; background: #FEF2F2; color: #DC2626; font-size: 0.8rem; font-weight: 600; cursor: pointer;">🗑️</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    grid.querySelectorAll('.btn-edit-slide').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const slideId = btn.getAttribute('data-id');
+        this.editCarouselSlide(slideId);
+      });
+    });
+
+    grid.querySelectorAll('.btn-delete-slide').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const slideId = btn.getAttribute('data-id');
+        this.deleteCarouselSlide(slideId);
+      });
+    });
+  }
+
+  bindCarouselEvents() {
+    const form = document.getElementById('form-carousel-slide');
+    const urlInput = document.getElementById('carousel-image-url');
+    const previewBox = document.getElementById('carousel-img-preview-box');
+    const previewImg = document.getElementById('carousel-img-preview');
+    const cancelBtn = document.getElementById('btn-cancel-carousel-slide');
+
+    if (urlInput && previewBox && previewImg) {
+      urlInput.addEventListener('input', () => {
+        const val = urlInput.value.trim();
+        if (val) {
+          previewImg.src = val;
+          previewBox.style.display = 'block';
+        } else {
+          previewBox.style.display = 'none';
+        }
+      });
+    }
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        this.resetCarouselForm();
+      });
+    }
+
+    if (form && !form.getAttribute('data-bound')) {
+      form.setAttribute('data-bound', 'true');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const slideId = document.getElementById('carousel-slide-id').value;
+        const imageUrl = document.getElementById('carousel-image-url').value;
+        const imageFile = document.getElementById('carousel-image-file').files[0];
+        const badge = document.getElementById('carousel-badge').value;
+        const title = document.getElementById('carousel-title').value;
+        const description = document.getElementById('carousel-description').value;
+        const button_text = document.getElementById('carousel-btn-text').value;
+        const button_link = document.getElementById('carousel-btn-link').value;
+        const active = document.getElementById('carousel-active').checked;
+
+        const formData = new FormData();
+        if (imageUrl) formData.append('image_url', imageUrl);
+        if (imageFile) formData.append('image_file', imageFile);
+        formData.append('badge', badge);
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('button_text', button_text);
+        formData.append('button_link', button_link);
+        formData.append('active', active);
+
+        try {
+          const url = slideId ? `/api/carousel/${slideId}` : '/api/carousel';
+          const method = slideId ? 'PUT' : 'POST';
+
+          const res = await fetch(url, { method, body: formData });
+          const data = await res.json();
+
+          if (data.success) {
+            alert(slideId ? '✅ Diapositive modifiée avec succès !' : '✅ Diapositive ajoutée au carrousel !');
+            this.resetCarouselForm();
+            await this.fetchCarousel();
+          } else {
+            alert('❌ Erreur: ' + (data.message || 'Échec de la sauvegarde'));
+          }
+        } catch (err) {
+          alert('❌ Erreur réseau: ' + err.message);
+        }
+      });
+    }
+  }
+
+  editCarouselSlide(id) {
+    const slide = (this.carouselSlides || []).find(s => s.id === id);
+    if (!slide) return;
+
+    document.getElementById('carousel-slide-id').value = slide.id;
+    document.getElementById('carousel-image-url').value = slide.image_url || '';
+    document.getElementById('carousel-badge').value = slide.badge || '';
+    document.getElementById('carousel-title').value = slide.title || '';
+    document.getElementById('carousel-description').value = slide.description || '';
+    document.getElementById('carousel-btn-text').value = slide.button_text || '';
+    document.getElementById('carousel-btn-link').value = slide.button_link || '';
+    document.getElementById('carousel-active').checked = slide.active !== false;
+
+    const previewBox = document.getElementById('carousel-img-preview-box');
+    const previewImg = document.getElementById('carousel-img-preview');
+    if (slide.image_url && previewBox && previewImg) {
+      previewImg.src = slide.image_url;
+      previewBox.style.display = 'block';
+    }
+
+    document.getElementById('carousel-form-title').textContent = '✏️ Modifier la Diapositive';
+    document.getElementById('btn-save-carousel-slide').textContent = 'Enregistrer les Modifications';
+    document.getElementById('btn-cancel-carousel-slide').style.display = 'inline-block';
+
+    document.getElementById('section-carousel').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  resetCarouselForm() {
+    const form = document.getElementById('form-carousel-slide');
+    if (form) form.reset();
+    document.getElementById('carousel-slide-id').value = '';
+    document.getElementById('carousel-img-preview-box').style.display = 'none';
+    document.getElementById('carousel-form-title').textContent = '➕ Ajouter une Diapositive au Carrousel';
+    document.getElementById('btn-save-carousel-slide').textContent = 'Enregistrer la Diapositive';
+    document.getElementById('btn-cancel-carousel-slide').style.display = 'none';
+  }
+
+  async deleteCarouselSlide(id) {
+    if (!confirm('Voulez-vous vraiment supprimer cette diapositive du carrousel ?')) return;
+
+    try {
+      const res = await fetch(`/api/carousel/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        alert('✅ Diapositive supprimée');
+        await this.fetchCarousel();
+      } else {
+        alert('❌ Erreur: ' + data.message);
+      }
+    } catch (err) {
+      alert('❌ Erreur réseau: ' + err.message);
+    }
   }
 }
 
