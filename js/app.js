@@ -368,6 +368,32 @@ class App {
       });
     }
 
+    // Helper for robust clipboard copy across all browsers
+    const copyTextToClipboard = async (text) => {
+      if (!text) return false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) {}
+
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return successful;
+      } catch (e) {
+        return false;
+      }
+    };
+
     // Facebook / Messenger Checkout Click Tracking, Order Persistence & Auto Clipboard Copy
     if (this.btnMessengerCheckout) {
       this.btnMessengerCheckout.addEventListener('click', async (e) => {
@@ -404,13 +430,42 @@ class App {
         const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', orderUrl);
         const finalMessengerUrl = this.cartManager.generateMessengerLink(fbHandle, name, phone, 'TND', orderUrl);
 
-        if (msg && navigator.clipboard) {
-          navigator.clipboard.writeText(msg).then(() => {
-            this.showToast(this.i18n.t('toast_copied'));
-          }).catch(() => {});
-        }
+        // Copy order summary & admin inspection link to clipboard
+        await copyTextToClipboard(msg);
+        this.showToast(this.i18n.t('toast_copied'));
 
         this.telemetry.trackEvent(`Clicked Facebook/Messenger Checkout (${count} items, Total: ${total} TND)`);
+
+        // If Web Share API is available (e.g. mobile smartphones), open native share sheet directly
+        if (this.cartManager.isMobileDevice() && navigator.share) {
+          try {
+            await navigator.share({
+              title: 'Ma Commande Oriflame',
+              text: msg
+            });
+            return;
+          } catch (shareErr) {}
+        }
+
+        // Open paste guide modal & open Messenger window
+        const pasteModal = document.getElementById('messenger-paste-modal-overlay');
+        const openMessengerBtn = document.getElementById('btn-paste-modal-open-messenger');
+        const closePasteBtn = document.getElementById('btn-close-paste-modal');
+
+        if (pasteModal) {
+          pasteModal.classList.add('open');
+          if (openMessengerBtn) {
+            openMessengerBtn.onclick = () => {
+              window.open(finalMessengerUrl, '_blank');
+              pasteModal.classList.remove('open');
+            };
+          }
+          if (closePasteBtn) {
+            closePasteBtn.onclick = () => pasteModal.classList.remove('open');
+          }
+        }
+
+        // Immediately open Messenger in new tab
         window.open(finalMessengerUrl, '_blank');
       });
     }

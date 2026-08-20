@@ -1,5 +1,69 @@
 [
   {
+    "order_id": "ORD-762813",
+    "customer_name": "Client Anonyme",
+    "customer_phone": "Non renseigné",
+    "items": [
+      {
+        "product_id": "ORF-MAKE-001",
+        "name": "Giordani Gold Iconic Matte Lipstick - Royal Red",
+        "price": 42,
+        "quantity": 1,
+        "image_url": "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "product_id": "ORF-TN-38600",
+        "name": "Duologi Intense Repair Hair Mask",
+        "price": 46,
+        "quantity": 1,
+        "image_url": "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=600&q=80"
+      }
+    ],
+    "total_amount": 88,
+    "currency": "TND",
+    "status": "pending",
+    "created_at": "2026-08-20T12:36:31.647Z"
+  },
+  {
+    "order_id": "ORD-743280",
+    "customer_name": "Client Anonyme",
+    "customer_phone": "Non renseigné",
+    "items": [
+      {
+        "product_id": "ORF-SKIN-001",
+        "name": "NovAge Ecollagen Wrinkle Power Day Cream SPF 35",
+        "price": 85,
+        "quantity": 2,
+        "image_url": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "product_id": "ORF-SKIN-002",
+        "name": "Optimals Hydra Radiance Night Cream",
+        "price": 48,
+        "quantity": 2,
+        "image_url": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "product_id": "ORF-TN-35681",
+        "name": "Giordani Gold Bronzing Pearls - Golden Bronze",
+        "price": 68,
+        "quantity": 1,
+        "image_url": "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "product_id": "46872",
+        "name": "Base pour Ongles – Tenue & Adhérence",
+        "price": 22.5,
+        "quantity": 1,
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46872%2f46872_1.png&MediaId=20989036&Version=1"
+      }
+    ],
+    "total_amount": 356.5,
+    "currency": "TND",
+    "status": "pending",
+    "created_at": "2026-08-20T12:36:17.119Z"
+  },
+  {
     "order_id": "ORD-909128",
     "customer_name": "Client Anonyme",
     "customer_phone": "Non renseigné",
