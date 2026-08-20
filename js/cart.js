@@ -95,7 +95,7 @@ export class CartManager {
   }
 
   // Generate plain text order message formatted in user's active language
-  generateOrderTextMessage(customerName = '', customerPhone = '', currency = 'TND') {
+  generateOrderTextMessage(customerName = '', customerPhone = '', currency = 'TND', orderUrl = '') {
     if (this.cart.length === 0) return '';
 
     const lang = this.i18n ? this.i18n.getLang() : 'fr';
@@ -125,15 +125,19 @@ export class CartManager {
       message += `${phoneLabel} ${customerPhone.trim()}\n`;
     }
 
+    if (orderUrl) {
+      message += `\n🔒 Lien Inspection Admin : ${orderUrl}\n`;
+    }
+
     message += `\n${footer}`;
     return message;
   }
 
   // Smart Mobile vs Desktop Facebook / Messenger Link Generator
-  generateMessengerLink(fbUsername = 'mouna.nouira1', customerName = '', customerPhone = '', currency = 'TND') {
+  generateMessengerLink(fbUsername = 'mouna.nouira1', customerName = '', customerPhone = '', currency = 'TND', orderUrl = '') {
     if (this.cart.length === 0) return '#';
 
-    const message = this.generateOrderTextMessage(customerName, customerPhone, currency);
+    const message = this.generateOrderTextMessage(customerName, customerPhone, currency, orderUrl);
     const encodedText = encodeURIComponent(message);
 
     if (this.isMobileDevice()) {

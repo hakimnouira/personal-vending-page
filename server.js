@@ -24,6 +24,7 @@ const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
 const CAROUSEL_FILE = path.join(DATA_DIR, 'carousel.json');
+const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 
 // Middleware
 app.use(cors());
@@ -138,6 +139,26 @@ function getCarousel() {
 function saveCarousel(slides) {
   try {
     fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(slides, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function getOrders() {
+  try {
+    if (fs.existsSync(ORDERS_FILE)) {
+      return JSON.parse(fs.readFileSync(ORDERS_FILE, 'utf8'));
+    }
+    return [];
+  } catch (err) {
+    return [];
+  }
+}
+
+function saveOrders(orders) {
+  try {
+    fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2), 'utf8');
     return true;
   } catch (err) {
     return false;
@@ -578,6 +599,104 @@ app.post('/api/settings', (req, res) => {
   const updated = { ...current, ...req.body };
   saveSettings(updated);
   res.json({ success: true, message: 'Settings saved', data: updated });
+});
+
+// ------------------- ADMIN ORDER INSPECTION & MANAGEMENT API ------------------- //
+
+app.post('/api/orders', (req, res) => {
+  try {
+    const { customer_name, customer_phone, items, currency } = req.body;
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ success: false, message: 'Cart items are required' });
+    }
+
+    const orderId = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
+    const totalAmount = items.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
+
+    const newOrder = {
+      order_id: orderId,
+      customer_name: customer_name ? customer_name.trim() : 'Client Anonyme',
+      customer_phone: customer_phone ? customer_phone.trim() : 'Non renseigné',
+      items: items.map(i => ({
+        product_id: i.product_id,
+        name: i.name,
+        price: Number(i.price),
+        quantity: Number(i.quantity),
+        image_url: i.image_url
+      })),
+      total_amount: Number(totalAmount.toFixed(2)),
+      currency: currency || 'TND',
+      status: 'pending',
+      created_at: new Date().toISOString()
+    };
+
+    const orders = getOrders();
+    orders.unshift(newOrder);
+    saveOrders(orders);
+
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+    const host = req.headers['x-forwarded-host'] || req.headers.host || `localhost:${PORT}`;
+    const orderUrl = `${protocol}://${host}/admin?orderId=${orderId}`;
+
+    res.status(201).json({
+      success: true,
+      message: 'Order created',
+      order_id: orderId,
+      order_url: orderUrl,
+      order: newOrder
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.get('/api/orders', (req, res) => {
+  res.json({ success: true, data: getOrders() });
+});
+
+app.get('/api/orders/:id', (req, res) => {
+  const { id } = req.params;
+  const orders = getOrders();
+  const order = orders.find(o => o.order_id === id);
+  if (!order) {
+    return res.status(404).json({ success: false, message: 'Order not found' });
+  }
+  res.json({ success: true, data: order });
+});
+
+app.put('/api/orders/:id/status', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const orders = getOrders();
+    const order = orders.find(o => o.order_id === id);
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    order.status = status || order.status;
+    order.updated_at = new Date().toISOString();
+    saveOrders(orders);
+
+    res.json({ success: true, message: 'Order status updated', data: order });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.delete('/api/orders/:id', (req, res) => {
+  const { id } = req.params;
+  let orders = getOrders();
+  const initialLen = orders.length;
+  orders = orders.filter(o => o.order_id !== id);
+
+  if (orders.length === initialLen) {
+    return res.status(404).json({ success: false, message: 'Order not found' });
+  }
+
+  saveOrders(orders);
+  res.json({ success: true, message: 'Order deleted' });
 });
 
 app.listen(PORT, () => {

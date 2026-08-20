@@ -1,14 +1,42 @@
 {
-  "total_visits": 15,
+  "total_visits": 16,
   "sessions": [
     {
-      "session_id": "SES-LT3WGFC-MT1GN51D",
-      "first_seen": "2026-08-20T11:51:57.525Z",
-      "last_active": "2026-08-20T12:05:09.185Z",
+      "session_id": "SES-GJY8A12-MT1H55ZY",
+      "first_seen": "2026-08-20T12:05:58.561Z",
+      "last_active": "2026-08-20T12:08:09.143Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 261,
+      "duration_seconds": 131,
+      "activity_trail": [
+        {
+          "time": "2026-08-20T12:05:58.561Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:06:06.724Z",
+          "offset": "0m 8s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T12:06:07.588Z",
+          "offset": "0m 9s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
+    {
+      "session_id": "SES-LT3WGFC-MT1GN51D",
+      "first_seen": "2026-08-20T11:51:57.525Z",
+      "last_active": "2026-08-20T12:08:09.147Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 421,
       "activity_trail": [
         {
           "time": "2026-08-20T11:51:57.525Z",

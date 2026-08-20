@@ -368,14 +368,41 @@ class App {
       });
     }
 
-    // Facebook / Messenger Checkout Click Tracking & Auto Clipboard Copy
+    // Facebook / Messenger Checkout Click Tracking, Order Persistence & Auto Clipboard Copy
     if (this.btnMessengerCheckout) {
-      this.btnMessengerCheckout.addEventListener('click', () => {
+      this.btnMessengerCheckout.addEventListener('click', async (e) => {
+        e.preventDefault();
         const count = this.cartManager.getTotalCount();
         const total = this.cartManager.getSubtotal();
         const name = this.customerNameInput ? this.customerNameInput.value : '';
         const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
-        const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+        const items = this.cartManager.getCartItems();
+
+        if (items.length === 0) return;
+
+        let orderUrl = '';
+        try {
+          const res = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              customer_name: name,
+              customer_phone: phone,
+              items: items,
+              currency: 'TND'
+            })
+          });
+          const data = await res.json();
+          if (data.success) {
+            orderUrl = data.order_url;
+          }
+        } catch (err) {
+          console.warn("Could not persist order to server", err);
+        }
+
+        const fbHandle = this.facebookUsername || 'mouna.nouira1';
+        const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', orderUrl);
+        const finalMessengerUrl = this.cartManager.generateMessengerLink(fbHandle, name, phone, 'TND', orderUrl);
 
         if (msg && navigator.clipboard) {
           navigator.clipboard.writeText(msg).then(() => {
@@ -384,6 +411,7 @@ class App {
         }
 
         this.telemetry.trackEvent(`Clicked Facebook/Messenger Checkout (${count} items, Total: ${total} TND)`);
+        window.open(finalMessengerUrl, '_blank');
       });
     }
 

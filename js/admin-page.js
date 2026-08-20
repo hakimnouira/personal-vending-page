@@ -72,6 +72,18 @@ class AdminDashboard {
     this.btnDownloadSampleCsv = document.getElementById('btn-download-sample-csv');
   }
 
+  switchSection(targetId) {
+    if (!this.navItems || !this.sections) return;
+    this.navItems.forEach(n => {
+      if (n.dataset.target === targetId) n.classList.add('active');
+      else n.classList.remove('active');
+    });
+    this.sections.forEach(s => {
+      if (s.id === targetId) s.classList.add('active');
+      else s.classList.remove('active');
+    });
+  }
+
   checkSession() {
     const auth = sessionStorage.getItem('oriflame_admin_auth');
     if (auth === 'true') {
@@ -91,9 +103,17 @@ class AdminDashboard {
     this.dashboardView.style.display = 'grid';
     await this.fetchProducts();
     await this.fetchAnalytics();
+    await this.fetchOrders();
     await this.fetchSettings();
     await this.fetchCarousel();
     this.bindCarouselEvents();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderIdParam = urlParams.get('orderId');
+    if (orderIdParam) {
+      this.switchSection('section-orders');
+      this.viewOrderDetails(orderIdParam);
+    }
   }
 
   bindEvents() {
@@ -145,19 +165,36 @@ class AdminDashboard {
     // Tab Navigation
     this.navItems.forEach(item => {
       item.addEventListener('click', () => {
-        this.navItems.forEach(n => n.classList.remove('active'));
-        this.sections.forEach(s => s.classList.remove('active'));
-
-        item.classList.add('active');
         const targetId = item.dataset.target;
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) targetSection.classList.add('active');
+        this.switchSection(targetId);
       });
     });
 
-    // Analytics Refresh
+    // Analytics & Orders Refresh
     if (this.btnRefreshAnalytics) {
       this.btnRefreshAnalytics.addEventListener('click', () => this.fetchAnalytics());
+    }
+    const btnRefreshOrders = document.getElementById('btn-refresh-orders');
+    if (btnRefreshOrders) {
+      btnRefreshOrders.addEventListener('click', () => this.fetchOrders());
+    }
+
+    // Order Modal Event Listeners
+    const modalOverlay = document.getElementById('admin-order-modal-overlay');
+    const closeBtn1 = document.getElementById('btn-close-order-modal');
+    const closeBtn2 = document.getElementById('btn-close-order-modal-footer');
+    const printBtn = document.getElementById('btn-print-order');
+
+    const closeOrderModal = () => {
+      if (modalOverlay) modalOverlay.classList.remove('open');
+    };
+
+    if (closeBtn1) closeBtn1.addEventListener('click', closeOrderModal);
+    if (closeBtn2) closeBtn2.addEventListener('click', closeOrderModal);
+    if (printBtn) {
+      printBtn.addEventListener('click', () => {
+        window.print();
+      });
     }
 
     // Image Upload Preview
@@ -521,6 +558,189 @@ class AdminDashboard {
       }
     } catch (e) {
       alert('Error deleting product: ' + e.message);
+    }
+  }
+
+  // ------------------- ORDERS MANAGEMENT ------------------- //
+
+  async fetchOrders() {
+    try {
+      const res = await fetch('/api/orders');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        this.orders = data.data;
+        this.renderOrdersTable();
+      }
+    } catch (e) {
+      console.error("Orders fetch error:", e);
+    }
+  }
+
+  renderOrdersTable() {
+    const body = document.getElementById('admin-orders-table-body');
+    const elTotal = document.getElementById('stat-total-orders');
+    const elPending = document.getElementById('stat-pending-orders');
+    const elRevenue = document.getElementById('stat-total-revenue');
+
+    const orders = this.orders || [];
+
+    if (elTotal) elTotal.textContent = orders.length;
+    if (elPending) elPending.textContent = orders.filter(o => o.status === 'pending').length;
+    
+    const revenue = orders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+    if (elRevenue) elRevenue.textContent = `${revenue.toFixed(2)} TND`;
+
+    if (!body) return;
+
+    if (orders.length === 0) {
+      body.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:3rem; color:#8E8D8A;">Aucune commande enregistrée pour le moment.</td></tr>`;
+      return;
+    }
+
+    body.innerHTML = orders.map(o => {
+      const itemCount = (o.items || []).reduce((sum, i) => sum + i.quantity, 0);
+      const itemsPreview = (o.items || []).slice(0, 2).map(i => `${i.name} (x${i.quantity})`).join(', ');
+      const statusBadge = o.status === 'confirmed' 
+        ? '<span class="badge badge-success">✓ Confirmé</span>' 
+        : o.status === 'shipped' 
+        ? '<span class="badge" style="background:#2563EB; color:#FFF;">🚚 Expédié</span>'
+        : '<span class="badge" style="background:#FEF3C7; color:#92400E; border:1px solid #FCD34D;">⏳ En attente</span>';
+
+      return `
+        <tr>
+          <td><code style="font-weight:700; color:#2563EB;">${o.order_id}</code></td>
+          <td>
+            <strong>${o.customer_name || 'Client'}</strong>
+            <div style="font-size:0.78rem; color:#8E8D8A;">📞 ${o.customer_phone || 'Non renseigné'}</div>
+          </td>
+          <td>
+            <div style="font-weight:600;">${itemCount} article(s)</div>
+            <div style="font-size:0.76rem; color:#71717A; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${itemsPreview}</div>
+          </td>
+          <td><strong style="font-size:0.95rem; color:#18181B;">${Number(o.total_amount).toFixed(2)} ${o.currency || 'TND'}</strong></td>
+          <td style="font-size:0.78rem; color:#71717A;">${new Date(o.created_at).toLocaleString()}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <div style="display:flex; gap:6px;">
+              <button class="btn-primary" style="padding:6px 12px; font-size:0.78rem; width:auto; background:#2563EB; border-color:#2563EB;" onclick="window.adminDash.viewOrderDetails('${o.order_id}')">
+                👁️ Inspecter
+              </button>
+              ${o.status === 'pending' ? `
+                <button class="btn-primary" style="padding:6px 10px; font-size:0.78rem; width:auto; background:var(--admin-success); border-color:var(--admin-success);" onclick="window.adminDash.updateOrderStatus('${o.order_id}', 'confirmed')">
+                  ✓ Valider
+                </button>
+              ` : ''}
+              <button class="btn-primary" style="padding:6px 8px; font-size:0.78rem; width:auto; background:var(--admin-danger); border-color:var(--admin-danger);" onclick="window.adminDash.deleteOrder('${o.order_id}')">
+                🗑️
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async viewOrderDetails(orderId) {
+    let order = (this.orders || []).find(o => o.order_id === orderId);
+    if (!order) {
+      try {
+        const res = await fetch(`/api/orders/${orderId}`);
+        const data = await res.json();
+        if (data.success) order = data.data;
+      } catch (e) {}
+    }
+
+    if (!order) return alert('Commande introuvable.');
+
+    const titleEl = document.getElementById('order-modal-title');
+    const subtitleEl = document.getElementById('order-modal-subtitle');
+    const contentEl = document.getElementById('order-modal-content');
+    const modalEl = document.getElementById('admin-order-modal-overlay');
+
+    if (titleEl) titleEl.textContent = `🛍️ Commande : ${order.order_id}`;
+    if (subtitleEl) subtitleEl.textContent = `Passée le ${new Date(order.created_at).toLocaleString()} • Statut : ${order.status.toUpperCase()}`;
+
+    if (contentEl) {
+      contentEl.innerHTML = `
+        <div style="background:#FAF8F5; border:1px solid #E8E5DF; border-radius:10px; padding:14px; margin-bottom:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div>
+            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">Nom du Client</span>
+            <div style="font-weight:700; font-size:1.05rem; color:#18181B;">${order.customer_name}</div>
+          </div>
+          <div>
+            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">Numéro de Téléphone</span>
+            <div style="font-weight:700; font-size:1.05rem; color:#2563EB;">📞 ${order.customer_phone}</div>
+          </div>
+        </div>
+
+        <h4 style="font-weight:700; margin-bottom:10px; font-size:0.95rem;">Articles Commandés (${(order.items || []).length}) :</h4>
+        <div style="border:1px solid #E8E5DF; border-radius:10px; overflow:hidden; margin-bottom:16px;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.85rem; text-align:left;">
+            <thead style="background:#FAF8F5; border-bottom:1px solid #E8E5DF;">
+              <tr>
+                <th style="padding:8px 12px;">Produit</th>
+                <th style="padding:8px 12px;">Prix Unitaire</th>
+                <th style="padding:8px 12px; text-align:center;">Quantité</th>
+                <th style="padding:8px 12px; text-align:right;">Total Item</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(order.items || []).map(i => `
+                <tr style="border-bottom:1px solid #F4F4F5;">
+                  <td style="padding:10px 12px; display:flex; align-items:center; gap:10px;">
+                    <img src="${i.image_url}" alt="${i.name}" style="width:40px; height:40px; border-radius:6px; object-fit:cover; background:#FAF8F5;" />
+                    <div>
+                      <strong style="display:block; color:#18181B;">${i.name}</strong>
+                      <code style="font-size:0.72rem; color:#71717A;">Réf: ${i.product_id}</code>
+                    </div>
+                  </td>
+                  <td style="padding:10px 12px;">${Number(i.price).toFixed(2)} ${order.currency || 'TND'}</td>
+                  <td style="padding:10px 12px; text-align:center;"><strong>x${i.quantity}</strong></td>
+                  <td style="padding:10px 12px; text-align:right; font-weight:700; color:#18181B;">${(i.price * i.quantity).toFixed(2)} ${order.currency || 'TND'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; background:#18181B; color:#FFF; padding:14px 18px; border-radius:10px;">
+          <span style="font-weight:600; font-size:0.95rem;">TOTAL DE LA COMMANDE :</span>
+          <span style="font-weight:800; font-size:1.35rem; color:#C5A880;">${Number(order.total_amount).toFixed(2)} ${order.currency || 'TND'}</span>
+        </div>
+      `;
+    }
+
+    if (modalEl) modalEl.classList.add('open');
+  }
+
+  async updateOrderStatus(orderId, newStatus) {
+    try {
+      const res = await fetch(`/api/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`✅ Statut de la commande ${orderId} mis à jour : ${newStatus.toUpperCase()}`);
+        await this.fetchOrders();
+      }
+    } catch (e) {
+      alert('Erreur: ' + e.message);
+    }
+  }
+
+  async deleteOrder(orderId) {
+    if (!confirm(`Voulez-vous vraiment supprimer la commande ${orderId} ?`)) return;
+    try {
+      const res = await fetch(`/api/orders/${orderId}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        alert(`✅ Commande ${orderId} supprimée`);
+        await this.fetchOrders();
+      }
+    } catch (e) {
+      alert('Erreur: ' + e.message);
     }
   }
 
