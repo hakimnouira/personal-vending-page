@@ -2184,16 +2184,32 @@ footer p {
     width: 100%;
     justify-content: center;
     font-size: 0.76rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 4px;
+  }
+
+  .ecat-book-stage {
+    min-height: 320px;
+    padding: 8px 4px;
   }
 
   .ecat-dual-spread-wrap {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
     height: auto;
+    max-height: 58vh;
   }
 
   .ecat-single-page-wrap {
-    height: 360px;
-    max-height: 50vh;
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 2 / 3;
+    height: auto;
+    max-height: 58vh;
   }
 
   .quick-order-bar {

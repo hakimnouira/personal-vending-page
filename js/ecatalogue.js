@@ -65,6 +65,33 @@ export class ECatalogueViewer {
         }
       }
     });
+
+    // Touch Swipe Gesture Support for Smartphones
+    const stage = document.getElementById('catalogueContainer') || this.bookSpreadWrap;
+    if (stage) {
+      let touchStartX = 0;
+      let touchStartY = 0;
+      stage.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      stage.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        const diffX = touchStartX - touchEndX;
+        const diffY = touchStartY - touchEndY;
+
+        if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+          const isRTL = document.documentElement.dir === 'rtl';
+          if (diffX > 0) {
+            isRTL ? this.prevSpread() : this.nextSpread();
+          } else {
+            isRTL ? this.nextSpread() : this.prevSpread();
+          }
+        }
+      }, { passive: true });
+    }
   }
 
   goToSpread(index) {

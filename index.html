@@ -70,9 +70,9 @@
     <section id="catalogue-section" class="ecatalogue-section">
       <div class="ecatalogue-section-header">
         <div class="ecatalogue-header-text">
-          <span class="deals-tag" style="background: var(--color-accent); color: var(--color-primary-dark);">INTERACTIVE DIGITAL FLIPBOOK</span>
-          <h3 style="font-family: var(--font-serif); font-size: 1.65rem; color: var(--color-primary); margin-bottom: 4px;">📖 eCatalogue Virtuel Officiel Oriflame (08 2026)</h3>
-          <p style="font-size: 0.88rem; color: var(--color-text-secondary);">Feuilletez les pages officielles du catalogue avec vidéo animée et cliquez directement sur les produits pour les ajouter à votre commande.</p>
+          <span class="deals-tag" style="background: var(--color-accent); color: var(--color-primary-dark);" data-i18n="ecat_tag">INTERACTIVE DIGITAL FLIPBOOK</span>
+          <h3 style="font-family: var(--font-serif); font-size: 1.65rem; color: var(--color-primary); margin-bottom: 4px;" data-i18n="ecat_title">📖 eCatalogue Virtuel Officiel Oriflame (08 2026)</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-secondary);" data-i18n="ecat_desc">Feuilletez les pages officielles du catalogue avec vidéo animée et cliquez directement sur les produits pour les ajouter à votre commande.</p>
         </div>
       </div>
 
@@ -82,7 +82,7 @@
         <div class="ecat-toolbar">
           <div class="ecat-nav-buttons">
             <button id="catalogue-nav-first" class="ecat-nav-btn" title="Première page">⏮</button>
-            <button id="catalogue-nav-prev" class="ecat-nav-btn" title="Page précédente">◀ Précédente</button>
+            <button id="catalogue-nav-prev" class="ecat-nav-btn" title="Page précédente" data-i18n="ecat_prev">◀ Précédente</button>
           </div>
 
           <div class="ecat-status">
@@ -91,7 +91,7 @@
           </div>
 
           <div class="ecat-nav-buttons">
-            <button id="catalogue-nav-next" class="ecat-nav-btn" title="Page suivante">Suivante ▶</button>
+            <button id="catalogue-nav-next" class="ecat-nav-btn" title="Page suivante" data-i18n="ecat_next">Suivante ▶</button>
             <button id="catalogue-nav-last" class="ecat-nav-btn" title="Dernière page">⏭</button>
           </div>
         </div>
@@ -107,15 +107,15 @@
         <div class="quick-order-bar">
           <div class="quick-order-label">
             <span>🔍</span>
-            <span><strong>Commander par Code Produit :</strong> Vous voyez un article sur cette page ? Entrez sa référence (ex: 35665, 46980, 1276) :</span>
+            <span data-i18n="ecat_quick_label"><strong>Commander par Code Produit :</strong> Vous voyez un article sur cette page ? Entrez sa référence (ex: 35665, 46980, 1276) :</span>
           </div>
           <form id="quick-order-form" class="quick-order-form" onsubmit="event.preventDefault(); window.app.orderProductByCode();">
-            <input type="text" id="quick-code-input" class="quick-code-input" placeholder="Réf. Produit (ex: 35665)" />
-            <button type="submit" class="btn-quick-order">Ajouter au Panier</button>
+            <input type="text" id="quick-code-input" class="quick-code-input" data-i18n="quick_code_placeholder" placeholder="Réf. Produit (ex: 35665)" />
+            <button type="submit" class="btn-quick-order" data-i18n="add_to_cart">Ajouter au Panier</button>
           </form>
         </div>
 
-        <div class="ecat-hint-footer">
+        <div class="ecat-hint-footer" data-i18n="ecat_hint">
           💡 <em>Astuce : Utilisez les boutons Précédente / Suivante (ou les flèches du clavier) pour tourner les pages. Cliquez sur les pastilles 🛍️ ou entrez la référence du produit ci-dessus pour l'ajouter à votre commande.</em>
         </div>
       </div>
