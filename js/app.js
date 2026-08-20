@@ -14,6 +14,7 @@ class App {
     this.searchQuery = '';
     this.products = [];
 
+    window.app = this;
     this.init();
   }
 
@@ -444,6 +445,41 @@ class App {
         (product.description && product.description.toLowerCase().includes(this.searchQuery));
       return matchesCategory && matchesSearch;
     });
+
+  orderProductByCode() {
+    const input = document.getElementById('quick-code-input');
+    if (!input) return;
+    const code = input.value.trim();
+    if (!code) {
+      alert(this.i18n.getLang() === 'ar' ? 'يرجى إدخال رمز المنتج' : 'Veuillez entrer une référence produit (ex: 35665)');
+      return;
+    }
+
+    const cleanCode = code.replace(/[^0-9A-Za-z]/g, '');
+    const existing = this.products.find(p => String(p.product_id) === cleanCode || String(p.product_id).includes(cleanCode));
+
+    if (existing) {
+      this.cartManager.addItem(existing, 1);
+      this.renderCart();
+      this.updateCartBadge();
+      this.showToast(this.i18n.t('toast_added', { name: existing.name }));
+      input.value = '';
+    } else {
+      const quickProd = {
+        product_id: cleanCode,
+        name: `Produit Oriflame (${cleanCode})`,
+        price: 39.900,
+        image_url: `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${cleanCode}%2f${cleanCode}_1.png&MediaId=20989035&Version=1`,
+        category: 'Catalogue',
+        in_stock: true
+      };
+      this.cartManager.addItem(quickProd, 1);
+      this.renderCart();
+      this.updateCartBadge();
+      this.showToast(this.i18n.t('toast_added', { name: quickProd.name }));
+      input.value = '';
+    }
+  }
 
     if (this.productsCount) {
       this.productsCount.textContent = this.i18n.t('showing_products', { count: filtered.length });

@@ -255,6 +255,33 @@ app.get('/api/flipbook', (req, res) => {
   }
 });
 
+app.get('/api/flipbook/image', async (req, res) => {
+  try {
+    const imageUrl = req.query.url;
+    if (!imageUrl) return res.status(400).send('Missing image url');
+
+    const response = await fetch(imageUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Referer': 'https://tn-catalogue.oriflame.com/'
+      }
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).send('Failed to fetch image');
+    }
+
+    const contentType = response.headers.get('content-type') || 'image/jpeg';
+    const buffer = await response.arrayBuffer();
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.send(Buffer.from(buffer));
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
 app.post('/api/scrape/flipbook', async (req, res) => {
   try {
     const { url } = req.body;

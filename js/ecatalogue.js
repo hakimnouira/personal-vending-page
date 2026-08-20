@@ -113,11 +113,19 @@ export class ECatalogueViewer {
     // Render HTML
     let contentHtml = '';
 
+    const getImgSrc = (url) => {
+      if (!url) return '';
+      if (url.includes('ipaper.io')) {
+        return `/api/flipbook/image?url=${encodeURIComponent(url)}`;
+      }
+      return url;
+    };
+
     if (spread.spreadIndex === 0) {
       // Cover Page with Video
       contentHtml = `
         <div class="ecat-single-page-wrap">
-          <img src="${spread.images[0]}" alt="Catalogue Oriflame Couverture" class="ecat-page-img loaded" />
+          <img src="${getImgSrc(spread.images[0])}" alt="Catalogue Oriflame Couverture" class="ecat-page-img loaded" referrerpolicy="no-referrer" />
           
           <!-- Embedded Video Player Overlay -->
           ${spread.video ? `
@@ -145,13 +153,16 @@ export class ECatalogueViewer {
       `;
     } else {
       // Dual-page Spread with Hotspots
+      const leftImg = getImgSrc(spread.images[0]);
+      const rightImg = getImgSrc(spread.images[1] || spread.images[0]);
+
       contentHtml = `
         <div class="ecat-dual-spread-wrap">
           <div class="ecat-page-half left-page">
-            <img src="${spread.images[0]}" alt="Page ${spread.pages[0]}" class="ecat-page-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80'" />
+            <img src="${leftImg}" alt="Page ${spread.pages[0]}" class="ecat-page-img" loading="lazy" referrerpolicy="no-referrer" />
           </div>
           <div class="ecat-page-half right-page">
-            <img src="${spread.images[1] || spread.images[0]}" alt="Page ${spread.pages[1] || spread.pages[0]}" class="ecat-page-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80'" />
+            <img src="${rightImg}" alt="Page ${spread.pages[1] || spread.pages[0]}" class="ecat-page-img" loading="lazy" referrerpolicy="no-referrer" />
           </div>
 
           <!-- Clickable Interactive Product Hotspots with Exact Index -->
