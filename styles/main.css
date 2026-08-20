@@ -2010,52 +2010,157 @@ footer p {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Responsive Mobile Adjustments */
+/* Comprehensive Responsive Mobile Adjustments for Phone Users */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 0;
+  }
+
+  .nav-container {
+    padding: 0 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .brand-monogram {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .brand-text h1 {
+    font-size: 1.1rem;
+  }
+
+  .brand-text p {
+    font-size: 0.65rem;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .lang-selector, .nav-btn {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+  }
+
+  .drawer-panel {
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  .modal-card {
+    width: 95vw;
+    max-height: 92vh;
+    border-radius: var(--radius-md);
+  }
+
+  .modal-header {
+    padding: 16px 20px;
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+
+  .product-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 @media (max-width: 640px) {
+  .announcement-bar {
+    font-size: 0.74rem;
+    padding: 6px 10px;
+  }
+
   .hero-banner {
     padding: 2.2rem 1.2rem;
     margin: 1rem 0;
   }
+  
   .hero-content h2 {
     font-size: 1.65rem;
   }
+
   .ecatalogue-section {
-    padding: 1.5rem 1rem;
+    padding: 1.2rem 0.75rem;
   }
+
+  .ecat-toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ecat-nav-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ecat-status {
+    width: 100%;
+    justify-content: center;
+  }
+
   .ecat-dual-spread-wrap {
     flex-direction: column;
     height: auto;
   }
+
   .ecat-single-page-wrap {
-    height: 420px;
+    height: 380px;
   }
+
+  .quick-order-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .quick-order-form {
+    width: 100%;
+  }
+
   .deals-showcase-section {
-    padding: 1.5rem 1rem;
+    padding: 1.2rem 0.75rem;
   }
+
   .deals-carousel-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
+
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
+
   .product-card {
     border-radius: var(--radius-sm);
   }
+
   .product-body {
-    padding: 12px;
+    padding: 10px;
   }
+
   .product-title {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
+
   .product-price {
-    font-size: 1.08rem;
+    font-size: 1.02rem;
   }
+
   .btn-add-cart {
-    padding: 0 12px;
-    font-size: 0.8rem;
+    padding: 0 10px;
+    font-size: 0.78rem;
+    height: 34px;
   }
+
   .info-chip-grid {
     grid-template-columns: 1fr;
   }

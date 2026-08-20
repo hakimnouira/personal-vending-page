@@ -454,15 +454,118 @@ body {
   cursor: not-allowed;
 }
 
-/* Responsive Mobile Layout */
+/* Comprehensive Mobile Responsiveness for Phone Users (<= 900px) */
 @media (max-width: 900px) {
-  .admin-layout {
+  .admin-layout, [dir="rtl"] .admin-layout {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
-  [dir="rtl"] .admin-layout {
-    grid-template-columns: 1fr;
+
+  .admin-sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    background: #18181B;
   }
+
+  .sidebar-brand {
+    margin-bottom: 10px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .nav-item.active {
+    background: var(--admin-accent);
+    color: #09090B;
+  }
+
+  .sidebar-footer {
+    margin-top: 8px;
+    padding-top: 8px;
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .open-storefront-link, .btn-logout {
+    padding: 6px 12px;
+    font-size: 0.76rem;
+  }
+
   .admin-main {
-    padding: 1.5rem;
+    padding: 16px 12px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-number {
+    font-size: 1.45rem;
+  }
+
+  /* Table Horizontal Scrolling on Mobile */
+  .admin-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
+  }
+
+  .admin-table {
+    min-width: 600px;
+  }
+
+  /* Form Layouts on Mobile */
+  .admin-form-box {
+    padding: 14px;
+  }
+
+  .form-control {
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .login-card {
+    padding: 1.8rem 1.2rem;
+  }
+
+  .login-card h2 {
+    font-size: 1.3rem;
   }
 }
