@@ -1,14 +1,75 @@
 {
-  "total_visits": 20,
+  "total_visits": 22,
   "sessions": [
     {
-      "session_id": "SES-G897688-MT1IIAKY",
-      "first_seen": "2026-08-20T12:44:10.656Z",
-      "last_active": "2026-08-20T12:52:57.138Z",
+      "session_id": "SES-390IAL4-MT1K5G0D",
+      "first_seen": "2026-08-20T13:30:10.386Z",
+      "last_active": "2026-08-20T13:36:09.132Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 331,
+      "duration_seconds": 340,
+      "activity_trail": [
+        {
+          "time": "2026-08-20T13:30:10.386Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T13:30:12.059Z",
+          "offset": "0m 2s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T13:30:28.740Z",
+          "offset": "0m 18s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T13:30:28.825Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T13:30:30.625Z",
+          "offset": "0m 2s",
+          "description": "Opened Shopping Cart Drawer"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
+    {
+      "session_id": "SES-OU9YPL9-MT1K58LC",
+      "first_seen": "2026-08-20T13:30:00.774Z",
+      "last_active": "2026-08-20T13:36:45.776Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 405,
+      "activity_trail": [
+        {
+          "time": "2026-08-20T13:30:00.774Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T13:30:01.943Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
+    {
+      "session_id": "SES-G897688-MT1IIAKY",
+      "first_seen": "2026-08-20T12:44:10.656Z",
+      "last_active": "2026-08-20T13:18:00.523Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 1109,
       "activity_trail": [
         {
           "time": "2026-08-20T12:44:10.656Z",
@@ -49,6 +110,71 @@
           "time": "2026-08-20T12:50:36.680Z",
           "offset": "0m 55s",
           "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T12:53:30.867Z",
+          "offset": "3m 49s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:53:30.941Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:53:32.211Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T12:53:32.823Z",
+          "offset": "0m 2s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T12:56:05.075Z",
+          "offset": "2m 34s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:56:05.378Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:56:06.378Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T12:56:07.285Z",
+          "offset": "0m 2s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T12:59:31.338Z",
+          "offset": "3m 26s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:59:31.426Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:59:32.710Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T12:59:33.409Z",
+          "offset": "0m 2s",
+          "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T13:18:00.509Z",
+          "offset": "18m 29s",
+          "description": "Left Storefront"
         }
       ],
       "categories_visited": [],
@@ -57,11 +183,11 @@
     {
       "session_id": "SES-FR2ZED5-MT1I8EUS",
       "first_seen": "2026-08-20T12:36:29.627Z",
-      "last_active": "2026-08-20T12:53:09.179Z",
+      "last_active": "2026-08-20T13:20:28.542Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 867,
+      "duration_seconds": 2506,
       "activity_trail": [
         {
           "time": "2026-08-20T12:36:29.627Z",
@@ -102,6 +228,11 @@
           "time": "2026-08-20T12:39:25.006Z",
           "offset": "0m 43s",
           "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T13:20:28.542Z",
+          "offset": "41m 46s",
+          "description": "Left Storefront"
         }
       ],
       "categories_visited": [],
@@ -110,11 +241,11 @@
     {
       "session_id": "SES-LK4N0N8-MT1I83E6",
       "first_seen": "2026-08-20T12:36:14.771Z",
-      "last_active": "2026-08-20T12:53:04.410Z",
+      "last_active": "2026-08-20T13:36:56.230Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 555,
+      "duration_seconds": 1532,
       "activity_trail": [
         {
           "time": "2026-08-20T12:36:14.771Z",
@@ -175,19 +306,123 @@
           "time": "2026-08-20T12:43:51.387Z",
           "offset": "0m 2s",
           "description": "Clicked Facebook/Messenger Checkout (6 items, Total: 356.5 TND)"
+        },
+        {
+          "time": "2026-08-20T12:55:02.412Z",
+          "offset": "11m 13s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:55:02.498Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:55:20.756Z",
+          "offset": "0m 18s",
+          "description": "Added to cart: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-20T12:55:28.102Z",
+          "offset": "0m 26s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T12:55:37.866Z",
+          "offset": "0m 35s",
+          "description": "Clicked Facebook/Messenger Checkout (7 items, Total: 391.4 TND)"
+        },
+        {
+          "time": "2026-08-20T12:57:24.073Z",
+          "offset": "2m 22s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T12:57:24.173Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T12:57:38.369Z",
+          "offset": "0m 14s",
+          "description": "Added to cart: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-20T12:57:47.013Z",
+          "offset": "0m 23s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T12:57:55.628Z",
+          "offset": "0m 31s",
+          "description": "Clicked Facebook/Messenger Checkout (8 items, Total: 426.3 TND)"
+        },
+        {
+          "time": "2026-08-20T13:12:56.249Z",
+          "offset": "15m 32s",
+          "description": "Added to cart: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-20T13:13:05.402Z",
+          "offset": "15m 41s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T13:13:17.898Z",
+          "offset": "15m 54s",
+          "description": "Clicked Facebook/Messenger Checkout (9 items, Total: 461.2 TND)"
+        },
+        {
+          "time": "2026-08-20T13:20:54.733Z",
+          "offset": "23m 31s",
+          "description": "Added to cart: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-20T13:21:02.426Z",
+          "offset": "23m 38s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T13:21:16.869Z",
+          "offset": "23m 53s",
+          "description": "Clicked Facebook/Messenger Checkout (10 items, Total: 496.1 TND)"
+        },
+        {
+          "time": "2026-08-20T13:22:56.127Z",
+          "offset": "25m 32s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-20T13:22:56.228Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T13:23:20.772Z",
+          "offset": "0m 25s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-20T13:24:47.460Z",
+          "offset": "1m 51s",
+          "description": "Clicked Facebook/Messenger Checkout (10 items, Total: 496.1 TND)"
         }
       ],
-      "categories_visited": [],
-      "products_viewed": []
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+      ]
     },
     {
       "session_id": "SES-XLQRNGW-MT1H9B4N",
       "first_seen": "2026-08-20T12:09:11.836Z",
-      "last_active": "2026-08-20T12:53:09.271Z",
+      "last_active": "2026-08-20T13:20:27.885Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 2637,
+      "duration_seconds": 4276,
       "activity_trail": [
         {
           "time": "2026-08-20T12:09:11.836Z",
@@ -203,6 +438,11 @@
           "time": "2026-08-20T12:09:14.102Z",
           "offset": "0m 2s",
           "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T13:20:27.885Z",
+          "offset": "71m 16s",
+          "description": "Left Storefront"
         }
       ],
       "categories_visited": [],
@@ -211,11 +451,11 @@
     {
       "session_id": "SES-GJY8A12-MT1H55ZY",
       "first_seen": "2026-08-20T12:05:58.561Z",
-      "last_active": "2026-08-20T12:53:09.224Z",
+      "last_active": "2026-08-20T13:18:04.892Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 2831,
+      "duration_seconds": 4326,
       "activity_trail": [
         {
           "time": "2026-08-20T12:05:58.561Z",
@@ -231,6 +471,11 @@
           "time": "2026-08-20T12:06:07.588Z",
           "offset": "0m 9s",
           "description": "Clicked Facebook/Messenger Checkout (2 items, Total: 88 TND)"
+        },
+        {
+          "time": "2026-08-20T13:18:04.892Z",
+          "offset": "72m 6s",
+          "description": "Left Storefront"
         }
       ],
       "categories_visited": [],
@@ -239,11 +484,11 @@
     {
       "session_id": "SES-LT3WGFC-MT1GN51D",
       "first_seen": "2026-08-20T11:51:57.525Z",
-      "last_active": "2026-08-20T12:53:09.164Z",
+      "last_active": "2026-08-20T13:18:05.494Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 3122,
+      "duration_seconds": 4618,
       "activity_trail": [
         {
           "time": "2026-08-20T11:51:57.525Z",
@@ -344,6 +589,11 @@
           "time": "2026-08-20T12:01:07.642Z",
           "offset": "0m 0s",
           "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-20T13:18:05.494Z",
+          "offset": "76m 58s",
+          "description": "Left Storefront"
         }
       ],
       "categories_visited": [

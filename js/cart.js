@@ -134,23 +134,27 @@ export class CartManager {
   }
 
   // Smart Mobile vs Desktop Facebook / Messenger Link Generator
-  generateMessengerLink(fbUsername = 'mouna.nouira1', customerName = '', customerPhone = '', currency = 'TND', orderUrl = '') {
+  // Desktop: facebook.com/messages/t/ (uses active FB session, no login prompt)
+  // Mobile: m.me deep link with ?text= pre-filled (native Messenger app auto-types)
+  generateMessengerLink(fbUsername = 'Mounanouira.Oriflame', customerName = '', customerPhone = '', currency = 'TND', orderUrl = '', orderId = '') {
     if (this.cart.length === 0) return '#';
 
     const message = this.generateOrderTextMessage(customerName, customerPhone, currency, orderUrl);
     const encodedText = encodeURIComponent(message);
 
     if (this.isMobileDevice()) {
-      // Mobile: Launches Facebook Messenger Native App directly to mouna.nouira1
+      // Mobile: Launches native Messenger App with text pre-filled in composer
       return `https://m.me/${fbUsername}?text=${encodedText}`;
     } else {
-      // Desktop: Direct Facebook Web Messages URL to mouna.nouira1
+      // Desktop: Direct Facebook Web Messages (uses active facebook.com session)
+      // NOTE: Facebook does NOT allow pre-filling text on desktop web via URL — this is a Meta platform limit.
+      // The order text is auto-copied to clipboard; client pastes it with Ctrl+V.
       return `https://www.facebook.com/messages/t/${fbUsername}`;
     }
   }
 
   // Generate Direct Desktop Facebook Message URL
-  getDesktopFacebookUrl(fbUsername = 'mouna.nouira1') {
+  getDesktopFacebookUrl(fbUsername = 'Mounanouira.Oriflame') {
     return `https://www.facebook.com/messages/t/${fbUsername}`;
   }
 }

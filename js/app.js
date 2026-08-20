@@ -422,14 +422,15 @@ class App {
           const data = await res.json();
           if (data.success) {
             orderUrl = data.order_url;
+            orderId = data.order_id;
           }
         } catch (err) {
           console.warn("Could not persist order to server", err);
         }
 
-        const fbHandle = this.facebookUsername || 'mouna.nouira1';
+        const fbHandle = this.facebookUsername || 'Mounanouira.Oriflame';
         const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', orderUrl);
-        const finalMessengerUrl = this.cartManager.generateMessengerLink(fbHandle, name, phone, 'TND', orderUrl);
+        const finalMessengerUrl = this.cartManager.generateMessengerLink(fbHandle, name, phone, 'TND', orderUrl, orderId);
 
         // Copy order summary & admin inspection link to clipboard
         await copyTextToClipboard(msg);
@@ -448,26 +449,47 @@ class App {
           } catch (shareErr) {}
         }
 
-        // Open paste guide modal & open Messenger window
+        const isMobile = this.cartManager.isMobileDevice();
+
+        if (isMobile) {
+          // Mobile: m.me link already has text pre-filled in app. Open and done.
+          window.open(finalMessengerUrl, '_blank');
+          return;
+        }
+
+        // Desktop: Open Messenger in new tab first, then show paste guide
+        window.open(finalMessengerUrl, '_blank');
+
+        // Show paste guide modal with message preview
         const pasteModal = document.getElementById('messenger-paste-modal-overlay');
         const openMessengerBtn = document.getElementById('btn-paste-modal-open-messenger');
         const closePasteBtn = document.getElementById('btn-close-paste-modal');
+        const recopyBtn = document.getElementById('btn-recopy-order');
+        const msgPreview = document.getElementById('paste-modal-msg-preview');
 
         if (pasteModal) {
+          // Inject message preview text
+          if (msgPreview) {
+            const previewText = msg.replace(/\n/g, '<br>');
+            msgPreview.innerHTML = `<div style="position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: linear-gradient(transparent, #F8FAFC);"></div>${previewText}`;
+          }
+
           pasteModal.classList.add('open');
+
           if (openMessengerBtn) {
-            openMessengerBtn.onclick = () => {
-              window.open(finalMessengerUrl, '_blank');
-              pasteModal.classList.remove('open');
+            openMessengerBtn.onclick = () => window.open(finalMessengerUrl, '_blank');
+          }
+          if (recopyBtn) {
+            recopyBtn.onclick = async () => {
+              await copyTextToClipboard(msg);
+              recopyBtn.textContent = '✅ Recopié !';
+              setTimeout(() => { recopyBtn.textContent = '📋 Recopier'; }, 2000);
             };
           }
           if (closePasteBtn) {
             closePasteBtn.onclick = () => pasteModal.classList.remove('open');
           }
         }
-
-        // Immediately open Messenger in new tab
-        window.open(finalMessengerUrl, '_blank');
       });
     }
 
@@ -927,8 +949,11 @@ class App {
       chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    const fbHandle = this.facebookUsername || 'mouna.nouira.906';
-    const messengerUrl = `https://m.me/${fbHandle}?text=${encodeURIComponent(userText)}`;
+    const fbHandle = this.facebookUsername || 'Mounanouira.Oriflame';
+    const isMobile = this.cartManager ? this.cartManager.isMobileDevice() : /Android|iPhone|iPad/i.test(navigator.userAgent);
+    const messengerUrl = isMobile 
+      ? `https://m.me/${fbHandle}?text=${encodeURIComponent(userText)}`
+      : `https://www.facebook.com/messages/t/${fbHandle}`;
 
     if (navigator.clipboard) {
       try {
@@ -943,14 +968,16 @@ class App {
   }
 
   quickChatAction(action) {
-    const fbHandle = this.facebookUsername || 'mouna.nouira.906';
+    const fbHandle = this.facebookUsername || 'Mounanouira.Oriflame';
+    const isMobile = this.cartManager ? this.cartManager.isMobileDevice() : /Android|iPhone|iPad/i.test(navigator.userAgent);
     if (action === 'order') {
       this.openCartDrawer();
     } else if (action === 'catalog') {
       const section = document.getElementById('catalogue-section');
       if (section) section.scrollIntoView({ behavior: 'smooth' });
     } else if (action === 'direct') {
-      window.open(`https://m.me/${fbHandle}`, '_blank');
+      const messengerUrl = isMobile ? `https://m.me/${fbHandle}` : `https://www.facebook.com/messages/t/${fbHandle}`;
+      window.open(messengerUrl, '_blank');
     }
   }
 
