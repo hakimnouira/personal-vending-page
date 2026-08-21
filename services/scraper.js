@@ -197,7 +197,7 @@ export async function scrapeAllOriflameCategories() {
     }
   });
 
-  // Save merged and updated products into data/products.json
+  // Save merged and updated products into data/products.json with reset discount
   const mergedProducts = [...scrapedProducts];
   // Preserve any custom products added manually that were not in the scrape
   currentProducts.forEach(p => {
@@ -206,7 +206,15 @@ export async function scrapeAllOriflameCategories() {
     }
   });
 
-  fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(mergedProducts, null, 2), 'utf8');
+  const cleanMerged = mergedProducts.map(p => ({
+    ...p,
+    price: Number(p.price),
+    original_catalog_price: Number(p.price),
+    company_discount_applied: false,
+    company_discount_percent: 0
+  }));
+
+  fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(cleanMerged, null, 2), 'utf8');
 
   // Reset global company discount flag so newly scraped products can receive discount cleanly
   const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');

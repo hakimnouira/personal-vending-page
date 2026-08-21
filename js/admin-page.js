@@ -666,6 +666,22 @@ class AdminDashboard {
               }
             }
 
+            // Reset Remise Société UI button and input to fresh state
+            const btnDiscount = document.getElementById('btn-apply-company-discount');
+            if (btnDiscount) {
+              btnDiscount.disabled = false;
+              btnDiscount.textContent = '🏷️ Appliquer la Remise Société';
+              btnDiscount.style.background = '#1D4ED8';
+              btnDiscount.style.borderColor = '#1E40AF';
+              btnDiscount.style.cursor = 'pointer';
+            }
+            const inputDiscount = document.getElementById('company-discount-input');
+            if (inputDiscount) {
+              inputDiscount.disabled = false;
+              inputDiscount.value = '20';
+            }
+
+            await this.fetchSettings();
             await this.fetchProducts();
           } else {
             if (reportStatus) {
