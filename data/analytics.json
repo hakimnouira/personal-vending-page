@@ -4,11 +4,11 @@
     {
       "session_id": "SES-KQ6MIBQ-MT2ZUTD0",
       "first_seen": "2026-08-21T13:37:34.517Z",
-      "last_active": "2026-08-21T13:39:05.379Z",
+      "last_active": "2026-08-21T13:40:52.389Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 91,
+      "duration_seconds": 198,
       "activity_trail": [
         {
           "time": "2026-08-21T13:37:34.517Z",
@@ -32,11 +32,11 @@
     {
       "session_id": "SES-NHRPIH4-MT2Z11KK",
       "first_seen": "2026-08-21T13:14:25.467Z",
-      "last_active": "2026-08-21T13:38:52.383Z",
+      "last_active": "2026-08-21T13:40:52.386Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 947,
+      "duration_seconds": 1067,
       "activity_trail": [
         {
           "time": "2026-08-21T13:14:25.467Z",
@@ -94,11 +94,11 @@
     {
       "session_id": "SES-96GWOI0-MT2PP8VB",
       "first_seen": "2026-08-21T13:13:52.653Z",
-      "last_active": "2026-08-21T13:38:52.386Z",
+      "last_active": "2026-08-21T13:40:52.392Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 17134,
+      "duration_seconds": 17254,
       "activity_trail": [],
       "categories_visited": [],
       "products_viewed": []
