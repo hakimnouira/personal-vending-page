@@ -167,8 +167,94 @@ class AdminDashboard {
       item.addEventListener('click', () => {
         const targetId = item.dataset.target;
         this.switchSection(targetId);
+        // Close sidebar on mobile when a section is selected
+        this._closeSidebar();
       });
     });
+
+    // ── Mobile Hamburger Sidebar Toggle ─────────────────────────────────────
+    const hamburger = document.getElementById('sidebar-hamburger');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const sidebar = document.querySelector('.admin-sidebar');
+
+    const toggleSidebar = () => {
+      const isOpen = sidebar?.classList.contains('open');
+      if (isOpen) {
+        this._closeSidebar();
+      } else {
+        sidebar?.classList.add('open');
+        hamburger?.classList.add('open');
+        sidebarOverlay?.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    };
+
+    this._closeSidebar = () => {
+      sidebar?.classList.remove('open');
+      hamburger?.classList.remove('open');
+      sidebarOverlay?.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    if (hamburger) hamburger.addEventListener('click', toggleSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', () => this._closeSidebar());
+
+    // ── Backup: Export JSON ─────────────────────────────────────────────────
+    // Export is a plain <a download> link — no JS needed.
+
+    // ── Backup: Import JSON ─────────────────────────────────────────────────
+    const backupFileInput = document.getElementById('admin-backup-file');
+    const backupStatus = document.getElementById('backup-restore-status');
+
+    if (backupFileInput) {
+      backupFileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const confirmed = confirm(
+          `⚠️ Restaurer depuis "${file.name}" ?\n\nCela remplacera TOUS les produits et diapositives actuels. Cette action est irréversible.\n\nContinuer ?`
+        );
+        if (!confirmed) { backupFileInput.value = ''; return; }
+
+        const formData = new FormData();
+        formData.append('backup', file);
+
+        try {
+          if (backupStatus) {
+            backupStatus.style.display = 'block';
+            backupStatus.style.color = '#C5A880';
+            backupStatus.textContent = '⏳ Restauration en cours...';
+          }
+
+          const res = await fetch('/api/import/backup', { method: 'POST', body: formData });
+          const data = await res.json();
+
+          if (data.success) {
+            if (backupStatus) {
+              backupStatus.style.color = '#2D6A4F';
+              backupStatus.textContent = `✅ ${data.message}`;
+            }
+            // Refresh the page data
+            await this.fetchProducts();
+            await this.fetchCarousel();
+          } else {
+            if (backupStatus) {
+              backupStatus.style.color = '#C1121F';
+              backupStatus.textContent = `❌ Erreur: ${data.message}`;
+            }
+          }
+        } catch (err) {
+          if (backupStatus) {
+            backupStatus.style.color = '#C1121F';
+            backupStatus.textContent = `❌ Erreur réseau: ${err.message}`;
+          }
+        } finally {
+          backupFileInput.value = '';
+        }
+      });
+    }
+
+
 
     // Analytics & Orders Refresh
     if (this.btnRefreshAnalytics) {

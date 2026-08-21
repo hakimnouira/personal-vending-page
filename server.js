@@ -774,9 +774,68 @@ app.delete('/api/orders/:id', (req, res) => {
   res.json({ success: true, message: 'Order deleted' });
 });
 
+// ── EXPORT: Full JSON Backup (products + carousel) ──────────────────────────
+app.get('/api/export/backup', (req, res) => {
+  try {
+    const products = fs.existsSync(PRODUCTS_FILE) ? JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8')) : [];
+    const carousel = fs.existsSync(CAROUSEL_FILE) ? JSON.parse(fs.readFileSync(CAROUSEL_FILE, 'utf8')) : [];
+    const backup = {
+      version: '1.0',
+      exported_at: new Date().toISOString(),
+      products: Array.isArray(products) ? products : (products.data || []),
+      carousel: Array.isArray(carousel) ? carousel : (carousel.data || []),
+    };
+    const filename = `oriflame-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(backup, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Backup failed: ' + e.message });
+  }
+});
+
+// ── IMPORT: Restore from JSON Backup ────────────────────────────────────────
+app.post('/api/import/backup', upload.single('backup'), (req, res) => {
+  try {
+    let raw;
+    if (req.file) {
+      raw = fs.readFileSync(req.file.path, 'utf8');
+      fs.unlinkSync(req.file.path); // clean up temp file
+    } else if (req.body && req.body.data) {
+      raw = req.body.data;
+    } else {
+      return res.status(400).json({ success: false, message: 'No backup file provided' });
+    }
+
+    const backup = JSON.parse(raw);
+    let productsRestored = 0;
+    let carouselRestored = 0;
+
+    if (Array.isArray(backup.products) && backup.products.length > 0) {
+      fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(backup.products, null, 2));
+      productsRestored = backup.products.length;
+    }
+
+    if (Array.isArray(backup.carousel) && backup.carousel.length > 0) {
+      fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(backup.carousel, null, 2));
+      carouselRestored = backup.carousel.length;
+    }
+
+    res.json({
+      success: true,
+      message: `Restauration réussie : ${productsRestored} produits, ${carouselRestored} diapositives.`,
+      products_restored: productsRestored,
+      carousel_restored: carouselRestored,
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Import failed: ' + e.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`===================================================`);
   console.log(`  Oriflame Assistant Server running on http://localhost:${PORT}`);
   console.log(`  Admin Portal URL: http://localhost:${PORT}/admin`);
   console.log(`===================================================`);
 });
+

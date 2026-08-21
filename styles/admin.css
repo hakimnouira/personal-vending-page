@@ -556,11 +556,6 @@ body {
   }
 }
 
-@media (max-width: 600px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
   .login-card {
     padding: 1.8rem 1.2rem;
   }
@@ -569,3 +564,148 @@ body {
     font-size: 1.3rem;
   }
 }
+
+/* =============================================
+   MOBILE-FRIENDLY ADMIN UI — HAMBURGER & SIDEBAR
+   ============================================= */
+
+/* Hamburger button — only visible on mobile */
+.sidebar-hamburger {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 1100;
+  width: 44px;
+  height: 44px;
+  background: #18181B;
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  border-radius: 10px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.sidebar-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #C5A880;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+}
+.sidebar-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.sidebar-hamburger.open span:nth-child(2) { opacity: 0; }
+.sidebar-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Sidebar overlay — dark backdrop on mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+}
+.sidebar-overlay.active {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  /* Show hamburger on mobile */
+  .sidebar-hamburger {
+    display: flex;
+  }
+
+  /* Admin layout: no sidebar by default, full width content */
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Sidebar slides in from left */
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    height: 100%;
+    width: 260px;
+    z-index: 1000;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+  }
+  .admin-sidebar.open {
+    left: 0;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.35);
+  }
+
+  /* Main content gets top padding for hamburger */
+  .admin-main {
+    padding: 70px 14px 28px 14px;
+  }
+
+  /* Section header stacks on mobile */
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* All 2-column form grids collapse to 1 column */
+  .admin-form-box form > div[style*="grid-template-columns: 1fr 1fr"],
+  .admin-form-box > div[style*="grid-template-columns: 1fr 1fr"],
+  form#admin-add-product-form,
+  #form-carousel-slide > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+  form#admin-add-product-form > div[style*="grid-column: span 2"] {
+    grid-column: span 1 !important;
+  }
+
+  /* Stats grids: 2 cols on medium mobile */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* All buttons min touch target */
+  .btn-primary,
+  .btn-logout,
+  .nav-item {
+    min-height: 44px;
+  }
+
+  /* Table wrapper with horizontal scroll */
+  .table-responsive,
+  .admin-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Carousel slides grid: 1 col on mobile */
+  #admin-carousel-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Settings: flex buttons wrap nicely */
+  .admin-form-box > div[style*="display: flex"] {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Stats: 1 col on very small screens */
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-main {
+    padding: 66px 10px 24px 10px;
+  }
+
+  .section-title {
+    font-size: 1.1rem !important;
+  }
+}
+

@@ -243,7 +243,88 @@ class App {
         }
       }, { passive: true });
     }
+
+    // Bind lightbox open on image click
+    this._bindLightboxTriggers();
   }
+
+  _bindLightboxTriggers() {
+    // Re-bind after each render
+    document.querySelectorAll('.carousel-full-img').forEach((img, idx) => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.openLightbox(idx);
+      });
+    });
+  }
+
+  openLightbox(index) {
+    this._lightboxIndex = (index + this.carouselSlides.length) % this.carouselSlides.length;
+    const lb = document.getElementById('carousel-lightbox');
+    if (!lb) return;
+
+    this._updateLightboxContent();
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    this.stopCarouselAutoPlay();
+
+    // Bind controls once
+    if (!this._lightboxBound) {
+      this._lightboxBound = true;
+      document.getElementById('lightbox-close-btn')?.addEventListener('click', () => this.closeLightbox());
+      document.querySelector('.lightbox-backdrop')?.addEventListener('click', () => this.closeLightbox());
+      document.getElementById('lightbox-prev-btn')?.addEventListener('click', (e) => { e.stopPropagation(); this._lightboxNav(-1); });
+      document.getElementById('lightbox-next-btn')?.addEventListener('click', (e) => { e.stopPropagation(); this._lightboxNav(1); });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (document.getElementById('carousel-lightbox')?.style.display === 'none') return;
+        if (e.key === 'Escape') this.closeLightbox();
+        if (e.key === 'ArrowLeft') this._lightboxNav(-1);
+        if (e.key === 'ArrowRight') this._lightboxNav(1);
+      });
+
+      // Touch swipe on lightbox
+      let lbTouchX = 0;
+      const lbContent = document.querySelector('.lightbox-content');
+      lbContent?.addEventListener('touchstart', (e) => { lbTouchX = e.changedTouches[0].screenX; }, { passive: true });
+      lbContent?.addEventListener('touchend', (e) => {
+        const dx = lbTouchX - e.changedTouches[0].screenX;
+        if (Math.abs(dx) > 40) this._lightboxNav(dx > 0 ? 1 : -1);
+      }, { passive: true });
+    }
+  }
+
+  _lightboxNav(dir) {
+    this._lightboxIndex = (this._lightboxIndex + dir + this.carouselSlides.length) % this.carouselSlides.length;
+    this._updateLightboxContent();
+  }
+
+  _updateLightboxContent() {
+    const slide = this.carouselSlides[this._lightboxIndex];
+    if (!slide) return;
+    const img = document.getElementById('lightbox-img');
+    const caption = document.getElementById('lightbox-caption');
+    if (img) { img.src = slide.image_url; img.alt = slide.title || ''; }
+    if (caption) caption.textContent = slide.title || '';
+    // Animate re-entry
+    const content = document.querySelector('.lightbox-content');
+    if (content) {
+      content.style.animation = 'none';
+      content.offsetHeight; // reflow
+      content.style.animation = 'lightboxIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both';
+    }
+  }
+
+  closeLightbox() {
+    const lb = document.getElementById('carousel-lightbox');
+    if (lb) lb.style.display = 'none';
+    document.body.style.overflow = '';
+    this.startCarouselAutoPlay();
+  }
+
+
 
   cacheDOM() {
     // Language

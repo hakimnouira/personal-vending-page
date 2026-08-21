@@ -38,6 +38,12 @@
 
   <!-- 2. Main Admin Dashboard View -->
   <div id="admin-dashboard-view" class="admin-layout" style="display: none;">
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <!-- Mobile Hamburger -->
+    <button id="sidebar-hamburger" class="sidebar-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
     
     <!-- Sidebar Navigation -->
     <aside class="admin-sidebar">
@@ -438,7 +444,7 @@
         </div>
 
         <!-- CSV Bulk Tools -->
-        <div class="admin-form-box" style="background: #FFFFFF;">
+        <div class="admin-form-box" style="background: #FFFFFF; margin-bottom: 24px;">
           <h4 style="font-weight: 700; margin-bottom: 12px;" data-admin-i18n="csv_title">Opérations Massives en CSV</h4>
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
             <label class="btn-primary" style="width: auto; padding: 10px 20px; cursor: pointer;" data-admin-i18n="btn_import_csv">
@@ -452,6 +458,26 @@
               📄 Télécharger un Modèle CSV
             </button>
           </div>
+        </div>
+
+        <!-- Full JSON Backup & Restore -->
+        <div class="admin-form-box" style="background: linear-gradient(135deg, #18181B 0%, #27272A 100%); border: 1px solid #C5A880;">
+          <h4 style="font-weight: 700; margin-bottom: 6px; color: #C5A880; display: flex; align-items: center; gap: 8px;">
+            🔐 Sauvegarde &amp; Restauration Complète
+          </h4>
+          <p style="font-size: 0.82rem; color: #A1A1AA; margin-bottom: 16px;">
+            Exportez tous vos produits et diapositives dans un fichier JSON. En cas de reset du serveur ou de corruption des données, importez ce fichier pour tout restaurer instantanément.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+            <a id="btn-export-backup" href="/api/export/backup" download class="btn-primary" style="background: #C5A880; color: #18181B; width: auto; padding: 12px 22px; font-weight: 700; border-color: #C5A880; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+              ⬇️ Télécharger la Sauvegarde JSON
+            </a>
+            <label class="btn-primary" style="background: #3F3F46; color: #E4E4E7; width: auto; padding: 12px 22px; font-weight: 700; border-color: #52525B; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+              ⬆️ Restaurer depuis une Sauvegarde
+              <input type="file" id="admin-backup-file" accept=".json" style="display: none;" />
+            </label>
+          </div>
+          <div id="backup-restore-status" style="margin-top: 12px; font-size: 0.85rem; font-weight: 600; display: none;"></div>
         </div>
       </section>
 

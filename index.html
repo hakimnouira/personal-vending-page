@@ -420,6 +420,18 @@
     </div>
   </footer>
 
+  <!-- Carousel Image Lightbox -->
+  <div id="carousel-lightbox" class="carousel-lightbox" role="dialog" aria-modal="true" aria-label="Image agrandie" style="display:none;">
+    <div class="lightbox-backdrop"></div>
+    <button class="lightbox-close-btn" id="lightbox-close-btn" aria-label="Fermer">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightbox-prev-btn" aria-label="Précédent">&#8249;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="" class="lightbox-img" />
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+    <button class="lightbox-nav lightbox-next" id="lightbox-next-btn" aria-label="Suivant">&#8250;</button>
+  </div>
+
   <!-- Application JS Modules -->
   <script type="module" src="js/app.js"></script>
 
