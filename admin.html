@@ -83,6 +83,10 @@
         <div class="nav-item" data-target="section-carousel" data-admin-i18n="tab_carousel">
           🖼️ Carrousel Page d'Accueil
         </div>
+        <!-- Order Detail nav item — shown dynamically when viewing an order -->
+        <div class="nav-item" id="nav-item-order-detail" data-target="section-order-detail" style="display:none; border-left: 2px solid #C5A880; padding-left: 12px;">
+          📋 Détail Commande
+        </div>
       </nav>
 
       <div class="sidebar-footer">
@@ -204,6 +208,26 @@
               <!-- Rendered dynamically -->
             </tbody>
           </table>
+        </div>
+      </section>
+
+      <!-- SECTION: ORDER DETAIL (full-page, shown when clicking 'Voir' on an order) -->
+      <section id="section-order-detail" class="admin-section">
+        <div class="section-header" style="margin-bottom: 20px;">
+          <div>
+            <button id="btn-back-to-orders" class="btn-primary" style="background: #27272A; width: auto; padding: 8px 18px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              ← Retour aux Commandes
+            </button>
+            <h2 class="section-title" id="order-detail-title">🛒 Détails de la Commande</h2>
+            <p id="order-detail-subtitle" style="font-size: 0.85rem; color: var(--admin-text-muted); margin-top: 2px;"></p>
+          </div>
+          <button id="btn-print-order" class="btn-primary" style="background: #18181B; width: auto; padding: 10px 20px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px;">
+            🖨️ Imprimer la Commande
+          </button>
+        </div>
+        <div id="order-detail-content" class="admin-card" style="padding: 24px;">
+          <!-- Populated dynamically by showOrderDetail() -->
+          <p style="color: var(--admin-text-muted); text-align: center; padding: 40px 0;">Élément non chargé. Cliquez sur «Voir» depuis la liste des commandes.</p>
         </div>
       </section>
 
@@ -611,26 +635,6 @@
 
     </main>
   </div>
-
-    <!-- Order Detail Inspection Modal -->
-    <div id="admin-order-modal-overlay" class="modal-overlay">
-      <div class="modal-card" style="max-width: 680px; width: 94vw;">
-        <div class="modal-header">
-          <div>
-            <h3 id="order-modal-title" style="font-family: var(--font-serif); font-size: 1.3rem; margin: 0; color: #18181B;">🛍️ Détails de la Commande</h3>
-            <p id="order-modal-subtitle" style="font-size: 0.8rem; color: #8E8D8A; margin: 2px 0 0 0;"></p>
-          </div>
-          <button id="btn-close-order-modal" class="modal-close-btn">&times;</button>
-        </div>
-        <div class="modal-body" id="order-modal-content">
-          <!-- Order items, customer info, and total rendered dynamically -->
-        </div>
-        <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: #FAF8F5; border-top: 1px solid #E8E5DF;">
-          <button id="btn-print-order" class="btn-primary" style="width: auto; background: #27272A; padding: 8px 18px;">🖨️ Imprimer la Commande</button>
-          <button id="btn-close-order-modal-footer" class="btn-primary" style="width: auto; background: var(--admin-border); color: #18181B; padding: 8px 18px;">Fermer</button>
-        </div>
-      </div>
-    </div>
 
   <script type="module" src="js/admin-page.js"></script>
 </body>

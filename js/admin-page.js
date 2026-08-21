@@ -342,23 +342,19 @@ class AdminDashboard {
       btnRefreshOrders.addEventListener('click', () => this.fetchOrders());
     }
 
-    // Order Modal Event Listeners
-    const modalOverlay = document.getElementById('admin-order-modal-overlay');
-    const closeBtn1 = document.getElementById('btn-close-order-modal');
-    const closeBtn2 = document.getElementById('btn-close-order-modal-footer');
-    const printBtn = document.getElementById('btn-print-order');
-
-    const closeOrderModal = () => {
-      if (modalOverlay) modalOverlay.classList.remove('open');
-    };
-
-    if (closeBtn1) closeBtn1.addEventListener('click', closeOrderModal);
-    if (closeBtn2) closeBtn2.addEventListener('click', closeOrderModal);
-    if (printBtn) {
-      printBtn.addEventListener('click', () => {
-        window.print();
+    // Order Detail: Back button & Print
+    const btnBack = document.getElementById('btn-back-to-orders');
+    if (btnBack) {
+      btnBack.addEventListener('click', () => {
+        this.switchSection('section-orders');
+        // Hide the nav item again
+        const navItem = document.getElementById('nav-item-order-detail');
+        if (navItem) navItem.style.display = 'none';
       });
     }
+
+    const btnPrint = document.getElementById('btn-print-order');
+    if (btnPrint) btnPrint.addEventListener('click', () => window.print());
 
     // Image Upload Preview
     if (this.filePicker && this.imagePreview) {
@@ -815,10 +811,9 @@ class AdminDashboard {
 
     if (!order) return alert('Commande introuvable.');
 
-    const titleEl = document.getElementById('order-modal-title');
-    const subtitleEl = document.getElementById('order-modal-subtitle');
-    const contentEl = document.getElementById('order-modal-content');
-    const modalEl = document.getElementById('admin-order-modal-overlay');
+    const titleEl = document.getElementById('order-detail-title');
+    const subtitleEl = document.getElementById('order-detail-subtitle');
+    const contentEl = document.getElementById('order-detail-content');
 
     if (titleEl) titleEl.textContent = `🛍️ Commande : ${order.order_id}`;
     if (subtitleEl) subtitleEl.textContent = `Passée le ${new Date(order.created_at).toLocaleString()} • Statut : ${order.status.toUpperCase()}`;
@@ -850,11 +845,13 @@ class AdminDashboard {
             <tbody>
               ${(order.items || []).map(i => `
                 <tr style="border-bottom:1px solid #F4F4F5;">
-                  <td style="padding:10px 12px; display:flex; align-items:center; gap:10px;">
-                    <img src="${i.image_url}" alt="${i.name}" style="width:40px; height:40px; border-radius:6px; object-fit:cover; background:#FAF8F5;" />
-                    <div>
-                      <strong style="display:block; color:#18181B;">${i.name}</strong>
-                      <code style="font-size:0.72rem; color:#71717A;">Réf: ${i.product_id}</code>
+                  <td style="padding:10px 12px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <img src="${i.image_url || ''}" alt="${i.name}" style="width:40px; height:40px; border-radius:6px; object-fit:cover; background:#FAF8F5;" />
+                      <div>
+                        <strong style="display:block; color:#18181B;">${i.name}</strong>
+                        <code style="font-size:0.72rem; color:#71717A;">Réf: ${i.product_id}</code>
+                      </div>
                     </div>
                   </td>
                   <td style="padding:10px 12px;">${Number(i.price).toFixed(2)} ${order.currency || 'TND'}</td>
@@ -873,7 +870,10 @@ class AdminDashboard {
       `;
     }
 
-    if (modalEl) modalEl.classList.add('open');
+    // Show the nav item & navigate to the section
+    const navItem = document.getElementById('nav-item-order-detail');
+    if (navItem) navItem.style.display = 'flex';
+    this.switchSection('section-order-detail');
   }
 
   async updateOrderStatus(orderId, newStatus) {
