@@ -584,37 +584,43 @@
           </div>
         </div>
 
-        <!-- CSV Bulk Tools -->
-        <div class="admin-form-box" style="background: #FFFFFF; margin-bottom: 24px;">
-          <h4 style="font-weight: 700; margin-bottom: 12px;" data-admin-i18n="csv_title">Opérations Massives en CSV</h4>
+        <!-- CSV Bulk Import/Export with Full Customizations -->
+        <div class="admin-form-box" style="background: #FFFFFF; margin-bottom: 24px; border: 1px solid #E4E4E7;">
+          <h4 style="font-weight: 700; margin-bottom: 6px; color: #18181B; display: flex; align-items: center; gap: 8px;">
+            📊 Importation &amp; Exportation CSV (Excel &amp; Tableurs)
+          </h4>
+          <p style="font-size: 0.82rem; color: #71717A; margin-bottom: 14px;">
+            Exportez ou importez l'intégralité du catalogue avec <strong>toutes les personnalisations</strong> : noms et descriptions multilingues (FR, AR, EN), galerie photos, prix catalogue, remises et statut de stock. Compatible Excel &amp; Google Sheets avec encodage UTF-8 (Arabe &amp; accents préservés).
+          </p>
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <label class="btn-primary" style="width: auto; padding: 10px 20px; cursor: pointer;" data-admin-i18n="btn_import_csv">
-              📥 Importer des Produits depuis CSV
+            <label class="btn-primary" style="width: auto; padding: 11px 22px; cursor: pointer; background: #059669; border-color: #047857; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+              📥 Importer Catalogue CSV Complet
               <input type="file" id="admin-csv-file" accept=".csv" style="display: none;" />
             </label>
-            <button id="btn-export-csv" class="btn-primary" style="background: #27272A; width: auto; padding: 10px 20px;" data-admin-i18n="btn_export_csv">
-              📤 Exporter le Catalogue en CSV
+            <button id="btn-export-csv" class="btn-primary" style="background: #27272A; width: auto; padding: 11px 22px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+              📤 Exporter Catalogue CSV (Toutes Personnalisations)
             </button>
-            <button id="btn-download-sample-csv" class="btn-primary" style="background: #27272A; width: auto; padding: 10px 20px;" data-admin-i18n="btn_sample_csv">
-              📄 Télécharger un Modèle CSV
+            <button id="btn-download-sample-csv" class="btn-primary" style="background: #4B5563; border-color: #374151; width: auto; padding: 11px 20px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;">
+              📄 Télécharger Modèle CSV Type
             </button>
           </div>
+          <div id="csv-import-status" style="margin-top: 12px; font-size: 0.85rem; font-weight: 600; display: none;"></div>
         </div>
 
         <!-- Full JSON Backup & Restore -->
-        <div class="admin-form-box" style="background: linear-gradient(135deg, #18181B 0%, #27272A 100%); border: 1px solid #C5A880;">
+        <div class="admin-form-box" style="background: linear-gradient(135deg, #18181B 0%, #27272A 100%); border: 1px solid #C5A880; margin-bottom: 24px;">
           <h4 style="font-weight: 700; margin-bottom: 6px; color: #C5A880; display: flex; align-items: center; gap: 8px;">
-            🔐 Sauvegarde &amp; Restauration Complète
+            🔐 Sauvegarde &amp; Restauration Intégrale JSON (100% Fidèle)
           </h4>
-          <p style="font-size: 0.82rem; color: #A1A1AA; margin-bottom: 16px;">
-            Exportez tous vos produits et diapositives dans un fichier JSON. En cas de reset du serveur ou de corruption des données, importez ce fichier pour tout restaurer instantanément.
+          <p style="font-size: 0.82rem; color: #D4D4D8; margin-bottom: 16px;">
+            Sauvegardez l'état exact de votre boutique (produits personnalisés, carrousel, photos HD, traductions 3 langues, offres spéciales) dans un fichier JSON réutilisable à tout moment.
           </p>
           <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
             <a id="btn-export-backup" href="/api/export/backup" download class="btn-primary" style="background: #C5A880; color: #18181B; width: auto; padding: 12px 22px; font-weight: 700; border-color: #C5A880; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-              ⬇️ Télécharger la Sauvegarde JSON
+              ⬇️ Télécharger la Sauvegarde JSON Complète
             </a>
             <label class="btn-primary" style="background: #3F3F46; color: #E4E4E7; width: auto; padding: 12px 22px; font-weight: 700; border-color: #52525B; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
-              ⬆️ Restaurer depuis une Sauvegarde
+              ⬆️ Importer / Restaurer un Fichier JSON
               <input type="file" id="admin-backup-file" accept=".json" style="display: none;" />
             </label>
           </div>

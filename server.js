@@ -602,6 +602,110 @@ app.put('/api/products/:id', upload.single('image_file'), (req, res) => {
   }
 });
 
+// Bulk Import Products with ALL Customizations (Multilingual, Gallery, Prices, Discounts, Stock)
+app.post('/api/products/bulk-import', (req, res) => {
+  try {
+    const incoming = req.body.products || (Array.isArray(req.body) ? req.body : []);
+    if (!Array.isArray(incoming) || incoming.length === 0) {
+      return res.status(400).json({ success: false, message: 'Liste de produits invalide ou vide.' });
+    }
+
+    const currentProducts = getProducts();
+    const currentMap = new Map(currentProducts.map(p => [String(p.product_id), p]));
+
+    let updatedCount = 0;
+    let addedCount = 0;
+
+    incoming.forEach((p, idx) => {
+      if (!p) return;
+      const strId = String(p.product_id || p.code || `ORF-IMP-${Date.now()}-${idx}`).trim();
+      const existing = currentMap.get(strId) || {};
+
+      const nameFr = (p.name_fr || p.name || existing.name_fr || existing.name || `Produit #${strId}`).trim();
+      const descFr = (p.description_fr || p.description || existing.description_fr || existing.description || '').trim();
+
+      const mainImg = p.image_url || existing.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${strId}%2f${strId}_1.png&MediaId=20989035&Version=1`;
+      
+      let gallery = [];
+      if (Array.isArray(p.images) && p.images.length > 0) {
+        gallery = p.images;
+      } else if (typeof p.images === 'string' && p.images.trim()) {
+        gallery = p.images.split(/[|;,]+/).map(u => u.trim()).filter(u => u.startsWith('http'));
+      } else if (p.gallery_images) {
+        gallery = typeof p.gallery_images === 'string' 
+          ? p.gallery_images.split(/[|;,]+/).map(u => u.trim()).filter(u => u.startsWith('http'))
+          : (Array.isArray(p.gallery_images) ? p.gallery_images : []);
+      } else if (existing.images && existing.images.length > 0) {
+        gallery = existing.images;
+      }
+      if (!gallery.includes(mainImg)) gallery.unshift(mainImg);
+
+      let benefitsList = ["100% Produit authentique certifié par Mouna Nouira"];
+      if (Array.isArray(p.benefits) && p.benefits.length > 0) {
+        benefitsList = p.benefits;
+      } else if (typeof p.benefits === 'string' && p.benefits.trim()) {
+        benefitsList = p.benefits.split(/[|;]+/).map(b => b.trim()).filter(Boolean);
+      } else if (existing.benefits) {
+        benefitsList = existing.benefits;
+      }
+
+      const priceVal = p.price !== undefined && p.price !== '' ? parseFloat(p.price) : (existing.price || 0);
+      const catPriceVal = p.original_catalog_price !== undefined && p.original_catalog_price !== '' ? parseFloat(p.original_catalog_price) : (existing.original_catalog_price || priceVal);
+
+      const cleanProd = {
+        product_id: strId,
+        name: nameFr,
+        name_fr: nameFr,
+        name_ar: p.name_ar !== undefined ? p.name_ar.trim() : (existing.name_ar || ''),
+        name_en: p.name_en !== undefined ? p.name_en.trim() : (existing.name_en || ''),
+        category: p.category || existing.category || 'Skincare',
+        price: isNaN(priceVal) ? 0 : priceVal,
+        original_catalog_price: isNaN(catPriceVal) ? priceVal : catPriceVal,
+        original_price: p.original_price ? parseFloat(p.original_price) : (existing.original_price || null),
+        is_promo: p.is_promo !== undefined ? (p.is_promo === true || p.is_promo === 'true' || p.is_promo === 1 || p.is_promo === '1') : Boolean(existing.is_promo),
+        discount_percent: p.discount_percent !== undefined ? parseInt(p.discount_percent) : (existing.discount_percent || 0),
+        company_discount_applied: p.company_discount_applied !== undefined ? (p.company_discount_applied === true || p.company_discount_applied === 'true') : Boolean(existing.company_discount_applied),
+        company_discount_percent: p.company_discount_percent !== undefined ? parseInt(p.company_discount_percent) : (existing.company_discount_percent || 0),
+        is_featured_deal: p.is_featured_deal !== undefined ? (p.is_featured_deal === true || p.is_featured_deal === 'true') : Boolean(existing.is_featured_deal),
+        size: p.size ? p.size.trim() : (existing.size || 'Format Standard'),
+        suitable_for: p.suitable_for ? p.suitable_for.trim() : (existing.suitable_for || 'Tous types de peaux • Produit certifié Oriflame Suède'),
+        image_url: mainImg,
+        images: gallery,
+        description: descFr,
+        description_fr: descFr,
+        description_ar: p.description_ar !== undefined ? p.description_ar.trim() : (existing.description_ar || ''),
+        description_en: p.description_en !== undefined ? p.description_en.trim() : (existing.description_en || ''),
+        benefits: benefitsList,
+        how_to_use: p.how_to_use ? p.how_to_use.trim() : (existing.how_to_use || "Appliquer délicatement selon les recommandations de la gamme."),
+        ingredients: p.ingredients ? p.ingredients.trim() : (existing.ingredients || "Extraits botaniques suédois et complexes actifs certifiés Oriflame."),
+        in_stock: p.in_stock !== undefined ? (p.in_stock === true || p.in_stock === 'true' || p.in_stock === 1 || p.in_stock === '1') : (existing.in_stock !== undefined ? existing.in_stock : true)
+      };
+
+      if (currentMap.has(strId)) {
+        currentMap.set(strId, { ...existing, ...cleanProd });
+        updatedCount++;
+      } else {
+        currentMap.set(strId, cleanProd);
+        addedCount++;
+      }
+    });
+
+    const finalProducts = Array.from(currentMap.values());
+    saveProducts(finalProducts);
+
+    res.json({
+      success: true,
+      message: `${addedCount} produit(s) ajoutés, ${updatedCount} produit(s) mis à jour avec leurs personnalisations complètes.`,
+      total: finalProducts.length,
+      added: addedCount,
+      updated: updatedCount,
+      products: finalProducts
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erreur import: ' + err.message });
+  }
+});
+
 // Delete ALL products (supports both DELETE /api/products and POST /api/products/delete-all)
 const handleDeleteAllProducts = (req, res) => {
   try {

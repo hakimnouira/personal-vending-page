@@ -1,10 +1,77 @@
 {
-  "total_visits": 28,
+  "total_visits": 29,
   "sessions": [
+    {
+      "session_id": "SES-QTMHRNX-MT3B184J",
+      "first_seen": "2026-08-21T18:50:29.352Z",
+      "last_active": "2026-08-21T19:36:05.475Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 183,
+      "activity_trail": [
+        {
+          "time": "2026-08-21T18:50:29.352Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T18:50:42.202Z",
+          "offset": "0m 13s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-21T18:51:25.063Z",
+          "offset": "0m 56s",
+          "description": "Completed Phone/WhatsApp Order ORD-379609"
+        },
+        {
+          "time": "2026-08-21T18:52:12.200Z",
+          "offset": "1m 43s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-21T19:33:02.446Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T19:33:39.561Z",
+          "offset": "0m 37s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-21T19:34:42.782Z",
+          "offset": "1m 40s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-21T19:35:21.600Z",
+          "offset": "2m 19s",
+          "description": "Added to cart: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-21T19:35:36.361Z",
+          "offset": "2m 34s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-21T19:36:05.475Z",
+          "offset": "3m 3s",
+          "description": "Left Storefront"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+      ]
+    },
     {
       "session_id": "SES-KQ6MIBQ-MT2ZUTD0",
       "first_seen": "2026-08-21T13:37:34.517Z",
-      "last_active": "2026-08-21T18:17:24.308Z",
+      "last_active": "2026-08-21T19:37:52.309Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -64,6 +131,16 @@
           "time": "2026-08-21T18:16:54.157Z",
           "offset": "0m 0s",
           "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T18:29:04.571Z",
+          "offset": "12m 10s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-21T18:29:04.653Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
         }
       ],
       "categories_visited": [
@@ -78,7 +155,7 @@
     {
       "session_id": "SES-NHRPIH4-MT2Z11KK",
       "first_seen": "2026-08-21T13:14:25.467Z",
-      "last_active": "2026-08-21T18:16:52.304Z",
+      "last_active": "2026-08-21T19:37:52.305Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
