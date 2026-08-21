@@ -272,14 +272,6 @@ input, select, textarea {
   background: #09090B;
 }
 
-@media (max-width: 900px) {
-  .hero-carousel-container {
-    height: auto;
-    min-height: 560px;
-    border-radius: var(--radius-md);
-  }
-}
-
 .carousel-slides-wrapper {
   position: relative;
   width: 100%;
@@ -326,7 +318,6 @@ input, select, textarea {
   gap: 32px;
 }
 
-/* 100% Uncropped Image Frame */
 .carousel-image-frame {
   flex: 1.2;
   height: 100%;
@@ -366,75 +357,139 @@ input, select, textarea {
 }
 
 @media (max-width: 900px) {
+  .hero-carousel-container {
+    height: auto;
+    min-height: 520px;
+    border-radius: var(--radius-md);
+  }
+
   .carousel-slide-inner {
     flex-direction: column;
-    padding: 16px 12px 42px 12px;
-    gap: 12px;
+    padding: 14px 10px 38px 10px;
+    gap: 8px;
     justify-content: center;
     align-items: center;
   }
 
+  /* Big, clear, prominent image frame */
   .carousel-image-frame {
     flex: none;
     width: 100%;
-    max-height: 290px;
+    max-height: 380px;
+    height: auto;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   .carousel-full-img {
-    max-height: 270px;
-    max-width: 88%;
+    max-height: 360px;
+    max-width: 94%;
+    width: auto;
+    height: auto;
     object-fit: contain;
+    border-radius: 8px;
   }
 
-  /* Content box size strictly less than image, compact & elegant */
+  /* Ultra-compact, sleek content box positioned neatly below image */
   .carousel-content-box {
-    width: 84%;
-    max-width: 350px;
+    width: 82%;
+    max-width: 290px;
     margin: 0 auto;
-    padding: 12px 16px;
-    background: rgba(15, 23, 42, 0.85);
-    border-radius: var(--radius-sm);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+    padding: 8px 12px;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    text-align: center;
   }
 
   .carousel-badge {
-    font-size: 0.68rem;
-    padding: 2px 8px;
-    margin-bottom: 4px;
+    font-size: 0.64rem;
+    padding: 2px 6px;
+    margin-bottom: 2px;
+    display: inline-block;
   }
 
   .carousel-title {
-    font-size: 1.1rem;
-    line-height: 1.25;
-    margin-bottom: 4px;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    font-weight: 700;
   }
 
   .carousel-description {
-    font-size: 0.76rem;
-    line-height: 1.35;
-    margin-bottom: 6px;
+    font-size: 0.7rem;
+    line-height: 1.25;
+    margin-bottom: 4px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    color: rgba(255, 255, 255, 0.75);
   }
 
   .carousel-offer-deal-box {
-    margin-top: 6px;
-    padding: 8px 12px;
+    margin-top: 4px;
+    padding: 5px 8px;
+    gap: 3px;
+    border-radius: 6px;
+  }
+
+  .offer-deal-header {
     gap: 4px;
   }
 
+  .offer-flame-badge {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+
+  .offer-code-pill {
+    font-size: 0.68rem;
+    padding: 2px 5px;
+  }
+
+  .offer-price-row {
+    gap: 8px;
+    justify-content: center;
+  }
+
   .offer-deal-price {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
+  }
+
+  .offer-old-price {
+    font-size: 0.82rem;
+  }
+
+  .btn-order-carousel-deal {
+    padding: 6px 10px;
+    font-size: 0.76rem;
+    margin-top: 2px;
+  }
+
+  .carousel-btn-group {
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .btn-carousel-primary {
+    padding: 6px 14px;
+    font-size: 0.78rem;
+  }
+
+  .feature-pill {
+    font-size: 0.65rem;
+    padding: 2px 6px;
   }
 
   .carousel-btn {
-    padding: 8px 14px;
-    font-size: 0.8rem;
-    margin-top: 6px;
+    padding: 6px 12px;
+    font-size: 0.76rem;
+    margin-top: 4px;
   }
 }
 

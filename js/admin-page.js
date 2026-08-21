@@ -424,7 +424,11 @@ class AdminDashboard {
           p.company_discount_percent = percentage;
         });
 
-        try { localStorage.setItem('oriflame_products_v1', JSON.stringify(all)); } catch (e) {}
+        // Clear individual overrides since all products are now discounted
+        try {
+          localStorage.removeItem('oriflame_discount_overrides_v1');
+          localStorage.setItem('oriflame_products_v1', JSON.stringify(all));
+        } catch (e) {}
         this.renderStockTable();
 
         alert(isArabic ? `✅ تم تطبيق تخفيض ${percentage}% بنجاح!` : `✅ Remise de ${percentage}% appliquée avec succès sur ${all.length} produits !`);
@@ -789,45 +793,64 @@ class AdminDashboard {
     }
   }
 
+  applyDiscountOverrides(productsList) {
+    if (!Array.isArray(productsList) || productsList.length === 0) return productsList;
+    try {
+      const overrides = JSON.parse(localStorage.getItem('oriflame_discount_overrides_v1') || '{}');
+      if (Object.keys(overrides).length > 0) {
+        productsList.forEach(p => {
+          const ov = overrides[String(p.product_id)];
+          if (ov) {
+            Object.assign(p, ov);
+          }
+        });
+      }
+    } catch (e) {}
+    return productsList;
+  }
+
   async fetchProducts() {
+    let prods = null;
+
     try {
       const res = await fetch('/api/products');
       if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
         const data = await res.json();
-        if (data.success && Array.isArray(data.data)) {
-          this.products = data.data;
-          this.rawProducts = data.data;
-          try { localStorage.setItem('oriflame_products_v1', JSON.stringify(data.data)); } catch (e) {}
-          this.renderStockTable();
-          return;
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          prods = data.data;
         }
       }
     } catch (e) {}
 
-    // Fallback: load from static data/products.json or localStorage
-    try {
-      const cached = localStorage.getItem('oriflame_products_v1');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          this.products = parsed;
-          this.rawProducts = parsed;
-          this.renderStockTable();
-          return;
+    if (!prods) {
+      try {
+        const cached = localStorage.getItem('oriflame_products_v1');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            prods = parsed;
+          }
         }
-      }
-    } catch (e) {}
+      } catch (e) {}
+    }
 
-    try {
-      const res = await fetch('./data/products.json');
-      if (res.ok) {
-        const data = await res.json();
-        const prods = Array.isArray(data) ? data : (data.data || []);
-        this.products = prods;
-        this.rawProducts = prods;
-        this.renderStockTable();
-      }
-    } catch (e) {}
+    if (!prods) {
+      try {
+        const res = await fetch('./data/products.json');
+        if (res.ok) {
+          const data = await res.json();
+          const p = Array.isArray(data) ? data : (data.data || []);
+          if (p.length > 0) prods = p;
+        }
+      } catch (e) {}
+    }
+
+    if (prods) {
+      this.products = this.applyDiscountOverrides(prods);
+      this.rawProducts = this.products;
+      try { localStorage.setItem('oriflame_products_v1', JSON.stringify(this.products)); } catch (e) {}
+      this.renderStockTable();
+    }
   }
 
   renderStockTable() {
@@ -985,6 +1008,18 @@ class AdminDashboard {
           p.company_discount_percent = percentage;
         }
       }
+
+      // Save to permanent overrides dictionary
+      try {
+        const overrides = JSON.parse(localStorage.getItem('oriflame_discount_overrides_v1') || '{}');
+        overrides[String(p.product_id)] = {
+          price: p.price,
+          original_catalog_price: p.original_catalog_price,
+          company_discount_applied: p.company_discount_applied,
+          company_discount_percent: p.company_discount_percent
+        };
+        localStorage.setItem('oriflame_discount_overrides_v1', JSON.stringify(overrides));
+      } catch (e) {}
     }
 
     try { localStorage.setItem('oriflame_products_v1', JSON.stringify(all)); } catch (e) {}

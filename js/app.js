@@ -99,46 +99,66 @@ class App {
     return val || 'Mounanouira.Oriflame';
   }
 
-  async fetchProducts() {
-    // 1. Check local storage cache first for instant persistence across pages & refreshes
+  applyDiscountOverrides(productsList) {
+    if (!Array.isArray(productsList) || productsList.length === 0) return productsList;
     try {
-      const cached = localStorage.getItem('oriflame_products_v1');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          this.products = parsed;
-        }
+      const overrides = JSON.parse(localStorage.getItem('oriflame_discount_overrides_v1') || '{}');
+      if (Object.keys(overrides).length > 0) {
+        productsList.forEach(p => {
+          const ov = overrides[String(p.product_id)];
+          if (ov) {
+            Object.assign(p, ov);
+          }
+        });
       }
     } catch (e) {}
+    return productsList;
+  }
 
-    // 2. Try fetching from dynamic backend API
+  async fetchProducts() {
+    let prods = null;
+
+    // 1. Try fetching from dynamic backend API
     try {
       const res = await fetch('/api/products');
       if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
         const data = await res.json();
         if (data.success && Array.isArray(data.data) && data.data.length > 0) {
-          this.products = data.data;
-          try { localStorage.setItem('oriflame_products_v1', JSON.stringify(data.data)); } catch (e) {}
-          return;
+          prods = data.data;
         }
       }
     } catch (e) {}
 
-    // 3. Fallback: static JSON file if not already populated
-    if (!this.products || this.products.length === 0) {
+    // 2. Check local storage cache
+    if (!prods) {
+      try {
+        const cached = localStorage.getItem('oriflame_products_v1');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            prods = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // 3. Fallback: static JSON file
+    if (!prods) {
       try {
         const res = await fetch('./data/products.json');
         if (res.ok) {
           const data = await res.json();
-          const prods = Array.isArray(data) ? data : (data.data || []);
-          if (prods.length > 0) {
-            this.products = prods;
-            try { localStorage.setItem('oriflame_products_v1', JSON.stringify(prods)); } catch (e) {}
-          }
+          const p = Array.isArray(data) ? data : (data.data || []);
+          if (p.length > 0) prods = p;
         }
       } catch (e) {
         console.warn("Using offline catalog fallback", e);
       }
+    }
+
+    if (prods) {
+      this.products = this.applyDiscountOverrides(prods);
+      try { localStorage.setItem('oriflame_products_v1', JSON.stringify(this.products)); } catch (e) {}
     }
   }
 
