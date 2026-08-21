@@ -111,7 +111,9 @@ export class CartManager {
 
     this.cart.forEach((item, index) => {
       const itemTotal = (item.price * item.quantity).toFixed(2);
-      message += `${index + 1}. ${item.name} (x${item.quantity}) - ${item.price.toFixed(2)} ${currencyLabel} [${itemTotal} ${currencyLabel}]\n`;
+      const refLabel = (lang === 'ar') ? 'مرجع' : 'Réf';
+      const refStr = item.product_id ? ` [${refLabel}: ${item.product_id}]` : '';
+      message += `${index + 1}. ${item.name}${refStr} (x${item.quantity}) - ${item.price.toFixed(2)} ${currencyLabel} [Total: ${itemTotal} ${currencyLabel}]\n`;
     });
 
     const subtotal = this.getSubtotal().toFixed(2);
