@@ -1,14 +1,51 @@
 {
-  "total_visits": 26,
+  "total_visits": 27,
   "sessions": [
     {
-      "session_id": "SES-96GWOI0-MT2PP8VB",
-      "first_seen": "2026-08-21T13:13:52.653Z",
-      "last_active": "2026-08-21T13:13:52.653Z",
+      "session_id": "SES-NHRPIH4-MT2Z11KK",
+      "first_seen": "2026-08-21T13:14:25.467Z",
+      "last_active": "2026-08-21T13:19:52.390Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 15634,
+      "duration_seconds": 327,
+      "activity_trail": [
+        {
+          "time": "2026-08-21T13:14:25.467Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T13:15:13.158Z",
+          "offset": "0m 48s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-21T13:15:26.986Z",
+          "offset": "1m 2s",
+          "description": "Added to cart: Eau de Toilette Eclat Homme"
+        },
+        {
+          "time": "2026-08-21T13:15:28.998Z",
+          "offset": "1m 4s",
+          "description": "Opened Shopping Cart Drawer"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Eau de Toilette Eclat Homme"
+      ]
+    },
+    {
+      "session_id": "SES-96GWOI0-MT2PP8VB",
+      "first_seen": "2026-08-21T13:13:52.653Z",
+      "last_active": "2026-08-21T13:19:52.385Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 15994,
       "activity_trail": [],
       "categories_visited": [],
       "products_viewed": []

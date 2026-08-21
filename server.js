@@ -774,6 +774,82 @@ app.delete('/api/orders/:id', (req, res) => {
   res.json({ success: true, message: 'Order deleted' });
 });
 
+// ── EXPORT: Carousel slides only ────────────────────────────────────────────
+app.get('/api/export/carousel', (req, res) => {
+  try {
+    const carousel = fs.existsSync(CAROUSEL_FILE) ? JSON.parse(fs.readFileSync(CAROUSEL_FILE, 'utf8')) : [];
+    const data = Array.isArray(carousel) ? carousel : (carousel.data || []);
+    const filename = `oriflame-carousel-${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ version: '1.0', exported_at: new Date().toISOString(), carousel: data }, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Export carousel failed: ' + e.message });
+  }
+});
+
+// ── IMPORT: Carousel slides only ────────────────────────────────────────────
+app.post('/api/import/carousel', upload.single('carousel'), (req, res) => {
+  try {
+    let raw;
+    if (req.file) {
+      raw = fs.readFileSync(req.file.path, 'utf8');
+      fs.unlinkSync(req.file.path);
+    } else if (req.body && req.body.data) {
+      raw = req.body.data;
+    } else {
+      return res.status(400).json({ success: false, message: 'No file provided' });
+    }
+
+    const parsed = JSON.parse(raw);
+    // Accept either {carousel: [...]} wrapper or a plain array
+    const slides = Array.isArray(parsed) ? parsed : (parsed.carousel || []);
+
+    if (!Array.isArray(slides) || slides.length === 0) {
+      return res.status(400).json({ success: false, message: 'No slides found in file' });
+    }
+
+    fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(slides, null, 2));
+    res.json({ success: true, message: `${slides.length} diapositives restaurées avec succès.`, restored: slides.length });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Import failed: ' + e.message });
+  }
+});
+
+// ── COMPANY DISCOUNT: Apply -20% to all product prices ─────────────────────
+app.post('/api/products/apply-company-discount', (req, res) => {
+  try {
+    if (!fs.existsSync(PRODUCTS_FILE)) {
+      return res.status(404).json({ success: false, message: 'No products file found' });
+    }
+
+    let products = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
+    if (!Array.isArray(products)) products = products.data || [];
+
+    const DISCOUNT = 0.80; // 20% off = multiply by 0.80
+    let updated = 0;
+
+    products = products.map(p => {
+      const newPrice = parseFloat((parseFloat(p.price || 0) * DISCOUNT).toFixed(3));
+      // Also reduce original_price if it exists (keeps relative gap intact)
+      const newOriginal = p.original_price
+        ? parseFloat((parseFloat(p.original_price) * DISCOUNT).toFixed(3))
+        : null;
+      updated++;
+      return {
+        ...p,
+        price: newPrice,
+        ...(newOriginal !== null ? { original_price: newOriginal } : {}),
+      };
+    });
+
+    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2));
+    res.json({ success: true, message: `Prix mis à jour : ${updated} produits réduits de 20%.`, updated });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Discount failed: ' + e.message });
+  }
+});
+
 // ── EXPORT: Full JSON Backup (products + carousel) ──────────────────────────
 app.get('/api/export/backup', (req, res) => {
   try {

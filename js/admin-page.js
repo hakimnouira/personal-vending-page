@@ -255,8 +255,85 @@ class AdminDashboard {
     }
 
 
+    // ── Carousel: Import JSON ───────────────────────────────────────────────
+    const carouselImportFile = document.getElementById('carousel-import-file');
+    const carouselImportStatus = document.getElementById('carousel-import-status');
 
-    // Analytics & Orders Refresh
+    if (carouselImportFile) {
+      carouselImportFile.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const confirmed = confirm(
+          `⚠️ Importer "${file.name}" ?\n\nCela remplacera TOUTES les diapositives du carrousel actuel.\n\nContinuer ?`
+        );
+        if (!confirmed) { carouselImportFile.value = ''; return; }
+
+        const formData = new FormData();
+        formData.append('carousel', file);
+
+        try {
+          if (carouselImportStatus) {
+            carouselImportStatus.style.display = 'block';
+            carouselImportStatus.style.color = '#0369A1';
+            carouselImportStatus.textContent = '⏳ Importation en cours...';
+          }
+          const res = await fetch('/api/import/carousel', { method: 'POST', body: formData });
+          const data = await res.json();
+          if (data.success) {
+            if (carouselImportStatus) {
+              carouselImportStatus.style.color = '#2D6A4F';
+              carouselImportStatus.textContent = `✅ ${data.message}`;
+            }
+            await this.fetchCarousel();
+          } else {
+            if (carouselImportStatus) {
+              carouselImportStatus.style.color = '#C1121F';
+              carouselImportStatus.textContent = `❌ ${data.message}`;
+            }
+          }
+        } catch (err) {
+          if (carouselImportStatus) {
+            carouselImportStatus.style.color = '#C1121F';
+            carouselImportStatus.textContent = `❌ Erreur réseau: ${err.message}`;
+          }
+        } finally {
+          carouselImportFile.value = '';
+        }
+      });
+    }
+
+    // ── Company Discount: Apply -20% to all products ─────────────────────────
+    const btnDiscount = document.getElementById('btn-apply-company-discount');
+    if (btnDiscount) {
+      btnDiscount.addEventListener('click', async () => {
+        const confirmed = confirm(
+          `🏷️ Appliquer une réduction de 20% sur TOUS les prix produits ?\n\n⚠️ Cette action est PERMANENTE : les prix seront multipliés par 0.80 dans la base de données.\n\nIl s'agit de votre remise société (pas d'affichage promo).\n\nContinuer ?`
+        );
+        if (!confirmed) return;
+
+        btnDiscount.disabled = true;
+        btnDiscount.textContent = '⏳ Application en cours...';
+
+        try {
+          const res = await fetch('/api/products/apply-company-discount', { method: 'POST' });
+          const data = await res.json();
+          if (data.success) {
+            alert(`✅ ${data.message}`);
+            await this.fetchProducts();
+          } else {
+            alert(`❌ Erreur: ${data.message}`);
+          }
+        } catch (err) {
+          alert(`❌ Erreur réseau: ${err.message}`);
+        } finally {
+          btnDiscount.disabled = false;
+          btnDiscount.textContent = '🏷️ Appliquer -20% Société sur Tous les Prix';
+        }
+      });
+    }
+
+
     if (this.btnRefreshAnalytics) {
       this.btnRefreshAnalytics.addEventListener('click', () => this.fetchAnalytics());
     }
