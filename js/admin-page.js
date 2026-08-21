@@ -212,21 +212,38 @@ class AdminDashboard {
         if (!file) return;
 
         const confirmed = confirm(
-          `⚠️ Restaurer depuis "${file.name}" ?\n\nCela remplacera TOUS les produits et diapositives actuels. Cette action est irréversible.\n\nContinuer ?`
+          `⚠️ Restaurer depuis "${file.name}" ?\n\nCela remplacera les produits et diapositives actuels par ceux du fichier.\n\nContinuer ?`
         );
         if (!confirmed) { backupFileInput.value = ''; return; }
-
-        const formData = new FormData();
-        formData.append('backup', file);
 
         try {
           if (backupStatus) {
             backupStatus.style.display = 'block';
             backupStatus.style.color = '#C5A880';
+            backupStatus.textContent = '⏳ Lecture et validation du fichier...';
+          }
+
+          const fileText = await file.text();
+          let parsedData;
+          try {
+            parsedData = JSON.parse(fileText);
+          } catch (jsonErr) {
+            if (backupStatus) {
+              backupStatus.style.color = '#C1121F';
+              backupStatus.textContent = '❌ Le fichier sélectionné n\'est pas un JSON valide.';
+            }
+            return;
+          }
+
+          if (backupStatus) {
             backupStatus.textContent = '⏳ Restauration en cours...';
           }
 
-          const res = await fetch('/api/import/backup', { method: 'POST', body: formData });
+          const res = await fetch('/api/import/backup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(parsedData)
+          });
           const data = await res.json();
 
           if (data.success) {
@@ -269,17 +286,36 @@ class AdminDashboard {
         );
         if (!confirmed) { carouselImportFile.value = ''; return; }
 
-        const formData = new FormData();
-        formData.append('carousel', file);
-
         try {
           if (carouselImportStatus) {
             carouselImportStatus.style.display = 'block';
             carouselImportStatus.style.color = '#0369A1';
+            carouselImportStatus.textContent = '⏳ Lecture et validation du fichier...';
+          }
+
+          const fileText = await file.text();
+          let parsedData;
+          try {
+            parsedData = JSON.parse(fileText);
+          } catch (jsonErr) {
+            if (carouselImportStatus) {
+              carouselImportStatus.style.color = '#C1121F';
+              carouselImportStatus.textContent = '❌ Le fichier sélectionné n\'est pas un JSON valide.';
+            }
+            return;
+          }
+
+          if (carouselImportStatus) {
             carouselImportStatus.textContent = '⏳ Importation en cours...';
           }
-          const res = await fetch('/api/import/carousel', { method: 'POST', body: formData });
+
+          const res = await fetch('/api/import/carousel', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(parsedData)
+          });
           const data = await res.json();
+
           if (data.success) {
             if (carouselImportStatus) {
               carouselImportStatus.style.color = '#2D6A4F';

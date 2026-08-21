@@ -70,6 +70,11 @@ const upload = multer({
   }
 });
 
+const uploadJson = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 50 * 1024 * 1024 }
+});
+
 // Data Helpers
 function getProducts() {
   try {
@@ -789,30 +794,43 @@ app.get('/api/export/carousel', (req, res) => {
 });
 
 // ── IMPORT: Carousel slides only ────────────────────────────────────────────
-app.post('/api/import/carousel', upload.single('carousel'), (req, res) => {
+app.post('/api/import/carousel', uploadJson.single('carousel'), (req, res) => {
   try {
-    let raw;
-    if (req.file) {
-      raw = fs.readFileSync(req.file.path, 'utf8');
-      fs.unlinkSync(req.file.path);
+    let raw = '';
+    if (req.file && req.file.buffer) {
+      raw = req.file.buffer.toString('utf8');
     } else if (req.body && req.body.data) {
-      raw = req.body.data;
+      raw = typeof req.body.data === 'string' ? req.body.data : JSON.stringify(req.body.data);
+    } else if (req.body && (req.body.carousel || req.body.slides || Array.isArray(req.body))) {
+      raw = JSON.stringify(req.body);
+    } else if (typeof req.body === 'object' && Object.keys(req.body).length > 0) {
+      raw = JSON.stringify(req.body);
     } else {
-      return res.status(400).json({ success: false, message: 'No file provided' });
+      return res.status(400).json({ success: false, message: 'Aucun fichier ou données reçus' });
     }
 
     const parsed = JSON.parse(raw);
-    // Accept either {carousel: [...]} wrapper or a plain array
-    const slides = Array.isArray(parsed) ? parsed : (parsed.carousel || []);
-
-    if (!Array.isArray(slides) || slides.length === 0) {
-      return res.status(400).json({ success: false, message: 'No slides found in file' });
+    let slides = [];
+    if (Array.isArray(parsed)) {
+      slides = parsed;
+    } else if (Array.isArray(parsed.carousel)) {
+      slides = parsed.carousel;
+    } else if (Array.isArray(parsed.data)) {
+      slides = parsed.data;
+    } else if (Array.isArray(parsed.slides)) {
+      slides = parsed.slides;
+    } else if (parsed && typeof parsed === 'object' && parsed.image_url) {
+      slides = [parsed];
     }
 
-    fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(slides, null, 2));
-    res.json({ success: true, message: `${slides.length} diapositives restaurées avec succès.`, restored: slides.length });
+    if (!Array.isArray(slides) || slides.length === 0) {
+      return res.status(400).json({ success: false, message: 'Aucune diapositive trouvée dans le fichier' });
+    }
+
+    fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(slides, null, 2), 'utf8');
+    res.json({ success: true, message: `${slides.length} diapositive(s) restaurée(s) avec succès.`, restored: slides.length });
   } catch (e) {
-    res.status(500).json({ success: false, message: 'Import failed: ' + e.message });
+    res.status(500).json({ success: false, message: 'Erreur lors de l\'importation : ' + e.message });
   }
 });
 
@@ -871,30 +889,36 @@ app.get('/api/export/backup', (req, res) => {
 });
 
 // ── IMPORT: Restore from JSON Backup ────────────────────────────────────────
-app.post('/api/import/backup', upload.single('backup'), (req, res) => {
+app.post('/api/import/backup', uploadJson.single('backup'), (req, res) => {
   try {
-    let raw;
-    if (req.file) {
-      raw = fs.readFileSync(req.file.path, 'utf8');
-      fs.unlinkSync(req.file.path); // clean up temp file
+    let raw = '';
+    if (req.file && req.file.buffer) {
+      raw = req.file.buffer.toString('utf8');
     } else if (req.body && req.body.data) {
-      raw = req.body.data;
+      raw = typeof req.body.data === 'string' ? req.body.data : JSON.stringify(req.body.data);
+    } else if (req.body && (req.body.products || req.body.carousel)) {
+      raw = JSON.stringify(req.body);
+    } else if (typeof req.body === 'object' && Object.keys(req.body).length > 0) {
+      raw = JSON.stringify(req.body);
     } else {
-      return res.status(400).json({ success: false, message: 'No backup file provided' });
+      return res.status(400).json({ success: false, message: 'Aucun fichier ou données reçus' });
     }
 
     const backup = JSON.parse(raw);
     let productsRestored = 0;
     let carouselRestored = 0;
 
-    if (Array.isArray(backup.products) && backup.products.length > 0) {
-      fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(backup.products, null, 2));
-      productsRestored = backup.products.length;
+    const products = Array.isArray(backup.products) ? backup.products : (Array.isArray(backup) ? backup : []);
+    const carousel = Array.isArray(backup.carousel) ? backup.carousel : [];
+
+    if (products.length > 0) {
+      fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf8');
+      productsRestored = products.length;
     }
 
-    if (Array.isArray(backup.carousel) && backup.carousel.length > 0) {
-      fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(backup.carousel, null, 2));
-      carouselRestored = backup.carousel.length;
+    if (carousel.length > 0) {
+      fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(carousel, null, 2), 'utf8');
+      carouselRestored = carousel.length;
     }
 
     res.json({
