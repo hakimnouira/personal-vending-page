@@ -616,7 +616,7 @@ app.post('/api/products/toggle-discount/:id', (req, res) => {
   try {
     const { id } = req.params;
     const products = getProducts();
-    const product = products.find(p => p.product_id === id);
+    const product = products.find(p => String(p.product_id) === String(id));
 
     if (!product) {
       return res.status(404).json({ success: false, message: 'Produit introuvable' });
@@ -626,15 +626,19 @@ app.post('/api/products/toggle-discount/:id', (req, res) => {
     const percent = req.body && req.body.percentage !== undefined ? parseFloat(req.body.percentage) : (settings.company_discount_percent || 20);
     const factor = (100 - percent) / 100;
 
+    // Ensure original_catalog_price is set
+    if (product.original_catalog_price === undefined || product.original_catalog_price === null) {
+      product.original_catalog_price = parseFloat(product.price || 0);
+    }
+
     if (product.company_discount_applied) {
-      // Revert to original price
-      product.price = product.original_catalog_price !== undefined ? product.original_catalog_price : product.price;
+      // Revert to original catalog price (disable discount)
+      product.price = parseFloat(Number(product.original_catalog_price).toFixed(3));
       product.company_discount_applied = false;
       product.company_discount_percent = 0;
     } else {
       // Apply discount
-      product.original_catalog_price = product.original_catalog_price !== undefined ? product.original_catalog_price : product.price;
-      product.price = parseFloat((product.original_catalog_price * factor).toFixed(3));
+      product.price = parseFloat((Number(product.original_catalog_price) * factor).toFixed(3));
       product.company_discount_applied = true;
       product.company_discount_percent = percent;
     }
@@ -643,8 +647,8 @@ app.post('/api/products/toggle-discount/:id', (req, res) => {
     res.json({
       success: true,
       message: product.company_discount_applied
-        ? `Remise de ${percent}% appliquée sur ${product.name}`
-        : `Remise retirée pour ${product.name} (Prix rétabli: ${product.price} TND)`,
+        ? `Remise de ${percent}% activée sur ${product.name} (Nouveau prix: ${product.price} TND)`
+        : `Remise désactivée pour ${product.name} (Prix d'origine rétabli: ${product.price} TND)`,
       data: product
     });
   } catch (err) {
@@ -674,9 +678,15 @@ app.post('/api/scrape/oriflame-catalog', async (req, res) => {
   try {
     console.log("Admin initiated comprehensive multi-category product scrape...");
     const result = await scrapeAllOriflameCategories();
+
+    // Reset global company discount setting so fresh catalog is ready for discount application
+    const settings = getSettings();
+    settings.company_discount_applied = false;
+    saveSettings(settings);
+
     res.json({
       success: true,
-      message: `Scraping complete: ${result.report.total_scraped} products scraped (${result.report.new_count} new, ${result.report.modified_count} updated, ${result.report.deleted_count} deleted).`,
+      message: `Scraping terminé : ${result.report.total_scraped} produits récupérés. Prix catalogue d'origine prêts.`,
       report: result.report,
       data: result.products
     });

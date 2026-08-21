@@ -376,7 +376,7 @@ class AdminDashboard {
       });
     }
 
-    // ── Company Discount: Apply customizable % to all products (One-time only) ──
+    // ── Company Discount: Apply customizable % to all products ──
     const btnDiscount = document.getElementById('btn-apply-company-discount');
     const inputDiscount = document.getElementById('company-discount-input');
 
@@ -387,10 +387,12 @@ class AdminDashboard {
         const val = inputDiscount ? parseFloat(inputDiscount.value) : 20;
         const percentage = (!isNaN(val) && val > 0 && val < 100) ? val : 20;
 
-        const confirmed = confirm(
-          `🏷️ Appliquer une réduction de ${percentage}% sur TOUS les prix du catalogue ?\n\n⚠️ Cette action est PERMANENTE et NE PEUT ÊTRE EXÉCUTÉE QU'UNE SEULE FOIS pour protéger vos prix contre les doubles réductions.\n\nIl s'agit de votre remise société (aucun badge promo ne sera affiché).\n\nContinuer ?`
-        );
-        if (!confirmed) return;
+        const isArabic = this.i18n.getLang() === 'ar';
+        const confirmMsg = isArabic
+          ? `🏷️ تطبيق تخفيض الشركة بنسبة ${percentage}% على جميع منتجات الكتالوج؟`
+          : `🏷️ Appliquer la remise société de ${percentage}% sur TOUS les prix du catalogue ?`;
+
+        if (!confirm(confirmMsg)) return;
 
         btnDiscount.disabled = true;
         btnDiscount.textContent = '⏳ Application en cours...';
@@ -404,16 +406,16 @@ class AdminDashboard {
           const data = await res.json();
           if (data.success) {
             alert(`✅ ${data.message}`);
-            this.lockCompanyDiscountUI(data.percentage || percentage);
+            btnDiscount.textContent = `✅ Remise de ${percentage}% Appliquée`;
             await this.fetchProducts();
-          } else {
-            alert(`❌ ${data.message}`);
-            if (data.already_applied) {
-              this.lockCompanyDiscountUI(data.percentage || percentage);
-            } else {
+            setTimeout(() => {
               btnDiscount.disabled = false;
               btnDiscount.textContent = '🏷️ Appliquer la Remise Société';
-            }
+            }, 2500);
+          } else {
+            alert(`❌ ${data.message}`);
+            btnDiscount.disabled = false;
+            btnDiscount.textContent = '🏷️ Appliquer la Remise Société';
           }
         } catch (err) {
           alert(`❌ Erreur réseau: ${err.message}`);
@@ -835,18 +837,21 @@ class AdminDashboard {
 
     this.stockTableBody.innerHTML = items.map(p => {
       const isDiscounted = Boolean(p.company_discount_applied);
+      const catalogPrice = Number(p.original_catalog_price !== undefined && p.original_catalog_price !== null ? p.original_catalog_price : p.price).toFixed(2);
+      const currentPrice = Number(p.price).toFixed(2);
+
       const discountBadge = isDiscounted
-        ? `<div>
-             <span class="badge" style="background:#ECFDF5; color:#047857; border:1px solid #A7F3D0; font-size:0.72rem; font-weight:700;">🏷️ -${p.company_discount_percent || 20}% Appliqué</span>
-             <div style="font-size:0.72rem; color:#71717A; margin-top:2px;">Origine: ${Number(p.original_catalog_price || p.price).toFixed(2)} DT</div>
+        ? `<div style="margin-top: 3px;">
+             <span class="badge" style="background:#ECFDF5; color:#047857; border:1px solid #A7F3D0; font-size:0.75rem; font-weight:800;">🏷️ -${p.company_discount_percent || 20}% APPLIQUÉE</span>
+             <div style="font-size:0.75rem; color:#6B7280; margin-top:2px;">Prix Catalogue : <del style="color:#DC2626; font-weight:600;">${catalogPrice} DT</del></div>
            </div>`
-        : `<div>
-             <span class="badge" style="background:#F4F4F5; color:#71717A; border:1px solid #E4E4E7; font-size:0.72rem;">Prix Brut Catalogue</span>
+        : `<div style="margin-top: 3px;">
+             <span class="badge" style="background:#F4F4F5; color:#4B5563; border:1px solid #E5E7EB; font-size:0.72rem; font-weight:600;">⚪ Prix Brut (Sans Remise)</span>
            </div>`;
 
-      const discountBtn = isDiscounted
-        ? `<button class="btn-primary" style="padding:6px 9px; font-size:0.75rem; width:auto; background:#D97706; border-color:#D97706; white-space:nowrap;" onclick="window.adminDash.toggleProductDiscount('${p.product_id}')" title="Annuler la remise de 20% pour ce produit">↩️ Retirer -20%</button>`
-        : `<button class="btn-primary" style="padding:6px 9px; font-size:0.75rem; width:auto; background:#059669; border-color:#059669; white-space:nowrap;" onclick="window.adminDash.toggleProductDiscount('${p.product_id}')" title="Appliquer la remise de 20% pour ce produit">🏷️ Appliquer -20%</button>`;
+      const discountActionBtn = isDiscounted
+        ? `<button class="btn-primary" style="padding:6px 12px; font-size:0.78rem; width:auto; background:#EF4444; border-color:#EF4444; color:white; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; font-weight:700;" onclick="window.adminDash.toggleProductDiscount('${p.product_id}')" title="Désactiver la remise pour ce produit uniquement">❌ Désactiver Remise</button>`
+        : `<button class="btn-primary" style="padding:6px 12px; font-size:0.78rem; width:auto; background:#059669; border-color:#059669; color:white; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; font-weight:700;" onclick="window.adminDash.toggleProductDiscount('${p.product_id}')" title="Activer la remise -20% pour ce produit uniquement">🏷️ Activer Remise -20%</button>`;
 
       return `
         <tr>
@@ -860,7 +865,7 @@ class AdminDashboard {
           </td>
           <td><span class="badge" style="background:#FAF8F5; border:1px solid var(--admin-border);">${p.category}</span></td>
           <td>
-            <div style="font-weight:700; font-size:0.95rem; color:#18181B; margin-bottom:4px;">${Number(p.price).toFixed(2)} ${currencyLabel}</div>
+            <div style="font-weight:800; font-size:1.05rem; color:${isDiscounted ? '#047857' : '#18181B'};">${currentPrice} ${currencyLabel}</div>
             ${discountBadge}
           </td>
           <td>
@@ -869,9 +874,9 @@ class AdminDashboard {
             </span>
           </td>
           <td>
-            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
-              ${discountBtn}
-              <button class="btn-primary" style="padding: 6px 10px; font-size: 0.76rem; width: auto; background: ${p.in_stock ? '#52525B' : 'var(--admin-success)'};" onclick="window.adminDash.toggleStock('${p.product_id}')">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+              ${discountActionBtn}
+              <button class="btn-primary" style="padding: 6px 10px; font-size: 0.76rem; width: auto; background: ${p.in_stock ? '#52525B' : 'var(--admin-success)'}; border-color: ${p.in_stock ? '#52525B' : 'var(--admin-success)'};" onclick="window.adminDash.toggleStock('${p.product_id}')">
                 ${p.in_stock ? markOutText : markInText}
               </button>
               <button class="btn-primary" style="padding: 6px 8px; font-size: 0.76rem; width: auto; background: var(--admin-danger); border-color: var(--admin-danger);" onclick="window.adminDash.deleteProduct('${p.product_id}')">
@@ -1335,32 +1340,6 @@ class AdminDashboard {
     }
   }
 
-  lockCompanyDiscountUI(percentage = 20) {
-    const btnDiscount = document.getElementById('btn-apply-company-discount');
-    const inputDiscount = document.getElementById('company-discount-input');
-    const wrapper = document.getElementById('company-discount-wrapper');
-
-    if (inputDiscount) {
-      inputDiscount.value = percentage;
-      inputDiscount.disabled = true;
-      inputDiscount.style.color = '#64748B';
-    }
-    if (wrapper) {
-      wrapper.style.opacity = '0.75';
-      wrapper.style.background = '#F1F5F9';
-      wrapper.title = 'Remise déjà appliquée';
-    }
-    if (btnDiscount) {
-      btnDiscount.disabled = true;
-      btnDiscount.style.background = '#475569';
-      btnDiscount.style.borderColor = '#334155';
-      btnDiscount.style.cursor = 'not-allowed';
-      btnDiscount.style.opacity = '0.9';
-      btnDiscount.innerHTML = `🔒 Remise de ${percentage}% Déjà Appliquée`;
-      btnDiscount.title = 'Cette remise a déjà été appliquée sur les prix du catalogue. Action verrouillée pour éviter les doubles réductions.';
-    }
-  }
-
   async fetchSettings() {
     try {
       const res = await fetch('/api/settings');
@@ -1371,8 +1350,9 @@ class AdminDashboard {
           this.fbHandleInput.value = username;
           this.updateFbPreviewLink(username);
         }
-        if (data.data.company_discount_applied) {
-          this.lockCompanyDiscountUI(data.data.company_discount_percent || 20);
+        const inputDiscount = document.getElementById('company-discount-input');
+        if (inputDiscount && data.data.company_discount_percent) {
+          inputDiscount.value = data.data.company_discount_percent;
         }
       }
     } catch (e) {}

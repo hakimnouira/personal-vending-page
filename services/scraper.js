@@ -208,6 +208,16 @@ export async function scrapeAllOriflameCategories() {
 
   fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(mergedProducts, null, 2), 'utf8');
 
+  // Reset global company discount flag so newly scraped products can receive discount cleanly
+  const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
+  try {
+    if (fs.existsSync(SETTINGS_FILE)) {
+      const settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+      settings.company_discount_applied = false;
+      fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8');
+    }
+  } catch (e) {}
+
   const diffReport = {
     total_scraped: scrapedProducts.length,
     new_count: newCount,
