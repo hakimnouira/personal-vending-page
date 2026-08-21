@@ -100,14 +100,45 @@ class App {
   }
 
   async fetchProducts() {
+    // 1. Check local storage cache first for instant persistence across pages & refreshes
+    try {
+      const cached = localStorage.getItem('oriflame_products_v1');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this.products = parsed;
+        }
+      }
+    } catch (e) {}
+
+    // 2. Try fetching from dynamic backend API
     try {
       const res = await fetch('/api/products');
-      const data = await res.json();
-      if (data.success && Array.isArray(data.data)) {
-        this.products = data.data;
+      if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          this.products = data.data;
+          try { localStorage.setItem('oriflame_products_v1', JSON.stringify(data.data)); } catch (e) {}
+          return;
+        }
       }
-    } catch (e) {
-      console.warn("Using offline catalog fallback", e);
+    } catch (e) {}
+
+    // 3. Fallback: static JSON file if not already populated
+    if (!this.products || this.products.length === 0) {
+      try {
+        const res = await fetch('./data/products.json');
+        if (res.ok) {
+          const data = await res.json();
+          const prods = Array.isArray(data) ? data : (data.data || []);
+          if (prods.length > 0) {
+            this.products = prods;
+            try { localStorage.setItem('oriflame_products_v1', JSON.stringify(prods)); } catch (e) {}
+          }
+        }
+      } catch (e) {
+        console.warn("Using offline catalog fallback", e);
+      }
     }
   }
 
