@@ -834,24 +834,36 @@ app.post('/api/import/carousel', uploadJson.single('carousel'), (req, res) => {
   }
 });
 
-// ── COMPANY DISCOUNT: Apply -20% to all product prices ─────────────────────
+// ── COMPANY DISCOUNT: Apply customizable % to all product prices (ONE-TIME ONLY) ──
 app.post('/api/products/apply-company-discount', (req, res) => {
   try {
+    const settings = getSettings();
+    if (settings.company_discount_applied) {
+      return res.status(400).json({
+        success: false,
+        message: `La remise société (${settings.company_discount_percent || 20}%) a déjà été appliquée. Pour éviter toute erreur de double calcul, cette opération ne s'exécute qu'une seule fois.`,
+        already_applied: true,
+        percentage: settings.company_discount_percent || 20
+      });
+    }
+
     if (!fs.existsSync(PRODUCTS_FILE)) {
-      return res.status(404).json({ success: false, message: 'No products file found' });
+      return res.status(404).json({ success: false, message: 'Fichier de produits introuvable' });
     }
 
     let products = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
     if (!Array.isArray(products)) products = products.data || [];
 
-    const DISCOUNT = 0.80; // 20% off = multiply by 0.80
+    const rawPercent = req.body && req.body.percentage !== undefined ? parseFloat(req.body.percentage) : 20;
+    const percent = Math.min(Math.max(isNaN(rawPercent) ? 20 : rawPercent, 0.1), 99.9);
+    const factor = (100 - percent) / 100;
     let updated = 0;
 
     products = products.map(p => {
-      const newPrice = parseFloat((parseFloat(p.price || 0) * DISCOUNT).toFixed(3));
+      const newPrice = parseFloat((parseFloat(p.price || 0) * factor).toFixed(3));
       // Also reduce original_price if it exists (keeps relative gap intact)
       const newOriginal = p.original_price
-        ? parseFloat((parseFloat(p.original_price) * DISCOUNT).toFixed(3))
+        ? parseFloat((parseFloat(p.original_price) * factor).toFixed(3))
         : null;
       updated++;
       return {
@@ -861,10 +873,22 @@ app.post('/api/products/apply-company-discount', (req, res) => {
       };
     });
 
-    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2));
-    res.json({ success: true, message: `Prix mis à jour : ${updated} produits réduits de 20%.`, updated });
+    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf8');
+
+    // Permanently record in settings to block repeated clicks
+    settings.company_discount_applied = true;
+    settings.company_discount_percent = percent;
+    settings.company_discount_applied_at = new Date().toISOString();
+    saveSettings(settings);
+
+    res.json({
+      success: true,
+      message: `Remise de ${percent}% appliquée avec succès sur ${updated} produits.`,
+      updated,
+      percentage: percent
+    });
   } catch (e) {
-    res.status(500).json({ success: false, message: 'Discount failed: ' + e.message });
+    res.status(500).json({ success: false, message: 'Erreur lors de l\'application de la remise : ' + e.message });
   }
 });
 

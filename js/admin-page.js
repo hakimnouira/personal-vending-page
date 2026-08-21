@@ -339,12 +339,19 @@ class AdminDashboard {
       });
     }
 
-    // ── Company Discount: Apply -20% to all products ─────────────────────────
+    // ── Company Discount: Apply customizable % to all products (One-time only) ──
     const btnDiscount = document.getElementById('btn-apply-company-discount');
+    const inputDiscount = document.getElementById('company-discount-input');
+
     if (btnDiscount) {
       btnDiscount.addEventListener('click', async () => {
+        if (btnDiscount.disabled) return;
+
+        const val = inputDiscount ? parseFloat(inputDiscount.value) : 20;
+        const percentage = (!isNaN(val) && val > 0 && val < 100) ? val : 20;
+
         const confirmed = confirm(
-          `🏷️ Appliquer une réduction de 20% sur TOUS les prix produits ?\n\n⚠️ Cette action est PERMANENTE : les prix seront multipliés par 0.80 dans la base de données.\n\nIl s'agit de votre remise société (pas d'affichage promo).\n\nContinuer ?`
+          `🏷️ Appliquer une réduction de ${percentage}% sur TOUS les prix du catalogue ?\n\n⚠️ Cette action est PERMANENTE et NE PEUT ÊTRE EXÉCUTÉE QU'UNE SEULE FOIS pour protéger vos prix contre les doubles réductions.\n\nIl s'agit de votre remise société (aucun badge promo ne sera affiché).\n\nContinuer ?`
         );
         if (!confirmed) return;
 
@@ -352,19 +359,29 @@ class AdminDashboard {
         btnDiscount.textContent = '⏳ Application en cours...';
 
         try {
-          const res = await fetch('/api/products/apply-company-discount', { method: 'POST' });
+          const res = await fetch('/api/products/apply-company-discount', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ percentage })
+          });
           const data = await res.json();
           if (data.success) {
             alert(`✅ ${data.message}`);
+            this.lockCompanyDiscountUI(data.percentage || percentage);
             await this.fetchProducts();
           } else {
-            alert(`❌ Erreur: ${data.message}`);
+            alert(`❌ ${data.message}`);
+            if (data.already_applied) {
+              this.lockCompanyDiscountUI(data.percentage || percentage);
+            } else {
+              btnDiscount.disabled = false;
+              btnDiscount.textContent = '🏷️ Appliquer la Remise Société';
+            }
           }
         } catch (err) {
           alert(`❌ Erreur réseau: ${err.message}`);
-        } finally {
           btnDiscount.disabled = false;
-          btnDiscount.textContent = '🏷️ Appliquer -20% Société sur Tous les Prix';
+          btnDiscount.textContent = '🏷️ Appliquer la Remise Société';
         }
       });
     }
@@ -1057,14 +1074,45 @@ class AdminDashboard {
     }
   }
 
+  lockCompanyDiscountUI(percentage = 20) {
+    const btnDiscount = document.getElementById('btn-apply-company-discount');
+    const inputDiscount = document.getElementById('company-discount-input');
+    const wrapper = document.getElementById('company-discount-wrapper');
+
+    if (inputDiscount) {
+      inputDiscount.value = percentage;
+      inputDiscount.disabled = true;
+      inputDiscount.style.color = '#64748B';
+    }
+    if (wrapper) {
+      wrapper.style.opacity = '0.75';
+      wrapper.style.background = '#F1F5F9';
+      wrapper.title = 'Remise déjà appliquée';
+    }
+    if (btnDiscount) {
+      btnDiscount.disabled = true;
+      btnDiscount.style.background = '#475569';
+      btnDiscount.style.borderColor = '#334155';
+      btnDiscount.style.cursor = 'not-allowed';
+      btnDiscount.style.opacity = '0.9';
+      btnDiscount.innerHTML = `🔒 Remise de ${percentage}% Déjà Appliquée`;
+      btnDiscount.title = 'Cette remise a déjà été appliquée sur les prix du catalogue. Action verrouillée pour éviter les doubles réductions.';
+    }
+  }
+
   async fetchSettings() {
     try {
       const res = await fetch('/api/settings');
       const data = await res.json();
-      if (data.success && this.fbHandleInput) {
-        const username = data.data.facebook_username || 'mouna.nouira1';
-        this.fbHandleInput.value = username;
-        this.updateFbPreviewLink(username);
+      if (data.success) {
+        if (this.fbHandleInput) {
+          const username = data.data.facebook_username || 'mouna.nouira1';
+          this.fbHandleInput.value = username;
+          this.updateFbPreviewLink(username);
+        }
+        if (data.data.company_discount_applied) {
+          this.lockCompanyDiscountUI(data.data.company_discount_percent || 20);
+        }
       }
     } catch (e) {}
   }
