@@ -100,6 +100,8 @@ class AdminDashboard {
     // Settings
     this.fbHandleInput = document.getElementById('setting-fb-handle');
     this.btnSaveFbHandle = document.getElementById('btn-save-fb-handle');
+    this.whatsappPhoneInput = document.getElementById('setting-whatsapp-phone');
+    this.btnSaveWhatsappPhone = document.getElementById('btn-save-whatsapp-phone');
     this.newPwdInput = document.getElementById('setting-new-pwd');
     this.btnSavePwd = document.getElementById('btn-save-pwd');
 
@@ -768,6 +770,33 @@ class AdminDashboard {
 
         const isArabic = this.i18n.getLang() === 'ar';
         alert(isArabic ? `✅ تم حفظ صفحة فيسبوك بنجاح! (${clean})` : `✅ Facebook Page saved successfully! (${clean})`);
+      });
+    }
+
+    // Save WhatsApp Phone Settings
+    if (this.btnSaveWhatsappPhone && this.whatsappPhoneInput) {
+      this.whatsappPhoneInput.addEventListener('input', () => {
+        this.updateWhatsappPreviewLink(this.whatsappPhoneInput.value);
+      });
+
+      this.btnSaveWhatsappPhone.addEventListener('click', async () => {
+        const raw = this.whatsappPhoneInput.value.trim();
+        const clean = this.cleanPhoneNumber(raw);
+        if (!clean) return alert('Entrez un numéro de téléphone valide');
+
+        await this.saveSettingsAPI({ phone: clean, whatsapp_phone: clean });
+        try {
+          const localSettings = JSON.parse(localStorage.getItem('oriflame_settings_v1') || '{}');
+          localSettings.whatsapp_phone = clean;
+          localSettings.phone = clean;
+          localStorage.setItem('oriflame_settings_v1', JSON.stringify(localSettings));
+        } catch (e) {}
+
+        this.whatsappPhoneInput.value = clean;
+        this.updateWhatsappPreviewLink(clean);
+
+        const isArabic = this.i18n.getLang() === 'ar';
+        alert(isArabic ? `✅ تم حفظ رقم الواتساب بنجاح! (+216 ${clean})` : `✅ Numéro WhatsApp enregistré avec succès ! (+216 ${clean})`);
       });
     }
 
@@ -1472,22 +1501,57 @@ class AdminDashboard {
     }
   }
 
+  cleanPhoneNumber(input) {
+    if (!input) return '55756629';
+    let val = String(input).replace(/[^\d+]/g, '').trim();
+    if (val.startsWith('+216')) val = val.substring(4);
+    else if (val.startsWith('00216')) val = val.substring(5);
+    else if (val.startsWith('216') && val.length > 8) val = val.substring(3);
+    val = val.replace(/\D/g, '');
+    return val || '55756629';
+  }
+
+  updateWhatsappPreviewLink(phone) {
+    const linkHref = document.getElementById('whatsapp-link-preview-href');
+    if (linkHref) {
+      const clean = this.cleanPhoneNumber(phone);
+      const url = `https://wa.me/216${clean}`;
+      linkHref.href = url;
+      linkHref.textContent = `${url} (+216 ${clean})`;
+    }
+  }
+
   async fetchSettings() {
     try {
       const res = await fetch('/api/settings');
       const data = await res.json();
       if (data.success) {
         if (this.fbHandleInput) {
-          const username = data.data.facebook_username || 'mouna.nouira1';
+          const username = data.data.facebook_username || 'Mounanouira.Oriflame';
           this.fbHandleInput.value = username;
           this.updateFbPreviewLink(username);
+        }
+        if (this.whatsappPhoneInput) {
+          const phone = data.data.whatsapp_phone || data.data.phone || '55756629';
+          const cleanPhone = this.cleanPhoneNumber(phone);
+          this.whatsappPhoneInput.value = cleanPhone;
+          this.updateWhatsappPreviewLink(cleanPhone);
         }
         const inputDiscount = document.getElementById('company-discount-input');
         if (inputDiscount && data.data.company_discount_percent) {
           inputDiscount.value = data.data.company_discount_percent;
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      try {
+        const localSettings = JSON.parse(localStorage.getItem('oriflame_settings_v1') || '{}');
+        if (this.whatsappPhoneInput && (localSettings.whatsapp_phone || localSettings.phone)) {
+          const cleanPhone = this.cleanPhoneNumber(localSettings.whatsapp_phone || localSettings.phone);
+          this.whatsappPhoneInput.value = cleanPhone;
+          this.updateWhatsappPreviewLink(cleanPhone);
+        }
+      } catch (err) {}
+    }
   }
 
   async saveSettingsAPI(payload) {

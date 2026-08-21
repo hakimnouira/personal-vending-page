@@ -50,7 +50,8 @@ class App {
     this.activeCategory = 'All';
     this.searchQuery = '';
     this.products = [];
-    this.facebookUsername = 'mouna.nouira1';
+    this.facebookUsername = 'Mounanouira.Oriflame';
+    this.whatsappPhone = '55756629';
 
     window.app = this;
     this.init();
@@ -77,16 +78,41 @@ class App {
   }
 
 
+  cleanPhoneNumber(input) {
+    if (!input) return '55756629';
+    let val = String(input).replace(/[^\d+]/g, '').trim();
+    if (val.startsWith('+216')) val = val.substring(4);
+    else if (val.startsWith('00216')) val = val.substring(5);
+    else if (val.startsWith('216') && val.length > 8) val = val.substring(3);
+    val = val.replace(/\D/g, '');
+    return val || '55756629';
+  }
+
   async fetchSettings() {
     try {
       const res = await fetch('/api/settings');
       const data = await res.json();
-      if (data.success && data.data && data.data.facebook_username) {
-        this.facebookUsername = data.data.facebook_username;
+      if (data.success && data.data) {
+        if (data.data.facebook_username) {
+          this.facebookUsername = data.data.facebook_username;
+        }
+        if (data.data.whatsapp_phone || data.data.phone) {
+          this.whatsappPhone = this.cleanPhoneNumber(data.data.whatsapp_phone || data.data.phone);
+        }
       }
     } catch (e) {
       console.warn("Could not fetch settings", e);
     }
+
+    try {
+      const localSettings = JSON.parse(localStorage.getItem('oriflame_settings_v1') || '{}');
+      if (localSettings.whatsapp_phone || localSettings.phone) {
+        this.whatsappPhone = this.cleanPhoneNumber(localSettings.whatsapp_phone || localSettings.phone);
+      }
+      if (localSettings.facebook_username) {
+        this.facebookUsername = localSettings.facebook_username;
+      }
+    } catch (err) {}
   }
 
   cleanFbUsername(val) {
@@ -636,11 +662,12 @@ class App {
 
             if (successWhatsappBtn) {
               const liveOrderUrl = `${window.location.origin}/admin?orderId=${data.order_id}`;
+              const cleanTargetPhone = this.cleanPhoneNumber(this.whatsappPhone || '55756629');
               const orderMsg = encodeURIComponent(
                 `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
                 this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl)
               );
-              successWhatsappBtn.href = `https://wa.me/?text=${orderMsg}`;
+              successWhatsappBtn.href = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
             }
 
             if (closeSuccessBtn) {
