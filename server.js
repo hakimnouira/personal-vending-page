@@ -747,9 +747,10 @@ app.post('/api/orders', (req, res) => {
     orders.unshift(newOrder);
     saveOrders(orders);
 
-    const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+    const protocol = req.headers['x-forwarded-proto'] || (req.connection && req.connection.encrypted ? 'https' : 'http') || req.protocol || 'http';
     const host = req.headers['x-forwarded-host'] || req.headers.host || `localhost:${PORT}`;
-    const orderUrl = `${protocol}://${host}/admin?orderId=${orderId}`;
+    const baseUrl = process.env.PUBLIC_URL || `${protocol}://${host}`;
+    const orderUrl = `${baseUrl.replace(/\/$/, '')}/admin?orderId=${orderId}`;
 
     res.status(201).json({
       success: true,

@@ -547,9 +547,10 @@ class App {
             if (successCustomerPhone) successCustomerPhone.textContent = phone;
 
             if (successWhatsappBtn) {
+              const liveOrderUrl = `${window.location.origin}/admin?orderId=${data.order_id}`;
               const orderMsg = encodeURIComponent(
                 `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
-                this.cartManager.generateOrderTextMessage(name, phone, 'TND')
+                this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl)
               );
               successWhatsappBtn.href = `https://wa.me/?text=${orderMsg}`;
             }
@@ -609,15 +610,16 @@ class App {
           });
           const data = await res.json();
           if (data.success) {
-            orderUrl = data.order_url;
             orderId = data.order_id;
+            orderUrl = `${window.location.origin}/admin?orderId=${orderId}`;
           }
         } catch (err) {
           console.warn("Could not persist order to server", err);
         }
 
         const cleanedFbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
-        const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', orderUrl);
+        const liveOrderUrl = orderId ? `${window.location.origin}/admin?orderId=${orderId}` : orderUrl;
+        const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl);
         const finalMessengerUrl = this.cartManager.isMobileDevice()
           ? `https://m.me/${cleanedFbHandle}?text=${encodeURIComponent(msg)}`
           : `https://www.facebook.com/messages/t/${cleanedFbHandle}`;
