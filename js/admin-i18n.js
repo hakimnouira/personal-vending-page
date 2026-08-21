@@ -11,9 +11,12 @@ export const adminTranslations = {
     
     // Sidebar Tabs
     tab_analytics: "📊 Statistiques & Visiteurs",
+    tab_orders: "🛍️ Commandes Client",
     tab_stock: "📦 Gestion du Stock & Produits",
     tab_scraper: "🤖 Scrapers Oriflame & Flipbook",
     tab_settings: "⚙️ Paramètres & Import/Export CSV",
+    tab_carousel: "🖼️ Carrousel Page d'Accueil",
+    tab_order_detail: "📋 Détail Commande",
 
     // Section 1: Analytics
     analytics_title: "Statistiques & Parcours des Visiteurs",
@@ -108,9 +111,12 @@ export const adminTranslations = {
 
     // Sidebar Tabs
     tab_analytics: "📊 إحصائيات الزوار ووقت التصفح",
+    tab_orders: "🛍️ طلبات الزبائن",
     tab_stock: "📦 إدارة المخزون والمنتجات",
     tab_scraper: "🤖 سحب الكتالوج والكتيب الرقمي",
     tab_settings: "⚙️ الإعدادات وتصدير/استيراد CSV",
+    tab_carousel: "🖼️ شريط الصور المتحرك",
+    tab_order_detail: "📋 تفاصيل الطلب",
 
     // Section 1: Analytics
     analytics_title: "تحليلات الزوار ومسار التصفح المباشر",
@@ -204,9 +210,12 @@ export const adminTranslations = {
 
     // Sidebar Tabs
     tab_analytics: "📊 Visitor Analytics & Time Spent",
+    tab_orders: "🛍️ Customer Orders",
     tab_stock: "📦 Stock & Catalog Manager",
     tab_scraper: "🤖 Oriflame & Flipbook Scraper",
     tab_settings: "⚙️ Settings & CSV Data",
+    tab_carousel: "🖼️ Homepage Carousel",
+    tab_order_detail: "📋 Order Details",
 
     // Section 1: Analytics
     analytics_title: "Visitor Analytics & Behavioral Tracking",
@@ -228,21 +237,21 @@ export const adminTranslations = {
     no_telemetry_yet: "No visitor telemetry records yet.",
 
     // Section 2: Stock
-    stock_title: "Stock & Product Management",
-    stock_desc: "Manage your Oriflame inventory, toggle availability, or upload new products directly.",
-    stat_total_products: "Total Products in Catalog",
-    stat_in_stock: "Available in Stock",
+    stock_title: "Stock & Products Management",
+    stock_desc: "Manage your Oriflame inventory, toggle availability or add new products.",
+    stat_total_products: "Total Catalog Products",
+    stat_in_stock: "In Stock & Available",
     stat_out_stock: "Out of Stock",
-    add_product_toggle: "➕ Add New Product (Direct Image Upload or URL)",
+    add_product_toggle: "➕ Add New Product (Upload Image or Direct Link)",
     lbl_product_title: "Product Title *",
     lbl_category: "Category *",
     lbl_price_tnd: "Catalog Price (in TND) *",
     lbl_original_price: "Original Price before discount (Optional)",
     lbl_size: "Volume / Size",
-    lbl_upload_image: "Upload Product Photo (File or paste Image URL)",
-    lbl_description: "Description & Benefits",
-    btn_save_product: "Save Product to Live Catalog",
-    th_prod_id: "Product ID",
+    lbl_upload_image: "Product Image (Local file or direct URL)",
+    lbl_description: "Description & Key Benefits",
+    btn_save_product: "Save Product to Live Storefront",
+    th_prod_id: "Product Code",
     th_photo_name: "Photo & Name",
     th_category: "Category",
     th_price: "Price (TND)",
@@ -253,34 +262,31 @@ export const adminTranslations = {
     btn_delete: "Delete",
 
     // Section 3: Scrapers
-    scraper_title: "Automated Digital Flipbook & Catalog Scrapers",
-    scraper_desc: "Scrape the full interactive Digital Flipbook with all its 150 pages, or sync products and deals from tn.oriflame.com.",
-    badge_new: "NEW FEATURE",
-    flipbook_scraper_title: "📖 Scrape Full Digital Flipbook (All Pages & Spreads)",
-    flipbook_scraper_desc: "Paste any Oriflame online catalogue link to automatically scrape all pages, high-resolution zoomable spreads, video overlays, and interactive product hotspots.",
-    btn_scrape_flipbook: "🚀 Scrape Full Flipbook & All Pages",
-    sync_title: "🤖 Global Multi-Category Products & Deals Scraper",
-    sync_desc: "Scrape all products across all categories (Fragrances, Skincare, Makeup, Wellness, Haircare, Men) with exact codes, TND prices, and promotional savings.",
+    scraper_title: "Automated eCatalog & Flipbook Scrapers",
+    scraper_desc: "Scrape the entire 150-page Digital Flipbook or sync live products from tn.oriflame.com.",
+    badge_new: "NEW",
+    flipbook_scraper_title: "📖 Scrape Full Digital Flipbook (All Pages)",
+    flipbook_scraper_desc: "Paste any link from the official Oriflame catalog to extract all pages, HD images, video and interactive hotspot tags.",
+    btn_scrape_flipbook: "🚀 Scrape Flipbook & All Pages",
+    sync_title: "🤖 Global Category & Product Scraping",
+    sync_desc: "Scrape all products across all categories (Fragrance, Skincare, Makeup, Wellness, Hair, Men) with exact codes, TND prices and discounts.",
     btn_sync_catalog: "⚡ Start Global Scraping & Sync Catalog",
-    badge_multi_cat: "MULTI-CATEGORIES + DIFF",
+    badge_multi_cat: "MULTI-CATEGORY + DIFF",
     stat_total_scraped: "Total Scraped",
     stat_new_added: "New Added",
     stat_modified: "Modified (Price/Promo)",
     stat_deleted: "Deleted",
     stat_unchanged: "Unchanged",
-    lbl_diff_preview: "Recent Modification Details:",
+    lbl_diff_preview: "Recent Price & Product Changes:",
     th_code: "Code",
     th_name: "Product Name",
     th_status: "Status",
-    th_price_diff: "Price / Diff",
+    th_price_diff: "Price / Change",
     single_scrape_title: "Scrape Single Oriflame Product Page",
-    single_scrape_desc: "Paste any direct link from the official Oriflame Tunisia website to extract and add it automatically.",
+    single_scrape_desc: "Paste the direct URL of an Oriflame Tunisia website to extract and add it automatically.",
     btn_scrape_single: "Scrape & Add Product",
 
     // Section 4: Settings
-    settings_title: "Settings & Bulk CSV Management",
-    settings_desc: "Configure your Messenger link, update admin credentials, and export/import catalog data.",
-    fb_handle_title: "Facebook Messenger Handle",
     fb_handle_desc: "This username is where customer orders will be sent when they click Order via Messenger.",
     btn_save_handle: "Save Handle",
     pwd_title: "Admin Security Passcode",
@@ -314,10 +320,11 @@ export class AdminI18n {
   }
 
   apply() {
-    const isRTL = this.currentLang === 'ar';
-    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    const isArabic = this.currentLang === 'ar';
+    // Admin dashboard layout is strictly LTR to keep sidebar/navbar pinned to the left
+    document.documentElement.dir = 'ltr';
     document.documentElement.lang = this.currentLang;
-    if (isRTL) {
+    if (isArabic) {
       document.body.classList.add('rtl-layout');
     } else {
       document.body.classList.remove('rtl-layout');

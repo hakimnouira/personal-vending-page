@@ -32,25 +32,40 @@ body {
   min-height: 100vh;
 }
 
-/* Arabic RTL Layout */
-[dir="rtl"] body, body.rtl-layout {
+/* Arabic Font & Text Styling — Navbar strictly stays on the LEFT */
+body.rtl-layout {
   font-family: var(--font-arabic), var(--font-sans);
-  text-align: right;
   letter-spacing: 0;
 }
 
-[dir="rtl"] .admin-layout {
-  grid-template-columns: 1fr 270px;
+body.rtl-layout .section-title,
+body.rtl-layout h1,
+body.rtl-layout h2,
+body.rtl-layout h3,
+body.rtl-layout h4 {
+  font-family: var(--font-arabic), var(--font-sans);
 }
 
-[dir="rtl"] .admin-sidebar {
-  border-right: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
+.admin-layout {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  min-height: 100vh;
+  direction: ltr !important;
 }
 
-[dir="rtl"] .trail-offset {
-  margin-right: 0;
-  margin-left: 10px;
+.admin-sidebar {
+  direction: ltr !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: none !important;
+}
+
+.sidebar-nav {
+  direction: ltr !important;
+}
+
+.nav-item {
+  direction: ltr !important;
+  text-align: left !important;
 }
 
 /* Login Screen */
@@ -325,10 +340,6 @@ body {
   font-size: 0.86rem;
 }
 
-[dir="rtl"] .custom-table {
-  text-align: right;
-}
-
 .custom-table th {
   background: #FAF8F5;
   padding: 14px 18px;
@@ -456,7 +467,7 @@ body {
 
 /* Comprehensive Mobile Responsiveness for Phone Users (<= 900px) */
 @media (max-width: 900px) {
-  .admin-layout, [dir="rtl"] .admin-layout {
+  .admin-layout {
     grid-template-columns: 1fr;
     display: flex;
     flex-direction: column;
