@@ -4,11 +4,11 @@
     {
       "session_id": "SES-NHRPIH4-MT2Z11KK",
       "first_seen": "2026-08-21T13:14:25.467Z",
-      "last_active": "2026-08-21T13:28:52.382Z",
+      "last_active": "2026-08-21T13:36:52.388Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 519,
+      "duration_seconds": 827,
       "activity_trail": [
         {
           "time": "2026-08-21T13:14:25.467Z",
@@ -44,6 +44,16 @@
           "time": "2026-08-21T13:27:11.896Z",
           "offset": "4m 7s",
           "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-21T13:31:04.455Z",
+          "offset": "7m 59s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-21T13:32:48.872Z",
+          "offset": "9m 44s",
+          "description": "Copied Order Summary to Clipboard"
         }
       ],
       "categories_visited": [
@@ -56,11 +66,11 @@
     {
       "session_id": "SES-96GWOI0-MT2PP8VB",
       "first_seen": "2026-08-21T13:13:52.653Z",
-      "last_active": "2026-08-21T13:28:52.385Z",
+      "last_active": "2026-08-21T13:36:52.384Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 16534,
+      "duration_seconds": 17014,
       "activity_trail": [],
       "categories_visited": [],
       "products_viewed": []

@@ -189,13 +189,15 @@
       </div>
 
       <div class="drawer-footer">
-        <div class="customer-info-box">
-          <h4 data-i18n="customer_details">Coordonnées du Client (Optionnel)</h4>
-          <div class="form-group">
-            <input type="text" id="customer-name" class="form-control" data-i18n="customer_name_placeholder" placeholder="Votre Nom Complet" />
+        <div class="customer-info-box" style="margin-bottom: 12px; background: #FAF8F5; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border);">
+          <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary); margin-bottom: 8px;">
+            👤 Vos Coordonnées (Nom &amp; Téléphone)
+          </h4>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <input type="text" id="customer-name" class="form-control" placeholder="Votre Nom Complet" style="font-size: 0.85rem;" />
           </div>
-          <div class="form-group">
-            <input type="tel" id="customer-phone" class="form-control" data-i18n="customer_phone_placeholder" placeholder="Votre Numéro de Téléphone (ex: +216 ...)" />
+          <div class="form-group" style="margin-bottom: 0;">
+            <input type="tel" id="customer-phone" class="form-control" placeholder="Votre N° Téléphone / WhatsApp (ex: 98 123 456)" style="font-size: 0.85rem;" />
           </div>
         </div>
 
@@ -204,24 +206,27 @@
           <span id="cart-subtotal">0.00 TND</span>
         </div>
 
+        <!-- Dual Choice Ordering Methods -->
+        <div class="checkout-options-box" style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 0.76rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; text-align: center;">
+            — Choisissez votre mode de commande —
+          </div>
 
-
-        <!-- Messenger Checkout Actions (works for 100% of clients, no login required) -->
-        <div class="messenger-actions" style="flex-direction: column; gap: 8px;">
-          <a id="btn-messenger-checkout" href="#" class="btn-messenger-checkout">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.516 3.735 7.234V22l3.385-1.86c.928.257 1.91.396 2.88.396 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.09 12.39l-2.545-2.727-4.955 2.727 5.455-5.818 2.618 2.727 4.882-2.727-5.455 5.818z"/></svg>
-            <span data-i18n="send_messenger_mobile">Envoyer la Commande via Messenger</span>
-          </a>
-          <button id="btn-copy-order-summary" class="btn-copy-summary" style="display:none;" data-i18n="copy_order_summary">
-            Copier le Recapitulatif
+          <!-- Choice 1: Téléphone / WhatsApp -->
+          <button id="btn-phone-checkout" type="button" style="width: 100%; padding: 12px 14px; background: #059669; color: #FFFFFF; border: none; border-radius: 10px; font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 8px rgba(5,150,105,0.25);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            <span>📞 Commander par Téléphone / WhatsApp</span>
           </button>
+
+          <!-- Choice 2: Facebook Messenger -->
+          <a id="btn-messenger-checkout" href="#" style="width: 100%; padding: 12px 14px; background: #0084FF; color: #FFFFFF; border: none; border-radius: 10px; font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,132,255,0.25);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.516 3.735 7.234V22l3.385-1.86c.928.257 1.91.396 2.88.396 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.09 12.39l-2.545-2.727-4.955 2.727 5.455-5.818 2.618 2.727 4.882-2.727-5.455 5.818z"/></svg>
+            <span>💬 Envoyer sur Facebook Messenger</span>
+          </a>
         </div>
 
-
-
-
-        <div class="no-payment-notice" data-i18n="no_payment_notice">
-          Aucun paiement en ligne requis. Paiement à la livraison / confirmation avec Mouna.
+        <div class="no-payment-notice" style="margin-top: 10px; font-size: 0.76rem; color: var(--color-text-muted); text-align: center;">
+          ✓ Aucun paiement en ligne requis. Paiement à la livraison / confirmation avec Mouna.
         </div>
       </div>
     </div>
@@ -351,6 +356,37 @@
           </button>
           <button id="btn-recopy-order" style="background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; padding: 13px 16px; border-radius: 10px; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
             📋 Recopier
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone/WhatsApp Order Success Confirmation Modal -->
+  <div id="order-success-modal" class="modal-overlay" style="z-index: 10000; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);">
+    <div class="modal-card" style="max-width: 500px; width: 92vw; padding: 0; overflow: hidden; border-radius: 18px; text-align: center;">
+      <div style="background: linear-gradient(135deg, #059669 0%, #047857 100%); color: #FFF; padding: 28px 20px 22px 20px;">
+        <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto; font-size: 2rem;">
+          ✓
+        </div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; margin: 0 0 4px 0;">Commande Enregistrée !</h3>
+        <p style="font-size: 0.86rem; opacity: 0.95; margin: 0;">Réf: <strong id="success-order-id">ORD-000000</strong></p>
+      </div>
+
+      <div style="padding: 24px 20px; background: #FFFFFF;">
+        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 14px; margin-bottom: 18px; text-align: left;">
+          <p style="font-size: 0.88rem; color: #166534; font-weight: 600; line-height: 1.5; margin: 0;">
+            📞 Merci <strong id="success-customer-name">Cher Client</strong> ! Mouna Nouira a bien reçu votre commande et vous contactera très rapidement par téléphone ou WhatsApp au <strong id="success-customer-phone">+216 ...</strong> pour confirmer vos articles et la livraison.
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a id="btn-success-whatsapp" href="#" target="_blank" style="background: #25D366; color: #FFF; padding: 12px 18px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>
+            <span>Envoyer un message WhatsApp directement</span>
+          </a>
+          <button id="btn-close-success-modal" style="background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; padding: 12px 18px; border-radius: 10px; font-weight: 600; font-size: 0.88rem; cursor: pointer;">
+            Fermer et Continuer mes Achats
           </button>
         </div>
       </div>

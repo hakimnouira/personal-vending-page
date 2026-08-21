@@ -267,8 +267,39 @@ app.get('/api/analytics/stats', (req, res) => {
     mobile_count: mobileCount,
     desktop_count: desktopCount,
     category_popularity: categoryCounts,
-    recent_sessions: sessions.slice(0, 50)
+    recent_sessions: sessions.slice(0, 200)
   });
+});
+
+// Delete a single analytics session by ID
+app.delete('/api/analytics/sessions/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const analytics = getAnalytics();
+    const initialLen = (analytics.sessions || []).length;
+    analytics.sessions = (analytics.sessions || []).filter(s => s.session_id !== id);
+
+    if (analytics.sessions.length === initialLen) {
+      return res.status(404).json({ success: false, message: 'Session introuvable' });
+    }
+
+    saveAnalytics(analytics);
+    res.json({ success: true, message: 'Session supprimée avec succès' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// Delete all analytics sessions
+app.delete('/api/analytics/sessions', (req, res) => {
+  try {
+    const analytics = getAnalytics();
+    analytics.sessions = [];
+    saveAnalytics(analytics);
+    res.json({ success: true, message: 'Toutes les sessions ont été effacées' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 app.post('/api/analytics/reset', (req, res) => {
@@ -697,6 +728,8 @@ app.post('/api/orders', (req, res) => {
       order_id: orderId,
       customer_name: customer_name ? customer_name.trim() : 'Client Anonyme',
       customer_phone: customer_phone ? customer_phone.trim() : 'Non renseigné',
+      channel: req.body.channel || (customer_phone ? 'phone' : 'messenger'),
+      notes: req.body.notes ? req.body.notes.trim() : '',
       items: items.map(i => ({
         product_id: i.product_id,
         name: i.name,

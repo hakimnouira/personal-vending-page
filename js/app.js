@@ -52,6 +52,16 @@ class App {
     }
   }
 
+  cleanFbUsername(val) {
+    if (!val) return 'Mounanouira.Oriflame';
+    val = val.trim();
+    val = val.replace(/^https?:\/\/(www\.|m\.)?facebook\.com\/messages\/(e2ee\/)?t\//i, '');
+    val = val.replace(/^https?:\/\/(www\.|m\.)?facebook\.com\//i, '');
+    val = val.replace(/^https?:\/\/m\.me\//i, '');
+    val = val.split('/')[0].split('?')[0].trim();
+    return val || 'Mounanouira.Oriflame';
+  }
+
   async fetchProducts() {
     try {
       const res = await fetch('/api/products');
@@ -485,7 +495,90 @@ class App {
       }
     };
 
-    // Facebook / Messenger Checkout Click Tracking, Order Persistence & Auto Clipboard Copy
+    // ── Checkout Choice 1: Phone / WhatsApp Order Submission ─────────────────
+    const btnPhone = document.getElementById('btn-phone-checkout');
+    if (btnPhone) {
+      btnPhone.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const items = this.cartManager.getCartItems();
+        if (items.length === 0) {
+          alert('Votre panier est vide.');
+          return;
+        }
+
+        const name = (this.customerNameInput ? this.customerNameInput.value : '').trim();
+        const phone = (this.customerPhoneInput ? this.customerPhoneInput.value : '').trim();
+
+        if (!phone) {
+          alert('Veuillez renseigner votre numéro de téléphone ou WhatsApp pour que nous puissions vous contacter.');
+          if (this.customerPhoneInput) this.customerPhoneInput.focus();
+          return;
+        }
+
+        btnPhone.disabled = true;
+        btnPhone.textContent = '⏳ Enregistrement de la commande...';
+
+        try {
+          const res = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              customer_name: name || 'Client Téléphone',
+              customer_phone: phone,
+              channel: 'phone',
+              items: items,
+              currency: 'TND'
+            })
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            if (this.cartDrawerOverlay) this.cartDrawerOverlay.classList.remove('open');
+
+            const successModal = document.getElementById('order-success-modal');
+            const successOrderId = document.getElementById('success-order-id');
+            const successCustomerName = document.getElementById('success-customer-name');
+            const successCustomerPhone = document.getElementById('success-customer-phone');
+            const successWhatsappBtn = document.getElementById('btn-success-whatsapp');
+            const closeSuccessBtn = document.getElementById('btn-close-success-modal');
+
+            if (successOrderId) successOrderId.textContent = data.order_id;
+            if (successCustomerName) successCustomerName.textContent = name || 'Cher Client';
+            if (successCustomerPhone) successCustomerPhone.textContent = phone;
+
+            if (successWhatsappBtn) {
+              const orderMsg = encodeURIComponent(
+                `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
+                this.cartManager.generateOrderTextMessage(name, phone, 'TND')
+              );
+              successWhatsappBtn.href = `https://wa.me/?text=${orderMsg}`;
+            }
+
+            if (closeSuccessBtn) {
+              closeSuccessBtn.onclick = () => {
+                if (successModal) successModal.classList.remove('open');
+              };
+            }
+
+            if (successModal) successModal.classList.add('open');
+
+            this.cartManager.clearCart();
+            this.renderCart();
+            this.updateCartBadge();
+            this.telemetry.trackEvent(`Completed Phone/WhatsApp Order ${data.order_id}`);
+          } else {
+            alert('Erreur: ' + data.message);
+          }
+        } catch (err) {
+          alert('Erreur de connexion: ' + err.message);
+        } finally {
+          btnPhone.disabled = false;
+          btnPhone.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><span>📞 Commander par Téléphone / WhatsApp</span>`;
+        }
+      });
+    }
+
+    // ── Checkout Choice 2: Facebook / Messenger Checkout ─────────────────────
     if (this.btnMessengerCheckout) {
       this.btnMessengerCheckout.addEventListener('click', async (e) => {
         e.preventDefault();
@@ -495,9 +588,13 @@ class App {
         const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
         const items = this.cartManager.getCartItems();
 
-        if (items.length === 0) return;
+        if (items.length === 0) {
+          alert('Votre panier est vide.');
+          return;
+        }
 
         let orderUrl = '';
+        let orderId = '';
         try {
           const res = await fetch('/api/orders', {
             method: 'POST',
@@ -505,6 +602,7 @@ class App {
             body: JSON.stringify({
               customer_name: name,
               customer_phone: phone,
+              channel: 'messenger',
               items: items,
               currency: 'TND'
             })
@@ -518,31 +616,21 @@ class App {
           console.warn("Could not persist order to server", err);
         }
 
-        const fbHandle = this.facebookUsername || 'Mounanouira.Oriflame';
+        const cleanedFbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
         const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', orderUrl);
-        const finalMessengerUrl = this.cartManager.generateMessengerLink(fbHandle, name, phone, 'TND', orderUrl, orderId);
+        const finalMessengerUrl = this.cartManager.isMobileDevice()
+          ? `https://m.me/${cleanedFbHandle}?text=${encodeURIComponent(msg)}`
+          : `https://www.facebook.com/messages/t/${cleanedFbHandle}`;
 
-        // Copy order summary & admin inspection link to clipboard
+        // Copy order summary to clipboard
         await copyTextToClipboard(msg);
         this.showToast(this.i18n.t('toast_copied'));
 
         this.telemetry.trackEvent(`Clicked Facebook/Messenger Checkout (${count} items, Total: ${total} TND)`);
 
-        // If Web Share API is available (e.g. mobile smartphones), open native share sheet directly
-        if (this.cartManager.isMobileDevice() && navigator.share) {
-          try {
-            await navigator.share({
-              title: 'Ma Commande Oriflame',
-              text: msg
-            });
-            return;
-          } catch (shareErr) {}
-        }
-
         const isMobile = this.cartManager.isMobileDevice();
 
         if (isMobile) {
-          // Mobile: m.me link already has text pre-filled in app. Open and done.
           window.open(finalMessengerUrl, '_blank');
           return;
         }
@@ -558,7 +646,6 @@ class App {
         const msgPreview = document.getElementById('paste-modal-msg-preview');
 
         if (pasteModal) {
-          // Inject message preview text
           if (msgPreview) {
             const previewText = msg.replace(/\n/g, '<br>');
             msgPreview.innerHTML = `<div style="position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: linear-gradient(transparent, #F8FAFC);"></div>${previewText}`;

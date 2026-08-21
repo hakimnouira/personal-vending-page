@@ -387,12 +387,33 @@ class AdminDashboard {
     }
 
 
+    // Analytics & Orders Quick Buttons
+    const btnQuickOrders = document.getElementById('btn-quick-to-orders');
+    if (btnQuickOrders) {
+      btnQuickOrders.addEventListener('click', () => this.switchSection('section-orders'));
+    }
+
     if (this.btnRefreshAnalytics) {
       this.btnRefreshAnalytics.addEventListener('click', () => this.fetchAnalytics());
     }
     const btnRefreshOrders = document.getElementById('btn-refresh-orders');
     if (btnRefreshOrders) {
       btnRefreshOrders.addEventListener('click', () => this.fetchOrders());
+    }
+
+    // Analytics Search Filter & Clear All Sessions
+    const searchInput = document.getElementById('analytics-search-input');
+    const deviceFilter = document.getElementById('analytics-device-filter');
+    const btnClearSessions = document.getElementById('btn-clear-all-sessions');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => this.applyAnalyticsFilter());
+    }
+    if (deviceFilter) {
+      deviceFilter.addEventListener('change', () => this.applyAnalyticsFilter());
+    }
+    if (btnClearSessions) {
+      btnClearSessions.addEventListener('click', () => this.clearAllSessions());
     }
 
     // Order Detail: Back button & Print
@@ -793,6 +814,8 @@ class AdminDashboard {
     const elTotal = document.getElementById('stat-total-orders');
     const elPending = document.getElementById('stat-pending-orders');
     const elRevenue = document.getElementById('stat-total-revenue');
+    const navBadge = document.getElementById('nav-orders-badge');
+    const quickCount = document.getElementById('quick-orders-count');
 
     const orders = this.orders || [];
 
@@ -802,10 +825,18 @@ class AdminDashboard {
     const revenue = orders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
     if (elRevenue) elRevenue.textContent = `${revenue.toFixed(2)} TND`;
 
+    if (navBadge) {
+      navBadge.textContent = orders.length;
+      navBadge.style.display = orders.length > 0 ? 'inline-block' : 'none';
+    }
+    if (quickCount) {
+      quickCount.textContent = orders.length;
+    }
+
     if (!body) return;
 
     if (orders.length === 0) {
-      body.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:3rem; color:#8E8D8A;">Aucune commande enregistrée pour le moment.</td></tr>`;
+      body.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:#8E8D8A;">Aucune commande enregistrée pour le moment.</td></tr>`;
       return;
     }
 
@@ -816,18 +847,30 @@ class AdminDashboard {
         ? '<span class="badge badge-success">✓ Confirmé</span>' 
         : o.status === 'shipped' 
         ? '<span class="badge" style="background:#2563EB; color:#FFF;">🚚 Expédié</span>'
+        : o.status === 'cancelled'
+        ? '<span class="badge" style="background:#EF4444; color:#FFF;">✕ Annulée</span>'
         : '<span class="badge" style="background:#FEF3C7; color:#92400E; border:1px solid #FCD34D;">⏳ En attente</span>';
+
+      const channelBadge = o.channel === 'phone'
+        ? '<span class="badge" style="background:#ECFDF5; color:#047857; border:1px solid #A7F3D0; font-size:0.75rem; font-weight:700;">📞 Tél / WhatsApp</span>'
+        : '<span class="badge" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; font-size:0.75rem; font-weight:700;">💬 Messenger</span>';
+
+      const cleanPhone = (o.customer_phone || '').replace(/[^0-9+]/g, '');
+      const phoneHtml = cleanPhone && cleanPhone !== 'Nonrenseign'
+        ? `<div><a href="tel:${cleanPhone}" style="color:#2563EB; font-weight:600; text-decoration:underline;">📞 ${o.customer_phone}</a> <a href="https://wa.me/${cleanPhone.replace('+', '')}" target="_blank" style="display:inline-block; margin-left:4px; font-weight:700; color:#059669; text-decoration:none;" title="Ouvrir WhatsApp">📱</a></div>`
+        : `<div style="font-size:0.78rem; color:#8E8D8A;">${o.customer_phone || 'Non renseigné'}</div>`;
 
       return `
         <tr>
           <td><code style="font-weight:700; color:#2563EB;">${o.order_id}</code></td>
           <td>
             <strong>${o.customer_name || 'Client'}</strong>
-            <div style="font-size:0.78rem; color:#8E8D8A;">📞 ${o.customer_phone || 'Non renseigné'}</div>
+            ${phoneHtml}
           </td>
+          <td>${channelBadge}</td>
           <td>
             <div style="font-weight:600;">${itemCount} article(s)</div>
-            <div style="font-size:0.76rem; color:#71717A; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${itemsPreview}</div>
+            <div style="font-size:0.76rem; color:#71717A; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${itemsPreview}</div>
           </td>
           <td><strong style="font-size:0.95rem; color:#18181B;">${Number(o.total_amount).toFixed(2)} ${o.currency || 'TND'}</strong></td>
           <td style="font-size:0.78rem; color:#71717A;">${new Date(o.created_at).toLocaleString()}</td>
@@ -869,9 +912,12 @@ class AdminDashboard {
     const contentEl = document.getElementById('order-detail-content');
 
     if (titleEl) titleEl.textContent = `🛍️ Commande : ${order.order_id}`;
-    if (subtitleEl) subtitleEl.textContent = `Passée le ${new Date(order.created_at).toLocaleString()} • Statut : ${order.status.toUpperCase()}`;
+    if (subtitleEl) subtitleEl.textContent = `Passée le ${new Date(order.created_at).toLocaleString()} • Statut : ${order.status.toUpperCase()} • Canal : ${(order.channel || 'messenger').toUpperCase()}`;
 
     if (contentEl) {
+      const cleanPhone = (order.customer_phone || '').replace(/[^0-9+]/g, '');
+      const phoneCallLink = cleanPhone ? `<a href="tel:${cleanPhone}" style="color:#2563EB; text-decoration:underline;">📞 ${order.customer_phone}</a> <a href="https://wa.me/${cleanPhone.replace('+', '')}" target="_blank" style="margin-left:8px; font-weight:700; color:#059669; text-decoration:none;">📱 WhatsApp</a>` : (order.customer_phone || 'Non renseigné');
+
       contentEl.innerHTML = `
         <div style="background:#FAF8F5; border:1px solid #E8E5DF; border-radius:10px; padding:14px; margin-bottom:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
           <div>
@@ -879,8 +925,8 @@ class AdminDashboard {
             <div style="font-weight:700; font-size:1.05rem; color:#18181B;">${order.customer_name}</div>
           </div>
           <div>
-            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">Numéro de Téléphone</span>
-            <div style="font-weight:700; font-size:1.05rem; color:#2563EB;">📞 ${order.customer_phone}</div>
+            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">Contact Téléphone / WhatsApp</span>
+            <div style="font-weight:700; font-size:1.05rem;">${phoneCallLink}</div>
           </div>
         </div>
 
@@ -947,12 +993,11 @@ class AdminDashboard {
   }
 
   async deleteOrder(orderId) {
-    if (!confirm(`Voulez-vous vraiment supprimer la commande ${orderId} ?`)) return;
+    if (!confirm(`Supprimer définitivement la commande ${orderId} ?`)) return;
     try {
       const res = await fetch(`/api/orders/${orderId}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
-        alert(`✅ Commande ${orderId} supprimée`);
         await this.fetchOrders();
       }
     } catch (e) {
@@ -966,6 +1011,7 @@ class AdminDashboard {
       const data = await res.json();
       if (data.success) {
         this.analytics = data;
+        this.rawSessions = data.recent_sessions || [];
         this.renderAnalytics(data);
       }
     } catch (e) {
@@ -1000,51 +1046,113 @@ class AdminDashboard {
       }
     }
 
-    if (this.analyticsTableBody) {
-      const sessions = stats.recent_sessions || [];
-      if (sessions.length === 0) {
-        this.analyticsTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:2rem; color:#8E8D8A;">${this.i18n.t('no_telemetry_yet')}</td></tr>`;
-        return;
+    this.rawSessions = stats.recent_sessions || [];
+    this.applyAnalyticsFilter();
+  }
+
+  applyAnalyticsFilter() {
+    const searchInput = document.getElementById('analytics-search-input');
+    const deviceFilter = document.getElementById('analytics-device-filter');
+    const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    const dev = deviceFilter ? deviceFilter.value : 'all';
+
+    const all = this.rawSessions || [];
+    const filtered = all.filter(s => {
+      const matchDev = dev === 'all' || s.device === dev;
+      if (!matchDev) return false;
+      if (!q) return true;
+      const matchId = (s.session_id || '').toLowerCase().includes(q);
+      const matchIp = (s.ip || '').toLowerCase().includes(q);
+      const matchTrail = (s.activity_trail || []).some(t => (t.description || '').toLowerCase().includes(q));
+      return matchId || matchIp || matchTrail;
+    });
+
+    this.renderSessionsTable(filtered);
+  }
+
+  renderSessionsTable(sessions) {
+    const countDisplay = document.getElementById('sessions-count-display');
+    if (countDisplay) countDisplay.textContent = sessions.length;
+
+    if (!this.analyticsTableBody) return;
+
+    if (sessions.length === 0) {
+      this.analyticsTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:2rem; color:#8E8D8A;">Aucune session trouvée avec ces critères.</td></tr>`;
+      return;
+    }
+
+    this.analyticsTableBody.innerHTML = sessions.map(s => {
+      const mins = Math.floor((s.duration_seconds || 0) / 60);
+      const secs = (s.duration_seconds || 0) % 60;
+      const timeFormatted = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+      const trailHtml = (s.activity_trail || []).map(t => `
+        <div class="trail-item">
+          <span class="trail-offset">${t.offset}</span>
+          <span>${t.description}</span>
+        </div>
+      `).join('');
+
+      return `
+        <tr>
+          <td>
+            <code>${s.session_id}</code>
+            <div style="font-size:0.72rem; color:#8E8D8A; margin-top:2px;">IP: ${s.ip}</div>
+          </td>
+          <td>
+            <div><strong>${s.device === 'Mobile' ? '📱 Mobile' : '💻 Desktop'}</strong></div>
+            <span class="badge" style="background:#FAF8F5; border:1px solid #E8E5DF; font-size:0.72rem; text-transform:uppercase;">${s.language || 'fr'}</span>
+          </td>
+          <td>
+            <span class="badge badge-accent" style="font-size:0.85rem; font-weight:700;">
+              ⏱️ ${timeFormatted}
+            </span>
+          </td>
+          <td>
+            <div class="activity-trail-box">
+              ${trailHtml || '<span style="color:#8E8D8A;">Aucune activité enregistrée</span>'}
+            </div>
+          </td>
+          <td style="font-size:0.78rem; color:#8E8D8A;">
+            ${new Date(s.last_active).toLocaleTimeString()}
+          </td>
+          <td style="text-align: right;">
+            <button class="btn-primary" style="background:var(--admin-danger); border-color:var(--admin-danger); padding:4px 8px; font-size:0.78rem; width:auto;" onclick="window.adminDash.deleteSession('${s.session_id}')" title="Supprimer cette session">
+              🗑️
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async deleteSession(sessionId) {
+    if (!confirm(`Supprimer la session "${sessionId}" ?`)) return;
+    try {
+      const res = await fetch(`/api/analytics/sessions/${sessionId}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        await this.fetchAnalytics();
+      } else {
+        alert('Erreur: ' + data.message);
       }
+    } catch (e) {
+      alert('Erreur réseau: ' + e.message);
+    }
+  }
 
-      this.analyticsTableBody.innerHTML = sessions.map(s => {
-        const mins = Math.floor((s.duration_seconds || 0) / 60);
-        const secs = (s.duration_seconds || 0) % 60;
-        const timeFormatted = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-
-        const trailHtml = (s.activity_trail || []).map(t => `
-          <div class="trail-item">
-            <span class="trail-offset">${t.offset}</span>
-            <span>${t.description}</span>
-          </div>
-        `).join('');
-
-        return `
-          <tr>
-            <td>
-              <code>${s.session_id}</code>
-              <div style="font-size:0.72rem; color:#8E8D8A; margin-top:2px;">IP: ${s.ip}</div>
-            </td>
-            <td>
-              <div><strong>${s.device === 'Mobile' ? '📱 Mobile' : '💻 Desktop'}</strong></div>
-              <span class="badge" style="background:#FAF8F5; border:1px solid #E8E5DF; font-size:0.72rem; text-transform:uppercase;">${s.language || 'fr'}</span>
-            </td>
-            <td>
-              <span class="badge badge-accent" style="font-size:0.85rem; font-weight:700;">
-                ⏱️ ${timeFormatted}
-              </span>
-            </td>
-            <td>
-              <div class="activity-trail-box">
-                ${trailHtml || '<span style="color:#8E8D8A;">No activity recorded</span>'}
-              </div>
-            </td>
-            <td style="font-size:0.78rem; color:#8E8D8A;">
-              ${new Date(s.last_active).toLocaleTimeString()}
-            </td>
-          </tr>
-        `;
-      }).join('');
+  async clearAllSessions() {
+    if (!confirm('⚠️ Êtes-vous sûr de vouloir effacer TOUTES les sessions de visite ? Cette action est irréversible.')) return;
+    try {
+      const res = await fetch('/api/analytics/sessions', { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        await this.fetchAnalytics();
+      } else {
+        alert('Erreur: ' + data.message);
+      }
+    } catch (e) {
+      alert('Erreur réseau: ' + e.message);
     }
   }
 
