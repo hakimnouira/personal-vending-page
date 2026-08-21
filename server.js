@@ -546,21 +546,53 @@ app.put('/api/products/:id', upload.single('image_file'), (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    const { name, category, price, description, in_stock, image_url, size, suitable_for } = req.body;
+    const {
+      name, name_fr, name_ar, name_en,
+      category, price, original_price, original_catalog_price,
+      description, description_fr, description_ar, description_en,
+      in_stock, image_url, size, suitable_for,
+      company_discount_applied, company_discount_percent
+    } = req.body;
+
     let finalImageUrl = products[index].image_url;
     if (req.file) finalImageUrl = `/uploads/${req.file.filename}`;
-    else if (image_url) finalImageUrl = image_url;
+    else if (image_url && image_url.trim()) finalImageUrl = image_url.trim();
+
+    const current = products[index];
+
+    let finalImages = current.images || [finalImageUrl];
+    if (req.body.images) {
+      try {
+        const parsed = typeof req.body.images === 'string' ? JSON.parse(req.body.images) : req.body.images;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          finalImages = [finalImageUrl, ...parsed.filter(u => u !== finalImageUrl)];
+        }
+      } catch (e) {
+        if (Array.isArray(req.body.images)) finalImages = req.body.images;
+      }
+    }
 
     products[index] = {
-      ...products[index],
-      name: name !== undefined ? name.trim() : products[index].name,
-      category: category || products[index].category,
-      price: price !== undefined ? parseFloat(price) : products[index].price,
-      size: size || products[index].size,
-      suitable_for: suitable_for || products[index].suitable_for,
+      ...current,
+      name: (name_fr || name || current.name || '').trim(),
+      name_fr: (name_fr || name || current.name_fr || current.name || '').trim(),
+      name_ar: name_ar !== undefined ? name_ar.trim() : (current.name_ar || ''),
+      name_en: name_en !== undefined ? name_en.trim() : (current.name_en || ''),
+      category: category || current.category || 'Skincare',
+      price: price !== undefined ? parseFloat(price) : current.price,
+      original_price: original_price !== undefined && original_price !== '' ? parseFloat(original_price) : current.original_price,
+      original_catalog_price: original_catalog_price !== undefined && original_catalog_price !== '' ? parseFloat(original_catalog_price) : current.original_catalog_price,
+      size: size !== undefined ? size.trim() : (current.size || ''),
+      suitable_for: suitable_for !== undefined ? suitable_for.trim() : (current.suitable_for || ''),
       image_url: finalImageUrl,
-      description: description !== undefined ? description.trim() : products[index].description,
-      in_stock: in_stock !== undefined ? (in_stock === true || in_stock === 'true') : products[index].in_stock
+      images: finalImages,
+      description: (description_fr || description || current.description || '').trim(),
+      description_fr: (description_fr || description || current.description_fr || current.description || '').trim(),
+      description_ar: description_ar !== undefined ? description_ar.trim() : (current.description_ar || ''),
+      description_en: description_en !== undefined ? description_en.trim() : (current.description_en || ''),
+      in_stock: in_stock !== undefined ? (in_stock === true || in_stock === 'true' || in_stock === 1 || in_stock === '1') : current.in_stock,
+      company_discount_applied: company_discount_applied !== undefined ? (company_discount_applied === true || company_discount_applied === 'true') : current.company_discount_applied,
+      company_discount_percent: company_discount_percent !== undefined ? parseInt(company_discount_percent) : (current.company_discount_percent || 0)
     };
 
     saveProducts(products);

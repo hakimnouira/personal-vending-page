@@ -109,6 +109,17 @@ class AdminDashboard {
     this.csvFileInput = document.getElementById('admin-csv-file');
     this.btnExportCsv = document.getElementById('btn-export-csv');
     this.btnDownloadSampleCsv = document.getElementById('btn-download-sample-csv');
+
+    // Product Edit Modal
+    this.editProductModal = document.getElementById('admin-edit-product-modal');
+    this.editProductForm = document.getElementById('admin-edit-product-form');
+
+    // Featured Special Offers Showcase
+    this.selectFeaturedDealProduct = document.getElementById('select-featured-deal-product');
+    this.btnAddFeaturedDeal = document.getElementById('btn-add-featured-deal');
+    this.featuredDealsGrid = document.getElementById('featured-deals-admin-grid');
+    this.btnSaveFeaturedDeals = document.getElementById('btn-save-featured-deals');
+    this.featuredDealIds = ['46980', '40683', '38557', '42751'];
   }
 
   switchSection(targetId) {
@@ -546,6 +557,191 @@ class AdminDashboard {
       });
     }
 
+    // Product Edit Modal Live Preview & Submit
+    const editFilePicker = document.getElementById('edit-prod-file-picker');
+    const editImgUrl = document.getElementById('edit-prod-image-url');
+    const editImgPreview = document.getElementById('edit-prod-img-preview');
+
+    if (editFilePicker && editImgPreview) {
+      editFilePicker.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (re) => {
+            editImgPreview.src = re.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    if (editImgUrl && editImgPreview) {
+      editImgUrl.addEventListener('input', () => {
+        if (editImgUrl.value.trim()) {
+          editImgPreview.src = editImgUrl.value.trim();
+        }
+      });
+    }
+
+    if (this.editProductForm) {
+      this.editProductForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const prodId = document.getElementById('edit-prod-id').value;
+        if (!prodId) return;
+
+        const filePicker = document.getElementById('edit-prod-file-picker');
+        const hasFile = filePicker && filePicker.files && filePicker.files.length > 0;
+
+        const nameFr = document.getElementById('edit-prod-name-fr').value.trim();
+        const nameAr = document.getElementById('edit-prod-name-ar').value.trim();
+        const nameEn = document.getElementById('edit-prod-name-en').value.trim();
+        const descFr = document.getElementById('edit-prod-desc-fr').value.trim();
+        const descAr = document.getElementById('edit-prod-desc-ar').value.trim();
+        const descEn = document.getElementById('edit-prod-desc-en').value.trim();
+        const category = document.getElementById('edit-prod-category').value;
+        const size = document.getElementById('edit-prod-size').value.trim();
+        const price = parseFloat(document.getElementById('edit-prod-price').value);
+        const originalCatalogPrice = parseFloat(document.getElementById('edit-prod-catalog-price').value) || price;
+        const origPriceVal = document.getElementById('edit-prod-original-price').value.trim();
+        const originalPrice = origPriceVal ? parseFloat(origPriceVal) : '';
+        const inStock = document.getElementById('edit-prod-in-stock').checked;
+        const discountApplied = document.getElementById('edit-prod-discount-applied').checked;
+        const imgUrl = document.getElementById('edit-prod-image-url').value.trim();
+
+        const galleryRaw = (document.getElementById('edit-prod-gallery-urls') ? document.getElementById('edit-prod-gallery-urls').value : '').trim();
+        const galleryUrls = galleryRaw
+          ? galleryRaw.split(/[\n,]+/).map(u => u.trim()).filter(u => u.startsWith('http'))
+          : [];
+
+        let updatedProduct = null;
+
+        try {
+          if (hasFile) {
+            const fd = new FormData();
+            fd.append('image_file', filePicker.files[0]);
+            fd.append('name', nameFr);
+            fd.append('name_fr', nameFr);
+            fd.append('name_ar', nameAr);
+            fd.append('name_en', nameEn);
+            fd.append('description', descFr);
+            fd.append('description_fr', descFr);
+            fd.append('description_ar', descAr);
+            fd.append('description_en', descEn);
+            fd.append('category', category);
+            fd.append('size', size);
+            fd.append('price', price);
+            fd.append('original_catalog_price', originalCatalogPrice);
+            if (originalPrice !== '') fd.append('original_price', originalPrice);
+            fd.append('in_stock', inStock);
+            fd.append('company_discount_applied', discountApplied);
+            if (galleryUrls.length > 0) fd.append('images', JSON.stringify(galleryUrls));
+
+            const res = await fetch(`/api/products/${prodId}`, {
+              method: 'PUT',
+              body: fd
+            });
+            const data = await res.json();
+            if (data.success && data.data) updatedProduct = data.data;
+          } else {
+            const finalMainImg = imgUrl || editImgPreview.src;
+            const fullImagesList = [finalMainImg, ...galleryUrls.filter(u => u !== finalMainImg)];
+
+            const payload = {
+              name: nameFr,
+              name_fr: nameFr,
+              name_ar: nameAr,
+              name_en: nameEn,
+              description: descFr,
+              description_fr: descFr,
+              description_ar: descAr,
+              description_en: descEn,
+              category,
+              size,
+              price,
+              original_catalog_price: originalCatalogPrice,
+              original_price: originalPrice !== '' ? originalPrice : null,
+              in_stock: inStock,
+              company_discount_applied: discountApplied,
+              image_url: finalMainImg,
+              images: fullImagesList
+            };
+
+            const res = await fetch(`/api/products/${prodId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.success && data.data) updatedProduct = data.data;
+          }
+        } catch (err) {
+          console.warn("Backend update failed, applying locally", err);
+        }
+
+        // Apply to local state
+        const all = this.rawProducts || [];
+        const p = all.find(item => String(item.product_id) === String(prodId));
+        if (p) {
+          if (updatedProduct) {
+            Object.assign(p, updatedProduct);
+          } else {
+            p.name = nameFr;
+            p.name_fr = nameFr;
+            p.name_ar = nameAr;
+            p.name_en = nameEn;
+            p.description = descFr;
+            p.description_fr = descFr;
+            p.description_ar = descAr;
+            p.description_en = descEn;
+            p.category = category;
+            p.size = size;
+            p.price = price;
+            p.original_catalog_price = originalCatalogPrice;
+            p.original_price = originalPrice !== '' ? originalPrice : null;
+            p.in_stock = inStock;
+            p.company_discount_applied = discountApplied;
+            if (imgUrl) p.image_url = imgUrl;
+            else if (editImgPreview && editImgPreview.src && !editImgPreview.src.startsWith('blob:')) {
+              p.image_url = editImgPreview.src;
+            }
+            p.images = [p.image_url, ...galleryUrls.filter(u => u !== p.image_url)];
+          }
+
+          // Save to permanent overrides
+          try {
+            const overrides = JSON.parse(localStorage.getItem('oriflame_discount_overrides_v1') || '{}');
+            overrides[String(p.product_id)] = {
+              name: p.name,
+              name_fr: p.name_fr,
+              name_ar: p.name_ar,
+              name_en: p.name_en,
+              description: p.description,
+              description_fr: p.description_fr,
+              description_ar: p.description_ar,
+              description_en: p.description_en,
+              category: p.category,
+              size: p.size,
+              price: p.price,
+              original_catalog_price: p.original_catalog_price,
+              original_price: p.original_price,
+              in_stock: p.in_stock,
+              image_url: p.image_url,
+              images: p.images,
+              company_discount_applied: p.company_discount_applied
+            };
+            localStorage.setItem('oriflame_discount_overrides_v1', JSON.stringify(overrides));
+          } catch (e) {}
+        }
+
+        try { localStorage.setItem('oriflame_products_v1', JSON.stringify(all)); } catch (e) {}
+        this.renderStockTable();
+        this.closeEditModal();
+
+        const isAr = this.i18n.getLang() === 'ar';
+        alert(isAr ? `✅ تم حفظ وتخصيص المنتج (${prodId}) بنجاح!` : `✅ Produit (${prodId}) personnalisé et enregistré avec succès !`);
+      });
+    }
+
     // DIGITAL FLIPBOOK SCRAPER
     if (this.btnScraperFlipbook && this.flipbookUrlInput) {
       this.btnScraperFlipbook.addEventListener('click', async () => {
@@ -820,6 +1016,21 @@ class AdminDashboard {
     if (this.csvFileInput) {
       this.csvFileInput.addEventListener('change', (e) => this.importCsv(e));
     }
+
+    // Featured Special Offers Showcase Events
+    if (this.btnAddFeaturedDeal && this.selectFeaturedDealProduct) {
+      this.btnAddFeaturedDeal.addEventListener('click', () => {
+        const prodId = this.selectFeaturedDealProduct.value;
+        if (!prodId) return alert(this.i18n.getLang() === 'ar' ? 'يرجى اختيار منتج لإضافته' : 'Veuillez sélectionner un produit à ajouter');
+        this.addFeaturedDeal(prodId);
+      });
+    }
+
+    if (this.btnSaveFeaturedDeals) {
+      this.btnSaveFeaturedDeals.addEventListener('click', async () => {
+        await this.saveFeaturedDeals();
+      });
+    }
   }
 
   applyDiscountOverrides(productsList) {
@@ -879,6 +1090,8 @@ class AdminDashboard {
       this.rawProducts = this.products;
       try { localStorage.setItem('oriflame_products_v1', JSON.stringify(this.products)); } catch (e) {}
       this.renderStockTable();
+      this.populateFeaturedDealsDropdown();
+      this.renderFeaturedDealsAdminGrid();
     }
   }
 
@@ -982,6 +1195,9 @@ class AdminDashboard {
           </td>
           <td>
             <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+              <button class="btn-primary" style="padding: 6px 11px; font-size: 0.76rem; width: auto; background: #2563EB; border-color: #1D4ED8; color: #FFFFFF; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;" onclick="window.adminDash.openEditModal('${p.product_id}')" title="Personnaliser la photo, les textes FR/AR/EN et le prix">
+                ✏️ Modifier
+              </button>
               ${discountActionBtn}
               <button class="btn-primary" style="padding: 6px 10px; font-size: 0.76rem; width: auto; background: ${p.in_stock ? '#52525B' : 'var(--admin-success)'}; border-color: ${p.in_stock ? '#52525B' : 'var(--admin-success)'};" onclick="window.adminDash.toggleStock('${p.product_id}')">
                 ${p.in_stock ? markOutText : markInText}
@@ -1053,6 +1269,67 @@ class AdminDashboard {
 
     try { localStorage.setItem('oriflame_products_v1', JSON.stringify(all)); } catch (e) {}
     this.renderStockTable();
+  }
+
+  openEditModal(productId) {
+    const all = this.rawProducts || [];
+    const p = all.find(item => String(item.product_id) === String(productId));
+    if (!p) return alert('Produit introuvable');
+
+    const idInput = document.getElementById('edit-prod-id');
+    const idDisplay = document.getElementById('edit-prod-id-display');
+    const imgPreview = document.getElementById('edit-prod-img-preview');
+    const imgUrl = document.getElementById('edit-prod-image-url');
+    const filePicker = document.getElementById('edit-prod-file-picker');
+    const nameFr = document.getElementById('edit-prod-name-fr');
+    const nameAr = document.getElementById('edit-prod-name-ar');
+    const nameEn = document.getElementById('edit-prod-name-en');
+    const descFr = document.getElementById('edit-prod-desc-fr');
+    const descAr = document.getElementById('edit-prod-desc-ar');
+    const descEn = document.getElementById('edit-prod-desc-en');
+    const cat = document.getElementById('edit-prod-category');
+    const size = document.getElementById('edit-prod-size');
+    const price = document.getElementById('edit-prod-price');
+    const catPrice = document.getElementById('edit-prod-catalog-price');
+    const origPrice = document.getElementById('edit-prod-original-price');
+    const inStock = document.getElementById('edit-prod-in-stock');
+    const discApplied = document.getElementById('edit-prod-discount-applied');
+
+    if (idInput) idInput.value = p.product_id;
+    if (idDisplay) idDisplay.textContent = p.product_id;
+    if (imgPreview) imgPreview.src = p.image_url || '';
+    if (imgUrl) imgUrl.value = p.image_url || '';
+    if (filePicker) filePicker.value = '';
+    if (nameFr) nameFr.value = p.name_fr || p.name || '';
+    if (nameAr) nameAr.value = p.name_ar || '';
+    if (nameEn) nameEn.value = p.name_en || '';
+    if (descFr) descFr.value = p.description_fr || p.description || '';
+    if (descAr) descAr.value = p.description_ar || '';
+    if (descEn) descEn.value = p.description_en || '';
+    if (cat) cat.value = p.category || 'Skincare';
+    if (size) size.value = p.size || '';
+    if (price) price.value = p.price !== undefined ? p.price : '';
+    if (catPrice) catPrice.value = p.original_catalog_price !== undefined && p.original_catalog_price !== null ? p.original_catalog_price : p.price;
+    if (origPrice) origPrice.value = p.original_price || '';
+    if (inStock) inStock.checked = Boolean(p.in_stock);
+    if (discApplied) discApplied.checked = Boolean(p.company_discount_applied);
+
+    const galleryUrlsInput = document.getElementById('edit-prod-gallery-urls');
+    if (galleryUrlsInput) {
+      const extraImages = (p.images || []).filter(u => u && u !== p.image_url);
+      galleryUrlsInput.value = extraImages.join('\n');
+    }
+
+    const isFeaturedInput = document.getElementById('edit-prod-is-featured-deal');
+    if (isFeaturedInput) {
+      isFeaturedInput.checked = this.featuredDealIds.includes(String(p.product_id)) || Boolean(p.is_featured_deal);
+    }
+
+    if (this.editProductModal) this.editProductModal.style.display = 'flex';
+  }
+
+  closeEditModal() {
+    if (this.editProductModal) this.editProductModal.style.display = 'none';
   }
 
   async deleteAllProducts(e) {
@@ -1537,6 +1814,10 @@ class AdminDashboard {
           this.whatsappPhoneInput.value = cleanPhone;
           this.updateWhatsappPreviewLink(cleanPhone);
         }
+        if (data.data.featured_deal_ids && Array.isArray(data.data.featured_deal_ids)) {
+          this.featuredDealIds = data.data.featured_deal_ids;
+          this.renderFeaturedDealsAdminGrid();
+        }
         const inputDiscount = document.getElementById('company-discount-input');
         if (inputDiscount && data.data.company_discount_percent) {
           inputDiscount.value = data.data.company_discount_percent;
@@ -1550,8 +1831,91 @@ class AdminDashboard {
           this.whatsappPhoneInput.value = cleanPhone;
           this.updateWhatsappPreviewLink(cleanPhone);
         }
+        if (localSettings.featured_deal_ids && Array.isArray(localSettings.featured_deal_ids)) {
+          this.featuredDealIds = localSettings.featured_deal_ids;
+          this.renderFeaturedDealsAdminGrid();
+        }
       } catch (err) {}
     }
+  }
+
+  populateFeaturedDealsDropdown() {
+    if (!this.selectFeaturedDealProduct) return;
+    const prods = this.rawProducts || this.products || [];
+    const currentVal = this.selectFeaturedDealProduct.value;
+
+    this.selectFeaturedDealProduct.innerHTML = `
+      <option value="">-- Choisir un produit du catalogue à ajouter en promo --</option>
+      ${prods.map(p => `
+        <option value="${p.product_id}" ${this.featuredDealIds.includes(String(p.product_id)) ? 'disabled' : ''}>
+          [${p.product_id}] ${(p.name_fr || p.name || 'Produit')} - ${Number(p.price).toFixed(2)} DT ${this.featuredDealIds.includes(String(p.product_id)) ? '(Déjà dans les offres)' : ''}
+        </option>
+      `).join('')}
+    `;
+    if (currentVal) this.selectFeaturedDealProduct.value = currentVal;
+  }
+
+  renderFeaturedDealsAdminGrid() {
+    if (!this.featuredDealsGrid) return;
+    const prods = this.rawProducts || this.products || [];
+    const ids = this.featuredDealIds || [];
+
+    if (ids.length === 0) {
+      this.featuredDealsGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; padding: 24px; text-align: center; color: #A1A1AA; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border: 1px dashed rgba(255, 255, 255, 0.2);">
+          Aucun produit configuré dans les offres spéciales. Choisissez un produit ci-dessus pour l'ajouter !
+        </div>
+      `;
+      return;
+    }
+
+    const items = ids.map(id => prods.find(p => String(p.product_id) === String(id)) || { product_id: id, name: `Produit Réf #${id}`, price: 0, image_url: '' });
+
+    this.featuredDealsGrid.innerHTML = items.map((p, idx) => `
+      <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 12px; position: relative;">
+        <span style="position: absolute; top: 6px; left: 6px; background: #EA580C; color: #FFF; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">#${idx + 1}</span>
+        <div style="width: 50px; height: 50px; border-radius: 8px; background: #FFFFFF; flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-left: 18px;">
+          <img src="${p.image_url}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: contain;" onerror="window.handleProductImgError && window.handleProductImgError(this)" />
+        </div>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-weight: 700; font-size: 0.85rem; color: #FFFFFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.name_fr || p.name}</div>
+          <div style="font-size: 0.78rem; color: #FB923C; font-weight: 600;">${Number(p.price || 0).toFixed(2)} DT <span style="font-size: 0.72rem; color: #D4D4D8; font-weight: normal;">(Réf: ${p.product_id})</span></div>
+        </div>
+        <button type="button" onclick="window.adminDash && window.adminDash.removeFeaturedDeal('${p.product_id}')" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); color: #FCA5A5; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem;" title="Retirer des offres">
+          &times;
+        </button>
+      </div>
+    `).join('');
+  }
+
+  addFeaturedDeal(productId) {
+    if (!productId) return;
+    const strId = String(productId);
+    if (!this.featuredDealIds.includes(strId)) {
+      this.featuredDealIds.push(strId);
+      this.renderFeaturedDealsAdminGrid();
+      this.populateFeaturedDealsDropdown();
+    }
+  }
+
+  removeFeaturedDeal(productId) {
+    const strId = String(productId);
+    this.featuredDealIds = this.featuredDealIds.filter(id => id !== strId);
+    this.renderFeaturedDealsAdminGrid();
+    this.populateFeaturedDealsDropdown();
+  }
+
+  async saveFeaturedDeals() {
+    await this.saveSettingsAPI({ featured_deal_ids: this.featuredDealIds });
+    try {
+      localStorage.setItem('oriflame_featured_deals_v1', JSON.stringify(this.featuredDealIds));
+      const localSettings = JSON.parse(localStorage.getItem('oriflame_settings_v1') || '{}');
+      localSettings.featured_deal_ids = this.featuredDealIds;
+      localStorage.setItem('oriflame_settings_v1', JSON.stringify(localSettings));
+    } catch (e) {}
+
+    const isArabic = this.i18n.getLang() === 'ar';
+    alert(isArabic ? '✅ تم حفظ قائمة العروض الخاصة بنجاح!' : '✅ Liste des offres spéciales enregistrée avec succès !');
   }
 
   async saveSettingsAPI(payload) {

@@ -52,6 +52,7 @@ class App {
     this.products = [];
     this.facebookUsername = 'Mounanouira.Oriflame';
     this.whatsappPhone = '55756629';
+    this.featuredDealIds = ['46980', '40683', '38557', '42751'];
 
     window.app = this;
     this.init();
@@ -99,6 +100,9 @@ class App {
         if (data.data.whatsapp_phone || data.data.phone) {
           this.whatsappPhone = this.cleanPhoneNumber(data.data.whatsapp_phone || data.data.phone);
         }
+        if (data.data.featured_deal_ids && Array.isArray(data.data.featured_deal_ids)) {
+          this.featuredDealIds = data.data.featured_deal_ids;
+        }
       }
     } catch (e) {
       console.warn("Could not fetch settings", e);
@@ -111,6 +115,16 @@ class App {
       }
       if (localSettings.facebook_username) {
         this.facebookUsername = localSettings.facebook_username;
+      }
+      if (localSettings.featured_deal_ids && Array.isArray(localSettings.featured_deal_ids)) {
+        this.featuredDealIds = localSettings.featured_deal_ids;
+      }
+      const cachedDeals = localStorage.getItem('oriflame_featured_deals_v1');
+      if (cachedDeals) {
+        const parsedDeals = JSON.parse(cachedDeals);
+        if (Array.isArray(parsedDeals) && parsedDeals.length > 0) {
+          this.featuredDealIds = parsedDeals;
+        }
       }
     } catch (err) {}
   }
@@ -962,13 +976,38 @@ class App {
     this.showToast('📋 Message copié ! Collez-le dans Messenger.');
   }
 
-  renderDealsShowcase() {
+  getProductName(p) {
+    if (!p) return '';
+    const lang = this.i18n ? this.i18n.getLang() : 'fr';
+    if (lang === 'ar' && p.name_ar && p.name_ar.trim()) return p.name_ar;
+    if (lang === 'en' && p.name_en && p.name_en.trim()) return p.name_en;
+    return p.name_fr || p.name || '';
+  }
 
+  getProductDescription(p) {
+    if (!p) return '';
+    const lang = this.i18n ? this.i18n.getLang() : 'fr';
+    if (lang === 'ar' && p.description_ar && p.description_ar.trim()) return p.description_ar;
+    if (lang === 'en' && p.description_en && p.description_en.trim()) return p.description_en;
+    return p.description_fr || p.description || '';
+  }
+
+  renderDealsShowcase() {
     if (!this.dealsCarouselGrid) return;
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';
 
-    const promoProducts = this.products.filter(p => p.is_promo).slice(0, 4);
+    let promoProducts = [];
+    if (Array.isArray(this.featuredDealIds) && this.featuredDealIds.length > 0) {
+      promoProducts = this.featuredDealIds
+        .map(id => this.products.find(p => String(p.product_id) === String(id)))
+        .filter(Boolean);
+    }
+
+    if (promoProducts.length === 0) {
+      promoProducts = this.products.filter(p => p.is_featured_deal || p.is_promo).slice(0, 6);
+    }
+
     if (promoProducts.length === 0) {
       if (this.promoShowcaseSection) this.promoShowcaseSection.style.display = 'none';
       return;
@@ -976,22 +1015,26 @@ class App {
 
     if (this.promoShowcaseSection) this.promoShowcaseSection.style.display = 'block';
 
-    this.dealsCarouselGrid.innerHTML = promoProducts.map(p => `
-      <div class="mini-deal-card" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
-        <div class="mini-deal-img-wrap">
-          <img class="mini-deal-img" src="${p.image_url}" alt="${p.name}" loading="lazy" onerror="window.handleProductImgError(this)" />
-          <span class="promo-pill">-${p.discount_percent || 25}%</span>
+    this.dealsCarouselGrid.innerHTML = promoProducts.map(p => {
+      const prodName = this.getProductName(p);
+      const discount = p.discount_percent || (p.original_price ? Math.round(((p.original_price - p.price) / p.original_price) * 100) : 25);
+      return `
+        <div class="mini-deal-card" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
+          <div class="mini-deal-img-wrap">
+            <img class="mini-deal-img" src="${p.image_url}" alt="${prodName}" loading="lazy" onerror="window.handleProductImgError(this)" />
+            <span class="promo-pill">-${discount}%</span>
+          </div>
+          <h4 class="mini-deal-title">${prodName}</h4>
+          <div class="price-wrap">
+            <span class="current-deal-price">${Number(p.price).toFixed(2)} ${currencyLabel}</span>
+            ${p.original_price ? `<span class="original-price-strike">${Number(p.original_price).toFixed(2)} ${currencyLabel}</span>` : ''}
+          </div>
+          <button class="btn-add-cart" style="width:100%; min-height:36px; font-size:0.8rem; justify-content:center;" onclick="event.stopPropagation(); window.app.addToCart('${p.product_id}')">
+            ${this.i18n.t('add_to_cart')}
+          </button>
         </div>
-        <h4 class="mini-deal-title">${p.name}</h4>
-        <div class="price-wrap">
-          <span class="current-deal-price">${Number(p.price).toFixed(2)} ${currencyLabel}</span>
-          ${p.original_price ? `<span class="original-price-strike">${Number(p.original_price).toFixed(2)} ${currencyLabel}</span>` : ''}
-        </div>
-        <button class="btn-add-cart" style="width:100%; min-height:36px; font-size:0.8rem; justify-content:center;" onclick="event.stopPropagation(); window.app.addToCart('${p.product_id}')">
-          ${this.i18n.t('add_to_cart')}
-        </button>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   renderProducts() {
@@ -1004,9 +1047,14 @@ class App {
       else if (this.activeCategory === 'Deals') matchesCategory = Boolean(product.is_promo);
       else matchesCategory = product.category.toLowerCase() === this.activeCategory.toLowerCase();
 
+      const pName = (this.getProductName(product) || product.name || '').toLowerCase();
+      const pDesc = (this.getProductDescription(product) || product.description || '').toLowerCase();
+      const pId = (product.product_id || '').toLowerCase();
+
       const matchesSearch = !this.searchQuery || 
-        product.name.toLowerCase().includes(this.searchQuery) ||
-        (product.description && product.description.toLowerCase().includes(this.searchQuery));
+        pName.includes(this.searchQuery) ||
+        pDesc.includes(this.searchQuery) ||
+        pId.includes(this.searchQuery);
       return matchesCategory && matchesSearch;
     });
 
@@ -1030,34 +1078,38 @@ class App {
     const outStockText = this.i18n.t('out_stock');
     const addBtnText = this.i18n.t('add_to_cart');
 
-    this.productGrid.innerHTML = filtered.map(p => `
-      <div class="product-card">
-        <div class="product-image-wrap" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
-          <img class="product-image" src="${p.image_url}" alt="${p.name}" loading="lazy" onerror="window.handleProductImgError(this)" />
-          ${p.is_promo 
-            ? `<span class="promo-badge">-${p.discount_percent || 25}%</span>`
-            : `<span class="category-badge">${p.category}</span>`
-          }
-          <span class="stock-indicator ${p.in_stock ? 'in-stock' : 'out-stock'}">
-            ${p.in_stock ? inStockText : outStockText}
-          </span>
-        </div>
-        <div class="product-body">
-          <h4 class="product-title" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">${p.name}</h4>
-          ${p.size ? `<div class="product-meta-row"><span>📦 ${p.size}</span></div>` : ''}
-          <p class="product-description">${p.description || ''}</p>
-          <div class="product-footer">
-            <div class="price-container">
-              ${p.original_price ? `<span class="product-price-strike">${Number(p.original_price).toFixed(2)} ${currencyLabel}</span>` : ''}
-              <span class="product-price ${p.is_promo ? 'promo-price' : ''}">${Number(p.price).toFixed(2)} <span style="font-size:0.85rem; font-weight:600; color:var(--color-text-secondary);">${currencyLabel}</span></span>
+    this.productGrid.innerHTML = filtered.map(p => {
+      const prodName = this.getProductName(p);
+      const prodDesc = this.getProductDescription(p);
+      return `
+        <div class="product-card">
+          <div class="product-image-wrap" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
+            <img class="product-image" src="${p.image_url}" alt="${prodName}" loading="lazy" onerror="window.handleProductImgError(this)" />
+            ${p.is_promo 
+              ? `<span class="promo-badge">-${p.discount_percent || 25}%</span>`
+              : `<span class="category-badge">${p.category}</span>`
+            }
+            <span class="stock-indicator ${p.in_stock ? 'in-stock' : 'out-stock'}">
+              ${p.in_stock ? inStockText : outStockText}
+            </span>
+          </div>
+          <div class="product-body">
+            <h4 class="product-title" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">${prodName}</h4>
+            ${p.size ? `<div class="product-meta-row"><span>📦 ${p.size}</span></div>` : ''}
+            <p class="product-description">${prodDesc || ''}</p>
+            <div class="product-footer">
+              <div class="price-container">
+                ${p.original_price ? `<span class="product-price-strike">${Number(p.original_price).toFixed(2)} ${currencyLabel}</span>` : ''}
+                <span class="product-price ${p.is_promo ? 'promo-price' : ''}">${Number(p.price).toFixed(2)} <span style="font-size:0.85rem; font-weight:600; color:var(--color-text-secondary);">${currencyLabel}</span></span>
+              </div>
+              <button class="btn-add-cart" ${!p.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${p.product_id}')">
+                ${addBtnText}
+              </button>
             </div>
-            <button class="btn-add-cart" ${!p.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${p.product_id}')">
-              ${addBtnText}
-            </button>
           </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   addToCart(productId) {
@@ -1212,7 +1264,10 @@ class App {
     const product = directProductObj || this.products.find(p => String(p.product_id) === String(productId));
     if (!product || !this.quickViewContent) return;
 
-    this.telemetry.trackEvent(`Opened Detailed Product Info: ${product.name}`, product.category, product.name);
+    const prodName = this.getProductName(product);
+    const prodDesc = this.getProductDescription(product);
+
+    this.telemetry.trackEvent(`Opened Detailed Product Info: ${prodName}`, product.category, prodName);
 
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';
@@ -1222,7 +1277,7 @@ class App {
     if (Array.isArray(product.benefits) && product.benefits.length > 0) {
       benefitsHtml = `<ul class="benefits-list">${product.benefits.map(b => `<li>${b}</li>`).join('')}</ul>`;
     } else {
-      benefitsHtml = `<p style="color:var(--color-text-secondary);">${product.description || 'Produit de haute qualité Oriflame.'}</p>`;
+      benefitsHtml = `<p style="color:var(--color-text-secondary);">${prodDesc || 'Produit de haute qualité Oriflame.'}</p>`;
     }
 
     const howToUseHtml = product.how_to_use 
@@ -1233,17 +1288,46 @@ class App {
       ? `<p style="color:var(--color-text-secondary); line-height:1.7; font-size:0.88rem;">${product.ingredients}</p>`
       : `<p style="color:var(--color-text-muted);">Formulé avec des extraits botaniques et des ingrédients d'origine naturelle.</p>`;
 
+    // Extract gallery images list
+    const galleryImages = Array.isArray(product.images) && product.images.length > 0
+      ? product.images
+      : [product.image_url];
+
+    this._currentQuickViewImages = galleryImages;
+    this._currentQuickViewIndex = 0;
+
+    const hasMultipleImages = galleryImages.length > 1;
+
+    const thumbnailsHtml = hasMultipleImages ? `
+      <div class="quickview-thumbnails-row">
+        ${galleryImages.map((img, idx) => `
+          <button type="button" class="quickview-thumb-item ${idx === 0 ? 'active' : ''}" onclick="window.app.switchQuickViewImage(${idx})" title="Photo ${idx + 1}">
+            <img src="${img}" alt="Vue ${idx + 1}" onerror="this.parentElement.style.display='none'" />
+          </button>
+        `).join('')}
+      </div>
+    ` : '';
+
+    const navArrowsHtml = hasMultipleImages ? `
+      <button type="button" class="gallery-nav-btn prev" onclick="window.app.prevQuickViewImage(event)" aria-label="Précédente">‹</button>
+      <button type="button" class="gallery-nav-btn next" onclick="window.app.nextQuickViewImage(event)" aria-label="Suivante">›</button>
+    ` : '';
+
     this.quickViewContent.innerHTML = `
-        <div style="position:relative; background: radial-gradient(circle, #FFFFFF 40%, #F5F3EF 100%); border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: center; border: 1px solid #E8E5DF; box-shadow: inset 0 2px 6px rgba(0,0,0,0.03); min-height: 260px;">
-          <img src="${product.image_url}" alt="${product.name}" onerror="window.handleProductImgError(this)" style="max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.15)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
-          ${product.is_promo 
-            ? `<span class="promo-badge" style="top:12px; left:12px; position:absolute;">-${product.discount_percent || 25}% OFF</span>`
-            : `<span class="category-badge" style="top:12px; left:12px; position:absolute;">${product.category}</span>`
-          }
+        <div class="quickview-gallery-wrapper">
+          <div class="quickview-main-image-frame">
+            ${navArrowsHtml}
+            <img id="quickview-main-image-el" class="quickview-main-img" src="${galleryImages[0]}" alt="${prodName}" onerror="window.handleProductImgError(this)" />
+            ${product.is_promo 
+              ? `<span class="promo-badge" style="top:12px; left:12px; position:absolute;">-${product.discount_percent || 25}% OFF</span>`
+              : `<span class="category-badge" style="top:12px; left:12px; position:absolute;">${product.category}</span>`
+            }
+          </div>
+          ${thumbnailsHtml}
         </div>
 
         <div>
-          <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: #18181B; margin-bottom: 8px; line-height:1.3;">${product.name}</h3>
+          <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: #18181B; margin-bottom: 8px; line-height:1.3;">${prodName}</h3>
           
           <!-- Tab Navigation -->
           <div class="product-modal-tabs">
@@ -1255,7 +1339,7 @@ class App {
 
           <!-- Tab Content Panes -->
           <div id="tab-overview" class="product-tab-pane active">
-            <p style="color: #52525B; line-height: 1.65; margin-bottom: 12px;">${product.description || ''}</p>
+            <p style="color: #52525B; line-height: 1.65; margin-bottom: 12px;">${prodDesc || ''}</p>
           </div>
 
           <div id="tab-benefits" class="product-tab-pane">
@@ -1318,6 +1402,38 @@ class App {
     event.currentTarget.classList.add('active');
     const targetPane = document.getElementById(targetTabId);
     if (targetPane) targetPane.classList.add('active');
+  }
+
+  switchQuickViewImage(index) {
+    if (!this._currentQuickViewImages || !this._currentQuickViewImages[index]) return;
+    this._currentQuickViewIndex = index;
+    const mainImg = document.getElementById('quickview-main-image-el');
+    if (mainImg) {
+      mainImg.style.opacity = '0.3';
+      setTimeout(() => {
+        mainImg.src = this._currentQuickViewImages[index];
+        mainImg.style.opacity = '1';
+      }, 120);
+    }
+    const thumbs = document.querySelectorAll('.quickview-thumb-item');
+    thumbs.forEach((th, idx) => {
+      if (idx === index) th.classList.add('active');
+      else th.classList.remove('active');
+    });
+  }
+
+  prevQuickViewImage(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (!this._currentQuickViewImages || this._currentQuickViewImages.length <= 1) return;
+    const nextIdx = (this._currentQuickViewIndex - 1 + this._currentQuickViewImages.length) % this._currentQuickViewImages.length;
+    this.switchQuickViewImage(nextIdx);
+  }
+
+  nextQuickViewImage(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (!this._currentQuickViewImages || this._currentQuickViewImages.length <= 1) return;
+    const nextIdx = (this._currentQuickViewIndex + 1) % this._currentQuickViewImages.length;
+    this.switchQuickViewImage(nextIdx);
   }
 
   orderProductByCode() {

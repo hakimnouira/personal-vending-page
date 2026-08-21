@@ -4,7 +4,7 @@
     {
       "session_id": "SES-KQ6MIBQ-MT2ZUTD0",
       "first_seen": "2026-08-21T13:37:34.517Z",
-      "last_active": "2026-08-21T17:38:52.311Z",
+      "last_active": "2026-08-21T18:17:24.308Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -54,6 +54,16 @@
           "time": "2026-08-21T17:23:25.933Z",
           "offset": "0m 31s",
           "description": "Opened Detailed Product Info: Miroir Glam Vanity"
+        },
+        {
+          "time": "2026-08-21T18:16:54.094Z",
+          "offset": "53m 59s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-21T18:16:54.157Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
         }
       ],
       "categories_visited": [
@@ -68,7 +78,7 @@
     {
       "session_id": "SES-NHRPIH4-MT2Z11KK",
       "first_seen": "2026-08-21T13:14:25.467Z",
-      "last_active": "2026-08-21T17:39:35.301Z",
+      "last_active": "2026-08-21T18:16:52.304Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -268,6 +278,36 @@
           "time": "2026-08-21T17:39:04.680Z",
           "offset": "0m 0s",
           "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T18:10:35.822Z",
+          "offset": "31m 31s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-21T18:10:35.903Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T18:10:42.155Z",
+          "offset": "0m 6s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-21T18:10:42.458Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T18:10:43.780Z",
+          "offset": "0m 2s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-21T18:10:58.445Z",
+          "offset": "0m 16s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
         }
       ],
       "categories_visited": [
@@ -275,7 +315,9 @@
       ],
       "products_viewed": [
         "Eau de Toilette Eclat Homme",
-        "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified"
+        "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
+        "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
+        "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
       ]
     },
     {

@@ -6,5 +6,6 @@
   "whatsapp_phone": "55756629",
   "company_discount_applied": true,
   "company_discount_percent": 20,
-  "company_discount_applied_at": "2026-08-21T17:19:20.249Z"
+  "company_discount_applied_at": "2026-08-21T17:19:20.249Z",
+  "featured_deal_ids": ["46980", "40683", "38557", "42751"]
 }

@@ -41,10 +41,18 @@ export async function scrapeAllOriflameCategories() {
               const price = Number(e.price) || 39.90;
               const originalPrice = calculateEstimatedOriginalPrice(price);
               const discountPercent = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+              const mainImg = `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
+              const galleryImages = [
+                mainImg,
+                `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_2.png&MediaId=20989035&Version=1`,
+                `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_3.png&MediaId=20989035&Version=1`,
+                `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_4.png&MediaId=20989035&Version=1`
+              ];
 
               allScrapedMap.set(String(prodId), {
                 product_id: String(prodId),
                 name: cleanName,
+                name_fr: cleanName,
                 category: cat,
                 price: price,
                 original_price: originalPrice,
@@ -55,7 +63,8 @@ export async function scrapeAllOriflameCategories() {
                 discount_percent: discountPercent,
                 size: inferSizeFromName(cleanName),
                 suitable_for: "Tous types de peaux • Produit certifié Oriflame Suède",
-                image_url: `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`,
+                image_url: mainImg,
+                images: galleryImages,
                 description: `Produit officiel Oriflame Tunisie (${prodId}). Formule haute qualité aux extraits scandinaves bienfaisants.`,
                 benefits: [
                   "100% Produit authentique certifié par Mouna Nouira",
@@ -116,9 +125,18 @@ export async function scrapeAllOriflameCategories() {
                 const isPromo = basicPrice > currentPrice;
                 const discount = isPromo ? Math.round(((basicPrice - currentPrice) / basicPrice) * 100) : 0;
 
+                const mainImg = p.imageUrl || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
+                const galleryImgs = [
+                  mainImg,
+                  `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_2.png&MediaId=20989035&Version=1`,
+                  `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_3.png&MediaId=20989035&Version=1`,
+                  `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_4.png&MediaId=20989035&Version=1`
+                ];
+
                 allScrapedMap.set(prodId, {
                   product_id: prodId,
                   name: name,
+                  name_fr: name,
                   category: classifyCategory(name) || item.cat,
                   price: currentPrice,
                   original_price: isPromo ? basicPrice : null,
@@ -129,7 +147,8 @@ export async function scrapeAllOriflameCategories() {
                   discount_percent: discount,
                   size: inferSizeFromName(name),
                   suitable_for: "Tous types de peaux • Testé sous contrôle dermatologique",
-                  image_url: p.imageUrl || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`,
+                  image_url: mainImg,
+                  images: galleryImgs,
                   description: p.description || `Produit officiel Oriflame Tunisie (${prodId}). Formule scandinave haute performance.`,
                   benefits: [
                     "100% Produit authentique Oriflame Suède",
@@ -304,9 +323,30 @@ export async function scrapeProductFromUrl(url) {
     const pMatch = priceText.match(/([0-9]+[.,]?[0-9]*)/);
     if (pMatch) price = parseFloat(pMatch[1].replace(',', '.'));
 
+    const rawDesc = $('meta[name="description"]').attr('content') || $('.product-description, [data-testid="product-description"]').first().text().trim() || `Produit officiel Oriflame Tunisie (${code}).`;
+    const mainImg = $('meta[property="og:image"]').attr('content') || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_1.png&MediaId=20989035&Version=1`;
+    
+    // Extract any gallery images from the page
+    const foundImages = [mainImg];
+    $('img[src*="oriflame"], [data-testid="product-image"] img').each((i, el) => {
+      const src = $(el).attr('src') || $(el).attr('data-src');
+      if (src && src.startsWith('http') && !foundImages.includes(src)) {
+        foundImages.push(src);
+      }
+    });
+
+    if (foundImages.length === 1 && code && !isNaN(Number(code))) {
+      foundImages.push(
+        `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_2.png&MediaId=20989035&Version=1`,
+        `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_3.png&MediaId=20989035&Version=1`,
+        `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_4.png&MediaId=20989035&Version=1`
+      );
+    }
+
     return {
       product_id: code,
       name: title.split('|')[0].trim(),
+      name_fr: title.split('|')[0].trim(),
       category: classifyCategory(title),
       price: price,
       original_price: calculateEstimatedOriginalPrice(price),
@@ -317,8 +357,9 @@ export async function scrapeProductFromUrl(url) {
       discount_percent: 0,
       size: inferSizeFromName(title),
       suitable_for: 'Tous types de peaux • Certifié Oriflame Suède',
-      image_url: $('meta[property="og:image"]').attr('content') || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_1.png&MediaId=20989035&Version=1`,
-      description: $('meta[name="description"]').attr('content') || `Produit officiel Oriflame Tunisie (${code}).`,
+      image_url: mainImg,
+      images: foundImages,
+      description: rawDesc,
       benefits: ["100% Produit original certifié par Mouna Nouira", "Formule suédoise aux extraits naturels bienfaisants"],
       how_to_use: "Appliquer sur une peau propre selon les recommandations.",
       ingredients: "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",

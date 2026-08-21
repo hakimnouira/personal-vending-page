@@ -508,6 +508,42 @@
           </div>
         </div>
 
+        <!-- SPECIAL OFFERS SHOWCASE (🔥 CATALOGUE OFFERS • EN PROMO) -->
+        <div class="admin-form-box" style="background: linear-gradient(135deg, #18181B 0%, #27272A 100%); color: #FFFFFF; border: 1px solid #C5A880; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <span class="deals-tag" style="background: #EA580C; font-size: 0.72rem; padding: 4px 12px; border-radius: 99px; color: #FFF; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;">CATALOGUE OFFERS • EN PROMO</span>
+              <h4 style="font-weight: 700; color: #FFFFFF; margin: 8px 0 3px 0; font-size: 1.15rem; font-family: var(--font-serif);">
+                🔥 Personnaliser la Section "Offres Spéciales du Catalogue"
+              </h4>
+              <p style="font-size: 0.82rem; color: #D4D4D8; margin: 0;">
+                Choisissez exactement les produits phares qui s'affichent en tête de votre boutique client dans le bandeau "Offres Spéciales".
+              </p>
+            </div>
+          </div>
+
+          <!-- Add Product to Deals Toolbar -->
+          <div style="background: rgba(255, 255, 255, 0.08); padding: 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.15); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+            <select id="select-featured-deal-product" class="form-control" style="flex: 1; min-width: 260px; margin-bottom: 0; background: #FFFFFF; color: #18181B; font-weight: 600;">
+              <option value="">-- Choisir un produit du catalogue à ajouter en promo --</option>
+            </select>
+            <button id="btn-add-featured-deal" type="button" class="btn-primary" style="background: #EA580C; border-color: #C2410C; width: auto; padding: 10px 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+              ➕ Ajouter aux Offres
+            </button>
+          </div>
+
+          <!-- Active Featured Deals List Grid -->
+          <div id="featured-deals-admin-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
+            <button id="btn-save-featured-deals" type="button" class="btn-primary" style="background: #059669; border-color: #047857; width: auto; padding: 10px 26px; font-weight: 700; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 6px;">
+              💾 Enregistrer les Offres Spéciales
+            </button>
+          </div>
+        </div>
+
         <!-- Facebook Settings -->
         <div class="admin-form-box" style="background: #FAF8F5; margin-bottom: 24px;">
           <h4 style="font-weight: 700; margin-bottom: 8px;" data-admin-i18n="fb_handle_title">Page / Compte Facebook de Réception des Commandes</h4>
@@ -711,6 +747,156 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- Modal: Product Full Customization (Photo, FR/AR/EN Names & Descriptions, Prices, Stock) -->
+  <div id="admin-edit-product-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; z-index: 10000; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card" style="background: #FFFFFF; border-radius: 16px; max-width: 780px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35); border: 1px solid #E4E4E7; padding: 0;">
+      
+      <!-- Modal Header -->
+      <div style="background: linear-gradient(135deg, #18181B 0%, #27272A 100%); color: #FFFFFF; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid #3F3F46;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 1.5rem;">✏️</span>
+          <div>
+            <h3 style="margin: 0; font-size: 1.2rem; font-family: var(--font-serif); color: #FFFFFF;">Personnalisation Complète du Produit</h3>
+            <div style="font-size: 0.78rem; color: #A1A1AA; margin-top: 2px;">
+              Réf: <strong id="edit-prod-id-display" style="color: #FDE047;"></strong> • Modifiez la photo, les textes FR/AR/EN et les prix
+            </div>
+          </div>
+        </div>
+        <button type="button" onclick="window.adminDash && window.adminDash.closeEditModal()" style="background: none; border: none; color: #D4D4D8; font-size: 1.8rem; line-height: 1; cursor: pointer; padding: 0 6px;">&times;</button>
+      </div>
+
+      <!-- Modal Body Form -->
+      <form id="admin-edit-product-form" style="padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+        <input type="hidden" id="edit-prod-id" />
+
+        <!-- 1. Photo Section -->
+        <div style="background: #FAF8F5; border: 1px solid #E8E5DF; border-radius: 12px; padding: 18px;">
+          <h4 style="margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 700; color: #18181B; display: flex; align-items: center; gap: 6px;">
+            📸 Photo & Image du Produit
+          </h4>
+          <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+            <div style="position: relative; width: 100px; height: 100px; border-radius: 12px; overflow: hidden; background: #FFFFFF; border: 2px solid #D4D4D8; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+              <img id="edit-prod-img-preview" src="" style="width: 100%; height: 100%; object-fit: contain;" onerror="window.handleProductImgError && window.handleProductImgError(this)" />
+            </div>
+            <div style="flex: 1; min-width: 260px; display: flex; flex-direction: column; gap: 10px;">
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 600; color: #4B5563; margin-bottom: 4px; display: block;">Téléverser une nouvelle image (depuis votre appareil) :</label>
+                <input type="file" id="edit-prod-file-picker" accept="image/*" class="form-control" style="padding: 6px; font-size: 0.82rem; margin-bottom: 0;" />
+              </div>
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 600; color: #4B5563; margin-bottom: 4px; display: block;">Ou lien URL direct de l'image principale :</label>
+                <input type="url" id="edit-prod-image-url" class="form-control" placeholder="https://media-cdn.oriflame.com/..." style="font-size: 0.82rem; margin-bottom: 0;" />
+              </div>
+              <div style="margin-top: 6px;">
+                <label style="font-size: 0.8rem; font-weight: 600; color: #047857; margin-bottom: 4px; display: block;">🖼️ Autres Photos de la Galerie (URLs des angles/vues du produit) :</label>
+                <textarea id="edit-prod-gallery-urls" class="form-control" rows="2" placeholder="Collez ici les liens des photos supplémentaires (1 par ligne ou séparés par des virgules)..." style="font-size: 0.8rem; margin-bottom: 0;"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Multilingual Names Section -->
+        <div style="background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 12px; padding: 18px;">
+          <h4 style="margin: 0 0 14px 0; font-size: 0.95rem; font-weight: 700; color: #18181B; display: flex; align-items: center; gap: 6px;">
+            🌍 Noms du Produit (3 Langues)
+          </h4>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+            <div>
+              <label style="font-size: 0.82rem; font-weight: 700; color: #1F2937; margin-bottom: 4px; display: block;">🇫🇷 Nom en Français (Principal) *</label>
+              <input type="text" id="edit-prod-name-fr" class="form-control" required placeholder="ex: Crème de Corps Parfumée Giordani Gold" style="margin-bottom: 0;" />
+            </div>
+            <div dir="rtl" style="text-align: right;">
+              <label style="font-size: 0.82rem; font-weight: 700; color: #047857; margin-bottom: 4px; display: block;">🇹🇳 🇸🇦 اسم المنتج باللغة العربية</label>
+              <input type="text" id="edit-prod-name-ar" class="form-control" placeholder="مثال: كريم الجسم المعطر جورداني جولد إيسينزا" style="margin-bottom: 0; text-align: right;" />
+            </div>
+            <div>
+              <label style="font-size: 0.82rem; font-weight: 700; color: #2563EB; margin-bottom: 4px; display: block;">🇬🇧 Product Name in English</label>
+              <input type="text" id="edit-prod-name-en" class="form-control" placeholder="e.g. Giordani Gold Essenza Perfumed Body Cream" style="margin-bottom: 0;" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Multilingual Descriptions Section -->
+        <div style="background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 12px; padding: 18px;">
+          <h4 style="margin: 0 0 14px 0; font-size: 0.95rem; font-weight: 700; color: #18181B; display: flex; align-items: center; gap: 6px;">
+            📝 Descriptions &amp; Bienfaits (3 Langues)
+          </h4>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 14px;">
+            <div>
+              <label style="font-size: 0.82rem; font-weight: 700; color: #1F2937; margin-bottom: 4px; display: block;">🇫🇷 Description en Français</label>
+              <textarea id="edit-prod-desc-fr" class="form-control" rows="2" placeholder="Formule luxueuse hydratante enrichie aux essences florales précieuses..." style="margin-bottom: 0; font-size: 0.85rem;"></textarea>
+            </div>
+            <div dir="rtl" style="text-align: right;">
+              <label style="font-size: 0.82rem; font-weight: 700; color: #047857; margin-bottom: 4px; display: block;">🇹🇳 🇸🇦 الوصف والمميزات بالعربية</label>
+              <textarea id="edit-prod-desc-ar" class="form-control" rows="2" placeholder="تركيبة فاخرة ترطب البشرة بعمق وتمنحها رائحة زهرية تدوم طويلاً..." style="margin-bottom: 0; font-size: 0.85rem; text-align: right;"></textarea>
+            </div>
+            <div>
+              <label style="font-size: 0.82rem; font-weight: 700; color: #2563EB; margin-bottom: 4px; display: block;">🇬🇧 Description &amp; Benefits in English</label>
+              <textarea id="edit-prod-desc-en" class="form-control" rows="2" placeholder="Luxurious moisturizing body cream infused with sophisticated floral notes..." style="margin-bottom: 0; font-size: 0.85rem;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Category, Pricing, Format & Stock -->
+        <div style="background: #FAF8F5; border: 1px solid #E8E5DF; border-radius: 12px; padding: 18px;">
+          <h4 style="margin: 0 0 14px 0; font-size: 0.95rem; font-weight: 700; color: #18181B; display: flex; align-items: center; gap: 6px;">
+            🏷️ Catégorie, Format &amp; Tarification
+          </h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: block;">Catégorie</label>
+              <select id="edit-prod-category" class="form-control" style="margin-bottom: 0;">
+                <option value="Skincare">Soins de la peau</option>
+                <option value="Fragrance">Parfums</option>
+                <option value="Makeup">Maquillage</option>
+                <option value="Wellness">Bien-être (Wellness)</option>
+                <option value="Haircare">Cheveux (Haircare)</option>
+                <option value="Personal Care">Corps &amp; Bain</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: block;">Format / Contenance</label>
+              <input type="text" id="edit-prod-size" class="form-control" placeholder="ex: 250 ml ou 50 ml" style="margin-bottom: 0;" />
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: block;">Prix Actuel dans la Boutique (DT) *</label>
+              <input type="number" step="0.01" id="edit-prod-price" class="form-control" required style="margin-bottom: 0; font-weight: 700;" />
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: block;">Prix Brut Catalogue Officiel (DT)</label>
+              <input type="number" step="0.01" id="edit-prod-catalog-price" class="form-control" placeholder="Prix avant -20%" style="margin-bottom: 0;" />
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: block;">Prix Barré Promotionnel (Optionnel DT)</label>
+              <input type="number" step="0.01" id="edit-prod-original-price" class="form-control" placeholder="ex: 47.10" style="margin-bottom: 0;" />
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center; gap: 8px;">
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem; color: #047857;">
+                <input type="checkbox" id="edit-prod-in-stock" checked /> ✅ Disponible en Stock
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem; color: #2563EB;">
+                <input type="checkbox" id="edit-prod-discount-applied" /> 🏷️ Remise Société (-20%) Active
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem; color: #EA580C;">
+                <input type="checkbox" id="edit-prod-is-featured-deal" /> 🔥 Mettre dans "Offres Spéciales"
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center; padding-top: 10px; border-top: 1px solid #E4E4E7;">
+          <button type="button" onclick="window.adminDash && window.adminDash.closeEditModal()" class="btn-primary" style="background: #71717A; border-color: #71717A; width: auto; padding: 10px 20px;">
+            Annuler
+          </button>
+          <button type="submit" class="btn-primary" style="background: #059669; border-color: #047857; width: auto; padding: 10px 28px; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
+            💾 Enregistrer les Modifications
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script type="module" src="js/admin-page.js"></script>
