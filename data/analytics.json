@@ -4,11 +4,11 @@
     {
       "session_id": "SES-KQ6MIBQ-MT2ZUTD0",
       "first_seen": "2026-08-21T13:37:34.517Z",
-      "last_active": "2026-08-21T17:20:52.312Z",
+      "last_active": "2026-08-21T17:23:25.933Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 12877,
+      "duration_seconds": 13000,
       "activity_trail": [
         {
           "time": "2026-08-21T13:37:34.517Z",
@@ -34,19 +34,45 @@
           "time": "2026-08-21T13:46:15.304Z",
           "offset": "0m 0s",
           "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T17:22:55.241Z",
+          "offset": "216m 40s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-21T17:22:55.335Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T17:23:18.274Z",
+          "offset": "0m 23s",
+          "description": "Opened Detailed Product Info: Vernis à Ongles Gel Rose In Paris"
+        },
+        {
+          "time": "2026-08-21T17:23:25.933Z",
+          "offset": "0m 31s",
+          "description": "Opened Detailed Product Info: Miroir Glam Vanity"
         }
       ],
-      "categories_visited": [],
-      "products_viewed": []
+      "categories_visited": [
+        "Makeup",
+        "Skincare"
+      ],
+      "products_viewed": [
+        "Vernis à Ongles Gel Rose In Paris",
+        "Miroir Glam Vanity"
+      ]
     },
     {
       "session_id": "SES-NHRPIH4-MT2Z11KK",
       "first_seen": "2026-08-21T13:14:25.467Z",
-      "last_active": "2026-08-21T17:20:52.305Z",
+      "last_active": "2026-08-21T17:22:52.305Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 11615,
+      "duration_seconds": 11735,
       "activity_trail": [
         {
           "time": "2026-08-21T13:14:25.467Z",

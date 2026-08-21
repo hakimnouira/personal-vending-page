@@ -368,7 +368,7 @@
               <option value="in_stock">✅ En Stock</option>
               <option value="out_stock">❌ Épuisé</option>
             </select>
-            <button id="btn-delete-all-products" class="btn-primary" style="width: auto; padding: 6px 12px; font-size: 0.8rem; background: var(--admin-danger); border-color: var(--admin-danger); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;">
+            <button id="btn-delete-all-products" class="btn-primary" style="width: auto; padding: 6px 12px; font-size: 0.8rem; background: var(--admin-danger); border-color: var(--admin-danger); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;" onclick="window.adminDash && window.adminDash.deleteAllProducts(event)">
               🗑️ Supprimer TOUT
             </button>
           </div>

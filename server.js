@@ -570,8 +570,8 @@ app.put('/api/products/:id', upload.single('image_file'), (req, res) => {
   }
 });
 
-// Delete ALL products
-app.delete('/api/products', (req, res) => {
+// Delete ALL products (supports both DELETE /api/products and POST /api/products/delete-all)
+const handleDeleteAllProducts = (req, res) => {
   try {
     saveProducts([]);
     const settings = getSettings();
@@ -581,7 +581,10 @@ app.delete('/api/products', (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
-});
+};
+
+app.delete('/api/products', handleDeleteAllProducts);
+app.post('/api/products/delete-all', handleDeleteAllProducts);
 
 app.delete('/api/products/:id', (req, res) => {
   const { id } = req.params;

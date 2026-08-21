@@ -919,21 +919,31 @@ class AdminDashboard {
     }
   }
 
-  async deleteAllProducts() {
+  async deleteAllProducts(e) {
+    if (e && e.preventDefault) e.preventDefault();
     const isAr = this.i18n.getLang() === 'ar';
     const confirmMsg = isAr
-      ? '⚠️ تحذير مهم جداً: هل أنتِ متأكدة من حذف جميع منتجات الكتالوج بالكامل؟ (سيتم إفراغ المتجر تماماً لإعادة السحب Scrape).'
-      : '⚠️ ATTENTION : Êtes-vous sûre de vouloir SUPPRIMER TOUS les produits du catalogue ?\n\nCette action effacera complètement la boutique (idéal pour repartir à zéro avant un nouveau scraping).';
+      ? '⚠️ هل أنتِ متأكدة من رغبتك في حذف جميع منتجات الكتالوج بالكامل؟'
+      : '⚠️ Êtes-vous sûre de vouloir SUPPRIMER TOUS les produits du catalogue ?\n\nCette action videra complètement la boutique.';
 
     if (!confirm(confirmMsg)) return;
-    if (!confirm(isAr ? 'تأكيد أخير: تفريغ الكتالوج بالكامل الآن؟' : 'Confirmation finale : Vider tout le catalogue maintenant ?')) return;
 
     try {
-      const res = await fetch('/api/products', { method: 'DELETE' });
+      const res = await fetch('/api/products/delete-all', { method: 'POST' });
       const data = await res.json();
       if (data.success) {
-        alert(`✅ ${data.message}`);
-        await this.fetchProducts();
+        this.products = [];
+        this.rawProducts = [];
+        this.renderStockTable();
+
+        // Reset discount button
+        const btnDiscount = document.getElementById('btn-apply-company-discount');
+        if (btnDiscount) {
+          btnDiscount.disabled = false;
+          btnDiscount.textContent = '🏷️ Appliquer la Remise Société';
+        }
+
+        alert(`✅ ${data.message || 'Catalogue vidé avec succès.'}`);
       } else {
         alert('Erreur: ' + data.message);
       }
