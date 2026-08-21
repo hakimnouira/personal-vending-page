@@ -570,6 +570,19 @@ app.put('/api/products/:id', upload.single('image_file'), (req, res) => {
   }
 });
 
+// Delete ALL products
+app.delete('/api/products', (req, res) => {
+  try {
+    saveProducts([]);
+    const settings = getSettings();
+    settings.company_discount_applied = false;
+    saveSettings(settings);
+    res.json({ success: true, message: 'Tous les produits ont été supprimés avec succès.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 app.delete('/api/products/:id', (req, res) => {
   const { id } = req.params;
   let products = getProducts();
@@ -596,6 +609,47 @@ app.post('/api/products/toggle-stock/:id', (req, res) => {
   product.in_stock = !product.in_stock;
   saveProducts(products);
   res.json({ success: true, message: 'Stock toggled', in_stock: product.in_stock });
+});
+
+// Toggle company discount for a specific product
+app.post('/api/products/toggle-discount/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const products = getProducts();
+    const product = products.find(p => p.product_id === id);
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Produit introuvable' });
+    }
+
+    const settings = getSettings();
+    const percent = req.body && req.body.percentage !== undefined ? parseFloat(req.body.percentage) : (settings.company_discount_percent || 20);
+    const factor = (100 - percent) / 100;
+
+    if (product.company_discount_applied) {
+      // Revert to original price
+      product.price = product.original_catalog_price !== undefined ? product.original_catalog_price : product.price;
+      product.company_discount_applied = false;
+      product.company_discount_percent = 0;
+    } else {
+      // Apply discount
+      product.original_catalog_price = product.original_catalog_price !== undefined ? product.original_catalog_price : product.price;
+      product.price = parseFloat((product.original_catalog_price * factor).toFixed(3));
+      product.company_discount_applied = true;
+      product.company_discount_percent = percent;
+    }
+
+    saveProducts(products);
+    res.json({
+      success: true,
+      message: product.company_discount_applied
+        ? `Remise de ${percent}% appliquée sur ${product.name}`
+        : `Remise retirée pour ${product.name} (Prix rétabli: ${product.price} TND)`,
+      data: product
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 // SCRAPER APIs
@@ -868,18 +922,10 @@ app.post('/api/import/carousel', uploadJson.single('carousel'), (req, res) => {
   }
 });
 
-// ── COMPANY DISCOUNT: Apply customizable % to all product prices (ONE-TIME ONLY) ──
+// ── COMPANY DISCOUNT: Apply customizable % to all product prices ──
 app.post('/api/products/apply-company-discount', (req, res) => {
   try {
     const settings = getSettings();
-    if (settings.company_discount_applied) {
-      return res.status(400).json({
-        success: false,
-        message: `La remise société (${settings.company_discount_percent || 20}%) a déjà été appliquée. Pour éviter toute erreur de double calcul, cette opération ne s'exécute qu'une seule fois.`,
-        already_applied: true,
-        percentage: settings.company_discount_percent || 20
-      });
-    }
 
     if (!fs.existsSync(PRODUCTS_FILE)) {
       return res.status(404).json({ success: false, message: 'Fichier de produits introuvable' });
@@ -888,28 +934,31 @@ app.post('/api/products/apply-company-discount', (req, res) => {
     let products = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
     if (!Array.isArray(products)) products = products.data || [];
 
-    const rawPercent = req.body && req.body.percentage !== undefined ? parseFloat(req.body.percentage) : 20;
+    const rawPercent = req.body && req.body.percentage !== undefined ? parseFloat(req.body.percentage) : (settings.company_discount_percent || 20);
     const percent = Math.min(Math.max(isNaN(rawPercent) ? 20 : rawPercent, 0.1), 99.9);
     const factor = (100 - percent) / 100;
     let updated = 0;
 
     products = products.map(p => {
-      const newPrice = parseFloat((parseFloat(p.price || 0) * factor).toFixed(3));
-      // Also reduce original_price if it exists (keeps relative gap intact)
-      const newOriginal = p.original_price
-        ? parseFloat((parseFloat(p.original_price) * factor).toFixed(3))
-        : null;
+      // Use original_catalog_price if present, otherwise current price is base
+      const basePrice = (p.original_catalog_price !== undefined && p.original_catalog_price !== null)
+        ? p.original_catalog_price
+        : (p.price || 0);
+
+      const newPrice = parseFloat((basePrice * factor).toFixed(3));
       updated++;
       return {
         ...p,
+        original_catalog_price: basePrice,
         price: newPrice,
-        ...(newOriginal !== null ? { original_price: newOriginal } : {}),
+        company_discount_applied: true,
+        company_discount_percent: percent
       };
     });
 
-    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf8');
+    saveProducts(products);
 
-    // Permanently record in settings to block repeated clicks
+    // Record in settings
     settings.company_discount_applied = true;
     settings.company_discount_percent = percent;
     settings.company_discount_applied_at = new Date().toISOString();

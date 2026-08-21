@@ -4,11 +4,11 @@
     {
       "session_id": "SES-KQ6MIBQ-MT2ZUTD0",
       "first_seen": "2026-08-21T13:37:34.517Z",
-      "last_active": "2026-08-21T14:07:52.381Z",
+      "last_active": "2026-08-21T17:10:52.307Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 1297,
+      "duration_seconds": 12277,
       "activity_trail": [
         {
           "time": "2026-08-21T13:37:34.517Z",
@@ -42,11 +42,11 @@
     {
       "session_id": "SES-NHRPIH4-MT2Z11KK",
       "first_seen": "2026-08-21T13:14:25.467Z",
-      "last_active": "2026-08-21T14:08:47.379Z",
+      "last_active": "2026-08-21T17:10:52.315Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 2652,
+      "duration_seconds": 11015,
       "activity_trail": [
         {
           "time": "2026-08-21T13:14:25.467Z",
@@ -112,6 +112,11 @@
           "time": "2026-08-21T14:07:20.056Z",
           "offset": "0m 3s",
           "description": "Clicked Facebook/Messenger Checkout (3 items, Total: 207.9 TND)"
+        },
+        {
+          "time": "2026-08-21T17:04:35.885Z",
+          "offset": "177m 19s",
+          "description": "Completed Phone/WhatsApp Order ORD-465024"
         }
       ],
       "categories_visited": [
@@ -124,12 +129,28 @@
     {
       "session_id": "SES-96GWOI0-MT2PP8VB",
       "first_seen": "2026-08-21T13:13:52.653Z",
-      "last_active": "2026-08-21T14:07:52.384Z",
+      "last_active": "2026-08-21T15:52:51.528Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 18874,
-      "activity_trail": [],
+      "duration_seconds": 21814,
+      "activity_trail": [
+        {
+          "time": "2026-08-21T15:52:50.168Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-21T15:52:51.516Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-21T15:52:51.528Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        }
+      ],
       "categories_visited": [],
       "products_viewed": []
     },

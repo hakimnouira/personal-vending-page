@@ -4,6 +4,43 @@ import { CartManager } from './cart.js';
 import { TelemetryTracker } from './telemetry.js';
 import { ECatalogueViewer } from './ecatalogue.js';
 
+export function getProductFallbackSvg(lang = 'fr') {
+  const isAr = lang === 'ar';
+  const isEn = lang === 'en';
+  const mainText = isAr ? 'الصورة غير متوفرة حالياً' : (isEn ? 'Image not available' : 'Image non disponible');
+  const subText = isAr ? 'أوريفلام تونس' : (isEn ? 'Oriflame Sweden' : 'Oriflame Tunisie');
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+    <defs>
+      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FAF8F5"/>
+        <stop offset="100%" stop-color="#F4ECE1"/>
+      </linearGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#bgGrad)" rx="16"/>
+    <rect x="15" y="15" width="370" height="370" fill="none" stroke="#E5DEC9" stroke-width="2" stroke-dasharray="6 6" rx="12"/>
+    <g transform="translate(200, 150)" fill="none" stroke="#C5A880" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="-35" y="-20" width="70" height="60" rx="8"/>
+      <path d="M-15 -20 L-15 -35 L15 -35 L15 -20"/>
+      <circle cx="0" cy="10" r="14"/>
+      <line x1="-38" y1="42" x2="38" y2="-38" stroke="#E11D48" stroke-width="3"/>
+    </g>
+    <text x="200" y="245" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="700" fill="#475569" text-anchor="middle">${mainText}</text>
+    <text x="200" y="270" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="800" fill="#C5A880" letter-spacing="1.5" text-anchor="middle">${subText.toUpperCase()}</text>
+  </svg>`;
+
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
+window.handleProductImgError = function(img) {
+  if (!img) return;
+  img.onerror = null;
+  const lang = (window.app && window.app.i18n) ? window.app.i18n.getLang() : 'fr';
+  img.src = getProductFallbackSvg(lang);
+  img.style.objectFit = 'contain';
+  img.style.background = '#FAF8F5';
+};
+
 class App {
   constructor() {
     this.i18n = new I18nManager();
@@ -117,7 +154,7 @@ class App {
         <div class="carousel-ambient-backdrop" style="background-image: url('${slide.image_url}');"></div>
         <div class="carousel-slide-inner">
           <div class="carousel-image-frame">
-            <img src="${slide.image_url}" alt="${slide.title || 'Slide'}" class="carousel-full-img" />
+            <img src="${slide.image_url}" alt="${slide.title || 'Slide'}" class="carousel-full-img" onerror="window.handleProductImgError(this)" />
           </div>
           
           <div class="carousel-content-box">
@@ -864,7 +901,7 @@ class App {
     this.dealsCarouselGrid.innerHTML = promoProducts.map(p => `
       <div class="mini-deal-card" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
         <div class="mini-deal-img-wrap">
-          <img class="mini-deal-img" src="${p.image_url}" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80'" />
+          <img class="mini-deal-img" src="${p.image_url}" alt="${p.name}" loading="lazy" onerror="window.handleProductImgError(this)" />
           <span class="promo-pill">-${p.discount_percent || 25}%</span>
         </div>
         <h4 class="mini-deal-title">${p.name}</h4>
@@ -918,7 +955,7 @@ class App {
     this.productGrid.innerHTML = filtered.map(p => `
       <div class="product-card">
         <div class="product-image-wrap" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
-          <img class="product-image" src="${p.image_url}" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80'" />
+          <img class="product-image" src="${p.image_url}" alt="${p.name}" loading="lazy" onerror="window.handleProductImgError(this)" />
           ${p.is_promo 
             ? `<span class="promo-badge">-${p.discount_percent || 25}%</span>`
             : `<span class="category-badge">${p.category}</span>`
@@ -995,7 +1032,7 @@ class App {
 
     this.cartItemsList.innerHTML = items.map(item => `
       <div class="cart-item">
-        <img class="cart-item-img" src="${item.image_url}" alt="${item.name}" />
+        <img class="cart-item-img" src="${item.image_url}" alt="${item.name}" onerror="window.handleProductImgError(this)" />
         <div class="cart-item-info">
           <div class="cart-item-title">${item.name}</div>
           <div class="cart-item-price">${Number(item.price).toFixed(2)} ${currencyLabel}</div>
@@ -1120,7 +1157,7 @@ class App {
 
     this.quickViewContent.innerHTML = `
         <div style="position:relative; background: radial-gradient(circle, #FFFFFF 40%, #F5F3EF 100%); border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: center; border: 1px solid #E8E5DF; box-shadow: inset 0 2px 6px rgba(0,0,0,0.03); min-height: 260px;">
-          <img src="${product.image_url}" alt="${product.name}" onerror="this.onerror=null; this.src='https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${product.product_id}%2f${product.product_id}_1.png&MediaId=20989035&Version=1';" style="max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.15)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <img src="${product.image_url}" alt="${product.name}" onerror="window.handleProductImgError(this)" style="max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.15)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
           ${product.is_promo 
             ? `<span class="promo-badge" style="top:12px; left:12px; position:absolute;">-${product.discount_percent || 25}% OFF</span>`
             : `<span class="category-badge" style="top:12px; left:12px; position:absolute;">${product.category}</span>`

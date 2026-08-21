@@ -1,6 +1,43 @@
 // Admin Dashboard Controller with Trilingual Localization, Digital Flipbook Scraper, Real-Time Visitor Analytics & Stock Management
 import { AdminI18n } from './admin-i18n.js';
 
+export function getProductFallbackSvg(lang = 'fr') {
+  const isAr = lang === 'ar';
+  const isEn = lang === 'en';
+  const mainText = isAr ? 'الصورة غير متوفرة حالياً' : (isEn ? 'Image not available' : 'Image non disponible');
+  const subText = isAr ? 'أوريفلام تونس' : (isEn ? 'Oriflame Sweden' : 'Oriflame Tunisie');
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+    <defs>
+      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FAF8F5"/>
+        <stop offset="100%" stop-color="#F4ECE1"/>
+      </linearGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#bgGrad)" rx="16"/>
+    <rect x="15" y="15" width="370" height="370" fill="none" stroke="#E5DEC9" stroke-width="2" stroke-dasharray="6 6" rx="12"/>
+    <g transform="translate(200, 150)" fill="none" stroke="#C5A880" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="-35" y="-20" width="70" height="60" rx="8"/>
+      <path d="M-15 -20 L-15 -35 L15 -35 L15 -20"/>
+      <circle cx="0" cy="10" r="14"/>
+      <line x1="-38" y1="42" x2="38" y2="-38" stroke="#E11D48" stroke-width="3"/>
+    </g>
+    <text x="200" y="245" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="700" fill="#475569" text-anchor="middle">${mainText}</text>
+    <text x="200" y="270" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="800" fill="#C5A880" letter-spacing="1.5" text-anchor="middle">${subText.toUpperCase()}</text>
+  </svg>`;
+
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
+window.handleProductImgError = function(img) {
+  if (!img) return;
+  img.onerror = null;
+  const lang = (window.adminDash && window.adminDash.i18n) ? window.adminDash.i18n.getLang() : 'fr';
+  img.src = getProductFallbackSvg(lang);
+  img.style.objectFit = 'contain';
+  img.style.background = '#FAF8F5';
+};
+
 class AdminDashboard {
   constructor() {
     this.i18n = new AdminI18n();
@@ -387,6 +424,23 @@ class AdminDashboard {
     }
 
 
+    // Stock Filters & Delete All Products
+    const stockSearch = document.getElementById('stock-search-input');
+    const stockCat = document.getElementById('stock-category-filter');
+    const stockDisc = document.getElementById('stock-discount-filter');
+    const stockStat = document.getElementById('stock-status-filter');
+    const handleStockFilter = () => this.applyStockFilter();
+
+    if (stockSearch) stockSearch.addEventListener('input', handleStockFilter);
+    if (stockCat) stockCat.addEventListener('change', handleStockFilter);
+    if (stockDisc) stockDisc.addEventListener('change', handleStockFilter);
+    if (stockStat) stockStat.addEventListener('change', handleStockFilter);
+
+    const btnDeleteAll = document.getElementById('btn-delete-all-products');
+    if (btnDeleteAll) {
+      btnDeleteAll.addEventListener('click', () => this.deleteAllProducts());
+    }
+
     // Analytics & Orders Quick Buttons
     const btnQuickOrders = document.getElementById('btn-quick-to-orders');
     if (btnQuickOrders) {
@@ -709,8 +763,9 @@ class AdminDashboard {
     try {
       const res = await fetch('/api/products');
       const data = await res.json();
-      if (data.success) {
+      if (data.success && Array.isArray(data.data)) {
         this.products = data.data;
+        this.rawProducts = data.data;
         this.renderStockTable();
       }
     } catch (e) {
@@ -719,15 +774,56 @@ class AdminDashboard {
   }
 
   renderStockTable() {
-    if (!this.stockTableBody) return;
-
-    const total = this.products.length;
-    const inStock = this.products.filter(p => p.in_stock).length;
+    const total = (this.rawProducts || []).length;
+    const inStock = (this.rawProducts || []).filter(p => p.in_stock).length;
     const outStock = total - inStock;
 
     if (this.statTotalProducts) this.statTotalProducts.textContent = total;
     if (this.statInStock) this.statInStock.textContent = inStock;
     if (this.statOutStock) this.statOutStock.textContent = outStock;
+
+    this.applyStockFilter();
+  }
+
+  applyStockFilter() {
+    const searchInput = document.getElementById('stock-search-input');
+    const catFilter = document.getElementById('stock-category-filter');
+    const discFilter = document.getElementById('stock-discount-filter');
+    const statFilter = document.getElementById('stock-status-filter');
+
+    const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    const cat = catFilter ? catFilter.value : 'all';
+    const disc = discFilter ? discFilter.value : 'all';
+    const stat = statFilter ? statFilter.value : 'all';
+
+    const all = this.rawProducts || [];
+    const filtered = all.filter(p => {
+      if (cat !== 'all' && (p.category || '').toLowerCase() !== cat.toLowerCase()) return false;
+      if (stat === 'in_stock' && !p.in_stock) return false;
+      if (stat === 'out_stock' && p.in_stock) return false;
+      if (disc === 'discounted' && !p.company_discount_applied) return false;
+      if (disc === 'regular' && p.company_discount_applied) return false;
+
+      if (!q) return true;
+      const matchName = (p.name || '').toLowerCase().includes(q);
+      const matchId = (p.product_id || '').toLowerCase().includes(q);
+      const matchCat = (p.category || '').toLowerCase().includes(q);
+      return matchName || matchId || matchCat;
+    });
+
+    this.renderFilteredStockTable(filtered);
+  }
+
+  renderFilteredStockTable(items) {
+    const countDisplay = document.getElementById('stock-products-count');
+    if (countDisplay) countDisplay.textContent = items.length;
+
+    if (!this.stockTableBody) return;
+
+    if (items.length === 0) {
+      this.stockTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:3rem; color:#8E8D8A;">Aucun produit trouvé avec ces critères de recherche.</td></tr>`;
+      return;
+    }
 
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';
@@ -737,35 +833,92 @@ class AdminDashboard {
     const markInText = this.i18n.t('btn_mark_in_stock');
     const deleteText = this.i18n.t('btn_delete');
 
-    this.stockTableBody.innerHTML = this.products.map(p => `
-      <tr>
-        <td><code>${p.product_id}</code></td>
-        <td style="display: flex; align-items: center; gap: 10px;">
-          <img src="${p.image_url}" alt="${p.name}" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; background: #FAF8F5;" />
-          <div>
-            <strong>${p.name}</strong>
-            ${p.size ? `<div style="font-size:0.75rem; color:#8E8D8A;">📦 ${p.size}</div>` : ''}
-          </div>
-        </td>
-        <td><span class="badge" style="background:#FAF8F5; border:1px solid var(--admin-border);">${p.category}</span></td>
-        <td><strong>${Number(p.price).toFixed(2)} ${currencyLabel}</strong></td>
-        <td>
-          <span class="badge ${p.in_stock ? 'badge-success' : 'badge-danger'}">
-            ${p.in_stock ? inStockText : outStockText}
-          </span>
-        </td>
-        <td>
-          <div style="display: flex; gap: 6px;">
-            <button class="btn-primary" style="padding: 6px 12px; font-size: 0.78rem; width: auto; background: ${p.in_stock ? '#52525B' : 'var(--admin-success)'};" onclick="window.adminDash.toggleStock('${p.product_id}')">
-              ${p.in_stock ? markOutText : markInText}
-            </button>
-            <button class="btn-primary" style="padding: 6px 10px; font-size: 0.78rem; width: auto; background: var(--admin-danger); border-color: var(--admin-danger);" onclick="window.adminDash.deleteProduct('${p.product_id}')">
-              ${deleteText}
-            </button>
-          </div>
-        </td>
-      </tr>
-    `).join('');
+    this.stockTableBody.innerHTML = items.map(p => {
+      const isDiscounted = Boolean(p.company_discount_applied);
+      const discountBadge = isDiscounted
+        ? `<div>
+             <span class="badge" style="background:#ECFDF5; color:#047857; border:1px solid #A7F3D0; font-size:0.72rem; font-weight:700;">🏷️ -${p.company_discount_percent || 20}% Appliqué</span>
+             <div style="font-size:0.72rem; color:#71717A; margin-top:2px;">Origine: ${Number(p.original_catalog_price || p.price).toFixed(2)} DT</div>
+           </div>`
+        : `<div>
+             <span class="badge" style="background:#F4F4F5; color:#71717A; border:1px solid #E4E4E7; font-size:0.72rem;">Prix Brut Catalogue</span>
+           </div>`;
+
+      const discountBtn = isDiscounted
+        ? `<button class="btn-primary" style="padding:6px 9px; font-size:0.75rem; width:auto; background:#D97706; border-color:#D97706; white-space:nowrap;" onclick="window.adminDash.toggleProductDiscount('${p.product_id}')" title="Annuler la remise de 20% pour ce produit">↩️ Retirer -20%</button>`
+        : `<button class="btn-primary" style="padding:6px 9px; font-size:0.75rem; width:auto; background:#059669; border-color:#059669; white-space:nowrap;" onclick="window.adminDash.toggleProductDiscount('${p.product_id}')" title="Appliquer la remise de 20% pour ce produit">🏷️ Appliquer -20%</button>`;
+
+      return `
+        <tr>
+          <td><code>${p.product_id}</code></td>
+          <td style="display: flex; align-items: center; gap: 10px;">
+            <img src="${p.image_url}" alt="${p.name}" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; background: #FAF8F5;" onerror="window.handleProductImgError && window.handleProductImgError(this)" />
+            <div>
+              <strong>${p.name}</strong>
+              ${p.size ? `<div style="font-size:0.75rem; color:#8E8D8A;">📦 ${p.size}</div>` : ''}
+            </div>
+          </td>
+          <td><span class="badge" style="background:#FAF8F5; border:1px solid var(--admin-border);">${p.category}</span></td>
+          <td>
+            <div style="font-weight:700; font-size:0.95rem; color:#18181B; margin-bottom:4px;">${Number(p.price).toFixed(2)} ${currencyLabel}</div>
+            ${discountBadge}
+          </td>
+          <td>
+            <span class="badge ${p.in_stock ? 'badge-success' : 'badge-danger'}">
+              ${p.in_stock ? inStockText : outStockText}
+            </span>
+          </td>
+          <td>
+            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+              ${discountBtn}
+              <button class="btn-primary" style="padding: 6px 10px; font-size: 0.76rem; width: auto; background: ${p.in_stock ? '#52525B' : 'var(--admin-success)'};" onclick="window.adminDash.toggleStock('${p.product_id}')">
+                ${p.in_stock ? markOutText : markInText}
+              </button>
+              <button class="btn-primary" style="padding: 6px 8px; font-size: 0.76rem; width: auto; background: var(--admin-danger); border-color: var(--admin-danger);" onclick="window.adminDash.deleteProduct('${p.product_id}')">
+                ${deleteText}
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async toggleProductDiscount(productId) {
+    try {
+      const res = await fetch(`/api/products/toggle-discount/${productId}`, { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        await this.fetchProducts();
+      } else {
+        alert('Erreur: ' + data.message);
+      }
+    } catch (e) {
+      alert('Erreur réseau: ' + e.message);
+    }
+  }
+
+  async deleteAllProducts() {
+    const isAr = this.i18n.getLang() === 'ar';
+    const confirmMsg = isAr
+      ? '⚠️ تحذير مهم جداً: هل أنتِ متأكدة من حذف جميع منتجات الكتالوج بالكامل؟ (سيتم إفراغ المتجر تماماً لإعادة السحب Scrape).'
+      : '⚠️ ATTENTION : Êtes-vous sûre de vouloir SUPPRIMER TOUS les produits du catalogue ?\n\nCette action effacera complètement la boutique (idéal pour repartir à zéro avant un nouveau scraping).';
+
+    if (!confirm(confirmMsg)) return;
+    if (!confirm(isAr ? 'تأكيد أخير: تفريغ الكتالوج بالكامل الآن؟' : 'Confirmation finale : Vider tout le catalogue maintenant ?')) return;
+
+    try {
+      const res = await fetch('/api/products', { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        alert(`✅ ${data.message}`);
+        await this.fetchProducts();
+      } else {
+        alert('Erreur: ' + data.message);
+      }
+    } catch (e) {
+      alert('Erreur réseau: ' + e.message);
+    }
   }
 
   async toggleStock(productId) {
@@ -1353,7 +1506,7 @@ class AdminDashboard {
     grid.innerHTML = slides.map(slide => `
       <div class="admin-slide-card" style="background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column;">
         <div style="position: relative; height: 160px; background: #18181B; overflow: hidden;">
-          <img src="${slide.image_url}" alt="${slide.title || 'Slide'}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80'" />
+          <img src="${slide.image_url}" alt="${slide.title || 'Slide'}" style="width: 100%; height: 100%; object-fit: cover;" onerror="window.handleProductImgError(this)" />
           <div style="position: absolute; top: 10px; right: 10px; background: ${slide.active !== false ? '#10B981' : '#6B7280'}; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700;">
             ${slide.active !== false ? 'ACTIF' : 'INACTIF'}
           </div>

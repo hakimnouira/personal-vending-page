@@ -342,16 +342,46 @@
           </form>
         </details>
 
-        <!-- Product Table -->
-        <h3 style="font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 14px;">Inventaire en Direct</h3>
+        <!-- Product Filters & Management Toolbar -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 24px; margin-bottom: 14px;">
+          <h3 style="font-family: var(--font-serif); font-size: 1.15rem; margin: 0;">
+            Inventaire en Direct (<span id="stock-products-count">0</span>)
+          </h3>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="stock-search-input" class="form-control" placeholder="🔍 Rechercher produit, réf..." style="margin-bottom: 0; width: 190px; font-size: 0.82rem; padding: 6px 10px;" />
+            <select id="stock-category-filter" class="form-control" style="margin-bottom: 0; width: 140px; font-size: 0.82rem; padding: 6px 8px;">
+              <option value="all">Toutes Catégories</option>
+              <option value="Skincare">Soins Visage</option>
+              <option value="Fragrance">Parfums</option>
+              <option value="Makeup">Maquillage</option>
+              <option value="Wellness">Wellness</option>
+              <option value="Haircare">Cheveux</option>
+              <option value="Personal Care">Corps &amp; Bain</option>
+            </select>
+            <select id="stock-discount-filter" class="form-control" style="margin-bottom: 0; width: 155px; font-size: 0.82rem; padding: 6px 8px;">
+              <option value="all">🏷️ Toutes Remises</option>
+              <option value="discounted">🏷️ Avec Remise Société</option>
+              <option value="regular">❌ Sans Remise</option>
+            </select>
+            <select id="stock-status-filter" class="form-control" style="margin-bottom: 0; width: 125px; font-size: 0.82rem; padding: 6px 8px;">
+              <option value="all">📦 Tout le Stock</option>
+              <option value="in_stock">✅ En Stock</option>
+              <option value="out_stock">❌ Épuisé</option>
+            </select>
+            <button id="btn-delete-all-products" class="btn-primary" style="width: auto; padding: 6px 12px; font-size: 0.8rem; background: var(--admin-danger); border-color: var(--admin-danger); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;">
+              🗑️ Supprimer TOUT
+            </button>
+          </div>
+        </div>
+
         <div class="table-responsive">
           <table class="custom-table">
             <thead>
               <tr>
                 <th data-admin-i18n="th_prod_id">Réf Produit</th>
-                <th data-admin-i18n="th_photo_name">Photo & Nom</th>
+                <th data-admin-i18n="th_photo_name">Photo &amp; Nom</th>
                 <th data-admin-i18n="th_category">Catégorie</th>
-                <th data-admin-i18n="th_price">Prix (TND)</th>
+                <th>Prix &amp; Remise Société</th>
                 <th data-admin-i18n="th_stock_status">Disponibilité</th>
                 <th data-admin-i18n="th_actions">Actions</th>
               </tr>
