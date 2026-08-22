@@ -4,11 +4,11 @@
     {
       "session_id": "SES-L3C35S8-MT4FORY6",
       "first_seen": "2026-08-22T13:48:32.776Z",
-      "last_active": "2026-08-22T13:54:40.776Z",
+      "last_active": "2026-08-22T13:54:55.774Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 270,
+      "duration_seconds": 285,
       "activity_trail": [
         {
           "time": "2026-08-22T13:48:32.776Z",
@@ -32,7 +32,7 @@
     {
       "session_id": "SES-I53EUZS-MT4DOJIY",
       "first_seen": "2026-08-22T12:52:22.624Z",
-      "last_active": "2026-08-22T13:54:27.699Z",
+      "last_active": "2026-08-22T13:54:57.132Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
