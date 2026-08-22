@@ -1118,18 +1118,42 @@ app.put('/api/orders/:id/status', (req, res) => {
   }
 });
 
-app.delete('/api/orders/:id', (req, res) => {
-  const { id } = req.params;
-  let orders = getOrders();
-  const initialLen = orders.length;
-  orders = orders.filter(o => o.order_id !== id);
-
-  if (orders.length === initialLen) {
-    return res.status(404).json({ success: false, message: 'Order not found' });
+// ── DELETE ALL ORDERS ────────────────────────────────────────────────────────
+app.delete('/api/orders/all', (req, res) => {
+  try {
+    saveOrders([]);
+    res.json({ success: true, message: 'Toutes les commandes ont été supprimées.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
+});
 
-  saveOrders(orders);
-  res.json({ success: true, message: 'Order deleted' });
+// ── DELETE SINGLE ORDER ──────────────────────────────────────────────────────
+app.delete('/api/orders/:id', (req, res) => {
+  try {
+    const rawId = req.params.id;
+    if (!rawId || rawId === 'undefined' || rawId === 'null') {
+      return res.status(400).json({ success: false, message: 'ID de commande invalide.' });
+    }
+
+    const targetId = String(rawId).trim();
+    let orders = getOrders();
+    const initialLen = orders.length;
+
+    orders = orders.filter(o => {
+      const oId = String(o.order_id || o.id || '').trim();
+      return oId !== targetId;
+    });
+
+    if (orders.length === initialLen) {
+      return res.status(404).json({ success: false, message: 'Commande introuvable.' });
+    }
+
+    saveOrders(orders);
+    res.json({ success: true, message: 'Commande supprimée avec succès.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 // ── EXPORT: Carousel slides only ────────────────────────────────────────────

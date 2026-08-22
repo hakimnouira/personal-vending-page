@@ -56,6 +56,27 @@ class AdminDashboard {
     this.bindEvents();
   }
 
+  showToast(message, type = 'info') {
+    let container = document.getElementById('admin-toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'admin-toast-container';
+      container.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:99999;display:flex;flex-direction:column;gap:10px;pointer-events:none;';
+      document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    const bg = type === 'success' ? '#059669' : (type === 'danger' ? '#DC2626' : '#18181B');
+    toast.style.cssText = `background:${bg};color:#FFF;padding:12px 20px;border-radius:10px;font-size:0.88rem;font-weight:700;box-shadow:0 10px 25px rgba(0,0,0,0.25);pointer-events:auto;animation:fadeIn 0.25s ease;display:flex;align-items:center;gap:8px;`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      toast.style.transition = 'opacity 0.3s, transform 0.3s';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
   cacheDOM() {
     // Language
     this.langSelect = document.getElementById('admin-lang-select');
@@ -488,6 +509,10 @@ class AdminDashboard {
     const btnRefreshOrders = document.getElementById('btn-refresh-orders');
     if (btnRefreshOrders) {
       btnRefreshOrders.addEventListener('click', () => this.fetchOrders());
+    }
+    const btnClearAllOrders = document.getElementById('btn-clear-all-orders');
+    if (btnClearAllOrders) {
+      btnClearAllOrders.addEventListener('click', () => this.deleteAllOrders());
     }
 
     // Analytics Search Filter & Clear All Sessions
@@ -1614,15 +1639,56 @@ class AdminDashboard {
   }
 
   async deleteOrder(orderId) {
-    if (!confirm(`Supprimer définitivement la commande ${orderId} ?`)) return;
+    if (!orderId || orderId === 'undefined' || orderId === 'null') {
+      alert('ID de commande invalide.');
+      return;
+    }
+    const cleanId = String(orderId).trim();
+    const isAr = this.i18n.getLang() === 'ar';
+    const confirmMsg = isAr
+      ? `هل أنت متأكد من حذف الطلب ${cleanId} نهائياً؟`
+      : `Supprimer définitivement la commande ${cleanId} ?`;
+
+    if (!confirm(confirmMsg)) return;
+
     try {
-      const res = await fetch(`/api/orders/${orderId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/orders/${encodeURIComponent(cleanId)}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
+        this.showToast(isAr ? '✅ تم حذف الطلب بنجاح' : '✅ Commande supprimée avec succès', 'success');
         await this.fetchOrders();
+      } else {
+        alert('Erreur: ' + (data.message || 'Échec de la suppression'));
       }
     } catch (e) {
-      alert('Erreur: ' + e.message);
+      alert('Erreur réseau: ' + e.message);
+    }
+  }
+
+  async deleteAllOrders() {
+    if (!this.orders || this.orders.length === 0) {
+      alert(this.i18n.getLang() === 'ar' ? 'لا توجد طلبات لحذفها' : 'Aucune commande à supprimer.');
+      return;
+    }
+    const isAr = this.i18n.getLang() === 'ar';
+    const count = this.orders.length;
+    const msg = isAr
+      ? `⚠️ تحذير: هل أنت متأكد من حذف جميع الطلبات (${count}) نهائياً؟ لا يمكن التراجع عن هذا الإجراء!`
+      : `⚠️ ATTENTION : Voulez-vous vraiment supprimer TOUTES les commandes (${count}) ? Cette action est irréversible !`;
+
+    if (!confirm(msg)) return;
+
+    try {
+      const res = await fetch('/api/orders/all', { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        this.showToast(isAr ? '✅ تم حذف جميع الطلبات بنجاح' : '✅ Toutes les commandes ont été supprimées.', 'success');
+        await this.fetchOrders();
+      } else {
+        alert('Erreur: ' + (data.message || 'Échec de la suppression'));
+      }
+    } catch (e) {
+      alert('Erreur réseau: ' + e.message);
     }
   }
 

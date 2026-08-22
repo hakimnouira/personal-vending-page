@@ -4,11 +4,11 @@
     {
       "session_id": "SES-N94OQPB-MT4NDH3A",
       "first_seen": "2026-08-22T17:23:42.414Z",
-      "last_active": "2026-08-22T17:40:33.599Z",
+      "last_active": "2026-08-22T17:51:33.604Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 452,
+      "duration_seconds": 720,
       "activity_trail": [
         {
           "time": "2026-08-22T17:23:42.414Z",
@@ -112,7 +112,7 @@
     {
       "session_id": "SES-L3C35S8-MT4FORY6",
       "first_seen": "2026-08-22T13:48:32.776Z",
-      "last_active": "2026-08-22T17:40:32.171Z",
+      "last_active": "2026-08-22T17:51:32.181Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -358,7 +358,7 @@
     {
       "session_id": "SES-I53EUZS-MT4DOJIY",
       "first_seen": "2026-08-22T12:52:22.624Z",
-      "last_active": "2026-08-22T17:40:04.138Z",
+      "last_active": "2026-08-22T17:51:45.132Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
