@@ -85,7 +85,7 @@ Gestion complète de l'inventaire avec édition sur-mesure : noms et description
 - **📞 Commande Téléphonique** : Appel direct en 1 clic.
 
 ### 🎛️ Espace Administration (`/admin`)
-- **🔐 Accès Sécurisé** : Protection par mot de passe administrateur (`mouna2026`).
+- **🔐 Accès Sécurisé** : Protection par mot de passe administrateur .
 - **🔥 Gestionnaire des "Offres Spéciales du Catalogue"** : Choix des produits mis en avant dans le bandeau noir d'accueil.
 - **🖼️ Gestionnaire du Carrousel d'Accueil** : Ajout, modification, réorganisation et suppression de bannières grand format.
 - **📊 Importation &amp; Exportation Intégrale** :
