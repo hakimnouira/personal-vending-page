@@ -157,6 +157,8 @@ class AdminDashboard {
     await this.fetchSettings();
     await this.fetchCarousel();
     this.bindCarouselEvents();
+    await this.fetchBundles();
+    this.bindBundleEvents();
 
     const urlParams = new URLSearchParams(window.location.search);
     const orderIdParam = urlParams.get('orderId');
@@ -1015,6 +1017,27 @@ class AdminDashboard {
     }
     if (this.csvFileInput) {
       this.csvFileInput.addEventListener('change', (e) => this.importCsv(e));
+    }
+
+    // Products JSON Bulk Import Listeners
+    const productsJsonFileInput = document.getElementById('admin-products-json-file');
+    if (productsJsonFileInput) {
+      productsJsonFileInput.addEventListener('change', (e) => this.importProductsJson(e));
+    }
+
+    const quickJsonFileInput = document.getElementById('admin-quick-json-file');
+    if (quickJsonFileInput) {
+      quickJsonFileInput.addEventListener('change', (e) => this.importProductsJson(e));
+    }
+
+    const btnQuickExportCsv = document.getElementById('btn-quick-export-csv');
+    if (btnQuickExportCsv) {
+      btnQuickExportCsv.addEventListener('click', () => this.exportCsv());
+    }
+
+    const btnSyncLiveStock = document.getElementById('btn-sync-live-stock');
+    if (btnSyncLiveStock) {
+      btnSyncLiveStock.addEventListener('click', () => this.syncLiveStock());
     }
 
     // Featured Special Offers Showcase Events
@@ -2343,6 +2366,114 @@ class AdminDashboard {
     reader.readAsText(file);
   }
 
+  exportProductsJson() {
+    const prods = this.rawProducts || this.products || [];
+    if (prods.length === 0) return alert('Aucun produit à exporter.');
+
+    const blob = new Blob([JSON.stringify(prods, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `oriflame_produits_${new Date().toISOString().slice(0, 10)}.json`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  async importProductsJson(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const statusEl = document.getElementById('json-products-import-status');
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.style.color = '#15803D';
+      statusEl.textContent = '⏳ Lecture et importation du catalogue JSON en cours...';
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const text = e.target.result;
+        let parsed = JSON.parse(text);
+
+        let productsList = [];
+        if (Array.isArray(parsed)) {
+          productsList = parsed;
+        } else if (Array.isArray(parsed.products)) {
+          productsList = parsed.products;
+        } else if (Array.isArray(parsed.data)) {
+          productsList = parsed.data;
+        } else if (typeof parsed === 'object' && parsed.product_id) {
+          productsList = [parsed];
+        }
+
+        if (!Array.isArray(productsList) || productsList.length === 0) {
+          throw new Error('Aucun produit valide trouvé dans ce fichier JSON.');
+        }
+
+        const res = await fetch('/api/products/bulk-import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ products: productsList })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          if (statusEl) {
+            statusEl.style.color = '#166534';
+            statusEl.textContent = `✅ ${data.message}`;
+          }
+          await this.fetchProducts();
+          alert(`✅ Importation JSON réussie !\n\n${data.message}`);
+        } else {
+          throw new Error(data.message || 'Échec de l\'importation');
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.style.color = '#DC2626';
+          statusEl.textContent = '❌ ' + err.message;
+        }
+        alert('❌ Erreur lors de l\'importation JSON: ' + err.message);
+      } finally {
+        event.target.value = '';
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  async syncLiveStock() {
+    const btn = document.getElementById('btn-sync-live-stock');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '⏳ Scan & Détection en cours...';
+      btn.style.opacity = '0.7';
+    }
+
+    try {
+      const res = await fetch('/api/stock/sync-availability', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      if (data.success) {
+        await this.fetchProducts();
+        alert(`✅ Analyse du Stock Terminée !\n\nTotal Produits vérifiés : ${data.total}\n📦 Disponibles en Stock : ${data.in_stock_count}\n❌ En Rupture / متوفر قريباً : ${data.out_of_stock_count}\n\nL'inventaire a été mis à jour automatiquement.`);
+      } else {
+        throw new Error(data.message || 'Erreur lors de la synchronisation');
+      }
+    } catch (err) {
+      alert('❌ Erreur de synchronisation du stock : ' + err.message);
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = '🔍 Scanner & Détecter Ruptures en Direct';
+        btn.style.opacity = '1';
+      }
+    }
+  }
+
   async fetchCarousel() {
     try {
       const res = await fetch('/api/carousel');
@@ -2544,6 +2675,404 @@ class AdminDashboard {
       if (data.success) {
         alert('✅ Diapositive supprimée');
         await this.fetchCarousel();
+      } else {
+        alert('❌ Erreur: ' + data.message);
+      }
+    } catch (err) {
+      alert('❌ Erreur réseau: ' + err.message);
+    }
+  }
+
+  // ── BUNDLE PACKAGE DEALS MANAGEMENT ─────────────────────────────────────────
+  async fetchBundles() {
+    try {
+      const res = await fetch('/api/bundles');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        this.bundles = data.data;
+        this.renderBundlesAdmin();
+        this.updateBundleStats();
+      }
+    } catch (err) {
+      console.error("Error fetching bundles:", err);
+    }
+  }
+
+  updateBundleStats() {
+    const totalEl = document.getElementById('stat-total-bundles');
+    const activeEl = document.getElementById('stat-active-bundles');
+    const maxSavingsEl = document.getElementById('stat-max-savings');
+    const countEl = document.getElementById('bundles-count');
+
+    const list = this.bundles || [];
+    if (totalEl) totalEl.textContent = list.length;
+    if (countEl) countEl.textContent = list.length;
+    if (activeEl) activeEl.textContent = list.filter(b => b.active !== false).length;
+
+    if (maxSavingsEl) {
+      let maxSave = 0;
+      list.forEach(b => {
+        let regularSum = 0;
+        (b.product_ids || []).forEach(pId => {
+          const p = (this.products || []).find(x => String(x.product_id) === String(pId));
+          if (p) regularSum += Number(p.price || 0);
+        });
+        const save = Math.max(0, regularSum - Number(b.bundle_price || 0));
+        if (save > maxSave) maxSave = save;
+      });
+      maxSavingsEl.textContent = `${maxSave.toFixed(2)} TND`;
+    }
+  }
+
+  renderBundlesAdmin() {
+    const grid = document.getElementById('admin-bundles-grid');
+    if (!grid) return;
+
+    const list = this.bundles || [];
+    if (list.length === 0) {
+      grid.innerHTML = `<div style="grid-column: 1/-1; padding: 36px; text-align: center; color: var(--admin-text-muted); background: #FAF8F5; border-radius: 12px; border: 1px dashed #D4D4D8;">
+        🎁 Aucun pack combiné configuré pour le moment. Cliquez sur <strong>« ➕ Créer une Nouvelle Offre Pack »</strong> pour créer votre premier pack Duo/Trio !
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map(b => {
+      const prods = (b.product_ids || []).map(pId => {
+        const found = (this.products || []).find(p => String(p.product_id) === String(pId));
+        return found || { product_id: pId, name: `Produit #${pId}`, price: 0, image_url: '' };
+      });
+
+      const regularSum = prods.reduce((sum, p) => sum + Number(p.price || 0), 0);
+      const bundlePrice = Number(b.bundle_price || 0);
+      const savings = Math.max(0, regularSum - bundlePrice);
+      const discountPercent = regularSum > 0 ? Math.round((savings / regularSum) * 100) : 0;
+
+      return `
+        <div class="admin-bundle-card" style="background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 14px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <!-- Header status & badge -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+              <span style="background: #FEF3C7; color: #92400E; font-size: 0.75rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; border: 1px solid #FDE68A;">
+                🎁 PACK ${prods.length} PRODUITS
+              </span>
+              <span style="background: ${b.active !== false ? '#ECFDF5' : '#F4F4F5'}; color: ${b.active !== false ? '#047857' : '#71717A'}; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 20px; border: 1px solid ${b.active !== false ? '#A7F3D0' : '#E4E4E7'};">
+                ${b.active !== false ? '● ACTIF EN BOUTIQUE' : '○ INACTIF'}
+              </span>
+            </div>
+
+            <!-- Title & Description -->
+            <h4 style="font-size: 1.05rem; font-weight: 800; color: #18181B; margin: 0 0 6px 0;">${b.title_fr || b.title || 'Offre Pack'}</h4>
+            ${b.title_ar ? `<div dir="rtl" style="font-size: 0.88rem; color: #4B5563; font-weight: 700; margin-bottom: 6px;">${b.title_ar}</div>` : ''}
+            <p style="font-size: 0.8rem; color: #64748B; margin-bottom: 14px;">${b.description_fr || b.description || 'Prix spécial automatique dans le panier'}</p>
+
+            <!-- Combined Products Visual Thumbnails with '+' -->
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; margin-bottom: 14px;">
+              ${prods.map((p, idx) => `
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div style="text-align: center; width: 70px;">
+                    <img src="${p.image_url}" alt="${p.name}" style="width: 50px; height: 50px; object-fit: contain; background: white; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto 4px;" onerror="window.handleProductImgError(this)" />
+                    <div style="font-size: 0.68rem; font-weight: 700; color: #1E293B; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.name}</div>
+                    <div style="font-size: 0.68rem; color: #64748B;">${Number(p.price || 0).toFixed(2)} DT</div>
+                  </div>
+                  ${idx < prods.length - 1 ? `<span style="font-weight: 800; font-size: 1.1rem; color: #94A3B8;">+</span>` : ''}
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Price Breakdown Comparison Box -->
+            <div style="background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border: 1px solid #FCD34D; border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div>
+                  <span style="font-size: 0.72rem; color: #92400E; font-weight: 700; text-transform: uppercase;">Prix Normal : </span>
+                  <span style="font-size: 0.9rem; text-decoration: line-through; color: #78350F; opacity: 0.8;">${regularSum.toFixed(2)} DT</span>
+                </div>
+                <div>
+                  <span style="font-size: 0.72rem; color: #047857; font-weight: 700; text-transform: uppercase;">Prix du Pack : </span>
+                  <span style="font-size: 1.25rem; font-weight: 900; color: #047857;">${bundlePrice.toFixed(2)} DT</span>
+                </div>
+              </div>
+              <div style="font-size: 0.78rem; font-weight: 800; color: #B45309; margin-top: 4px; text-align: center; background: #FFFFFF; border-radius: 6px; padding: 4px;">
+                🎉 Économie client : -${savings.toFixed(2)} DT (-${discountPercent}%)
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div style="display: flex; gap: 8px; align-items: center; border-top: 1px solid #F1F5F9; padding-top: 12px; margin-top: auto;">
+            <button class="btn-primary" style="flex: 1; padding: 8px 12px; font-size: 0.8rem; background: #18181B; border-color: #C5A880;" onclick="window.adminDash.editBundle('${b.id}')">
+              ✏️ Modifier
+            </button>
+            <button class="btn-primary" style="padding: 8px 12px; font-size: 0.8rem; background: ${b.active !== false ? '#D97706' : '#059669'}; border-color: transparent;" onclick="window.adminDash.toggleBundle('${b.id}')">
+              ${b.active !== false ? 'Désactiver' : 'Activer'}
+            </button>
+            <button class="btn-primary" style="padding: 8px 12px; font-size: 0.8rem; background: #EF4444; border-color: #DC2626;" onclick="window.adminDash.deleteBundle('${b.id}')">
+              🗑️
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  bindBundleEvents() {
+    this.bundleSelectedIds = this.bundleSelectedIds || [];
+
+    const btnCreate = document.getElementById('btn-create-new-bundle');
+    if (btnCreate) {
+      btnCreate.addEventListener('click', () => {
+        this.resetBundleForm();
+        const formEl = document.getElementById('form-bundle-deal');
+        if (formEl) formEl.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    const searchInput = document.getElementById('bundle-product-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.renderBundleProductPicker(e.target.value);
+      });
+    }
+
+    const specialPriceInput = document.getElementById('bundle-special-price');
+    if (specialPriceInput) {
+      specialPriceInput.addEventListener('input', () => {
+        this.updateBundleCalc();
+      });
+    }
+
+    const btnCancel = document.getElementById('btn-cancel-bundle');
+    if (btnCancel) {
+      btnCancel.addEventListener('click', () => {
+        this.resetBundleForm();
+      });
+    }
+
+    const form = document.getElementById('form-bundle-deal');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await this.saveBundleForm();
+      });
+    }
+
+    this.renderBundleProductPicker('');
+  }
+
+  renderBundleProductPicker(filterText = '') {
+    const picker = document.getElementById('bundle-product-picker-list');
+    if (!picker) return;
+
+    this.bundleSelectedIds = this.bundleSelectedIds || [];
+    const search = (filterText || '').toLowerCase().trim();
+
+    const filtered = (this.products || []).filter(p => {
+      if (!p) return false;
+      const strId = String(p.product_id || '').toLowerCase();
+      const name = (p.name || '').toLowerCase();
+      return strId.includes(search) || name.includes(search);
+    });
+
+    if (filtered.length === 0) {
+      picker.innerHTML = `<div style="padding: 12px; text-align: center; color: #94A3B8; font-size: 0.8rem;">Aucun produit trouvé pour "${filterText}".</div>`;
+      return;
+    }
+
+    picker.innerHTML = filtered.slice(0, 60).map(p => {
+      const isSelected = this.bundleSelectedIds.includes(String(p.product_id));
+      return `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-bottom: 1px solid #F1F5F9; font-size: 0.82rem; cursor: pointer; background: ${isSelected ? '#F0FDF4' : 'transparent'};" onclick="window.adminDash.toggleBundleProductSelection('${p.product_id}')">
+          <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+            <input type="checkbox" ${isSelected ? 'checked' : ''} style="width: 16px; height: 16px; accent-color: #059669; cursor: pointer;" onclick="event.stopPropagation(); window.adminDash.toggleBundleProductSelection('${p.product_id}')" />
+            <img src="${p.image_url}" alt="${p.name}" style="width: 32px; height: 32px; object-fit: contain; background: white; border-radius: 4px; border: 1px solid #E2E8F0;" onerror="window.handleProductImgError(this)" />
+            <div style="flex: 1; min-width: 0;">
+              <strong style="color: #1E293B;">${p.name}</strong>
+              <span style="color: #64748B; font-size: 0.74rem; margin-left: 6px;">[Réf: ${p.product_id}]</span>
+            </div>
+          </div>
+          <div style="font-weight: 700; color: #047857; margin-left: 12px;">
+            ${Number(p.price || 0).toFixed(2)} DT
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  toggleBundleProductSelection(productId) {
+    this.bundleSelectedIds = this.bundleSelectedIds || [];
+    const strId = String(productId);
+    const index = this.bundleSelectedIds.indexOf(strId);
+    if (index > -1) {
+      this.bundleSelectedIds.splice(index, 1);
+    } else {
+      this.bundleSelectedIds.push(strId);
+    }
+    this.renderBundleSelectedChips();
+    const searchInput = document.getElementById('bundle-product-search');
+    this.renderBundleProductPicker(searchInput ? searchInput.value : '');
+    this.updateBundleCalc();
+  }
+
+  renderBundleSelectedChips() {
+    const chipsContainer = document.getElementById('bundle-selected-chips');
+    const countEl = document.getElementById('bundle-selected-count');
+    if (!chipsContainer) return;
+
+    this.bundleSelectedIds = this.bundleSelectedIds || [];
+    if (countEl) countEl.textContent = this.bundleSelectedIds.length;
+
+    if (this.bundleSelectedIds.length === 0) {
+      chipsContainer.innerHTML = `<span style="font-size: 0.78rem; color: #94A3B8; font-style: italic;">Aucun produit sélectionné pour l'instant.</span>`;
+      return;
+    }
+
+    chipsContainer.innerHTML = this.bundleSelectedIds.map(pId => {
+      const p = (this.products || []).find(x => String(x.product_id) === String(pId)) || { product_id: pId, name: `Produit #${pId}`, price: 0 };
+      return `
+        <span style="display: inline-flex; align-items: center; gap: 6px; background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;">
+          <span>${p.name} (${Number(p.price || 0).toFixed(2)} DT)</span>
+          <button type="button" onclick="window.adminDash.toggleBundleProductSelection('${p.product_id}')" style="background: none; border: none; color: #047857; font-weight: 800; cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0 2px;">✕</button>
+        </span>
+      `;
+    }).join('');
+  }
+
+  updateBundleCalc() {
+    this.bundleSelectedIds = this.bundleSelectedIds || [];
+    let normalSum = 0;
+    this.bundleSelectedIds.forEach(pId => {
+      const p = (this.products || []).find(x => String(x.product_id) === String(pId));
+      if (p) normalSum += Number(p.price || 0);
+    });
+
+    const normalEl = document.getElementById('bundle-calc-normal-price');
+    if (normalEl) normalEl.textContent = `${normalSum.toFixed(2)} DT`;
+
+    const specialInput = document.getElementById('bundle-special-price');
+    const savingsEl = document.getElementById('bundle-calc-savings');
+
+    const specialPrice = specialInput ? parseFloat(specialInput.value) : 0;
+    if (savingsEl) {
+      if (!isNaN(specialPrice) && specialPrice > 0 && normalSum > 0) {
+        const savings = Math.max(0, normalSum - specialPrice);
+        const percent = Math.round((savings / normalSum) * 100);
+        savingsEl.textContent = `${savings.toFixed(2)} DT (-${percent}%)`;
+      } else {
+        savingsEl.textContent = `0.00 DT (-0%)`;
+      }
+    }
+  }
+
+  async saveBundleForm() {
+    this.bundleSelectedIds = this.bundleSelectedIds || [];
+    if (this.bundleSelectedIds.length < 2) {
+      alert('⚠️ Veuillez sélectionner au moins 2 produits pour composer cette offre pack.');
+      return;
+    }
+
+    const titleFr = (document.getElementById('bundle-title-fr').value || '').trim();
+    if (!titleFr) {
+      alert('⚠️ Veuillez entrer un titre pour ce pack.');
+      return;
+    }
+
+    const specialPriceVal = parseFloat(document.getElementById('bundle-special-price').value);
+    if (isNaN(specialPriceVal) || specialPriceVal <= 0) {
+      alert('⚠️ Veuillez entrer un prix valide pour le pack spécial.');
+      return;
+    }
+
+    const payload = {
+      id: document.getElementById('bundle-id').value || undefined,
+      title_fr: titleFr,
+      title: titleFr,
+      title_ar: (document.getElementById('bundle-title-ar').value || '').trim(),
+      title_en: (document.getElementById('bundle-title-en').value || '').trim(),
+      description_fr: (document.getElementById('bundle-desc-fr').value || '').trim(),
+      product_ids: this.bundleSelectedIds,
+      bundle_price: specialPriceVal,
+      active: document.getElementById('bundle-active-toggle').checked
+    };
+
+    try {
+      const res = await fetch('/api/bundles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('✅ Offre Pack enregistrée avec succès !');
+        this.resetBundleForm();
+        await this.fetchBundles();
+      } else {
+        alert('❌ Erreur: ' + data.message);
+      }
+    } catch (err) {
+      alert('❌ Erreur réseau: ' + err.message);
+    }
+  }
+
+  editBundle(id) {
+    const bundle = (this.bundles || []).find(b => b.id === id);
+    if (!bundle) return;
+
+    document.getElementById('bundle-id').value = bundle.id;
+    document.getElementById('bundle-title-fr').value = bundle.title_fr || bundle.title || '';
+    document.getElementById('bundle-title-ar').value = bundle.title_ar || '';
+    document.getElementById('bundle-title-en').value = bundle.title_en || '';
+    document.getElementById('bundle-desc-fr').value = bundle.description_fr || bundle.description || '';
+    document.getElementById('bundle-special-price').value = bundle.bundle_price || '';
+    document.getElementById('bundle-active-toggle').checked = bundle.active !== false;
+
+    this.bundleSelectedIds = Array.isArray(bundle.product_ids) ? [...bundle.product_ids] : [];
+    this.renderBundleSelectedChips();
+    this.renderBundleProductPicker('');
+    this.updateBundleCalc();
+
+    document.getElementById('bundle-form-title').textContent = '✏️ Modifier l\'Offre Pack Spécial';
+    document.getElementById('btn-save-bundle').textContent = '💾 Mettre à jour l\'Offre Pack';
+    document.getElementById('btn-cancel-bundle').style.display = 'inline-block';
+
+    document.getElementById('section-bundles').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  resetBundleForm() {
+    const form = document.getElementById('form-bundle-deal');
+    if (form) form.reset();
+    document.getElementById('bundle-id').value = '';
+    this.bundleSelectedIds = [];
+    this.renderBundleSelectedChips();
+    this.renderBundleProductPicker('');
+    this.updateBundleCalc();
+
+    document.getElementById('bundle-form-title').textContent = '✨ Créer / Modifier une Offre Pack Spécial';
+    document.getElementById('btn-save-bundle').textContent = '💾 Enregistrer l\'Offre Pack';
+    document.getElementById('btn-cancel-bundle').style.display = 'none';
+  }
+
+  async toggleBundle(id) {
+    try {
+      const res = await fetch(`/api/bundles/${id}/toggle`, { method: 'PATCH' });
+      const data = await res.json();
+      if (data.success) {
+        await this.fetchBundles();
+      } else {
+        alert('❌ Erreur: ' + data.message);
+      }
+    } catch (err) {
+      alert('❌ Erreur réseau: ' + err.message);
+    }
+  }
+
+  async deleteBundle(id) {
+    if (!confirm('Voulez-vous vraiment supprimer cette offre pack ?')) return;
+
+    try {
+      const res = await fetch(`/api/bundles/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        alert('✅ Offre Pack supprimée');
+        await this.fetchBundles();
       } else {
         alert('❌ Erreur: ' + data.message);
       }

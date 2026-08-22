@@ -1,4 +1,4 @@
-// Oriflame Digital Flipbook Scraper Service with 100% Authentic Live Enrichments
+// Oriflame Digital Flipbook Scraper Service with Dynamic Token Refresh & 100% Authentic Live Enrichments
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
@@ -9,34 +9,71 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const FLIPBOOK_FILE = path.join(DATA_DIR, 'flipbook.json');
 
-export async function scrapeFlipbookFromUrl(inputUrl) {
+export async function scrapeFlipbookFromUrl(inputUrl = '') {
   try {
     let catalogueCode = '2026008';
-    const codeMatch = inputUrl.match(/cataloguecode=([0-9]+)/i);
-    if (codeMatch) catalogueCode = codeMatch[1];
+    if (inputUrl) {
+      const codeMatch = inputUrl.match(/cataloguecode=([0-9]+)/i) || inputUrl.match(/\/([0-9]{7})-brp/i);
+      if (codeMatch) catalogueCode = codeMatch[1];
+    }
 
-    let paperId = "6c400931-2ccc-40e7-b3f5-40f381af161e";
-    let token = "rR0NwGgTi5OkBeEmgIEHYvBlrL-VPBqANIB6KdXLad8";
-    let expires = "1787160548";
+    const catalogueUrl = (inputUrl && inputUrl.includes('tn-catalogue.oriflame.com'))
+      ? inputUrl
+      : `https://tn-catalogue.oriflame.com/fr-TN/${catalogueCode}-brp?HideStandardUI=true&Page=1`;
+
+    console.log(`Fetching live Oriflame digital catalogue from: ${catalogueUrl}`);
+
+    const pageRes = await axios.get(catalogueUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      },
+      timeout: 12000
+    });
+
+    const html = pageRes.data;
+    const settingsMatch = html.match(/window\.staticSettings\s*=\s*(\{[\s\S]*?\});\s*(?:window\.|$)/);
+
+    let awsUrl = 'https://cdn.ipaper.io/iPaper/Papers/6c400931-2ccc-40e7-b3f5-40f381af161e/';
+    let policy = '';
     let totalPages = 148;
-    let videoUrl = "https://files.cdn.ipaper.io/iPaper/Files/b836ce46-8c5b-4fd7-a3c2-20560b99328b.mp4";
+    let chunkUrls = {};
+    let paperId = '6c400931-2ccc-40e7-b3f5-40f381af161e';
+    let videoUrl = 'https://files.cdn.ipaper.io/iPaper/Files/b836ce46-8c5b-4fd7-a3c2-20560b99328b.mp4';
+    let pageTitle = `Catalogue ${catalogueCode.slice(-3)} ${catalogueCode.slice(0, 4)} : Superposez vos fragrances`;
 
-    const enrichmentToken = "VGvcqmdfhr1Nou9zhw-l9A9UF73c3UPzhxCWwvkXsa0";
-    const chunkUrls = [
-      `https://cdn.ipaper.io/iPaper/Papers/${paperId}/Enrichments/v1/1782810671/SGne2unbuu0hf-vyeAucdntBztaCpsdZr~nhyox6mdloWnDFtjJovUsSGt0w-rMT/Page1-35.json?token=${enrichmentToken}&token_path=%2fiPaper%2fPapers%2f${paperId}%2fEnrichments%2f&expires=1787176825`,
-      `https://cdn.ipaper.io/iPaper/Papers/${paperId}/Enrichments/v1/1782810671/SGne2unbuu0hf-vyeAucdntBztaCpsdZr~nhyox6mdloWnDFtjJovUsSGt0w-rMT/Page36-61.json?token=${enrichmentToken}&token_path=%2fiPaper%2fPapers%2f${paperId}%2fEnrichments%2f&expires=1787176825`,
-      `https://cdn.ipaper.io/iPaper/Papers/${paperId}/Enrichments/v1/1782810671/SGne2unbuu0hf-vyeAucdntBztaCpsdZr~nhyox6mdloWnDFtjJovUsSGt0w-rMT/Page62-85.json?token=${enrichmentToken}&token_path=%2fiPaper%2fPapers%2f${paperId}%2fEnrichments%2f&expires=1787176825`,
-      `https://cdn.ipaper.io/iPaper/Papers/${paperId}/Enrichments/v1/1782810671/SGne2unbuu0hf-vyeAucdntBztaCpsdZr~nhyox6mdloWnDFtjJovUsSGt0w-rMT/Page86-119.json?token=${enrichmentToken}&token_path=%2fiPaper%2fPapers%2f${paperId}%2fEnrichments%2f&expires=1787176825`,
-      `https://cdn.ipaper.io/iPaper/Papers/${paperId}/Enrichments/v1/1782810671/SGne2unbuu0hf-vyeAucdntBztaCpsdZr~nhyox6mdloWnDFtjJovUsSGt0w-rMT/Page120-148.json?token=${enrichmentToken}&token_path=%2fiPaper%2fPapers%2f${paperId}%2fEnrichments%2f&expires=1787176825`
-    ];
+    if (settingsMatch) {
+      const settings = JSON.parse(settingsMatch[1]);
+      if (settings.aws?.url) awsUrl = settings.aws.url;
+      if (settings.aws?.policy) policy = settings.aws.policy;
+      if (settings.pages?.length) totalPages = settings.pages.length;
+      if (settings.enrichments?.chunkUrls) chunkUrls = settings.enrichments.chunkUrls;
+      if (settings.paperId) paperId = String(settings.paperId);
+      if (settings.pageTitle) pageTitle = settings.pageTitle;
+    } else {
+      // Fallback policy extraction
+      const tokenMatch = html.match(/token=([a-zA-Z0-9_-]+)/);
+      const expiresMatch = html.match(/expires=([0-9]+)/);
+      if (tokenMatch && expiresMatch) {
+        policy = `token=${tokenMatch[1]}&token_path=%2fiPaper%2fPapers%2f6c400931-2ccc-40e7-b3f5-40f381af161e%2fPages%2f&expires=${expiresMatch[1]}`;
+      }
+    }
 
+    // Extract token and expires for storage
+    let token = '';
+    let expires = '';
+    const tMatch = policy.match(/token=([a-zA-Z0-9_-]+)/);
+    const eMatch = policy.match(/expires=([0-9]+)/);
+    if (tMatch) token = tMatch[1];
+    if (eMatch) expires = eMatch[1];
+
+    // Fetch all live enrichment chunks
     const allEnrichments = [];
     const seenIds = new Set();
 
-    for (const chunkUrl of chunkUrls) {
+    for (const [key, chunkUrl] of Object.entries(chunkUrls)) {
       try {
-        const res = await axios.get(chunkUrl, { timeout: 8000 });
-        const list = res.data?.enrichments || [];
+        const cRes = await axios.get(chunkUrl, { timeout: 8000 });
+        const list = cRes.data?.enrichments || [];
         list.forEach(e => {
           if (!seenIds.has(e.id)) {
             seenIds.add(e.id);
@@ -44,7 +81,7 @@ export async function scrapeFlipbookFromUrl(inputUrl) {
           }
         });
       } catch (chunkErr) {
-        console.warn(`Chunk fetch note: ${chunkErr.message}`);
+        console.warn(`Chunk ${key} note: ${chunkErr.message}`);
       }
     }
 
@@ -58,17 +95,27 @@ export async function scrapeFlipbookFromUrl(inputUrl) {
         let prodId = e.productId || '';
         let cleanName = rawName;
 
-        const match = rawName.match(/^([0-9]{4,6})[\s-]+(.+)$/);
-        if (match) {
-          if (!prodId) prodId = match[1];
-          cleanName = match[2].trim();
+        const m = rawName.match(/^([0-9]{4,6})[\s-]+(.+)$/);
+        if (m) {
+          if (!prodId) prodId = m[1];
+          cleanName = m[2].trim();
         }
+
+        const inStock = !(
+          rawName.includes('متوفر قريباً') ||
+          rawName.includes('متوفر قريبا') ||
+          rawName.includes('غير متوفر') ||
+          rawName.toLowerCase().includes('bientôt disponible') ||
+          rawName.toLowerCase().includes('bientot disponible') ||
+          rawName.toLowerCase().includes('rupture')
+        );
 
         hotspotsByPage[pIdx].push({
           id: String(prodId || e.id),
           name: cleanName || `Produit Oriflame ${prodId}`,
           price: Number(e.price) || 39.90,
           original_price: null,
+          in_stock: inStock,
           x: Number(e.x),
           y: Number(e.y),
           width: Number(e.width),
@@ -78,7 +125,7 @@ export async function scrapeFlipbookFromUrl(inputUrl) {
     });
 
     const getPageImageUrl = (pageNumber) => {
-      return `https://cdn.ipaper.io/iPaper/Papers/${paperId}/Pages/${pageNumber}/Zoom.jpg?token=${token}&token_path=%2fiPaper%2fPapers%2f${paperId}%2fPages%2f&expires=${expires}`;
+      return `${awsUrl}Pages/${pageNumber}/Zoom.jpg?${policy}`;
     };
 
     const spreads = [];
@@ -88,6 +135,7 @@ export async function scrapeFlipbookFromUrl(inputUrl) {
       id: h.id,
       name: h.name,
       price: h.price,
+      in_stock: h.in_stock,
       left: `${(h.x * 100).toFixed(2)}%`,
       top: `${(h.y * 100).toFixed(2)}%`
     }));
@@ -95,13 +143,13 @@ export async function scrapeFlipbookFromUrl(inputUrl) {
     spreads.push({
       spreadIndex: 0,
       pages: [1],
-      title: `Page 1 — Catalogue ${catalogueCode.slice(-3)} ${catalogueCode.slice(0, 4)} : Superposez vos fragrances`,
+      title: `Page 1 — ${pageTitle}`,
       images: [getPageImageUrl(1)],
       video: videoUrl,
       hotspots: coverHotspots
     });
 
-    // Dual Spreads 1 to 73 (Pages 2 to 147)
+    // Dual Spreads (Pages 2 to totalPages - 1)
     let spreadCounter = 1;
     for (let p = 2; p < totalPages; p += 2) {
       const leftPageNum = p;
@@ -118,6 +166,7 @@ export async function scrapeFlipbookFromUrl(inputUrl) {
           id: h.id,
           name: h.name,
           price: h.price,
+          in_stock: h.in_stock,
           left: `${spreadLeft}%`,
           top: `${spreadTop}%`
         });
@@ -130,6 +179,7 @@ export async function scrapeFlipbookFromUrl(inputUrl) {
           id: h.id,
           name: h.name,
           price: h.price,
+          in_stock: h.in_stock,
           left: `${spreadLeft}%`,
           top: `${spreadTop}%`
         });
@@ -146,48 +196,66 @@ export async function scrapeFlipbookFromUrl(inputUrl) {
       spreadCounter++;
     }
 
-    // Back Cover Spread (Page 148)
-    const backCoverHotspots = (hotspotsByPage[147] || []).map(h => ({
+    // Back Cover Spread (Last Page)
+    const lastPageNum = totalPages;
+    const backCoverHotspots = (hotspotsByPage[lastPageNum - 1] || []).map(h => ({
       id: h.id,
       name: h.name,
       price: h.price,
+      in_stock: h.in_stock,
       left: `${(h.x * 100).toFixed(2)}%`,
       top: `${(h.y * 100).toFixed(2)}%`
     }));
 
     spreads.push({
       spreadIndex: spreadCounter,
-      pages: [148],
-      title: "Page 148 — DUOLOGI CC Spray Embellissant Cheveux (-45%)",
-      images: [getPageImageUrl(148)],
-      hotspots: backCoverHotspots.length > 0 ? backCoverHotspots : [
-        {
-          id: "44968",
-          name: "CC Spray Embellissant pour les Cheveux Sans Rinçage DUOLOGI",
-          price: 23.50,
-          left: "60%",
-          top: "50%"
-        }
-      ]
+      pages: [lastPageNum],
+      title: `Page ${lastPageNum} — Catalogue Oriflame ${catalogueCode}`,
+      images: [getPageImageUrl(lastPageNum)],
+      hotspots: backCoverHotspots
     });
 
     const flipbookData = {
       catalogueCode,
-      title: `Catalogue ${catalogueCode.slice(-3)} ${catalogueCode.slice(0, 4)} : Superposez vos fragrances`,
+      title: pageTitle,
       paperId,
       totalPages,
       totalSpreads: spreads.length,
       videoUrl,
       token,
       expires,
+      policy,
       scrapedAt: new Date().toISOString(),
       spreads
     };
 
     fs.writeFileSync(FLIPBOOK_FILE, JSON.stringify(flipbookData, null, 2), 'utf8');
+    console.log(`✅ Flipbook scrape complete: ${spreads.length} spreads generated with live tokens.`);
     return flipbookData;
   } catch (err) {
+    console.error(`Flipbook scrape error: ${err.message}`);
     throw new Error(`Flipbook scrape error: ${err.message}`);
+  }
+}
+
+export async function getOrRefreshFlipbookData() {
+  try {
+    if (fs.existsSync(FLIPBOOK_FILE)) {
+      const data = JSON.parse(fs.readFileSync(FLIPBOOK_FILE, 'utf8'));
+      // Check if token expires within 30 minutes
+      if (data.expires) {
+        const expiresEpochSec = parseInt(data.expires, 10);
+        const nowSec = Math.floor(Date.now() / 1000);
+        if (expiresEpochSec - nowSec < 1800) {
+          console.log('Flipbook token is expiring soon, refreshing live in background...');
+          scrapeFlipbookFromUrl().catch(e => console.warn('Background flipbook refresh note:', e.message));
+        }
+      }
+      return data;
+    }
+    return await scrapeFlipbookFromUrl();
+  } catch (e) {
+    return null;
   }
 }
 

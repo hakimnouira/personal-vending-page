@@ -1,13 +1,13 @@
-// Express Backend Server with Hidden /admin Route, Real-Time Visitor Analytics & Digital Flipbook Scraper
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import axios from 'axios';
 import { fileURLToPath } from 'url';
 import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/scraper.js';
-import { scrapeFlipbookFromUrl, getFlipbookData } from './services/flipbook-scraper.js';
+import { scrapeFlipbookFromUrl, getFlipbookData, getOrRefreshFlipbookData } from './services/flipbook-scraper.js';
 import { sendOrderConfirmation } from './services/messenger.js';
 
 // Facebook / Messenger config (loaded from .env)
@@ -31,6 +31,7 @@ const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
 const CAROUSEL_FILE = path.join(DATA_DIR, 'carousel.json');
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
+const BUNDLES_FILE = path.join(DATA_DIR, 'bundles.json');
 
 // Middleware
 app.use(cors());
@@ -150,6 +151,26 @@ function getCarousel() {
 function saveCarousel(slides) {
   try {
     fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(slides, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function getBundles() {
+  try {
+    if (fs.existsSync(BUNDLES_FILE)) {
+      return JSON.parse(fs.readFileSync(BUNDLES_FILE, 'utf8'));
+    }
+    return [];
+  } catch (err) {
+    return [];
+  }
+}
+
+function saveBundles(bundles) {
+  try {
+    fs.writeFileSync(BUNDLES_FILE, JSON.stringify(bundles, null, 2), 'utf8');
     return true;
   } catch (err) {
     return false;
@@ -361,21 +382,84 @@ app.get('/api/flipbook/image', async (req, res) => {
   }
 });
 
+// ── FLIPBOOK eCatalogue API ───────────────────────────────────────────────
+app.get('/api/flipbook', async (req, res) => {
+  try {
+    const data = await getOrRefreshFlipbookData();
+    if (!data) {
+      return res.status(404).json({ success: false, message: 'Catalogue introuvable' });
+    }
+    res.json({ success: true, data });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// Flipbook Image Proxy to bypass iPaper token & referrer restrictions
+app.get('/api/flipbook/image', async (req, res) => {
+  try {
+    const { url } = req.query;
+    if (!url) return res.status(400).send('Image URL missing');
+
+    const imageRes = await axios.get(url, {
+      responseType: 'arraybuffer',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://tn-catalogue.oriflame.com/'
+      },
+      timeout: 10000
+    });
+
+    res.setHeader('Content-Type', imageRes.headers['content-type'] || 'image/jpeg');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.send(imageRes.data);
+  } catch (err) {
+    res.status(502).send('Image proxy error: ' + err.message);
+  }
+});
+
 app.post('/api/scrape/flipbook', async (req, res) => {
   try {
     const { url } = req.body;
-    if (!url) return res.status(400).json({ success: false, message: 'Catalog URL is required' });
-
-    console.log("Admin triggering flipbook scrape for:", url);
+    console.log("Admin triggering flipbook scrape for:", url || 'default');
     const flipbookData = await scrapeFlipbookFromUrl(url);
 
     res.json({
       success: true,
-      message: `Successfully scraped Digital Flipbook (${flipbookData.totalPages} pages, ${flipbookData.totalSpreads} spreads).`,
+      message: `Digital Flipbook synchronisé avec succès (${flipbookData.totalPages} pages, ${flipbookData.totalSpreads} planches).`,
       data: flipbookData
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ── SCRAPER: Scrape single product from Oriflame URL ───────────────────────
+app.post('/api/scrape/url', async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) return res.status(400).json({ success: false, message: 'URL manquante' });
+    const product = await scrapeProductFromUrl(url);
+    if (!product) return res.status(404).json({ success: false, message: 'Impossible d\'extraire les données du produit' });
+    res.json({ success: true, data: product });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ── SCRAPER: Scrape all categories from Oriflame Tunisia ───────────────────
+app.post('/api/scrape/oriflame-catalog', async (req, res) => {
+  try {
+    console.log("Admin initiated comprehensive multi-category product scrape...");
+    const products = await scrapeAllOriflameCategories();
+    res.json({
+      success: true,
+      message: `Scraping terminé avec succès : ${products.length} produits synchronisés.`,
+      count: products.length,
+      data: products
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Scraping failed: ' + error.message });
   }
 });
 
@@ -599,6 +683,17 @@ app.put('/api/products/:id', upload.single('image_file'), (req, res) => {
     res.json({ success: true, message: 'Product updated', data: products[index] });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ── STOCK: Sync live availability for all products (detect out of stock & متوفر قريباً)
+app.post('/api/stock/sync-availability', async (req, res) => {
+  try {
+    const { syncAllProductsStockLive } = await import('./services/stock-checker.js');
+    const result = await syncAllProductsStockLive();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Stock sync failed: ' + error.message });
   }
 });
 
@@ -1071,6 +1166,105 @@ app.post('/api/import/carousel', uploadJson.single('carousel'), (req, res) => {
   }
 });
 
+// ── BUNDLES: Package Deals / Duo & Trio Combined Offers ─────────────────────
+app.get('/api/bundles', (req, res) => {
+  try {
+    const bundles = getBundles();
+    res.json({ success: true, data: bundles });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Failed to fetch bundles: ' + e.message });
+  }
+});
+
+app.post('/api/bundles', (req, res) => {
+  try {
+    const {
+      id,
+      title,
+      title_fr,
+      title_ar,
+      title_en,
+      description,
+      description_fr,
+      description_ar,
+      description_en,
+      product_ids,
+      bundle_price,
+      active
+    } = req.body;
+
+    if (!Array.isArray(product_ids) || product_ids.length < 2) {
+      return res.status(400).json({ success: false, message: 'Un pack doit contenir au moins 2 produits.' });
+    }
+
+    const priceVal = parseFloat(bundle_price);
+    if (isNaN(priceVal) || priceVal <= 0) {
+      return res.status(400).json({ success: false, message: 'Le prix du pack doit être un montant valide.' });
+    }
+
+    const bundles = getBundles();
+    const cleanTitle = (title_fr || title || 'Pack Spécial').trim();
+    const bundleId = id || `bundle-${Date.now()}`;
+
+    const newBundle = {
+      id: bundleId,
+      title: cleanTitle,
+      title_fr: cleanTitle,
+      title_ar: (title_ar || '').trim(),
+      title_en: (title_en || '').trim(),
+      description: (description_fr || description || '').trim(),
+      description_fr: (description_fr || description || '').trim(),
+      description_ar: (description_ar || '').trim(),
+      description_en: (description_en || '').trim(),
+      product_ids: product_ids.map(String),
+      bundle_price: priceVal,
+      active: active !== undefined ? (active === true || active === 'true') : true,
+      updated_at: new Date().toISOString()
+    };
+
+    const existingIndex = bundles.findIndex(b => b.id === bundleId);
+    if (existingIndex > -1) {
+      bundles[existingIndex] = { ...bundles[existingIndex], ...newBundle };
+    } else {
+      newBundle.created_at = new Date().toISOString();
+      bundles.unshift(newBundle);
+    }
+
+    saveBundles(bundles);
+    res.json({ success: true, message: 'Pack enregistré avec succès.', data: newBundle });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Erreur lors de l\'enregistrement du pack: ' + e.message });
+  }
+});
+
+app.delete('/api/bundles/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    let bundles = getBundles();
+    bundles = bundles.filter(b => b.id !== id);
+    saveBundles(bundles);
+    res.json({ success: true, message: 'Pack supprimé avec succès.' });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Erreur lors de la suppression: ' + e.message });
+  }
+});
+
+app.patch('/api/bundles/:id/toggle', (req, res) => {
+  try {
+    const { id } = req.params;
+    const bundles = getBundles();
+    const bundle = bundles.find(b => b.id === id);
+    if (!bundle) {
+      return res.status(404).json({ success: false, message: 'Pack introuvable.' });
+    }
+    bundle.active = !bundle.active;
+    saveBundles(bundles);
+    res.json({ success: true, message: `Pack ${bundle.active ? 'activé' : 'désactivé'}.`, active: bundle.active });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Erreur de basculement: ' + e.message });
+  }
+});
+
 // ── COMPANY DISCOUNT: Apply customizable % to all product prices ──
 app.post('/api/products/apply-company-discount', (req, res) => {
   try {
@@ -1121,6 +1315,19 @@ app.post('/api/products/apply-company-discount', (req, res) => {
     });
   } catch (e) {
     res.status(500).json({ success: false, message: 'Erreur lors de l\'application de la remise : ' + e.message });
+  }
+});
+
+// ── EXPORT: Products JSON only ──────────────────────────────────────────────
+app.get('/api/export/products', (req, res) => {
+  try {
+    const products = getProducts();
+    const filename = `oriflame_products_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(products, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Export products failed: ' + e.message });
   }
 });
 

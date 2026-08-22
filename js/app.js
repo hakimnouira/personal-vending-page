@@ -1160,7 +1160,7 @@ class App {
       this.btnCopyOrderSummary.style.display = "flex";
     }
 
-    this.cartItemsList.innerHTML = items.map(item => `
+    let html = items.map(item => `
       <div class="cart-item">
         <img class="cart-item-img" src="${item.image_url}" alt="${item.name}" onerror="window.handleProductImgError(this)" />
         <div class="cart-item-info">
@@ -1176,8 +1176,71 @@ class App {
       </div>
     `).join('');
 
-    const subtotal = this.cartManager.getSubtotal().toFixed(2);
-    if (this.cartSubtotal) this.cartSubtotal.textContent = `${subtotal} ${currencyLabel}`;
+    // Render Applied Bundle Deals
+    const appliedBundles = this.cartManager.getAppliedBundles();
+    if (appliedBundles.length > 0) {
+      html += `
+        <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border: 1px solid #F59E0B; border-radius: 10px; padding: 12px; margin-top: 14px; box-shadow: 0 2px 4px rgba(245,158,11,0.12);">
+          <div style="font-weight: 800; font-size: 0.85rem; color: #92400E; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+            🎉 ${isArabic ? 'عرض خاص مطبق على السلة !' : 'Offre Pack Spécial Appliquée !'}
+          </div>
+          ${appliedBundles.map(ab => {
+            const bTitle = (isArabic && ab.bundle.title_ar) ? ab.bundle.title_ar : (ab.bundle.title_fr || ab.bundle.title);
+            return `
+              <div style="font-size: 0.8rem; color: #78350F; display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span>✨ <strong>${bTitle}</strong></span>
+                <span style="font-weight: 800; color: #047857;">-${ab.total_savings.toFixed(2)} ${currencyLabel}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // Render Incomplete Bundle Upsells (e.g. Add 1 more item to unlock deal)
+    const upsells = this.cartManager.getUpsellBundles(this.products);
+    if (upsells.length > 0 && appliedBundles.length === 0) {
+      const u = upsells[0];
+      const bTitle = (isArabic && u.bundle.title_ar) ? u.bundle.title_ar : (u.bundle.title_fr || u.bundle.title);
+      const missing = u.missing_products[0];
+      if (missing) {
+        html += `
+          <div style="background: #F0FDF4; border: 1px dashed #059669; border-radius: 10px; padding: 12px; margin-top: 14px;">
+            <div style="font-size: 0.82rem; font-weight: 800; color: #065F46; display: flex; align-items: center; gap: 6px;">
+              💡 ${isArabic ? 'أكمل العرض الخاص ووفر أكثر !' : 'Complétez l\'offre Pack Duo/Trio !'}
+            </div>
+            <p style="font-size: 0.78rem; color: #047857; margin: 4px 0 8px;">
+              ${isArabic 
+                ? `أضف <strong>${missing.name}</strong> للحصول على <strong>${bTitle}</strong> بسعر ${Number(u.bundle.bundle_price).toFixed(2)} ${currencyLabel} فقط !`
+                : `Ajoutez <strong>${missing.name}</strong> pour débloquer le pack <strong>${bTitle}</strong> à <strong>${Number(u.bundle.bundle_price).toFixed(2)} ${currencyLabel}</strong> !`}
+            </p>
+            <button class="btn-primary" style="padding: 6px 12px; font-size: 0.78rem; background: #059669; border-color: #047857; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 6px;" onclick="window.app.addProductToCart('${missing.product_id}')">
+              ➕ ${isArabic ? 'إضافة للمجموعة' : 'Ajouter au Panier & Débloquer'}
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    this.cartItemsList.innerHTML = html;
+
+    const rawSubtotal = this.cartManager.getRawSubtotal();
+    const discount = this.cartManager.getBundleDiscount();
+    const finalSubtotal = this.cartManager.getSubtotal().toFixed(2);
+
+    if (this.cartSubtotal) {
+      if (discount > 0) {
+        this.cartSubtotal.innerHTML = `
+          <div style="display: flex; flex-direction: column; align-items: flex-end;">
+            <span style="font-size: 0.8rem; text-decoration: line-through; opacity: 0.6; color: #71717A;">${rawSubtotal.toFixed(2)} ${currencyLabel}</span>
+            <span style="font-size: 1.15rem; font-weight: 800; color: #047857;">${finalSubtotal} ${currencyLabel}</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 2px;">-${discount.toFixed(2)} ${currencyLabel} ÉCONOMISÉS</span>
+          </div>
+        `;
+      } else {
+        this.cartSubtotal.textContent = `${finalSubtotal} ${currencyLabel}`;
+      }
+    }
 
     if (this.btnMessengerCheckout) {
       const fbHandle = this.facebookUsername || 'mouna.nouira1';

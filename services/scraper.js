@@ -18,6 +18,15 @@ export async function scrapeAllOriflameCategories() {
 
   const allScrapedMap = new Map();
 
+  // Load current existing products from disk first to preserve existing custom stock & manual items
+  let currentProducts = [];
+  try {
+    if (fs.existsSync(PRODUCTS_FILE)) {
+      currentProducts = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
+    }
+  } catch (e) {}
+  const currentMap = new Map(currentProducts.map(p => [String(p.product_id), p]));
+
   // 1. Extract from all official captured enrichments (445 official catalogue items with genuine codes and prices)
   if (fs.existsSync(ENRICHMENTS_FILE)) {
     try {
@@ -49,6 +58,12 @@ export async function scrapeAllOriflameCategories() {
                 `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_4.png&MediaId=20989035&Version=1`
               ];
 
+              let inStock = isProductInStock(rawName + ' ' + (e.desc || '') + ' ' + (e.alttext || ''), e);
+              const existing = currentMap.get(String(prodId));
+              if (existing && existing.in_stock === false) {
+                inStock = false;
+              }
+
               allScrapedMap.set(String(prodId), {
                 product_id: String(prodId),
                 name: cleanName,
@@ -73,7 +88,7 @@ export async function scrapeAllOriflameCategories() {
                 ],
                 how_to_use: "Appliquer délicatement selon les recommandations de la gamme.",
                 ingredients: "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-                in_stock: true
+                in_stock: inStock
               });
             }
           }
@@ -85,15 +100,13 @@ export async function scrapeAllOriflameCategories() {
     }
   }
 
-  // 2. Multi-Category Web Scrape Endpoints
+  // 2. Multi-Category Web Scrape Endpoints with deep stock & buy option parsing
   const targetCategories = [
     { url: 'https://tn.oriflame.com/bestsellers?store=TN-oriflame_1', cat: 'Skincare' },
     { url: 'https://tn.oriflame.com/fragrance?store=TN-oriflame_1', cat: 'Fragrance' },
     { url: 'https://tn.oriflame.com/skincare?store=TN-oriflame_1', cat: 'Skincare' },
     { url: 'https://tn.oriflame.com/makeup?store=TN-oriflame_1', cat: 'Makeup' },
-    { url: 'https://tn.oriflame.com/wellness?store=TN-oriflame_1', cat: 'Wellness' },
     { url: 'https://tn.oriflame.com/hair?store=TN-oriflame_1', cat: 'Haircare' },
-    { url: 'https://tn.oriflame.com/body?store=TN-oriflame_1', cat: 'Skincare' },
     { url: 'https://tn.oriflame.com/men?store=TN-oriflame_1', cat: 'Fragrance' }
   ];
 
@@ -101,7 +114,7 @@ export async function scrapeAllOriflameCategories() {
     try {
       console.log(`Scraping category: ${item.url}...`);
       const res = await axios.get(item.url, {
-        headers: { 'User-Agent': USER_AGENT, 'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8' },
+        headers: { 'User-Agent': USER_AGENT, 'Accept-Language': 'fr-FR,fr;q=0.9,ar;q=0.8,en;q=0.7' },
         timeout: 8000
       });
 
@@ -111,55 +124,74 @@ export async function scrapeAllOriflameCategories() {
         try {
           const nextData = JSON.parse(nextDataStr);
           const pageProps = nextData.props?.pageProps;
-          const contentItems = pageProps?.content?.contentItems || [];
+          
+          // Check both editorialPage content items and direct content items
+          const contentItems = (
+            pageProps?.data?.application?.editorialPage?.contentItems ||
+            pageProps?.content?.contentItems ||
+            []
+          );
           
           contentItems.forEach(ci => {
             const rows = ci?.content?.rows || [];
             rows.forEach(r => {
-              const p = r?.content;
-              if (p && (p.code || p.productId || p.sku)) {
-                const prodId = String(p.code || p.productId || p.sku);
-                const name = p.title || p.name || 'Produit Oriflame';
-                const currentPrice = Number(p.price?.price?.currentPrice || p.price?.currentPrice || 39.90);
-                const basicPrice = Number(p.price?.price?.basicCataloguePrice || p.price?.basicCataloguePrice || currentPrice);
-                const isPromo = basicPrice > currentPrice;
-                const discount = isPromo ? Math.round(((basicPrice - currentPrice) / basicPrice) * 100) : 0;
+              const rowItems = Array.isArray(r?.content) ? r.content : (r?.content ? [r.content] : []);
+              rowItems.forEach(p => {
+                const prodId = String(p.productCode || p.code || p.productId || p.sku || '');
+                if (prodId && prodId.length >= 4) {
+                  const name = p.concept?.name || p.title || p.name || 'Produit Oriflame';
+                  const currentPrice = Number(p.price?.price?.currentPrice || p.price?.currentPrice || p.price || 39.90);
+                  const basicPrice = Number(p.price?.price?.basicCataloguePrice || p.price?.basicCataloguePrice || currentPrice);
+                  const isPromo = basicPrice > currentPrice;
+                  const discount = isPromo ? Math.round(((basicPrice - currentPrice) / basicPrice) * 100) : 0;
 
-                const mainImg = p.imageUrl || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
-                const galleryImgs = [
-                  mainImg,
-                  `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_2.png&MediaId=20989035&Version=1`,
-                  `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_3.png&MediaId=20989035&Version=1`,
-                  `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_4.png&MediaId=20989035&Version=1`
-                ];
+                  const mainImg = p.mainImage?.url || p.imageUrl || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
+                  const galleryImgs = [
+                    mainImg,
+                    `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_2.png&MediaId=20989035&Version=1`,
+                    `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_3.png&MediaId=20989035&Version=1`,
+                    `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_4.png&MediaId=20989035&Version=1`
+                  ];
 
-                allScrapedMap.set(prodId, {
-                  product_id: prodId,
-                  name: name,
-                  name_fr: name,
-                  category: classifyCategory(name) || item.cat,
-                  price: currentPrice,
-                  original_price: isPromo ? basicPrice : null,
-                  original_catalog_price: currentPrice,
-                  company_discount_applied: false,
-                  company_discount_percent: 0,
-                  is_promo: isPromo,
-                  discount_percent: discount,
-                  size: inferSizeFromName(name),
-                  suitable_for: "Tous types de peaux • Testé sous contrôle dermatologique",
-                  image_url: mainImg,
-                  images: galleryImgs,
-                  description: p.description || `Produit officiel Oriflame Tunisie (${prodId}). Formule scandinave haute performance.`,
-                  benefits: [
-                    "100% Produit authentique Oriflame Suède",
-                    discount > 0 ? `Offre promotionnelle exclusive : -${discount}% de réduction` : "Formule haute concentration",
-                    "Disponible pour livraison immédiate partout en Tunisie"
-                  ],
-                  how_to_use: "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-                  ingredients: "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
-                  in_stock: true
-                });
-              }
+                  // Stock & Buy Option Check:
+                  const labels = p.labels || [];
+                  const hasBuyOption = labels.some(l => l.labelKey === 'AddToBasketVisible' || (l.title && l.title.toLowerCase().includes('panier')));
+                  const isOffStock = p.isOffStock === true;
+                  const showNotify = p.backInStockAvailability?.showBackInStockNotification === true;
+                  
+                  let inStock = hasBuyOption && !isOffStock && !showNotify;
+                  if (inStock) {
+                    inStock = isProductInStock(name + ' ' + (p.description || '') + ' ' + JSON.stringify(labels), p);
+                  }
+
+                  allScrapedMap.set(prodId, {
+                    product_id: prodId,
+                    name: name,
+                    name_fr: name,
+                    category: classifyCategory(name) || item.cat,
+                    price: currentPrice,
+                    original_price: isPromo ? basicPrice : null,
+                    original_catalog_price: currentPrice,
+                    company_discount_applied: false,
+                    company_discount_percent: 0,
+                    is_promo: isPromo,
+                    discount_percent: discount,
+                    size: inferSizeFromName(name),
+                    suitable_for: "Tous types de peaux • Testé sous contrôle dermatologique",
+                    image_url: mainImg,
+                    images: galleryImgs,
+                    description: p.description || `Produit officiel Oriflame Tunisie (${prodId}). Formule scandinave haute performance.`,
+                    benefits: [
+                      "100% Produit authentique Oriflame Suède",
+                      discount > 0 ? `Offre promotionnelle exclusive : -${discount}% de réduction` : "Formule haute concentration",
+                      "Disponible pour livraison immédiate partout en Tunisie"
+                    ],
+                    how_to_use: "Appliquer délicatement sur une peau propre selon la routine recommandée.",
+                    ingredients: "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+                    in_stock: inStock
+                  });
+                }
+              });
             });
           });
         } catch (parseErr) {}
@@ -173,15 +205,6 @@ export async function scrapeAllOriflameCategories() {
   console.log(`Total unique products scraped across all categories: ${scrapedProducts.length}`);
 
   // 3. Compute Synchronisation Statistics (New, Modified, Unchanged, Deleted)
-  let currentProducts = [];
-  try {
-    if (fs.existsSync(PRODUCTS_FILE)) {
-      currentProducts = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
-    }
-  } catch (e) {}
-
-  const currentMap = new Map(currentProducts.map(p => [String(p.product_id), p]));
-  
   let newCount = 0;
   let modifiedCount = 0;
   let unchangedCount = 0;
@@ -343,6 +366,39 @@ export async function scrapeProductFromUrl(url) {
       );
     }
 
+    const rawHtmlText = $.text() || '';
+    
+    // Check buy button presence in HTML
+    const hasBuyButton = (
+      html.includes('Acheter') ||
+      html.includes('Ajouter au panier') ||
+      html.includes('Ajoutez au panier') ||
+      html.includes('AddToBasket') ||
+      html.includes('AddToBasketVisible') ||
+      html.includes('data-testid="add-to-basket"')
+    );
+
+    let inStock = hasBuyButton && !html.includes('schema.org/OutOfStock') && !html.includes('OutOfStock');
+
+    const nextDataStr = $('#__NEXT_DATA__').html();
+    if (nextDataStr) {
+      try {
+        const nextData = JSON.parse(nextDataStr);
+        const jsonLd = nextData.props?.pageProps?.productDetailData?.application?.productDetailPage?.metadata?.jsonLd;
+        if (jsonLd?.offers?.availability) {
+          if (jsonLd.offers.availability.includes('OutOfStock')) {
+            inStock = false;
+          } else if (jsonLd.offers.availability.includes('InStock') && hasBuyButton) {
+            inStock = true;
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (inStock) {
+      inStock = isProductInStock(title + ' ' + rawDesc + ' ' + rawHtmlText, { title, description: rawDesc });
+    }
+
     return {
       product_id: code,
       name: title.split('|')[0].trim(),
@@ -363,10 +419,84 @@ export async function scrapeProductFromUrl(url) {
       benefits: ["100% Produit original certifié par Mouna Nouira", "Formule suédoise aux extraits naturels bienfaisants"],
       how_to_use: "Appliquer sur une peau propre selon les recommandations.",
       ingredients: "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-      in_stock: true
+      in_stock: inStock
     };
   } catch (err) {
     throw new Error(`Failed to scrape product from URL: ${err.message}`);
   }
+}
+
+/**
+ * Accurately determines product stock availability.
+ * Specifically checks for "متوفر قريباً", "غير متوفر", "bientôt disponible", "rupture de stock", "OutOfStock", etc.
+ */
+export function isProductInStock(text = '', extraData = {}) {
+  const combined = (
+    (typeof text === 'string' ? text : '') + ' ' +
+    (extraData.name || '') + ' ' +
+    (extraData.title || '') + ' ' +
+    (extraData.desc || '') + ' ' +
+    (extraData.description || '') + ' ' +
+    (extraData.alttext || '') + ' ' +
+    (extraData.badge || '') + ' ' +
+    (extraData.stockStatus || '') + ' ' +
+    (extraData.availability || '')
+  );
+
+  const lower = combined.toLowerCase();
+
+  // Out of stock indicators in Schema / JSON
+  if (
+    combined.includes('OutOfStock') ||
+    combined.includes('schema.org/OutOfStock') ||
+    combined.includes('out_of_stock') ||
+    lower.includes('outofstock')
+  ) {
+    return false;
+  }
+
+  // Arabic out of stock / coming soon indicators
+  if (
+    combined.includes('متوفر قريباً') ||
+    combined.includes('متوفر قريبا') ||
+    combined.includes('قريباً') ||
+    combined.includes('قريبا') ||
+    combined.includes('غير متوفر') ||
+    combined.includes('نفدت الكمية') ||
+    combined.includes('نفذت الكمية') ||
+    combined.includes('غير متوفر حالياً') ||
+    combined.includes('غير متوفر حاليا')
+  ) {
+    return false;
+  }
+
+  // French & English out of stock / coming soon indicators
+  if (
+    lower.includes('bientôt disponible') ||
+    lower.includes('bientot disponible') ||
+    lower.includes('rupture de stock') ||
+    lower.includes('rupture') ||
+    lower.includes('épuisé') ||
+    lower.includes('epuise') ||
+    lower.includes('non disponible') ||
+    lower.includes('out of stock') ||
+    lower.includes('coming soon')
+  ) {
+    return false;
+  }
+
+  // Explicit flags if present
+  if (
+    extraData.inStock === false ||
+    extraData.isAvailable === false ||
+    extraData.isOutOfStock === true ||
+    extraData.isOffStock === true ||
+    extraData.isComingSoon === true ||
+    extraData.backInStockAvailability?.showBackInStockNotification === true
+  ) {
+    return false;
+  }
+
+  return true;
 }
 

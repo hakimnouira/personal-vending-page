@@ -1,0 +1,55 @@
+[
+  {
+    "id": "bundle-1787403728016",
+    "title": "tret",
+    "title_fr": "tret",
+    "title_ar": "",
+    "title_en": "",
+    "description": "",
+    "description_fr": "",
+    "description_ar": "",
+    "description_en": "",
+    "product_ids": [
+      "42499",
+      "48671"
+    ],
+    "bundle_price": 50,
+    "active": true,
+    "updated_at": "2026-08-22T13:02:08.016Z",
+    "created_at": "2026-08-22T13:02:08.016Z"
+  },
+  {
+    "id": "bundle-1787403642290",
+    "title": "Duo Beauté : Fond de Teint Giordani Gold + Rouge à Lèvres Iconic",
+    "title_fr": "Duo Beauté : Fond de Teint Giordani Gold + Rouge à Lèvres Iconic",
+    "title_ar": "عرض ثنائي: كريم أساس جورداني جولد + أحمر شفاه إيكونيك",
+    "title_en": "Beauty Duo: Giordani Gold Foundation + Iconic Lipstick",
+    "description": "Achetez le fond de teint et le rouge à lèvres ensemble à prix cassé !",
+    "description_fr": "Achetez le fond de teint et le rouge à lèvres ensemble à prix cassé !",
+    "description_ar": "",
+    "description_en": "",
+    "product_ids": [
+      "42101",
+      "42287"
+    ],
+    "bundle_price": 75,
+    "active": true,
+    "updated_at": "2026-08-22T13:00:42.290Z",
+    "created_at": "2026-08-22T13:00:42.290Z"
+  },
+  {
+    "id": "bundle-1787340001",
+    "title": "Duo Essenza Supreme : Crème Corps + Brume Parfumée",
+    "title_fr": "Duo Essenza Supreme : Crème Corps + Brume Parfumée",
+    "title_ar": "عرض حصري: كريم الجسم + معطر الجسم ايسينزا سوبريم",
+    "title_en": "Exclusive Duo: Body Cream + Fragrance Mist Essenza Supreme",
+    "description": "Profitez d'un prix exceptionnel en achetant ces 2 soins complémentaires ensemble.",
+    "product_ids": [
+      "46980",
+      "47745"
+    ],
+    "bundle_price": 69.9,
+    "active": true,
+    "created_at": "2026-08-22T12:00:00.000Z"
+  }
+]
