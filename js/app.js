@@ -682,11 +682,17 @@ class App {
             if (successWhatsappBtn) {
               const liveOrderUrl = `${window.location.origin}/admin?orderId=${data.order_id}`;
               const cleanTargetPhone = this.cleanPhoneNumber(this.whatsappPhone || '55756629');
-              const orderMsg = encodeURIComponent(
-                `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
-                this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl)
-              );
-              successWhatsappBtn.href = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
+              const rawOrderMsg = `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
+                this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl);
+              const orderMsg = encodeURIComponent(rawOrderMsg);
+              const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
+              successWhatsappBtn.href = waUrl;
+
+              // Auto-copy message to clipboard when WhatsApp button is clicked (mobile safety net)
+              successWhatsappBtn.addEventListener('click', async () => {
+                await copyTextToClipboard(rawOrderMsg);
+                this.showToast('📋 ✅ Message copié ! Collez-le dans WhatsApp si besoin.');
+              });
             }
 
             if (closeSuccessBtn) {
@@ -728,6 +734,15 @@ class App {
           return;
         }
 
+        const isMobile = this.cartManager.isMobileDevice();
+        const cleanedFbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
+
+        // ── CRITICAL: Copy to clipboard IMMEDIATELY (before any async call) ──
+        // Mobile browsers require clipboard writes within the user-gesture stack frame.
+        // After an await (e.g. fetch), the gesture context is lost and clipboard silently fails.
+        const earlyMsg = this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+        await copyTextToClipboard(earlyMsg);
+
         let orderUrl = '';
         let orderId = '';
         try {
@@ -751,23 +766,32 @@ class App {
           console.warn("Could not persist order to server", err);
         }
 
-        const cleanedFbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
+        // Re-generate the message with the order URL (if available) and re-copy
         const liveOrderUrl = orderId ? `${window.location.origin}/admin?orderId=${orderId}` : orderUrl;
-        const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl);
-        const finalMessengerUrl = this.cartManager.isMobileDevice()
-          ? `https://m.me/${cleanedFbHandle}?text=${encodeURIComponent(msg)}`
+        const msg = liveOrderUrl
+          ? this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl)
+          : earlyMsg;
+
+        // Re-copy with the complete message (uses textarea fallback for mobile resilience)
+        if (liveOrderUrl) {
+          await copyTextToClipboard(msg);
+        }
+
+        const finalMessengerUrl = isMobile
+          ? `https://m.me/${cleanedFbHandle}`
           : `https://www.facebook.com/messages/t/${cleanedFbHandle}`;
 
-        // Copy order summary to clipboard
-        await copyTextToClipboard(msg);
-        this.showToast(this.i18n.t('toast_copied'));
+        this.showToast(isMobile
+          ? '📋 ✅ Message copié ! Collez-le (appui long → Coller) dans Messenger.'
+          : this.i18n.t('toast_copied'));
 
         this.telemetry.trackEvent(`Clicked Facebook/Messenger Checkout (${count} items, Total: ${total} TND)`);
 
-        const isMobile = this.cartManager.isMobileDevice();
-
         if (isMobile) {
-          window.open(finalMessengerUrl, '_blank');
+          // Small delay to let the toast show and clipboard settle before switching apps
+          setTimeout(() => {
+            window.location.href = finalMessengerUrl;
+          }, 600);
           return;
         }
 
@@ -975,10 +999,30 @@ class App {
   }
 
   async _clipboardFallback(msg) {
+    let copied = false;
     try {
-      if (navigator.clipboard) await navigator.clipboard.writeText(msg);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(msg);
+        copied = true;
+      }
     } catch (e) {}
-    this.showToast('📋 Message copié ! Collez-le dans Messenger.');
+
+    // Textarea/execCommand fallback — works on mobile even outside user gesture
+    if (!copied) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = msg;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      } catch (e) {}
+    }
+    this.showToast('📋 Message copié ! Collez-le (appui long → Coller) dans Messenger.');
   }
 
   getProductName(p) {

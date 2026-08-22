@@ -1822,7 +1822,7 @@ app.post('/api/import/backup', uploadJson.single('backup'), (req, res) => {
       raw = req.file.buffer.toString('utf8');
     } else if (req.body && req.body.data) {
       raw = typeof req.body.data === 'string' ? req.body.data : JSON.stringify(req.body.data);
-    } else if (req.body && (req.body.products || req.body.carousel)) {
+    } else if (req.body && (req.body.products || req.body.carousel || req.body.orders || req.body.bundles || req.body.deals)) {
       raw = JSON.stringify(req.body);
     } else if (typeof req.body === 'object' && Object.keys(req.body).length > 0) {
       raw = JSON.stringify(req.body);
@@ -1831,30 +1831,80 @@ app.post('/api/import/backup', uploadJson.single('backup'), (req, res) => {
     }
 
     const backup = JSON.parse(raw);
-    let productsRestored = 0;
-    let carouselRestored = 0;
+    const restoredSummary = [];
 
-    const products = Array.isArray(backup.products) ? backup.products : (Array.isArray(backup) ? backup : []);
-    const carousel = Array.isArray(backup.carousel) ? backup.carousel : [];
-
-    if (products.length > 0) {
+    // 1. Products
+    const products = Array.isArray(backup.products) 
+      ? backup.products 
+      : (Array.isArray(backup) ? backup : (Array.isArray(backup.data) ? backup.data : null));
+    if (Array.isArray(products) && products.length > 0) {
       fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf8');
-      productsRestored = products.length;
+      restoredSummary.push(`${products.length} produits`);
     }
 
-    if (carousel.length > 0) {
-      fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(carousel, null, 2), 'utf8');
-      carouselRestored = carousel.length;
+    // 2. Carousel
+    if (Array.isArray(backup.carousel) && backup.carousel.length > 0) {
+      fs.writeFileSync(CAROUSEL_FILE, JSON.stringify(backup.carousel, null, 2), 'utf8');
+      restoredSummary.push(`${backup.carousel.length} diapositives carrousel`);
+    }
+
+    // 3. Orders
+    if (Array.isArray(backup.orders) && backup.orders.length > 0) {
+      fs.writeFileSync(ORDERS_FILE, JSON.stringify(backup.orders, null, 2), 'utf8');
+      restoredSummary.push(`${backup.orders.length} commandes`);
+    }
+
+    // 4. Bundles
+    if (Array.isArray(backup.bundles) && backup.bundles.length > 0) {
+      fs.writeFileSync(BUNDLES_FILE, JSON.stringify(backup.bundles, null, 2), 'utf8');
+      restoredSummary.push(`${backup.bundles.length} packs & bundles`);
+    }
+
+    // 5. Deals
+    if (Array.isArray(backup.deals) && backup.deals.length > 0) {
+      fs.writeFileSync(DEALS_FILE, JSON.stringify(backup.deals, null, 2), 'utf8');
+      restoredSummary.push(`${backup.deals.length} offres seuils`);
+    }
+
+    // 6. Settings (preserve existing admin_pwd if backup does not include one)
+    if (backup.settings && typeof backup.settings === 'object') {
+      const currentSettings = getSettings();
+      const newSettings = {
+        ...currentSettings,
+        ...backup.settings,
+        admin_pwd: backup.settings.admin_pwd || currentSettings.admin_pwd || 'mouna2026'
+      };
+      fs.writeFileSync(SETTINGS_FILE, JSON.stringify(newSettings, null, 2), 'utf8');
+      restoredSummary.push(`paramètres de configuration`);
+    }
+
+    // 7. Flipbook
+    const flipbookPath = path.join(DATA_DIR, 'flipbook.json');
+    if (backup.flipbook && typeof backup.flipbook === 'object') {
+      fs.writeFileSync(flipbookPath, JSON.stringify(backup.flipbook, null, 2), 'utf8');
+      restoredSummary.push(`catalogue flipbook interactif`);
+    }
+
+    // 8. Analytics
+    if (backup.analytics && typeof backup.analytics === 'object') {
+      fs.writeFileSync(ANALYTICS_FILE, JSON.stringify(backup.analytics, null, 2), 'utf8');
+      restoredSummary.push(`statistiques analytiques`);
+    }
+
+    if (restoredSummary.length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Le fichier JSON ne contient pas de données reconnues (produits, carrousel, commandes, etc.).' 
+      });
     }
 
     res.json({
       success: true,
-      message: `Restauration réussie : ${productsRestored} produits, ${carouselRestored} diapositives.`,
-      products_restored: productsRestored,
-      carousel_restored: carouselRestored,
+      message: `Restauration réussie avec succès : ${restoredSummary.join(', ')}.`,
+      restored: restoredSummary
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: 'Import failed: ' + e.message });
+    res.status(500).json({ success: false, message: 'Échec de la restauration : ' + e.message });
   }
 });
 

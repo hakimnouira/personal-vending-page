@@ -172,16 +172,14 @@ class AdminDashboard {
   async showDashboard() {
     this.loginView.style.display = 'none';
     this.dashboardView.style.display = 'grid';
-    await this.fetchProducts();
-    await this.fetchAnalytics();
-    await this.fetchOrders();
-    await this.fetchSettings();
-    await this.fetchCarousel();
-    this.bindCarouselEvents();
-    await this.fetchBundles();
-    this.bindBundleEvents();
-    await this.fetchDeals();
-    this.bindDealEvents();
+
+    try { await this.fetchProducts(); } catch (e) { console.warn("fetchProducts error", e); }
+    try { await this.fetchAnalytics(); } catch (e) { console.warn("fetchAnalytics error", e); }
+    try { await this.fetchOrders(); } catch (e) { console.warn("fetchOrders error", e); }
+    try { await this.fetchSettings(); } catch (e) { console.warn("fetchSettings error", e); }
+    try { await this.fetchCarousel(); } catch (e) { console.warn("fetchCarousel error", e); }
+    try { if (typeof this.fetchBundles === 'function') await this.fetchBundles(); } catch (e) { console.warn("fetchBundles error", e); }
+    try { if (typeof this.fetchDeals === 'function') await this.fetchDeals(); } catch (e) { console.warn("fetchDeals error", e); }
 
     const urlParams = new URLSearchParams(window.location.search);
     const orderIdParam = urlParams.get('orderId');
@@ -273,146 +271,6 @@ class AdminDashboard {
 
     if (hamburger) hamburger.addEventListener('click', toggleSidebar);
     if (sidebarOverlay) sidebarOverlay.addEventListener('click', () => this._closeSidebar());
-
-    // ── Backup: Export JSON ─────────────────────────────────────────────────
-    // Export is a plain <a download> link — no JS needed.
-
-    // ── Backup: Import JSON ─────────────────────────────────────────────────
-    const backupFileInput = document.getElementById('admin-backup-file');
-    const backupStatus = document.getElementById('backup-restore-status');
-
-    if (backupFileInput) {
-      backupFileInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const confirmed = confirm(
-          `⚠️ Restaurer depuis "${file.name}" ?\n\nCela remplacera les produits et diapositives actuels par ceux du fichier.\n\nContinuer ?`
-        );
-        if (!confirmed) { backupFileInput.value = ''; return; }
-
-        try {
-          if (backupStatus) {
-            backupStatus.style.display = 'block';
-            backupStatus.style.color = '#C5A880';
-            backupStatus.textContent = '⏳ Lecture et validation du fichier...';
-          }
-
-          const fileText = await file.text();
-          let parsedData;
-          try {
-            parsedData = JSON.parse(fileText);
-          } catch (jsonErr) {
-            if (backupStatus) {
-              backupStatus.style.color = '#C1121F';
-              backupStatus.textContent = '❌ Le fichier sélectionné n\'est pas un JSON valide.';
-            }
-            return;
-          }
-
-          if (backupStatus) {
-            backupStatus.textContent = '⏳ Restauration en cours...';
-          }
-
-          const res = await fetch('/api/import/backup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(parsedData)
-          });
-          const data = await res.json();
-
-          if (data.success) {
-            if (backupStatus) {
-              backupStatus.style.color = '#2D6A4F';
-              backupStatus.textContent = `✅ ${data.message}`;
-            }
-            // Refresh the page data
-            await this.fetchProducts();
-            await this.fetchCarousel();
-          } else {
-            if (backupStatus) {
-              backupStatus.style.color = '#C1121F';
-              backupStatus.textContent = `❌ Erreur: ${data.message}`;
-            }
-          }
-        } catch (err) {
-          if (backupStatus) {
-            backupStatus.style.color = '#C1121F';
-            backupStatus.textContent = `❌ Erreur réseau: ${err.message}`;
-          }
-        } finally {
-          backupFileInput.value = '';
-        }
-      });
-    }
-
-
-    // ── Carousel: Import JSON ───────────────────────────────────────────────
-    const carouselImportFile = document.getElementById('carousel-import-file');
-    const carouselImportStatus = document.getElementById('carousel-import-status');
-
-    if (carouselImportFile) {
-      carouselImportFile.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const confirmed = confirm(
-          `⚠️ Importer "${file.name}" ?\n\nCela remplacera TOUTES les diapositives du carrousel actuel.\n\nContinuer ?`
-        );
-        if (!confirmed) { carouselImportFile.value = ''; return; }
-
-        try {
-          if (carouselImportStatus) {
-            carouselImportStatus.style.display = 'block';
-            carouselImportStatus.style.color = '#0369A1';
-            carouselImportStatus.textContent = '⏳ Lecture et validation du fichier...';
-          }
-
-          const fileText = await file.text();
-          let parsedData;
-          try {
-            parsedData = JSON.parse(fileText);
-          } catch (jsonErr) {
-            if (carouselImportStatus) {
-              carouselImportStatus.style.color = '#C1121F';
-              carouselImportStatus.textContent = '❌ Le fichier sélectionné n\'est pas un JSON valide.';
-            }
-            return;
-          }
-
-          if (carouselImportStatus) {
-            carouselImportStatus.textContent = '⏳ Importation en cours...';
-          }
-
-          const res = await fetch('/api/import/carousel', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(parsedData)
-          });
-          const data = await res.json();
-
-          if (data.success) {
-            if (carouselImportStatus) {
-              carouselImportStatus.style.color = '#2D6A4F';
-              carouselImportStatus.textContent = `✅ ${data.message}`;
-            }
-            await this.fetchCarousel();
-          } else {
-            if (carouselImportStatus) {
-              carouselImportStatus.style.color = '#C1121F';
-              carouselImportStatus.textContent = `❌ ${data.message}`;
-            }
-          }
-        } catch (err) {
-          if (carouselImportStatus) {
-            carouselImportStatus.style.color = '#C1121F';
-            carouselImportStatus.textContent = `❌ Erreur réseau: ${err.message}`;
-          }
-        } finally {
-          carouselImportFile.value = '';
-        }
-      });
-    }
 
     // ── Company Discount: Apply customizable % to all products ──
     const btnDiscount = document.getElementById('btn-apply-company-discount');
@@ -1084,6 +942,18 @@ class AdminDashboard {
     }
     if (this.csvFileInput) {
       this.csvFileInput.addEventListener('change', (e) => this.importCsv(e));
+    }
+
+    // Full System Backup JSON Restore Listener
+    const backupFileInput = document.getElementById('admin-backup-file');
+    if (backupFileInput) {
+      backupFileInput.addEventListener('change', (e) => this.importBackupFile(e));
+    }
+
+    // Carousel JSON Restore Listener
+    const carouselImportFileInput = document.getElementById('carousel-import-file');
+    if (carouselImportFileInput) {
+      carouselImportFileInput.addEventListener('change', (e) => this.importCarouselJson(e));
     }
 
     // Products JSON Bulk Import Listeners
@@ -2431,14 +2301,14 @@ class AdminDashboard {
     if (statusEl) {
       statusEl.style.display = 'block';
       statusEl.style.color = '#C5A880';
-      statusEl.textContent = '⏳ Restauration complète depuis le fichier JSON en cours...';
+      statusEl.textContent = '⏳ Restauration globale depuis le fichier JSON en cours...';
     }
 
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
         const text = e.target.result;
-        const parsed = JSON.parse(text);
+        JSON.parse(text); // validate valid JSON syntax
 
         const formData = new FormData();
         formData.append('backup', file);
@@ -2450,14 +2320,28 @@ class AdminDashboard {
 
         const data = await res.json();
         if (data.success) {
+          // Clear stale client localStorage caches
+          try {
+            localStorage.removeItem('oriflame_products_v1');
+            localStorage.removeItem('oriflame_discount_overrides_v1');
+            localStorage.removeItem('oriflame_settings_v1');
+          } catch (e) {}
+
           if (statusEl) {
             statusEl.style.color = '#10B981';
             statusEl.textContent = `✅ ${data.message}`;
           }
+
+          // Reload all sections from fresh server data
           await this.fetchProducts();
+          await this.fetchOrders();
           await this.fetchCarousel();
+          if (typeof this.fetchBundles === 'function') await this.fetchBundles();
+          if (typeof this.fetchDeals === 'function') await this.fetchDeals();
           await this.fetchSettings();
-          alert(`✅ Restauration JSON réussie !\n\n${data.message}`);
+          await this.fetchAnalytics();
+
+          alert(`✅ Restauration globale réussie !\n\n${data.message}`);
         } else {
           throw new Error(data.message || 'Erreur lors de la restauration');
         }
@@ -2467,6 +2351,56 @@ class AdminDashboard {
           statusEl.textContent = '❌ ' + err.message;
         }
         alert('❌ Erreur de restauration JSON: ' + err.message);
+      } finally {
+        event.target.value = '';
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  async importCarouselJson(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const statusEl = document.getElementById('carousel-import-status');
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.style.color = '#0284C7';
+      statusEl.textContent = '⏳ Importation des diapositives en cours...';
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const text = e.target.result;
+        let parsed = JSON.parse(text);
+        const slides = Array.isArray(parsed) ? parsed : (Array.isArray(parsed.carousel) ? parsed.carousel : (Array.isArray(parsed.data) ? parsed.data : (Array.isArray(parsed.slides) ? parsed.slides : [])));
+        if (slides.length === 0) throw new Error('Aucune diapositive valide trouvée dans ce fichier JSON.');
+
+        const formData = new FormData();
+        formData.append('carousel', file);
+
+        const res = await fetch('/api/import/carousel', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          if (statusEl) {
+            statusEl.style.color = '#059669';
+            statusEl.textContent = `✅ ${data.message || 'Carrousel restauré !'}`;
+          }
+          await this.fetchCarousel();
+          alert(`✅ Diapositives importées avec succès !\n\n${data.message}`);
+        } else {
+          throw new Error(data.message || 'Erreur d\'importation');
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.style.color = '#DC2626';
+          statusEl.textContent = '❌ ' + err.message;
+        }
+        alert('❌ Erreur: ' + err.message);
       } finally {
         event.target.value = '';
       }
