@@ -4,11 +4,11 @@
     {
       "session_id": "SES-N94OQPB-MT4NDH3A",
       "first_seen": "2026-08-22T17:23:42.414Z",
-      "last_active": "2026-08-22T17:57:36.521Z",
+      "last_active": "2026-08-22T18:16:13.144Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 868,
+      "duration_seconds": 1015,
       "activity_trail": [
         {
           "time": "2026-08-22T17:23:42.414Z",
@@ -159,6 +159,56 @@
           "time": "2026-08-22T17:54:36.518Z",
           "offset": "0m 0s",
           "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:11:31.663Z",
+          "offset": "16m 55s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:11:31.922Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:11:59.225Z",
+          "offset": "0m 27s",
+          "description": "Searched for \"42751\""
+        },
+        {
+          "time": "2026-08-22T18:13:24.093Z",
+          "offset": "1m 52s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:13:24.199Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:14:43.028Z",
+          "offset": "1m 19s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:14:43.145Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:14:50.362Z",
+          "offset": "0m 7s",
+          "description": "Switched Language to en"
+        },
+        {
+          "time": "2026-08-22T18:14:54.772Z",
+          "offset": "0m 12s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-22T18:15:01.156Z",
+          "offset": "0m 18s",
+          "description": "Switched Language to fr"
         }
       ],
       "categories_visited": [
@@ -172,7 +222,7 @@
     {
       "session_id": "SES-L3C35S8-MT4FORY6",
       "first_seen": "2026-08-22T13:48:32.776Z",
-      "last_active": "2026-08-22T17:57:32.180Z",
+      "last_active": "2026-08-22T18:16:16.188Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -397,6 +447,26 @@
           "time": "2026-08-22T17:01:49.780Z",
           "offset": "0m 18s",
           "description": "Opened Detailed Product Info: Pinceau Teint Parfait"
+        },
+        {
+          "time": "2026-08-22T18:06:15.968Z",
+          "offset": "64m 44s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:06:16.190Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:06:44.380Z",
+          "offset": "0m 28s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T18:07:23.126Z",
+          "offset": "1m 7s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Love Potion"
         }
       ],
       "categories_visited": [
@@ -412,13 +482,14 @@
       "products_viewed": [
         "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
         "Fond de Teint The ONE Everlasting Sync Stress-Free Vanilla",
-        "Pinceau Teint Parfait"
+        "Pinceau Teint Parfait",
+        "Eau de Parfum Love Potion"
       ]
     },
     {
       "session_id": "SES-I53EUZS-MT4DOJIY",
       "first_seen": "2026-08-22T12:52:22.624Z",
-      "last_active": "2026-08-22T17:57:03.142Z",
+      "last_active": "2026-08-22T18:16:04.137Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",

@@ -140,8 +140,11 @@ export async function scrapeAllOriflameCategories() {
                 const prodId = String(p.productCode || p.code || p.productId || p.sku || '');
                 if (prodId && prodId.length >= 4) {
                   const name = p.concept?.name || p.title || p.name || 'Produit Oriflame';
-                  const currentPrice = Number(p.price?.price?.currentPrice || p.price?.currentPrice || p.price || 39.90);
-                  const basicPrice = Number(p.price?.price?.basicCataloguePrice || p.price?.basicCataloguePrice || currentPrice);
+                  const currentPriceRaw = p.formattedPrice?.price?.currentPrice || p.price?.price?.currentPrice || p.price?.currentPrice || p.price;
+                  const basicPriceRaw = p.formattedPrice?.price?.basicCataloguePrice || p.price?.price?.basicCataloguePrice || p.price?.basicCataloguePrice;
+
+                  const currentPrice = parsePrice(currentPriceRaw) || 39.90;
+                  const basicPrice = parsePrice(basicPriceRaw) || currentPrice;
                   const isPromo = basicPrice > currentPrice;
                   const discount = isPromo ? Math.round(((basicPrice - currentPrice) / basicPrice) * 100) : 0;
 
@@ -310,6 +313,13 @@ export function classifyCategory(name = '') {
   return 'Skincare';
 }
 
+export function parsePrice(raw) {
+  if (typeof raw === 'number') return isNaN(raw) ? 0 : raw;
+  if (!raw) return 0;
+  const match = String(raw).replace(',', '.').match(/([0-9]+(?:\.[0-9]+)?)/);
+  return match ? parseFloat(match[1]) : 0;
+}
+
 function inferSizeFromName(name = '') {
   const match = name.match(/([0-9]+\s*(ml|g|capsules|comprimés|sachets|portions))/i);
   return match ? match[1] : 'Format Standard';
@@ -337,14 +347,11 @@ export async function scrapeProductFromUrl(url) {
 
     let title = $('h1').first().text().trim() || $('meta[property="og:title"]').attr('content') || 'Produit Oriflame';
     let price = 45.00;
+    let originalPrice = null;
     let code = `ORF-${Date.now().toString().slice(-6)}`;
 
     const codeMatch = url.match(/code=([0-9]+)/i) || title.match(/([0-9]{4,6})/);
     if (codeMatch) code = codeMatch[1];
-
-    const priceText = $('.price, [data-testid="price"], .product-price').first().text();
-    const pMatch = priceText.match(/([0-9]+[.,]?[0-9]*)/);
-    if (pMatch) price = parseFloat(pMatch[1].replace(',', '.'));
 
     const rawDesc = $('meta[name="description"]').attr('content') || $('.product-description, [data-testid="product-description"]').first().text().trim() || `Produit officiel Oriflame Tunisie (${code}).`;
     const mainImg = $('meta[property="og:image"]').attr('content') || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_1.png&MediaId=20989035&Version=1`;
@@ -392,12 +399,33 @@ export async function scrapeProductFromUrl(url) {
             inStock = true;
           }
         }
+
+        // Extract accurate prices from formattedPrice object
+        const formattedPriceObj = nextData.props?.pageProps?.productDetailData?.product?.concept?.products?.[0]?.formattedPrice?.price;
+        if (formattedPriceObj) {
+          const currentP = parsePrice(formattedPriceObj.currentPrice);
+          const basicP = parsePrice(formattedPriceObj.basicCataloguePrice);
+          if (currentP > 0) price = currentP;
+          if (basicP > currentP) {
+            originalPrice = basicP;
+          }
+        }
       } catch (e) {}
+    }
+
+    if (!originalPrice) {
+      const priceText = $('.price, [data-testid="price"], .product-price').first().text();
+      const parsedP = parsePrice(priceText);
+      if (parsedP > 0) price = parsedP;
+      originalPrice = calculateEstimatedOriginalPrice(price);
     }
 
     if (inStock) {
       inStock = isProductInStock(title + ' ' + rawDesc + ' ' + rawHtmlText, { title, description: rawDesc });
     }
+
+    const isPromo = Boolean(originalPrice && originalPrice > price);
+    const discountPercent = isPromo ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
 
     return {
       product_id: code,
@@ -405,12 +433,12 @@ export async function scrapeProductFromUrl(url) {
       name_fr: title.split('|')[0].trim(),
       category: classifyCategory(title),
       price: price,
-      original_price: calculateEstimatedOriginalPrice(price),
+      original_price: originalPrice,
       original_catalog_price: price,
       company_discount_applied: false,
       company_discount_percent: 0,
-      is_promo: false,
-      discount_percent: 0,
+      is_promo: isPromo,
+      discount_percent: discountPercent,
       size: inferSizeFromName(title),
       suitable_for: 'Tous types de peaux • Certifié Oriflame Suède',
       image_url: mainImg,
