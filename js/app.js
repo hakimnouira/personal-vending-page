@@ -602,30 +602,53 @@ class App {
       });
     }
 
-    // Helper for robust clipboard copy across all browsers
+    // Helper for robust clipboard copy across all mobile and desktop browsers
     const copyTextToClipboard = async (text) => {
       if (!text) return false;
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(text);
-          return true;
-        }
-      } catch (e) {}
+      let success = false;
 
-      try {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.focus();
-        textarea.select();
-        const successful = document.execCommand('copy');
-        document.body.removeChild(textarea);
-        return successful;
-      } catch (e) {
-        return false;
+      // Method 1: Modern asynchronous clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          success = true;
+        } catch (e) {
+          console.warn('[Clipboard] navigator.clipboard failed, trying fallback', e);
+        }
       }
+
+      // Method 2: Synchronous DOM-based selection (iOS Safari & Android Chrome safe)
+      if (!success) {
+        try {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.setAttribute('readonly', '');
+          textarea.style.position = 'fixed';
+          textarea.style.top = '0';
+          textarea.style.left = '0';
+          textarea.style.width = '2em';
+          textarea.style.height = '2em';
+          textarea.style.padding = '0';
+          textarea.style.border = 'none';
+          textarea.style.outline = 'none';
+          textarea.style.boxShadow = 'none';
+          textarea.style.background = 'transparent';
+          textarea.style.opacity = '0.01';
+          textarea.style.zIndex = '-1';
+          document.body.appendChild(textarea);
+
+          textarea.focus();
+          textarea.select();
+          textarea.setSelectionRange(0, textarea.value.length);
+
+          success = document.execCommand('copy');
+          document.body.removeChild(textarea);
+        } catch (e) {
+          console.error('[Clipboard] execCommand failed', e);
+        }
+      }
+
+      return success;
     };
 
     // ── Checkout Choice 1: Phone / WhatsApp Order Submission ─────────────────
@@ -647,6 +670,11 @@ class App {
           if (this.customerPhoneInput) this.customerPhoneInput.focus();
           return;
         }
+
+        // Copy order message immediately upon click while user gesture is active
+        const earlyOrderMsg = `Bonjour Mouna ! Je souhaite passer une commande sur votre boutique Oriflame :\n` +
+          this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+        await copyTextToClipboard(earlyOrderMsg);
 
         btnPhone.disabled = true;
         btnPhone.textContent = '⏳ Enregistrement de la commande...';
@@ -685,14 +713,17 @@ class App {
               const rawOrderMsg = `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
                 this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl);
               const orderMsg = encodeURIComponent(rawOrderMsg);
-              const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
+              const waUrl = `https://api.whatsapp.com/send?phone=216${cleanTargetPhone}&text=${orderMsg}`;
               successWhatsappBtn.href = waUrl;
 
-              // Auto-copy message to clipboard when WhatsApp button is clicked (mobile safety net)
-              successWhatsappBtn.addEventListener('click', async () => {
+              // Re-copy with full order ID
+              await copyTextToClipboard(rawOrderMsg);
+
+              // Auto-copy message to clipboard when WhatsApp button is clicked
+              successWhatsappBtn.onclick = async () => {
                 await copyTextToClipboard(rawOrderMsg);
-                this.showToast('📋 ✅ Message copié ! Collez-le dans WhatsApp si besoin.');
-              });
+                this.showToast('📋 ✅ Message copié !');
+              };
             }
 
             if (closeSuccessBtn) {
@@ -737,9 +768,7 @@ class App {
         const isMobile = this.cartManager.isMobileDevice();
         const cleanedFbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
 
-        // ── CRITICAL: Copy to clipboard IMMEDIATELY (before any async call) ──
-        // Mobile browsers require clipboard writes within the user-gesture stack frame.
-        // After an await (e.g. fetch), the gesture context is lost and clipboard silently fails.
+        // ── CRITICAL: Copy to clipboard IMMEDIATELY upon user click ──
         const earlyMsg = this.cartManager.generateOrderTextMessage(name, phone, 'TND');
         await copyTextToClipboard(earlyMsg);
 
@@ -772,14 +801,11 @@ class App {
           ? this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl)
           : earlyMsg;
 
-        // Re-copy with the complete message (uses textarea fallback for mobile resilience)
         if (liveOrderUrl) {
           await copyTextToClipboard(msg);
         }
 
-        const finalMessengerUrl = isMobile
-          ? `https://m.me/${cleanedFbHandle}`
-          : `https://www.facebook.com/messages/t/${cleanedFbHandle}`;
+        const finalMessengerUrl = `https://m.me/${cleanedFbHandle}`;
 
         this.showToast(isMobile
           ? '📋 ✅ Message copié ! Collez-le (appui long → Coller) dans Messenger.'
@@ -787,18 +813,7 @@ class App {
 
         this.telemetry.trackEvent(`Clicked Facebook/Messenger Checkout (${count} items, Total: ${total} TND)`);
 
-        if (isMobile) {
-          // Small delay to let the toast show and clipboard settle before switching apps
-          setTimeout(() => {
-            window.location.href = finalMessengerUrl;
-          }, 600);
-          return;
-        }
-
-        // Desktop: Open Messenger in new tab first, then show paste guide
-        window.open(finalMessengerUrl, '_blank');
-
-        // Show paste guide modal with message preview
+        // Show paste guide modal on ALL devices (Desktop & Mobile) so user has the button and guide
         const pasteModal = document.getElementById('messenger-paste-modal-overlay');
         const openMessengerBtn = document.getElementById('btn-paste-modal-open-messenger');
         const closePasteBtn = document.getElementById('btn-close-paste-modal');
@@ -814,7 +829,9 @@ class App {
           pasteModal.classList.add('open');
 
           if (openMessengerBtn) {
-            openMessengerBtn.onclick = () => window.open(finalMessengerUrl, '_blank');
+            openMessengerBtn.onclick = () => {
+              window.open(finalMessengerUrl, '_blank');
+            };
           }
           if (recopyBtn) {
             recopyBtn.onclick = async () => {
@@ -826,6 +843,13 @@ class App {
           if (closePasteBtn) {
             closePasteBtn.onclick = () => pasteModal.classList.remove('open');
           }
+        }
+
+        // On mobile, also trigger the Messenger link
+        if (isMobile) {
+          window.open(finalMessengerUrl, '_blank');
+        } else {
+          window.open(`https://www.facebook.com/messages/t/${cleanedFbHandle}`, '_blank');
         }
       });
     }
