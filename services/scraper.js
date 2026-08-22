@@ -167,6 +167,28 @@ export async function scrapeAllOriflameCategories() {
                     inStock = isProductInStock(name + ' ' + (p.description || '') + ' ' + JSON.stringify(labels), p);
                   }
 
+                  // Multi-shade / color variants extraction from concept
+                  const conceptProducts = p.concept?.products || [];
+                  let variants = undefined;
+                  if (Array.isArray(conceptProducts) && conceptProducts.length > 1) {
+                    variants = conceptProducts.map(cp => {
+                      const vCode = String(cp.productCode || cp.code || '');
+                      const sName = cp.shadeName || '';
+                      const hex = (Array.isArray(cp.hexColors) && cp.hexColors[0]) || cp.colorImageUrl || '#DE7B90';
+                      const vImg = cp.mainImage?.url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${vCode}%2f${vCode}_1.png&MediaId=20989035&Version=1`;
+                      return {
+                        product_id: vCode,
+                        name: `${name} - ${sName || vCode}`,
+                        shade_name: sName,
+                        hex_color: hex,
+                        image_url: vImg,
+                        price: currentPrice,
+                        original_price: isPromo ? basicPrice : null,
+                        in_stock: inStock
+                      };
+                    }).filter(v => v.product_id);
+                  }
+
                   allScrapedMap.set(prodId, {
                     product_id: prodId,
                     name: name,
@@ -183,6 +205,7 @@ export async function scrapeAllOriflameCategories() {
                     suitable_for: "Tous types de peaux • Testé sous contrôle dermatologique",
                     image_url: mainImg,
                     images: galleryImgs,
+                    variants: (variants && variants.length > 1) ? variants : undefined,
                     description: p.description || `Produit officiel Oriflame Tunisie (${prodId}). Formule scandinave haute performance.`,
                     benefits: [
                       "100% Produit authentique Oriflame Suède",
@@ -348,6 +371,7 @@ export async function scrapeProductFromUrl(url) {
     let title = $('h1').first().text().trim() || $('meta[property="og:title"]').attr('content') || 'Produit Oriflame';
     let price = 45.00;
     let originalPrice = null;
+    let variants = [];
     let code = `ORF-${Date.now().toString().slice(-6)}`;
 
     const codeMatch = url.match(/code=([0-9]+)/i) || title.match(/([0-9]{4,6})/);
@@ -410,6 +434,31 @@ export async function scrapeProductFromUrl(url) {
             originalPrice = basicP;
           }
         }
+
+        // Extract multi-shade / color variants from concept.products
+        const conceptProducts = nextData.props?.pageProps?.productDetailData?.product?.concept?.products || [];
+        if (Array.isArray(conceptProducts) && conceptProducts.length > 1) {
+          variants = conceptProducts.map(cp => {
+            const pCode = String(cp.productCode || cp.code || '');
+            const sName = cp.shadeName || '';
+            const hex = (Array.isArray(cp.hexColors) && cp.hexColors[0]) || cp.colorImageUrl || '#DE7B90';
+            const vImg = cp.mainImage?.url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${pCode}%2f${pCode}_1.png&MediaId=20989035&Version=1`;
+            const vCurrPrice = parsePrice(cp.formattedPrice?.price?.currentPrice) || price;
+            const vBasicPrice = parsePrice(cp.formattedPrice?.price?.basicCataloguePrice) || (originalPrice || vCurrPrice);
+            const vInStock = cp.backInStockAvailability?.showBackInStockNotification !== true && !cp.isOffStock;
+            
+            return {
+              product_id: pCode,
+              name: `${title.split('|')[0].trim()} - ${sName || pCode}`,
+              shade_name: sName,
+              hex_color: hex,
+              image_url: vImg,
+              price: vCurrPrice,
+              original_price: vBasicPrice > vCurrPrice ? vBasicPrice : null,
+              in_stock: vInStock
+            };
+          }).filter(v => v.product_id);
+        }
       } catch (e) {}
     }
 
@@ -443,6 +492,7 @@ export async function scrapeProductFromUrl(url) {
       suitable_for: 'Tous types de peaux • Certifié Oriflame Suède',
       image_url: mainImg,
       images: foundImages,
+      variants: variants.length > 0 ? variants : undefined,
       description: rawDesc,
       benefits: ["100% Produit original certifié par Mouna Nouira", "Formule suédoise aux extraits naturels bienfaisants"],
       how_to_use: "Appliquer sur une peau propre selon les recommandations.",

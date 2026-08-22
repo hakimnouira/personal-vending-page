@@ -390,7 +390,8 @@ export class CartManager {
       const itemTotal = (item.price * item.quantity).toFixed(2);
       const refLabel = (lang === 'ar') ? 'مرجع' : 'Réf';
       const refStr = item.product_id ? ` [${refLabel}: ${item.product_id}]` : '';
-      message += `${index + 1}. ${item.name}${refStr} (x${item.quantity}) - ${item.price.toFixed(2)} ${currencyLabel} [Total: ${itemTotal} ${currencyLabel}]\n`;
+      const shadeStr = item.shade_name ? ` (${lang === 'ar' ? 'الدرجة' : 'Nuance'}: ${item.shade_name})` : '';
+      message += `${index + 1}. ${item.name}${shadeStr}${refStr} (x${item.quantity}) - ${item.price.toFixed(2)} ${currencyLabel} [Total: ${itemTotal} ${currencyLabel}]\n`;
     });
 
     const appliedBundles = this.getAppliedBundles();

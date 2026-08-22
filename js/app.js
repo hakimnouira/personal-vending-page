@@ -96,6 +96,11 @@ class App {
       if (data.success && data.data) {
         if (data.data.facebook_username) {
           this.facebookUsername = data.data.facebook_username;
+          const fbUrl = `https://www.facebook.com/${this.facebookUsername}`;
+          const navFb = document.getElementById('btn-nav-facebook');
+          if (navFb) navFb.href = fbUrl;
+          const footerFb = document.getElementById('footer-facebook-link');
+          if (footerFb) footerFb.href = fbUrl;
         }
         if (data.data.whatsapp_phone || data.data.phone) {
           this.whatsappPhone = this.cleanPhoneNumber(data.data.whatsapp_phone || data.data.phone);
@@ -1017,17 +1022,30 @@ class App {
 
     this.dealsCarouselGrid.innerHTML = promoProducts.map(p => {
       const prodName = this.getProductName(p);
-      const discount = p.discount_percent || (p.original_price ? Math.round(((p.original_price - p.price) / p.original_price) * 100) : 25);
+
+      const baseDiscount = (p.original_price && p.original_price > p.price) 
+        ? Math.round(((p.original_price - p.price) / p.original_price) * 100) 
+        : (p.discount_percent || 0);
+
+      const companyDisc = (p.company_discount_applied && p.company_discount_percent) 
+        ? Number(p.company_discount_percent) 
+        : 0;
+
+      const totalDiscount = (baseDiscount + companyDisc) || 25;
+      const displayOrigPrice = p.original_price 
+        ? p.original_price 
+        : (companyDisc > 0 ? (p.price / (1 - (companyDisc / 100))) : null);
+
       return `
         <div class="mini-deal-card" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
           <div class="mini-deal-img-wrap">
             <img class="mini-deal-img" src="${p.image_url}" alt="${prodName}" loading="lazy" onerror="window.handleProductImgError(this)" />
-            <span class="promo-pill">-${discount}%</span>
+            <span class="promo-pill">-${totalDiscount}%</span>
           </div>
           <h4 class="mini-deal-title">${prodName}</h4>
           <div class="price-wrap">
             <span class="current-deal-price">${Number(p.price).toFixed(2)} ${currencyLabel}</span>
-            ${p.original_price ? `<span class="original-price-strike">${Number(p.original_price).toFixed(2)} ${currencyLabel}</span>` : ''}
+            ${displayOrigPrice ? `<span class="original-price-strike">${Number(displayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
           </div>
           <button class="btn-add-cart" style="width:100%; min-height:36px; font-size:0.8rem; justify-content:center;" onclick="event.stopPropagation(); window.app.addToCart('${p.product_id}')">
             ${this.i18n.t('add_to_cart')}
@@ -1054,7 +1072,11 @@ class App {
       const matchesSearch = !this.searchQuery || 
         pName.includes(this.searchQuery) ||
         pDesc.includes(this.searchQuery) ||
-        pId.includes(this.searchQuery);
+        pId.includes(this.searchQuery) ||
+        (Array.isArray(product.variants) && product.variants.some(v => 
+          String(v.product_id).toLowerCase().includes(this.searchQuery) ||
+          String(v.shade_name || '').toLowerCase().includes(this.searchQuery)
+        ));
       return matchesCategory && matchesSearch;
     });
 
@@ -1081,28 +1103,84 @@ class App {
     this.productGrid.innerHTML = filtered.map(p => {
       const prodName = this.getProductName(p);
       const prodDesc = this.getProductDescription(p);
+      const hasVariants = Array.isArray(p.variants) && p.variants.length > 1;
+      let initialVariant = null;
+      if (hasVariants) {
+        if (this.searchQuery) {
+          initialVariant = p.variants.find(v => 
+            String(v.product_id).toLowerCase().includes(this.searchQuery) ||
+            String(v.shade_name || '').toLowerCase().includes(this.searchQuery)
+          ) || p.variants[0];
+        } else {
+          initialVariant = p.variants[0];
+        }
+      }
+
+      const activePrice = initialVariant ? (initialVariant.price || p.price) : p.price;
+      const activeOrigPrice = initialVariant ? (initialVariant.original_price || null) : p.original_price;
+      
+      const baseDiscount = (activeOrigPrice && activeOrigPrice > activePrice) 
+        ? Math.round(((activeOrigPrice - activePrice) / activeOrigPrice) * 100) 
+        : (p.discount_percent || 0);
+
+      const companyDisc = (p.company_discount_applied && p.company_discount_percent) 
+        ? Number(p.company_discount_percent) 
+        : 0;
+
+      const totalDiscount = baseDiscount + companyDisc;
+      const isPromo = totalDiscount > 0;
+
+      const displayOrigPrice = activeOrigPrice 
+        ? activeOrigPrice 
+        : (companyDisc > 0 ? (activePrice / (1 - (companyDisc / 100))) : null);
+
+      const defaultAddId = initialVariant ? initialVariant.product_id : p.product_id;
+      const initialVariantId = initialVariant ? initialVariant.product_id : '';
+
       return `
-        <div class="product-card">
-          <div class="product-image-wrap" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
-            <img class="product-image" src="${p.image_url}" alt="${prodName}" loading="lazy" onerror="window.handleProductImgError(this)" />
-            ${p.is_promo 
-              ? `<span class="promo-badge">-${p.discount_percent || 25}%</span>`
-              : `<span class="category-badge">${p.category}</span>`
-            }
+        <div class="product-card" id="card-${p.product_id}">
+          <div class="product-image-wrap" onclick="window.app.openQuickView('${p.product_id}', null, '${initialVariantId}')" style="cursor:pointer;">
+            <img class="product-image" id="card-img-${p.product_id}" src="${initialVariant?.image_url || p.image_url}" alt="${prodName}" loading="lazy" onerror="window.handleProductImgError(this)" />
+            <div id="card-badge-${p.product_id}">
+              ${isPromo 
+                ? `<span class="promo-badge">-${totalDiscount}%</span>`
+                : `<span class="category-badge">${p.category}</span>`
+              }
+            </div>
             <span class="stock-indicator ${p.in_stock ? 'in-stock' : 'out-stock'}">
               ${p.in_stock ? inStockText : outStockText}
             </span>
           </div>
           <div class="product-body">
-            <h4 class="product-title" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">${prodName}</h4>
+            <h4 class="product-title" onclick="window.app.openQuickView('${p.product_id}', null, '${initialVariantId}')" style="cursor:pointer;">${prodName}</h4>
+            
+            ${hasVariants ? `
+              <div class="product-shades-row" onclick="event.stopPropagation();">
+                <div class="shades-header-label">
+                  <span>🎨 ${p.variants.length} ${isArabic ? 'درجات' : 'Nuances :'}</span>
+                  <span class="shade-active-badge" id="shade-badge-${p.product_id}">💄 ${initialVariant.shade_name || initialVariant.product_id}</span>
+                </div>
+                <div class="shades-swatches-list">
+                  ${p.variants.map((v, vIdx) => `
+                    <button type="button" 
+                      class="shade-swatch-btn ${String(v.product_id) === String(initialVariant.product_id) ? 'active' : ''}" 
+                      style="background-color: ${v.hex_color || '#DE7B90'};" 
+                      title="${v.shade_name || v.product_id} (Réf. ${v.product_id})"
+                      onclick="window.app.selectCardVariant('${p.product_id}', '${v.product_id}', this)">
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+
             ${p.size ? `<div class="product-meta-row"><span>📦 ${p.size}</span></div>` : ''}
             <p class="product-description">${prodDesc || ''}</p>
             <div class="product-footer">
               <div class="price-container">
-                ${p.original_price ? `<span class="product-price-strike">${Number(p.original_price).toFixed(2)} ${currencyLabel}</span>` : ''}
-                <span class="product-price ${p.is_promo ? 'promo-price' : ''}">${Number(p.price).toFixed(2)} <span style="font-size:0.85rem; font-weight:600; color:var(--color-text-secondary);">${currencyLabel}</span></span>
+                ${displayOrigPrice ? `<span class="product-price-strike">${Number(displayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
+                <span class="product-price ${isPromo ? 'promo-price' : ''}">${Number(activePrice).toFixed(2)} <span style="font-size:0.85rem; font-weight:600; color:var(--color-text-secondary);">${currencyLabel}</span></span>
               </div>
-              <button class="btn-add-cart" ${!p.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${p.product_id}')">
+              <button class="btn-add-cart" id="btn-add-card-${p.product_id}" ${!p.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${defaultAddId}')">
                 ${addBtnText}
               </button>
             </div>
@@ -1112,12 +1190,120 @@ class App {
     }).join('');
   }
 
+  selectCardVariant(parentId, variantId, btnEl) {
+    const parent = this.products.find(p => String(p.product_id) === String(parentId));
+    if (!parent || !Array.isArray(parent.variants)) return;
+    const variant = parent.variants.find(v => String(v.product_id) === String(variantId));
+    if (!variant) return;
+
+    const isArabic = this.i18n.getLang() === 'ar';
+    const currencyLabel = isArabic ? 'د.ت' : 'TND';
+
+    // Update active class on swatch buttons
+    const cardEl = btnEl.closest('.product-card') || document.getElementById(`card-${parentId}`);
+    if (cardEl) {
+      cardEl.querySelectorAll('.shade-swatch-btn').forEach(b => b.classList.remove('active'));
+      btnEl.classList.add('active');
+
+      // Update image
+      const imgEl = cardEl.querySelector('.product-image');
+      if (imgEl && variant.image_url) {
+        imgEl.src = variant.image_url;
+      }
+
+      // Update active shade badge text
+      const badgeEl = cardEl.querySelector(`#shade-badge-${parentId}`);
+      if (badgeEl) {
+        badgeEl.textContent = `💄 ${variant.shade_name || variant.product_id}`;
+      }
+
+      // Update price display on card with company discount awareness
+      const priceContainer = cardEl.querySelector('.price-container');
+      const vPrice = variant.price || parent.price;
+      const vOrigPrice = variant.original_price;
+      const vBaseDiscount = (vOrigPrice && vOrigPrice > vPrice) 
+        ? Math.round(((vOrigPrice - vPrice) / vOrigPrice) * 100) 
+        : 0;
+      const companyDisc = (parent.company_discount_applied && parent.company_discount_percent) 
+        ? Number(parent.company_discount_percent) 
+        : 0;
+      const totalDiscount = vBaseDiscount + companyDisc;
+      const vIsPromo = totalDiscount > 0;
+      const vDisplayOrigPrice = vOrigPrice 
+        ? vOrigPrice 
+        : (companyDisc > 0 ? (vPrice / (1 - (companyDisc / 100))) : null);
+
+      if (priceContainer) {
+        priceContainer.innerHTML = `
+          ${vDisplayOrigPrice ? `<span class="product-price-strike">${Number(vDisplayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
+          <span class="product-price ${vIsPromo ? 'promo-price' : ''}">${Number(vPrice).toFixed(2)} <span style="font-size:0.85rem; font-weight:600; color:var(--color-text-secondary);">${currencyLabel}</span></span>
+        `;
+      }
+
+      // Update badge on card
+      const badgeWrap = cardEl.querySelector(`#card-badge-${parentId}`);
+      if (badgeWrap) {
+        badgeWrap.innerHTML = vIsPromo 
+          ? `<span class="promo-badge">-${totalDiscount}%</span>`
+          : `<span class="category-badge">${parent.category}</span>`;
+      }
+
+      // Update add to cart button
+      const addBtn = cardEl.querySelector(`#btn-add-card-${parentId}`);
+      if (addBtn) {
+        addBtn.setAttribute('onclick', `window.app.addToCart('${variant.product_id}')`);
+        addBtn.disabled = !variant.in_stock;
+      }
+    }
+  }
+
   addProductToCart(productId) {
     if (!productId) return;
     const cleanId = String(productId).trim();
 
-    // 1. Look up in catalog products
+    // 1. Look up in catalog products (direct match or variant match)
     let product = this.products.find(p => String(p.product_id) === cleanId || String(p.id) === cleanId);
+
+    if (!product) {
+      // Look if cleanId is a specific variant of a catalog product
+      for (const p of this.products) {
+        if (Array.isArray(p.variants)) {
+          const v = p.variants.find(item => String(item.product_id) === cleanId);
+          if (v) {
+            product = {
+              ...p,
+              product_id: v.product_id,
+              name: `${p.name} - ${v.shade_name || v.product_id}`,
+              name_fr: `${p.name_fr || p.name} - ${v.shade_name || v.product_id}`,
+              shade_name: v.shade_name || '',
+              hex_color: v.hex_color || '',
+              image_url: v.image_url || p.image_url,
+              price: v.price || p.price,
+              original_price: v.original_price || p.original_price,
+              in_stock: v.in_stock !== false
+            };
+            break;
+          }
+        }
+      }
+    } else if (Array.isArray(product.variants) && product.variants.length > 0) {
+      // If product matched main concept ID, enrich with first variant or matching variant
+      const v = product.variants.find(item => String(item.product_id) === cleanId) || product.variants[0];
+      if (v) {
+        product = {
+          ...product,
+          product_id: v.product_id,
+          name: `${product.name} - ${v.shade_name || v.product_id}`,
+          name_fr: `${product.name_fr || product.name} - ${v.shade_name || v.product_id}`,
+          shade_name: v.shade_name || '',
+          hex_color: v.hex_color || '',
+          image_url: v.image_url || product.image_url,
+          price: v.price || product.price,
+          original_price: v.original_price || product.original_price,
+          in_stock: v.in_stock !== false
+        };
+      }
+    }
 
     // 2. Look up in digital flipbook hotspots
     if (!product && window.ecatViewer && Array.isArray(window.ecatViewer.spreads)) {
@@ -1239,6 +1425,14 @@ class App {
         <img class="cart-item-img" src="${item.image_url}" alt="${item.name}" onerror="window.handleProductImgError(this)" />
         <div class="cart-item-info">
           <div class="cart-item-title">${item.name}</div>
+          ${item.shade_name ? `
+            <div class="cart-item-shade-tag">
+              <span class="cart-item-shade-dot" style="background:${item.hex_color || '#DE7B90'}"></span>
+              <span>${isArabic ? 'الدرجة' : 'Nuance'} : <strong>${item.shade_name}</strong> (Réf. ${item.product_id})</span>
+            </div>
+          ` : `
+            <div style="font-size:0.75rem; color:#8E8D8A; margin-top:2px;">Réf: ${item.product_id}</div>
+          `}
           <div class="cart-item-price">${Number(item.price).toFixed(2)} ${currencyLabel}</div>
         </div>
         <div class="cart-item-controls">
@@ -1461,9 +1655,18 @@ class App {
     }
   }
 
-  // Rich Product Information Detail Modal with Tabs
-  openQuickView(productId, directProductObj = null) {
-    const product = directProductObj || this.products.find(p => String(p.product_id) === String(productId));
+  // Rich Product Information Detail Modal with Tabs & Multi-Shade Variants
+  openQuickView(productId, directProductObj = null, selectedVariantId = null) {
+    let product = directProductObj || this.products.find(p => String(p.product_id) === String(productId));
+    let initialVariantId = selectedVariantId || null;
+
+    if (!product) {
+      // Look if productId is a variant of any loaded product
+      product = this.products.find(p => Array.isArray(p.variants) && p.variants.some(v => String(v.product_id) === String(productId)));
+      if (product && !initialVariantId) {
+        initialVariantId = productId;
+      }
+    }
     if (!product || !this.quickViewContent) return;
 
     const prodName = this.getProductName(product);
@@ -1473,6 +1676,14 @@ class App {
 
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';
+
+    const hasVariants = Array.isArray(product.variants) && product.variants.length > 1;
+    const activeVariant = hasVariants 
+      ? ((initialVariantId && product.variants.find(v => String(v.product_id) === String(initialVariantId))) || product.variants[0])
+      : null;
+
+    const activeImage = activeVariant?.image_url || product.image_url;
+    const activeRef = activeVariant ? activeVariant.product_id : product.product_id;
 
     // Format Benefits list
     let benefitsHtml = '';
@@ -1492,8 +1703,8 @@ class App {
 
     // Extract gallery images list
     const galleryImages = Array.isArray(product.images) && product.images.length > 0
-      ? product.images
-      : [product.image_url];
+      ? [activeImage, ...product.images.filter(img => img !== activeImage)]
+      : [activeImage];
 
     this._currentQuickViewImages = galleryImages;
     this._currentQuickViewIndex = 0;
@@ -1515,13 +1726,31 @@ class App {
       <button type="button" class="gallery-nav-btn next" onclick="window.app.nextQuickViewImage(event)" aria-label="Suivante">›</button>
     ` : '';
 
+    const activePrice = activeVariant ? (activeVariant.price || product.price) : product.price;
+    const activeOrigPrice = activeVariant ? (activeVariant.original_price || null) : product.original_price;
+
+    const baseDiscount = (activeOrigPrice && activeOrigPrice > activePrice) 
+      ? Math.round(((activeOrigPrice - activePrice) / activeOrigPrice) * 100) 
+      : (product.discount_percent || 0);
+
+    const companyDisc = (product.company_discount_applied && product.company_discount_percent) 
+      ? Number(product.company_discount_percent) 
+      : 0;
+
+    const totalDiscount = baseDiscount + companyDisc;
+    const isPromo = totalDiscount > 0;
+
+    const displayOrigPrice = activeOrigPrice 
+      ? activeOrigPrice 
+      : (companyDisc > 0 ? (activePrice / (1 - (companyDisc / 100))) : null);
+
     this.quickViewContent.innerHTML = `
         <div class="quickview-gallery-wrapper">
           <div class="quickview-main-image-frame">
             ${navArrowsHtml}
             <img id="quickview-main-image-el" class="quickview-main-img" src="${galleryImages[0]}" alt="${prodName}" onerror="window.handleProductImgError(this)" />
-            ${product.is_promo 
-              ? `<span class="promo-badge" style="top:12px; left:12px; position:absolute;">-${product.discount_percent || 25}% OFF</span>`
+            ${isPromo 
+              ? `<span class="promo-badge" style="top:12px; left:12px; position:absolute;">-${totalDiscount}% OFF</span>`
               : `<span class="category-badge" style="top:12px; left:12px; position:absolute;">${product.category}</span>`
             }
           </div>
@@ -1531,6 +1760,25 @@ class App {
         <div>
           <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: #18181B; margin-bottom: 8px; line-height:1.3;">${prodName}</h3>
           
+          ${hasVariants ? `
+            <div class="quickview-shades-box">
+              <div class="quickview-shades-title">
+                <span>🎨 ${isArabic ? 'اختيار الدرجة / اللون' : 'Choix de la Teinte / Nuance'} (${product.variants.length})</span>
+                <span class="shade-active-badge" id="qv-active-shade-label">💄 ${activeVariant.shade_name || activeVariant.product_id} • Réf. ${activeVariant.product_id}</span>
+              </div>
+              <div class="quickview-shades-grid">
+                ${product.variants.map((v, vIdx) => `
+                  <button type="button" 
+                    class="quickview-shade-swatch ${String(v.product_id) === String(activeVariant.product_id) ? 'active' : ''}" 
+                    style="background-color: ${v.hex_color || '#DE7B90'};" 
+                    title="${v.shade_name || v.product_id} (Réf. ${v.product_id})"
+                    onclick="window.app.selectQuickViewVariant('${product.product_id}', '${v.product_id}', this)">
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
           <!-- Tab Navigation -->
           <div class="product-modal-tabs">
             <button class="product-tab-btn active" onclick="window.app.switchModalTab(event, 'tab-overview')">${this.i18n.t('tab_overview')}</button>
@@ -1566,7 +1814,7 @@ class App {
             ` : ''}
             <div>
               <div class="info-chip-label">${this.i18n.t('product_ref_label')}</div>
-              <div class="info-chip-value">${product.product_id}</div>
+              <div class="info-chip-value" id="qv-ref-code-chip">${activeRef}</div>
             </div>
             ${product.suitable_for ? `
               <div style="grid-column: 1 / -1;">
@@ -1582,11 +1830,11 @@ class App {
 
           <!-- Price & Action Footer -->
           <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E8E5DF; padding-top: 18px; margin-top: 18px;">
-            <div class="price-container">
-              ${product.original_price ? `<span class="product-price-strike">${Number(product.original_price).toFixed(2)} ${currencyLabel}</span>` : ''}
-              <span style="font-size: 1.6rem; font-weight: 800; color: ${product.is_promo ? 'var(--color-promo)' : '#18181B'}; letter-spacing:-0.02em;">${Number(product.price).toFixed(2)} <span style="font-size:0.95rem; font-weight:600; color:#52525B;">${currencyLabel}</span></span>
+            <div class="price-container" id="qv-price-container">
+              ${displayOrigPrice ? `<span class="product-price-strike">${Number(displayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
+              <span style="font-size: 1.6rem; font-weight: 800; color: ${isPromo ? 'var(--color-promo)' : '#18181B'}; letter-spacing:-0.02em;">${Number(activePrice).toFixed(2)} <span style="font-size:0.95rem; font-weight:600; color:#52525B;">${currencyLabel}</span></span>
             </div>
-            <button class="btn-add-cart" style="padding: 0 24px; min-height: 44px;" ${!product.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${product.product_id}'); window.app.closeModal(document.getElementById('quickview-modal-overlay'));">
+            <button class="btn-add-cart" id="qv-btn-add-cart" style="padding: 0 24px; min-height: 44px;" ${!product.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${activeRef}'); window.app.closeModal(document.getElementById('quickview-modal-overlay'));">
               ${this.i18n.t('quickview_add')}
             </button>
           </div>
@@ -1595,6 +1843,71 @@ class App {
     `;
 
     this.openModal(this.quickViewModalOverlay);
+  }
+
+  selectQuickViewVariant(parentId, variantId, btnEl) {
+    const parent = this.products.find(p => String(p.product_id) === String(parentId));
+    if (!parent || !Array.isArray(parent.variants)) return;
+    const variant = parent.variants.find(v => String(v.product_id) === String(variantId));
+    if (!variant) return;
+
+    const isArabic = this.i18n.getLang() === 'ar';
+    const currencyLabel = isArabic ? 'د.ت' : 'TND';
+
+    // Update active class on quickview swatches
+    const modal = document.getElementById('quickview-modal-overlay');
+    if (modal) {
+      modal.querySelectorAll('.quickview-shade-swatch').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      // Update main modal image
+      const imgEl = document.getElementById('quickview-main-image-el');
+      if (imgEl && variant.image_url) {
+        imgEl.src = variant.image_url;
+      }
+
+      // Update active label
+      const labelEl = document.getElementById('qv-active-shade-label');
+      if (labelEl) {
+        labelEl.textContent = `💄 ${variant.shade_name || variant.product_id} • Réf. ${variant.product_id}`;
+      }
+
+      // Update ref chip
+      const refChip = document.getElementById('qv-ref-code-chip');
+      if (refChip) {
+        refChip.textContent = variant.product_id;
+      }
+
+      // Update price display in modal
+      const priceContainer = document.getElementById('qv-price-container') || modal.querySelector('.price-container');
+      const vPrice = variant.price || parent.price;
+      const vOrigPrice = variant.original_price;
+      const vBaseDiscount = (vOrigPrice && vOrigPrice > vPrice) 
+        ? Math.round(((vOrigPrice - vPrice) / vOrigPrice) * 100) 
+        : 0;
+      const companyDisc = (parent.company_discount_applied && parent.company_discount_percent) 
+        ? Number(parent.company_discount_percent) 
+        : 0;
+      const totalDiscount = vBaseDiscount + companyDisc;
+      const vIsPromo = totalDiscount > 0;
+      const vDisplayOrigPrice = vOrigPrice 
+        ? vOrigPrice 
+        : (companyDisc > 0 ? (vPrice / (1 - (companyDisc / 100))) : null);
+
+      if (priceContainer) {
+        priceContainer.innerHTML = `
+          ${vDisplayOrigPrice ? `<span class="product-price-strike">${Number(vDisplayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
+          <span style="font-size: 1.6rem; font-weight: 800; color: ${vIsPromo ? 'var(--color-promo)' : '#18181B'}; letter-spacing:-0.02em;">${Number(vPrice).toFixed(2)} <span style="font-size:0.95rem; font-weight:600; color:#52525B;">${currencyLabel}</span></span>
+        `;
+      }
+
+      // Update Add to Cart button
+      const addBtn = document.getElementById('qv-btn-add-cart');
+      if (addBtn) {
+        addBtn.setAttribute('onclick', `window.app.addToCart('${variant.product_id}'); window.app.closeModal(document.getElementById('quickview-modal-overlay'));`);
+        addBtn.disabled = !variant.in_stock;
+      }
+    }
   }
 
   switchModalTab(event, targetTabId) {

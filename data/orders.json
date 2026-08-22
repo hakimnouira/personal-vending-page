@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "order_id": "ORD-451117",
+    "customer_name": "Test User",
+    "customer_phone": "98765432",
+    "channel": "phone",
+    "notes": "",
+    "items": [
+      {
+        "product_id": "42751",
+        "name": "Eau de Parfum Love Potion",
+        "price": 82.9,
+        "quantity": 2,
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42751%2f42751_1.png&MediaId=20989035&Version=1"
+      },
+      {
+        "product_id": "46890",
+        "name": "Feutre à lèvres Stain & Stay THE ONE - Rose",
+        "price": 53.5,
+        "quantity": 1,
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46890%2f46890_1.png&MediaId=20031068&Version=1"
+      }
+    ],
+    "total_amount": 219.3,
+    "currency": "TND",
+    "status": "pending",
+    "created_at": "2026-08-22T19:19:08.415Z"
+  }
+]

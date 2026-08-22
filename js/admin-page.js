@@ -424,12 +424,11 @@ class AdminDashboard {
 
         const val = inputDiscount ? parseFloat(inputDiscount.value) : 20;
         const percentage = (!isNaN(val) && val > 0 && val < 100) ? val : 20;
-        const factor = (100 - percentage) / 100;
 
         const isArabic = this.i18n.getLang() === 'ar';
         const confirmMsg = isArabic
-          ? `🏷️ تطبيق تخفيض الشركة بنسبة ${percentage}% على جميع منتجات الكتالوج؟`
-          : `🏷️ Appliquer la remise société de ${percentage}% sur TOUS les prix du catalogue ?`;
+          ? `🏷️ تطبيق نسبة تخفيض الشركة (${percentage}%) على جميع المنتجات دون تعديل الأسعار؟`
+          : `🏷️ Appliquer la remise société de ${percentage}% sur l'ensemble des produits du catalogue ?`;
 
         if (!confirm(confirmMsg)) return;
 
@@ -450,32 +449,64 @@ class AdminDashboard {
           }
         } catch (err) {}
 
-        // Apply discount locally to guarantee 100% execution in all environments
+        // Apply discount state locally (keep selling prices intact, update discount percentage)
         const all = this.rawProducts || [];
         all.forEach(p => {
-          const basePrice = (p.original_catalog_price !== undefined && p.original_catalog_price !== null)
-            ? parseFloat(p.original_catalog_price)
-            : parseFloat(p.price || 0);
-          p.original_catalog_price = basePrice;
-          p.price = parseFloat((basePrice * factor).toFixed(3));
           p.company_discount_applied = true;
           p.company_discount_percent = percentage;
+          if (Array.isArray(p.variants)) {
+            p.variants.forEach(v => {
+              v.company_discount_applied = true;
+              v.company_discount_percent = percentage;
+            });
+          }
         });
 
-        // Clear individual overrides since all products are now discounted
         try {
-          localStorage.removeItem('oriflame_discount_overrides_v1');
           localStorage.setItem('oriflame_products_v1', JSON.stringify(all));
         } catch (e) {}
         this.renderStockTable();
 
-        alert(isArabic ? `✅ تم تطبيق تخفيض ${percentage}% بنجاح!` : `✅ Remise de ${percentage}% appliquée avec succès sur ${all.length} produits !`);
-        btnDiscount.textContent = `✅ Remise de ${percentage}% Appliquée`;
+        alert(isArabic ? `✅ تم تفعيل تخفيض ${percentage}% بنجاح!` : `✅ Remise société de ${percentage}% activée avec succès sur ${all.length} produits !`);
+        btnDiscount.textContent = `✅ Remise de ${percentage}% Active`;
 
         setTimeout(() => {
           btnDiscount.disabled = false;
           btnDiscount.textContent = '🏷️ Appliquer la Remise Société';
         }, 2500);
+      });
+    }
+
+    const btnResetDiscount = document.getElementById('btn-reset-company-discount');
+    if (btnResetDiscount) {
+      btnResetDiscount.addEventListener('click', async () => {
+        const isArabic = this.i18n.getLang() === 'ar';
+        if (!confirm(isArabic ? 'هل أنت متأكد من إلغاء تخفيض الشركة؟' : 'Désactiver la remise société sur tout le catalogue ?')) return;
+
+        btnResetDiscount.disabled = true;
+        try {
+          await fetch('/api/products/remove-company-discount', { method: 'POST' });
+        } catch (e) {}
+
+        const all = this.rawProducts || [];
+        all.forEach(p => {
+          p.company_discount_applied = false;
+          p.company_discount_percent = 0;
+          if (Array.isArray(p.variants)) {
+            p.variants.forEach(v => {
+              v.company_discount_applied = false;
+              v.company_discount_percent = 0;
+            });
+          }
+        });
+
+        try {
+          localStorage.setItem('oriflame_products_v1', JSON.stringify(all));
+        } catch (e) {}
+        this.renderStockTable();
+
+        alert(isArabic ? '✅ تم إلغاء تخفيض الشركة.' : '✅ Remise société désactivée.');
+        btnResetDiscount.disabled = false;
       });
     }
 

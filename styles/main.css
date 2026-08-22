@@ -3270,4 +3270,151 @@ footer p {
   transform: translateY(-2px);
 }
 
+/* ── Product Color Swatches & Shades ───────────────────────────────────────── */
+.product-shades-row {
+  margin: 8px 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: #FAF8F5;
+  border: 1px solid #EAE7E1;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.shades-header-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #52525B;
+}
+
+.shades-swatches-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 2px 0;
+}
+
+.shade-swatch-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  outline: none;
+}
+
+.shade-swatch-btn:hover {
+  transform: scale(1.22);
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.shade-swatch-btn.active {
+  transform: scale(1.25);
+  border-color: #FFFFFF;
+  box-shadow: 0 0 0 2px #18181B, 0 2px 6px rgba(0, 0, 0, 0.25);
+  z-index: 3;
+}
+
+.shade-active-badge {
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: #18181B;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* QuickView Modal Shades Section */
+.quickview-shades-box {
+  background: #FAF8F5;
+  border: 1px solid #E8E5DF;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 14px 0 16px;
+}
+
+.quickview-shades-title {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #18181B;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quickview-shades-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.quickview-shade-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.18), 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  outline: none;
+}
+
+.quickview-shade-swatch:hover {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 2px #C5A880, 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.quickview-shade-swatch.active {
+  transform: scale(1.22);
+  box-shadow: 0 0 0 2.5px #18181B, 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.quickview-shade-swatch.active::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.cart-item-shade-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #4C1D95;
+  background: #EDE9FE;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-top: 3px;
+}
+
+.cart-item-shade-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.2);
+  display: inline-block;
+}
+
 

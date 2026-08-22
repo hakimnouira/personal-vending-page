@@ -4,7 +4,7 @@
     {
       "session_id": "SES-N94OQPB-MT4NDH3A",
       "first_seen": "2026-08-22T17:23:42.414Z",
-      "last_active": "2026-08-22T18:16:13.144Z",
+      "last_active": "2026-08-22T19:19:45.538Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -209,20 +209,227 @@
           "time": "2026-08-22T18:15:01.156Z",
           "offset": "0m 18s",
           "description": "Switched Language to fr"
+        },
+        {
+          "time": "2026-08-22T18:30:36.256Z",
+          "offset": "15m 53s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:30:36.505Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:31:19.163Z",
+          "offset": "0m 43s",
+          "description": "Searched for \"46890\""
+        },
+        {
+          "time": "2026-08-22T18:31:37.829Z",
+          "offset": "1m 1s",
+          "description": "Opened Detailed Product Info: Feutre à lèvres Stain & Stay THE ONE"
+        },
+        {
+          "time": "2026-08-22T18:32:12.758Z",
+          "offset": "1m 36s",
+          "description": "Added to cart: Feutre à lèvres Stain & Stay THE ONE - Rose"
+        },
+        {
+          "time": "2026-08-22T18:32:34.168Z",
+          "offset": "1m 58s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T18:41:01.423Z",
+          "offset": "10m 25s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:41:01.620Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:41:41.146Z",
+          "offset": "0m 40s",
+          "description": "Searched for \"vernis\""
+        },
+        {
+          "time": "2026-08-22T18:42:30.254Z",
+          "offset": "1m 29s",
+          "description": "Opened Detailed Product Info: Vernis à Ongles Gel"
+        },
+        {
+          "time": "2026-08-22T18:48:08.929Z",
+          "offset": "7m 7s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:48:09.073Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:48:38.459Z",
+          "offset": "0m 29s",
+          "description": "Searched for \"46939\""
+        },
+        {
+          "time": "2026-08-22T18:48:46.440Z",
+          "offset": "0m 37s",
+          "description": "Opened Detailed Product Info: Illuminateur Multi-Usages THE ONE"
+        },
+        {
+          "time": "2026-08-22T18:49:35.889Z",
+          "offset": "1m 27s",
+          "description": "Searched for \"48667\""
+        },
+        {
+          "time": "2026-08-22T18:49:49.935Z",
+          "offset": "1m 41s",
+          "description": "Opened Detailed Product Info: Vernis à Ongles Gel"
+        },
+        {
+          "time": "2026-08-22T18:53:42.963Z",
+          "offset": "5m 34s",
+          "description": "Searched for \"43350\""
+        },
+        {
+          "time": "2026-08-22T18:54:00.760Z",
+          "offset": "5m 52s",
+          "description": "Opened Detailed Product Info: Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited"
+        },
+        {
+          "time": "2026-08-22T18:55:48.232Z",
+          "offset": "7m 39s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:55:48.376Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:56:42.379Z",
+          "offset": "0m 54s",
+          "description": "Searched for \"43350\""
+        },
+        {
+          "time": "2026-08-22T18:56:49.693Z",
+          "offset": "1m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:56:49.857Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:57:16.901Z",
+          "offset": "0m 27s",
+          "description": "Searched for \"43350\""
+        },
+        {
+          "time": "2026-08-22T18:58:07.002Z",
+          "offset": "1m 17s",
+          "description": "Opened Detailed Product Info: Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited"
+        },
+        {
+          "time": "2026-08-22T18:59:13.265Z",
+          "offset": "2m 23s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:59:13.487Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:59:56.783Z",
+          "offset": "0m 43s",
+          "description": "Searched for \"43350\""
+        },
+        {
+          "time": "2026-08-22T19:10:54.377Z",
+          "offset": "11m 41s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:10:54.539Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:12:39.397Z",
+          "offset": "1m 45s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Eclat Homme"
+        },
+        {
+          "time": "2026-08-22T19:15:47.615Z",
+          "offset": "4m 53s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:15:47.747Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:16:53.229Z",
+          "offset": "1m 5s",
+          "description": "Searched for \"43346\""
+        },
+        {
+          "time": "2026-08-22T19:17:21.784Z",
+          "offset": "1m 34s",
+          "description": "Searched for \"42751\""
+        },
+        {
+          "time": "2026-08-22T19:17:31.135Z",
+          "offset": "1m 43s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T19:18:01.077Z",
+          "offset": "2m 13s",
+          "description": "Added to cart: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T19:18:14.117Z",
+          "offset": "2m 26s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T19:19:08.457Z",
+          "offset": "3m 21s",
+          "description": "Completed Phone/WhatsApp Order ORD-451117"
+        },
+        {
+          "time": "2026-08-22T19:19:45.538Z",
+          "offset": "3m 58s",
+          "description": "Left Storefront"
         }
       ],
       "categories_visited": [
-        "Fragrance"
+        "Fragrance",
+        "Makeup"
       ],
       "products_viewed": [
         "Parfum All or Nothing Amplified",
-        "Eau de Parfum Love Potion"
+        "Eau de Parfum Love Potion",
+        "Feutre à lèvres Stain & Stay THE ONE",
+        "Feutre à lèvres Stain & Stay THE ONE - Rose",
+        "Vernis à Ongles Gel",
+        "Illuminateur Multi-Usages THE ONE",
+        "Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited",
+        "Eau de Toilette Eclat Homme"
       ]
     },
     {
       "session_id": "SES-L3C35S8-MT4FORY6",
       "first_seen": "2026-08-22T13:48:32.776Z",
-      "last_active": "2026-08-22T18:16:16.188Z",
+      "last_active": "2026-08-22T19:44:43.333Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -467,6 +674,76 @@
           "time": "2026-08-22T18:07:23.126Z",
           "offset": "1m 7s",
           "description": "Opened Detailed Product Info: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T19:22:32.708Z",
+          "offset": "76m 17s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:22:32.879Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:23:17.043Z",
+          "offset": "0m 44s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:23:17.200Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:24:01.990Z",
+          "offset": "0m 45s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:24:02.126Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:25:59.628Z",
+          "offset": "1m 57s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:25:59.818Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:26:41.807Z",
+          "offset": "0m 42s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:26:42.027Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:34:43.157Z",
+          "offset": "8m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:34:43.336Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:34:54.250Z",
+          "offset": "0m 11s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-22T19:34:56.411Z",
+          "offset": "0m 13s",
+          "description": "Switched Language to fr"
         }
       ],
       "categories_visited": [
@@ -489,7 +766,7 @@
     {
       "session_id": "SES-I53EUZS-MT4DOJIY",
       "first_seen": "2026-08-22T12:52:22.624Z",
-      "last_active": "2026-08-22T18:16:04.137Z",
+      "last_active": "2026-08-22T19:44:04.136Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -799,17 +1076,210 @@
           "time": "2026-08-22T17:56:02.217Z",
           "offset": "3m 44s",
           "description": "Browsed eCatalogue Spread 32"
+        },
+        {
+          "time": "2026-08-22T18:37:38.872Z",
+          "offset": "45m 21s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:37:38.950Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:37:52.308Z",
+          "offset": "0m 13s",
+          "description": "Searched for \"46890\""
+        },
+        {
+          "time": "2026-08-22T18:37:54.303Z",
+          "offset": "0m 15s",
+          "description": "Opened Detailed Product Info: Feutre à lèvres Stain & Stay THE ONE"
+        },
+        {
+          "time": "2026-08-22T18:37:59.260Z",
+          "offset": "0m 20s",
+          "description": "Opened Detailed Product Info: Feutre à lèvres Stain & Stay THE ONE Rose"
+        },
+        {
+          "time": "2026-08-22T18:39:01.827Z",
+          "offset": "1m 23s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:39:01.949Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:39:05.458Z",
+          "offset": "0m 4s",
+          "description": "Searched for \"46890\""
+        },
+        {
+          "time": "2026-08-22T18:39:05.548Z",
+          "offset": "0m 4s",
+          "description": "Opened Detailed Product Info: Feutre à lèvres Stain & Stay THE ONE Rose"
+        },
+        {
+          "time": "2026-08-22T18:43:52.374Z",
+          "offset": "4m 50s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:43:52.448Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:43:59.397Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: Illuminateur Multi-Usages THE ONE Coral Confidence"
+        },
+        {
+          "time": "2026-08-22T18:44:51.050Z",
+          "offset": "0m 59s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:44:51.154Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:44:57.902Z",
+          "offset": "0m 7s",
+          "description": "Opened Detailed Product Info: Illuminateur Multi-Usages THE ONE Coral Confidence"
+        },
+        {
+          "time": "2026-08-22T18:51:12.359Z",
+          "offset": "6m 21s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:51:12.441Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T18:51:21.744Z",
+          "offset": "0m 9s",
+          "description": "Opened Detailed Product Info: Fond de Teint The ONE Everlasting Sync Stress-Free Light Rose"
+        },
+        {
+          "time": "2026-08-22T18:51:30.220Z",
+          "offset": "0m 18s",
+          "description": "Opened Detailed Product Info: Stylo pour les Sourcils The ONE Tattoo Effect Ash Brown"
+        },
+        {
+          "time": "2026-08-22T18:52:08.900Z",
+          "offset": "0m 56s",
+          "description": "Opened Detailed Product Info: Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited Sunset Rose"
+        },
+        {
+          "time": "2026-08-22T18:57:54.164Z",
+          "offset": "6m 42s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T18:57:54.353Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:01:44.811Z",
+          "offset": "3m 50s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:01:44.883Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:01:56.087Z",
+          "offset": "0m 11s",
+          "description": "Opened Detailed Product Info: Ombre à paupières liquide longue tenue Matte THE ONE"
+        },
+        {
+          "time": "2026-08-22T19:10:58.328Z",
+          "offset": "9m 13s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:10:58.524Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:11:16.871Z",
+          "offset": "0m 18s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:11:17.131Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:20:43.796Z",
+          "offset": "9m 26s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:20:43.882Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:20:54.277Z",
+          "offset": "0m 10s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:20:54.380Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:29:25.545Z",
+          "offset": "8m 31s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:29:25.615Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:39:34.345Z",
+          "offset": "10m 9s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:39:34.435Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
         }
       ],
       "categories_visited": [
-        "Fragrance"
+        "Fragrance",
+        "Makeup"
       ],
       "products_viewed": [
         "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
         "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
         "Parfum All or Nothing Amplified",
         "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
-        "Crème Parfumée pour le Corps All Or Nothing Amplified"
+        "Crème Parfumée pour le Corps All Or Nothing Amplified",
+        "Feutre à lèvres Stain & Stay THE ONE",
+        "Feutre à lèvres Stain & Stay THE ONE Rose",
+        "Illuminateur Multi-Usages THE ONE Coral Confidence",
+        "Fond de Teint The ONE Everlasting Sync Stress-Free Light Rose",
+        "Stylo pour les Sourcils The ONE Tattoo Effect Ash Brown",
+        "Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited Sunset Rose",
+        "Ombre à paupières liquide longue tenue Matte THE ONE"
       ]
     },
     {

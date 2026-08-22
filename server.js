@@ -824,6 +824,68 @@ app.delete('/api/products/:id', (req, res) => {
   res.json({ success: true, message: 'Product deleted' });
 });
 
+// ── COMPANY DISCOUNT (Remise Société) ENDPOINTS ───────────────────
+app.post('/api/products/apply-company-discount', (req, res) => {
+  try {
+    const percentage = parseInt(req.body.percentage) || 20;
+    const products = getProducts();
+    products.forEach(p => {
+      p.company_discount_applied = true;
+      p.company_discount_percent = percentage;
+      if (Array.isArray(p.variants)) {
+        p.variants.forEach(v => {
+          v.company_discount_applied = true;
+          v.company_discount_percent = percentage;
+        });
+      }
+    });
+    saveProducts(products);
+
+    const settings = getSettings();
+    settings.company_discount_applied = true;
+    settings.company_discount_percent = percentage;
+    saveSettings(settings);
+
+    res.json({
+      success: true,
+      message: `Remise Société de ${percentage}% activée avec succès sur l'ensemble du catalogue.`,
+      count: products.length
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.post('/api/products/remove-company-discount', (req, res) => {
+  try {
+    const products = getProducts();
+    products.forEach(p => {
+      p.company_discount_applied = false;
+      p.company_discount_percent = 0;
+      if (Array.isArray(p.variants)) {
+        p.variants.forEach(v => {
+          v.company_discount_applied = false;
+          v.company_discount_percent = 0;
+        });
+      }
+    });
+    saveProducts(products);
+
+    const settings = getSettings();
+    settings.company_discount_applied = false;
+    settings.company_discount_percent = 0;
+    saveSettings(settings);
+
+    res.json({
+      success: true,
+      message: 'Remise Société désactivée avec succès.',
+      count: products.length
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 app.post('/api/products/toggle-stock/:id', (req, res) => {
   const { id } = req.params;
   const products = getProducts();
