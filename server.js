@@ -455,34 +455,6 @@ app.post('/api/scrape/flipbook', async (req, res) => {
   }
 });
 
-// ── SCRAPER: Scrape single product from Oriflame URL ───────────────────────
-app.post('/api/scrape/url', async (req, res) => {
-  try {
-    const { url } = req.body;
-    if (!url) return res.status(400).json({ success: false, message: 'URL manquante' });
-    const product = await scrapeProductFromUrl(url);
-    if (!product) return res.status(404).json({ success: false, message: 'Impossible d\'extraire les données du produit' });
-    res.json({ success: true, data: product });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-});
-
-// ── SCRAPER: Scrape all categories from Oriflame Tunisia ───────────────────
-app.post('/api/scrape/oriflame-catalog', async (req, res) => {
-  try {
-    console.log("Admin initiated comprehensive multi-category product scrape...");
-    const products = await scrapeAllOriflameCategories();
-    res.json({
-      success: true,
-      message: `Scraping terminé avec succès : ${products.length} produits synchronisés.`,
-      count: products.length,
-      data: products
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Scraping failed: ' + error.message });
-  }
-});
 
 // ------------------- CAROUSEL BANNER API ------------------- //
 

@@ -4,11 +4,11 @@
     {
       "session_id": "SES-N94OQPB-MT4NDH3A",
       "first_seen": "2026-08-22T17:23:42.414Z",
-      "last_active": "2026-08-22T17:51:33.604Z",
+      "last_active": "2026-08-22T17:57:36.521Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 720,
+      "duration_seconds": 868,
       "activity_trail": [
         {
           "time": "2026-08-22T17:23:42.414Z",
@@ -99,6 +99,66 @@
           "time": "2026-08-22T17:39:38.387Z",
           "offset": "0m 5s",
           "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T17:54:01.272Z",
+          "offset": "14m 28s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:01.377Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:19.759Z",
+          "offset": "0m 18s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:19.952Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:27.720Z",
+          "offset": "0m 8s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:27.817Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:34.003Z",
+          "offset": "0m 6s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:34.155Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:35.334Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:35.435Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:36.411Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:54:36.518Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
         }
       ],
       "categories_visited": [
@@ -112,7 +172,7 @@
     {
       "session_id": "SES-L3C35S8-MT4FORY6",
       "first_seen": "2026-08-22T13:48:32.776Z",
-      "last_active": "2026-08-22T17:51:32.181Z",
+      "last_active": "2026-08-22T17:57:32.180Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -358,7 +418,7 @@
     {
       "session_id": "SES-I53EUZS-MT4DOJIY",
       "first_seen": "2026-08-22T12:52:22.624Z",
-      "last_active": "2026-08-22T17:51:45.132Z",
+      "last_active": "2026-08-22T17:57:03.142Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -632,6 +692,41 @@
         {
           "time": "2026-08-22T16:38:50.657Z",
           "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 32"
+        },
+        {
+          "time": "2026-08-22T17:52:17.619Z",
+          "offset": "73m 33s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:52:17.903Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:52:21.354Z",
+          "offset": "0m 3s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T17:52:36.748Z",
+          "offset": "0m 19s",
+          "description": "Added to cart: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T17:55:57.198Z",
+          "offset": "3m 39s",
+          "description": "Browsed eCatalogue Spread 21"
+        },
+        {
+          "time": "2026-08-22T17:56:00.433Z",
+          "offset": "3m 43s",
+          "description": "Browsed eCatalogue Spread 49"
+        },
+        {
+          "time": "2026-08-22T17:56:02.217Z",
+          "offset": "3m 44s",
           "description": "Browsed eCatalogue Spread 32"
         }
       ],

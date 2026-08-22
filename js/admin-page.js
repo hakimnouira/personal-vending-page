@@ -858,8 +858,17 @@ class AdminDashboard {
           const res = await fetch('/api/scrape/oriflame-catalog', { method: 'POST' });
           const result = await res.json();
 
-          if (result.success && result.report) {
-            const r = result.report;
+          if (result.success && (result.report || result.data || result.count !== undefined)) {
+            const r = result.report || {
+              total_scraped: result.count || (Array.isArray(result.data) ? result.data.length : 0),
+              new_count: 0,
+              modified_count: 0,
+              deleted_count: 0,
+              unchanged_count: result.count || (Array.isArray(result.data) ? result.data.length : 0),
+              categories_breakdown: {},
+              new_items_preview: [],
+              modified_items_preview: []
+            };
 
             if (reportStatus) {
               reportStatus.style.color = 'var(--admin-success)';
