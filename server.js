@@ -39,6 +39,27 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Dynamic root route for perfect Open Graph / Facebook Crawler previews
+app.get(['/', '/index.html'], (req, res, next) => {
+  try {
+    const host = req.get('host') || 'mouna-nouira.wasmer.app';
+    const isHttps = req.headers['x-forwarded-proto'] === 'https' || req.secure || !host.includes('localhost');
+    const proto = isHttps ? 'https' : 'http';
+    const baseUrl = `${proto}://${host}`;
+
+    let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+    html = html.replace(/property="og:url" content="[^"]*"/, `property="og:url" content="${baseUrl}/"`);
+    html = html.replace(/property="og:image" content="[^"]*"/, `property="og:image" content="${baseUrl}/assets/og-facebook-preview.jpg"`);
+    html = html.replace(/property="og:image:secure_url" content="[^"]*"/, `property="og:image:secure_url" content="${baseUrl}/assets/og-facebook-preview.jpg"`);
+    html = html.replace(/name="twitter:image" content="[^"]*"/, `name="twitter:image" content="${baseUrl}/assets/og-facebook-preview.jpg"`);
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html);
+  } catch (err) {
+    next();
+  }
+});
+
 // Static files
 app.use(express.static(__dirname));
 app.use('/uploads', express.static(UPLOADS_DIR));
