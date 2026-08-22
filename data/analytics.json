@@ -1,6 +1,164 @@
 {
-  "total_visits": 32,
+  "total_visits": 33,
   "sessions": [
+    {
+      "session_id": "SES-2MH6I63-MT4V2HFO",
+      "first_seen": "2026-08-22T20:59:06.576Z",
+      "last_active": "2026-08-22T21:02:04.147Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 109,
+      "activity_trail": [
+        {
+          "time": "2026-08-22T20:59:06.576Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:28.615Z",
+          "offset": "0m 22s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:29.109Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:32.109Z",
+          "offset": "0m 3s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:32.338Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:33.414Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:33.634Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:34.234Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:34.408Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:34.686Z",
+          "offset": "0m 0s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:34.985Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:35.197Z",
+          "offset": "0m 0s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:35.387Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:36.073Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:36.333Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:56.184Z",
+          "offset": "0m 20s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:56.389Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:57.080Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:57.274Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:58.215Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:58.431Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:59.256Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:59:59.529Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T21:00:00.339Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T21:00:00.583Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T21:00:01.341Z",
+          "offset": "0m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T21:00:01.574Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T21:00:14.431Z",
+          "offset": "0m 13s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T21:00:14.643Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        }
+      ],
+      "categories_visited": [],
+      "products_viewed": []
+    },
     {
       "session_id": "SES-N94OQPB-MT4NDH3A",
       "first_seen": "2026-08-22T17:23:42.414Z",
@@ -429,7 +587,7 @@
     {
       "session_id": "SES-L3C35S8-MT4FORY6",
       "first_seen": "2026-08-22T13:48:32.776Z",
-      "last_active": "2026-08-22T20:52:06.106Z",
+      "last_active": "2026-08-22T21:02:18.371Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -1049,6 +1207,26 @@
           "time": "2026-08-22T20:42:09.784Z",
           "offset": "0m 19s",
           "description": "Shared to Facebook"
+        },
+        {
+          "time": "2026-08-22T21:00:15.749Z",
+          "offset": "18m 25s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T21:00:15.963Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T21:01:18.252Z",
+          "offset": "1m 2s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T21:01:18.372Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
         }
       ],
       "categories_visited": [
@@ -1082,7 +1260,7 @@
     {
       "session_id": "SES-I53EUZS-MT4DOJIY",
       "first_seen": "2026-08-22T12:52:22.624Z",
-      "last_active": "2026-08-22T20:52:04.134Z",
+      "last_active": "2026-08-22T21:02:04.141Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",

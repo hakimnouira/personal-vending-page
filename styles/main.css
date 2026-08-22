@@ -259,6 +259,99 @@ input, select, textarea {
   background: var(--color-surface-hover);
 }
 
+/* Mobile & Tablet Navbar Responsiveness */
+@media (max-width: 860px) {
+  .navbar {
+    padding: 10px 0;
+  }
+  .nav-container {
+    gap: 10px;
+  }
+  #btn-nav-about,
+  #btn-nav-privacy {
+    display: none; /* Keep mobile bar clean and focused on action buttons */
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 6px 0;
+  }
+  .nav-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 0 0.5rem;
+  }
+  .brand-logo {
+    gap: 8px;
+    text-align: center;
+  }
+  .brand-monogram {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+  }
+  .brand-text h1 {
+    font-size: 1.05rem;
+    line-height: 1.1;
+  }
+  .brand-text p {
+    font-size: 0.6rem;
+  }
+  .nav-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 4px;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .nav-actions::-webkit-scrollbar {
+    display: none;
+  }
+  .lang-selector {
+    padding: 5px 6px;
+    font-size: 0.72rem;
+    height: 30px;
+    flex-shrink: 0;
+  }
+  .nav-btn {
+    padding: 5px 7px !important;
+    font-size: 0.72rem !important;
+    gap: 3px !important;
+    height: 30px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  #btn-nav-share-fb svg,
+  #btn-nav-facebook svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .nav-actions {
+    gap: 3px;
+  }
+  .nav-btn {
+    padding: 4px 6px !important;
+    font-size: 0.68rem !important;
+  }
+  .lang-selector {
+    padding: 4px 4px;
+    font-size: 0.68rem;
+  }
+}
+
+
+
 /* Dynamic Luxury Hero Carousel Banner (100% Uncropped Image View & Offer Deal Styling) */
 .hero-carousel-container {
   position: relative;
