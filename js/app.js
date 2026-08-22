@@ -997,6 +997,45 @@ class App {
     return p.description_fr || p.description || '';
   }
 
+  calculateDiscountMetrics(activePrice, activeOrigPrice, product) {
+    const pCurrent = Number(activePrice) || 0;
+
+    // Determine the real Prix Initial (catalog initial price before any discounts)
+    let pInitial = (activeOrigPrice && Number(activeOrigPrice) > pCurrent) ? Number(activeOrigPrice) : null;
+    
+    if (!pInitial && product && product.original_price && Number(product.original_price) > pCurrent) {
+      pInitial = Number(product.original_price);
+    }
+    if (!pInitial && product && product.original_catalog_price && Number(product.original_catalog_price) > pCurrent) {
+      pInitial = Number(product.original_catalog_price);
+    }
+
+    const companyDisc = (product && product.company_discount_applied && product.company_discount_percent) 
+      ? Number(product.company_discount_percent) 
+      : 0;
+
+    let totalDiscount = 0;
+    let displayOrigPrice = null;
+
+    if (pInitial && pInitial > pCurrent) {
+      // The discount shown to the client is ALWAYS the exact remise calculated from Prix Initial
+      totalDiscount = Math.round(((pInitial - pCurrent) / pInitial) * 100);
+      displayOrigPrice = pInitial;
+    } else if (companyDisc > 0) {
+      // Product had no previous discount: 20% remise with virtual Prix Initial
+      totalDiscount = companyDisc;
+      displayOrigPrice = pCurrent / (1 - companyDisc / 100);
+    } else if (product && product.discount_percent) {
+      totalDiscount = Number(product.discount_percent);
+    }
+
+    return {
+      totalDiscount,
+      isPromo: totalDiscount > 0,
+      displayOrigPrice
+    };
+  }
+
   renderDealsShowcase() {
     if (!this.dealsCarouselGrid) return;
     const isArabic = this.i18n.getLang() === 'ar';
@@ -1022,25 +1061,13 @@ class App {
 
     this.dealsCarouselGrid.innerHTML = promoProducts.map(p => {
       const prodName = this.getProductName(p);
-
-      const baseDiscount = (p.original_price && p.original_price > p.price) 
-        ? Math.round(((p.original_price - p.price) / p.original_price) * 100) 
-        : (p.discount_percent || 0);
-
-      const companyDisc = (p.company_discount_applied && p.company_discount_percent) 
-        ? Number(p.company_discount_percent) 
-        : 0;
-
-      const totalDiscount = (baseDiscount + companyDisc) || 25;
-      const displayOrigPrice = p.original_price 
-        ? p.original_price 
-        : (companyDisc > 0 ? (p.price / (1 - (companyDisc / 100))) : null);
+      const { totalDiscount, displayOrigPrice } = this.calculateDiscountMetrics(p.price, p.original_price, p);
 
       return `
         <div class="mini-deal-card" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
           <div class="mini-deal-img-wrap">
             <img class="mini-deal-img" src="${p.image_url}" alt="${prodName}" loading="lazy" onerror="window.handleProductImgError(this)" />
-            <span class="promo-pill">-${totalDiscount}%</span>
+            <span class="promo-pill">-${totalDiscount || 25}%</span>
           </div>
           <h4 class="mini-deal-title">${prodName}</h4>
           <div class="price-wrap">
@@ -1119,20 +1146,7 @@ class App {
       const activePrice = initialVariant ? (initialVariant.price || p.price) : p.price;
       const activeOrigPrice = initialVariant ? (initialVariant.original_price || null) : p.original_price;
       
-      const baseDiscount = (activeOrigPrice && activeOrigPrice > activePrice) 
-        ? Math.round(((activeOrigPrice - activePrice) / activeOrigPrice) * 100) 
-        : (p.discount_percent || 0);
-
-      const companyDisc = (p.company_discount_applied && p.company_discount_percent) 
-        ? Number(p.company_discount_percent) 
-        : 0;
-
-      const totalDiscount = baseDiscount + companyDisc;
-      const isPromo = totalDiscount > 0;
-
-      const displayOrigPrice = activeOrigPrice 
-        ? activeOrigPrice 
-        : (companyDisc > 0 ? (activePrice / (1 - (companyDisc / 100))) : null);
+      const { totalDiscount, isPromo, displayOrigPrice } = this.calculateDiscountMetrics(activePrice, activeOrigPrice, p);
 
       const defaultAddId = initialVariant ? initialVariant.product_id : p.product_id;
       const initialVariantId = initialVariant ? initialVariant.product_id : '';
@@ -1217,21 +1231,11 @@ class App {
         badgeEl.textContent = `💄 ${variant.shade_name || variant.product_id}`;
       }
 
-      // Update price display on card with company discount awareness
+      // Update price display on card with compounding company discount
       const priceContainer = cardEl.querySelector('.price-container');
       const vPrice = variant.price || parent.price;
       const vOrigPrice = variant.original_price;
-      const vBaseDiscount = (vOrigPrice && vOrigPrice > vPrice) 
-        ? Math.round(((vOrigPrice - vPrice) / vOrigPrice) * 100) 
-        : 0;
-      const companyDisc = (parent.company_discount_applied && parent.company_discount_percent) 
-        ? Number(parent.company_discount_percent) 
-        : 0;
-      const totalDiscount = vBaseDiscount + companyDisc;
-      const vIsPromo = totalDiscount > 0;
-      const vDisplayOrigPrice = vOrigPrice 
-        ? vOrigPrice 
-        : (companyDisc > 0 ? (vPrice / (1 - (companyDisc / 100))) : null);
+      const { totalDiscount, isPromo: vIsPromo, displayOrigPrice: vDisplayOrigPrice } = this.calculateDiscountMetrics(vPrice, vOrigPrice, parent);
 
       if (priceContainer) {
         priceContainer.innerHTML = `
@@ -1729,20 +1733,7 @@ class App {
     const activePrice = activeVariant ? (activeVariant.price || product.price) : product.price;
     const activeOrigPrice = activeVariant ? (activeVariant.original_price || null) : product.original_price;
 
-    const baseDiscount = (activeOrigPrice && activeOrigPrice > activePrice) 
-      ? Math.round(((activeOrigPrice - activePrice) / activeOrigPrice) * 100) 
-      : (product.discount_percent || 0);
-
-    const companyDisc = (product.company_discount_applied && product.company_discount_percent) 
-      ? Number(product.company_discount_percent) 
-      : 0;
-
-    const totalDiscount = baseDiscount + companyDisc;
-    const isPromo = totalDiscount > 0;
-
-    const displayOrigPrice = activeOrigPrice 
-      ? activeOrigPrice 
-      : (companyDisc > 0 ? (activePrice / (1 - (companyDisc / 100))) : null);
+    const { totalDiscount, isPromo, displayOrigPrice } = this.calculateDiscountMetrics(activePrice, activeOrigPrice, product);
 
     this.quickViewContent.innerHTML = `
         <div class="quickview-gallery-wrapper">
@@ -1829,14 +1820,20 @@ class App {
           </div>
 
           <!-- Price & Action Footer -->
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E8E5DF; padding-top: 18px; margin-top: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E8E5DF; padding-top: 18px; margin-top: 18px; flex-wrap: wrap; gap: 12px;">
             <div class="price-container" id="qv-price-container">
               ${displayOrigPrice ? `<span class="product-price-strike">${Number(displayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
               <span style="font-size: 1.6rem; font-weight: 800; color: ${isPromo ? 'var(--color-promo)' : '#18181B'}; letter-spacing:-0.02em;">${Number(activePrice).toFixed(2)} <span style="font-size:0.95rem; font-weight:600; color:#52525B;">${currencyLabel}</span></span>
             </div>
-            <button class="btn-add-cart" id="qv-btn-add-cart" style="padding: 0 24px; min-height: 44px;" ${!product.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${activeRef}'); window.app.closeModal(document.getElementById('quickview-modal-overlay'));">
-              ${this.i18n.t('quickview_add')}
-            </button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button type="button" class="btn-share-qv" onclick="window.app.shareToFacebook('${product.product_id}')" title="Partager ce produit sur Facebook" style="background: rgba(24,119,242,0.08); color: #1877F2; border: 1px solid rgba(24,119,242,0.25); min-height: 44px; padding: 0 14px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease;">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                <span data-i18n="nav_share">Partager</span>
+              </button>
+              <button class="btn-add-cart" id="qv-btn-add-cart" style="padding: 0 24px; min-height: 44px;" ${!product.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${activeRef}'); window.app.closeModal(document.getElementById('quickview-modal-overlay'));">
+                ${this.i18n.t('quickview_add')}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1878,21 +1875,11 @@ class App {
         refChip.textContent = variant.product_id;
       }
 
-      // Update price display in modal
+      // Update price display in modal with compounding company discount
       const priceContainer = document.getElementById('qv-price-container') || modal.querySelector('.price-container');
       const vPrice = variant.price || parent.price;
       const vOrigPrice = variant.original_price;
-      const vBaseDiscount = (vOrigPrice && vOrigPrice > vPrice) 
-        ? Math.round(((vOrigPrice - vPrice) / vOrigPrice) * 100) 
-        : 0;
-      const companyDisc = (parent.company_discount_applied && parent.company_discount_percent) 
-        ? Number(parent.company_discount_percent) 
-        : 0;
-      const totalDiscount = vBaseDiscount + companyDisc;
-      const vIsPromo = totalDiscount > 0;
-      const vDisplayOrigPrice = vOrigPrice 
-        ? vOrigPrice 
-        : (companyDisc > 0 ? (vPrice / (1 - (companyDisc / 100))) : null);
+      const { totalDiscount, isPromo: vIsPromo, displayOrigPrice: vDisplayOrigPrice } = this.calculateDiscountMetrics(vPrice, vOrigPrice, parent);
 
       if (priceContainer) {
         priceContainer.innerHTML = `
@@ -2054,6 +2041,47 @@ class App {
       const messengerUrl = isMobile ? `https://m.me/${fbHandle}` : `https://www.facebook.com/messages/t/${fbHandle}`;
       window.open(messengerUrl, '_blank');
     }
+  }
+
+  shareToFacebook(productId = null) {
+    const isArabic = this.i18n.getLang() === 'ar';
+    let shareUrl = window.location.origin + window.location.pathname;
+    let shareTitle = "Mouna Nouira — Catalogue Officiel Oriflame Tunisie";
+    let shareText = "Découvrez le catalogue officiel Oriflame Tunisie de Mouna Nouira avec des remises exceptionnelles et commande directe !";
+
+    if (productId) {
+      const p = this.products.find(item => String(item.product_id) === String(productId));
+      if (p) {
+        const pName = this.getProductName(p);
+        shareUrl += `?prod=${encodeURIComponent(p.product_id)}`;
+        shareTitle = `${pName} | Oriflame Tunisie`;
+        shareText = `✨ Découvrez "${pName}" (${p.price.toFixed(2)} TND) sur la boutique officielle de Mouna Nouira !`;
+      }
+    }
+
+    if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+      navigator.share({
+        title: shareTitle,
+        text: shareText,
+        url: shareUrl
+      }).catch(() => {
+        this._openFacebookSharerPopup(shareUrl, shareText);
+      });
+    } else {
+      this._openFacebookSharerPopup(shareUrl, shareText);
+    }
+
+    this.telemetry.trackEvent('Shared to Facebook', { productId, url: shareUrl });
+    this.showToast(isArabic ? 'جاري فتح نافذة المشاركة على فيسبوك...' : 'Ouverture du partage Facebook...');
+  }
+
+  _openFacebookSharerPopup(url, quote) {
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(quote)}`;
+    const width = 620;
+    const height = 650;
+    const left = (window.innerWidth - width) / 2 + (window.screenX || 0);
+    const top = (window.innerHeight - height) / 2 + (window.screenY || 0);
+    window.open(fbUrl, 'fbShareWindow', `toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=${width},height=${height},top=${top},left=${left}`);
   }
 
   showToast(message) {

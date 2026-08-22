@@ -4,7 +4,7 @@
     "name": "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
     "name_fr": "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
     "category": "Fragrance",
-    "price": 27.92,
+    "price": 34.9,
     "original_price": 49.9,
     "original_catalog_price": 34.9,
     "company_discount_applied": true,
@@ -749,7 +749,7 @@
     "name_fr": "Eau de Parfum Love Potion",
     "category": "Fragrance",
     "price": 66.32,
-    "original_price": 111.9,
+    "original_price": 119.9,
     "original_catalog_price": 82.9,
     "company_discount_applied": true,
     "company_discount_percent": 20,
@@ -772,7 +772,12 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": true,
+    "name_ar": "",
+    "name_en": "",
+    "description_fr": "Produit officiel Oriflame Tunisie (42751). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "description_ar": "",
+    "description_en": ""
   },
   {
     "product_id": "46805",

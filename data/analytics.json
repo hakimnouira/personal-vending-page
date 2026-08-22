@@ -429,7 +429,7 @@
     {
       "session_id": "SES-L3C35S8-MT4FORY6",
       "first_seen": "2026-08-22T13:48:32.776Z",
-      "last_active": "2026-08-22T19:44:43.333Z",
+      "last_active": "2026-08-22T20:42:51.105Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
@@ -744,6 +744,311 @@
           "time": "2026-08-22T19:34:56.411Z",
           "offset": "0m 13s",
           "description": "Switched Language to fr"
+        },
+        {
+          "time": "2026-08-22T19:55:21.188Z",
+          "offset": "20m 38s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T19:55:21.285Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T19:55:26.834Z",
+          "offset": "0m 6s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T19:59:05.385Z",
+          "offset": "3m 44s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T19:59:07.244Z",
+          "offset": "3m 46s",
+          "description": "Added to cart: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T19:59:08.189Z",
+          "offset": "3m 47s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T19:59:10.779Z",
+          "offset": "3m 49s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T20:00:13.689Z",
+          "offset": "4m 52s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:00:13.810Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:02:33.252Z",
+          "offset": "2m 19s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T20:06:49.641Z",
+          "offset": "6m 36s",
+          "description": "Searched for \"42751\""
+        },
+        {
+          "time": "2026-08-22T20:07:14.383Z",
+          "offset": "7m 1s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:07:14.548Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:07:48.255Z",
+          "offset": "0m 34s",
+          "description": "Searched for \"42751\""
+        },
+        {
+          "time": "2026-08-22T20:09:09.534Z",
+          "offset": "1m 55s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:09:09.697Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:10:25.404Z",
+          "offset": "1m 16s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:10:25.579Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:12:02.298Z",
+          "offset": "1m 37s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:12:02.476Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:13:39.067Z",
+          "offset": "1m 37s",
+          "description": "Added to cart: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T20:14:43.022Z",
+          "offset": "2m 41s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:14:43.174Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:14:47.925Z",
+          "offset": "0m 5s",
+          "description": "Added to cart: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T20:15:25.521Z",
+          "offset": "0m 42s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:15:25.666Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:15:35.175Z",
+          "offset": "0m 10s",
+          "description": "Added to cart: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T20:15:35.185Z",
+          "offset": "0m 10s",
+          "description": "Added to cart: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T20:15:40.557Z",
+          "offset": "0m 15s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T20:16:16.293Z",
+          "offset": "0m 51s",
+          "description": "Completed Phone/WhatsApp Order ORD-151424"
+        },
+        {
+          "time": "2026-08-22T20:20:18.497Z",
+          "offset": "4m 53s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:20:18.625Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:20:45.029Z",
+          "offset": "0m 26s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:20:45.110Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:21:27.763Z",
+          "offset": "0m 43s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T20:21:30.155Z",
+          "offset": "0m 45s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T20:21:39.525Z",
+          "offset": "0m 54s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T20:22:31.693Z",
+          "offset": "1m 47s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T20:25:40.135Z",
+          "offset": "4m 55s",
+          "description": "Searched for \"40683\""
+        },
+        {
+          "time": "2026-08-22T20:25:52.343Z",
+          "offset": "5m 7s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:25:52.483Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:26:20.288Z",
+          "offset": "0m 28s",
+          "description": "Searched for \"40683\""
+        },
+        {
+          "time": "2026-08-22T20:26:55.620Z",
+          "offset": "1m 3s",
+          "description": "Searched for \"42751\""
+        },
+        {
+          "time": "2026-08-22T20:27:27.127Z",
+          "offset": "1m 35s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:27:27.218Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:27:37.036Z",
+          "offset": "0m 10s",
+          "description": "Opened Detailed Product Info: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T20:28:31.327Z",
+          "offset": "1m 4s",
+          "description": "Opened Detailed Product Info: Eau de Toilette Signature Man"
+        },
+        {
+          "time": "2026-08-22T20:33:10.236Z",
+          "offset": "5m 43s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:33:10.329Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:33:13.391Z",
+          "offset": "0m 3s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-22T20:33:39.714Z",
+          "offset": "0m 29s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:33:39.788Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:33:59.092Z",
+          "offset": "0m 19s",
+          "description": "Searched for \"40683\""
+        },
+        {
+          "time": "2026-08-22T20:34:03.196Z",
+          "offset": "0m 23s",
+          "description": "Opened Detailed Product Info: Parfum Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T20:39:35.265Z",
+          "offset": "5m 55s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:39:35.378Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:39:58.030Z",
+          "offset": "0m 23s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T20:41:50.991Z",
+          "offset": "2m 16s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T20:41:51.107Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T20:41:53.145Z",
+          "offset": "0m 2s",
+          "description": "Shared to Facebook"
+        },
+        {
+          "time": "2026-08-22T20:42:09.784Z",
+          "offset": "0m 19s",
+          "description": "Shared to Facebook"
         }
       ],
       "categories_visited": [
@@ -754,19 +1059,30 @@
         "Makeup",
         "Haircare",
         "Wellness",
-        "All"
+        "All",
+        {
+          "productId": null,
+          "url": "http://localhost:3000/"
+        },
+        {
+          "productId": null,
+          "url": "http://localhost:3000/"
+        }
       ],
       "products_viewed": [
         "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
         "Fond de Teint The ONE Everlasting Sync Stress-Free Vanilla",
         "Pinceau Teint Parfait",
-        "Eau de Parfum Love Potion"
+        "Eau de Parfum Love Potion",
+        "Parfum Giordani Gold Essenza Supreme",
+        "Eau de Toilette Signature Man",
+        "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified"
       ]
     },
     {
       "session_id": "SES-I53EUZS-MT4DOJIY",
       "first_seen": "2026-08-22T12:52:22.624Z",
-      "last_active": "2026-08-22T19:44:04.136Z",
+      "last_active": "2026-08-22T20:42:04.140Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",

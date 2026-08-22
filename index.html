@@ -11,6 +11,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- Open Graph / Facebook Meta Tags (for High-Quality Thumbnail Sharing) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://localhost:3000/" />
+  <meta property="og:title" content="Mouna Nouira — Catalogue Officiel Oriflame Tunisie" />
+  <meta property="og:description" content="Découvrez le catalogue officiel Oriflame Suède Tunisie avec Mouna Nouira. Parfums de luxe, soins et maquillage avec remises exclusives et commande directe." />
+  <meta property="og:image" content="/assets/og-facebook-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Mouna Nouira — Catalogue Officiel Oriflame Tunisie" />
+  <meta property="fb:app_id" content="687440050853768" />
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mouna Nouira — Catalogue Officiel Oriflame Tunisie" />
+  <meta name="twitter:description" content="Découvrez le catalogue officiel Oriflame Suède Tunisie avec Mouna Nouira. Parfums de luxe, soins et maquillage avec remises exclusives." />
+  <meta name="twitter:image" content="/assets/og-facebook-preview.jpg" />
+  
   <!-- CSS Styles -->
   <link rel="stylesheet" href="styles/main.css" />
 </head>
@@ -47,6 +64,10 @@
           <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           <span data-i18n="nav_facebook">Page Facebook</span>
         </a>
+        <button id="btn-nav-share-fb" class="nav-btn nav-btn-share" onclick="window.app.shareToFacebook()" title="Partager le catalogue sur Facebook" style="background: rgba(24,119,242,0.12); color: #1877F2; border: 1px solid rgba(24,119,242,0.3); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 7px 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+          <span data-i18n="nav_share">Partager</span>
+        </button>
         <button id="btn-nav-about" class="nav-btn" data-i18n="nav_about">
           À propos
         </button>
