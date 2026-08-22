@@ -805,10 +805,12 @@ class App {
           await copyTextToClipboard(msg);
         }
 
-        const finalMessengerUrl = `https://m.me/${cleanedFbHandle}`;
+        const finalMessengerUrl = isMobile
+          ? `https://m.me/${cleanedFbHandle}?text=${encodeURIComponent(msg)}`
+          : `https://www.facebook.com/messages/t/${cleanedFbHandle}`;
 
         this.showToast(isMobile
-          ? '📋 ✅ Message copié ! Collez-le (appui long → Coller) dans Messenger.'
+          ? '📋 ✅ Message copié ! Collez-le (appui long → Coller) si besoin dans Messenger.'
           : this.i18n.t('toast_copied'));
 
         this.telemetry.trackEvent(`Clicked Facebook/Messenger Checkout (${count} items, Total: ${total} TND)`);
@@ -845,12 +847,8 @@ class App {
           }
         }
 
-        // On mobile, also trigger the Messenger link
-        if (isMobile) {
-          window.open(finalMessengerUrl, '_blank');
-        } else {
-          window.open(`https://www.facebook.com/messages/t/${cleanedFbHandle}`, '_blank');
-        }
+        // Open Messenger with pre-filled text parameter
+        window.open(finalMessengerUrl, '_blank');
       });
     }
 
@@ -1486,6 +1484,13 @@ class App {
       this.btnMessengerCheckout.textContent = isMobile 
         ? this.i18n.t('send_messenger_mobile') 
         : this.i18n.t('send_messenger_desktop');
+
+      const fbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
+      const name = this.customerNameInput ? this.customerNameInput.value : '';
+      const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
+      const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+      this.btnMessengerCheckout.href = `https://m.me/${fbHandle}?text=${encodeURIComponent(msg)}`;
+      this.btnMessengerCheckout.target = "_blank";
     }
 
     if (this.btnCopyOrderSummary) {
