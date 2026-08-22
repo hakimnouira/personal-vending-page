@@ -1112,13 +1112,87 @@ class App {
     }).join('');
   }
 
-  addToCart(productId) {
-    const product = this.products.find(p => p.product_id === productId);
-    if (product && product.in_stock) {
-      this.cartManager.addItem(product, 1);
-      this.showToast(this.i18n.t('toast_added', { name: product.name }));
-      this.telemetry.trackEvent(`Added to cart: ${product.name}`, product.category, product.name);
+  addProductToCart(productId) {
+    if (!productId) return;
+    const cleanId = String(productId).trim();
+
+    // 1. Look up in catalog products
+    let product = this.products.find(p => String(p.product_id) === cleanId || String(p.id) === cleanId);
+
+    // 2. Look up in digital flipbook hotspots
+    if (!product && window.ecatViewer && Array.isArray(window.ecatViewer.spreads)) {
+      for (const sp of window.ecatViewer.spreads) {
+        const h = (sp.hotspots || []).find(hp => String(hp.id) === cleanId || String(hp.product_id) === cleanId);
+        if (h) {
+          product = {
+            product_id: h.id || h.product_id || cleanId,
+            name: h.name || `Produit Oriflame (${cleanId})`,
+            price: Number(h.price) || 39.9,
+            image_url: h.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${cleanId}%2f${cleanId}_1.png&MediaId=20989035&Version=1`,
+            category: 'Catalogue',
+            in_stock: true
+          };
+          break;
+        }
+      }
     }
+
+    // 3. Look up in threshold deals
+    if (!product && Array.isArray(this.cartManager.deals)) {
+      const deal = this.cartManager.deals.find(d => String(d.product_id) === cleanId);
+      if (deal) {
+        product = {
+          product_id: cleanId,
+          name: deal.product_name || `Produit Réf. ${cleanId}`,
+          price: deal.product_price ? Number(deal.product_price) : 39.9,
+          image_url: deal.product_image || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${cleanId}%2f${cleanId}_1.png&MediaId=20989035&Version=1`,
+          category: 'Catalogue',
+          in_stock: true
+        };
+      }
+    }
+
+    // 4. Look up in bundles upsells
+    if (!product && Array.isArray(this.cartManager.bundles)) {
+      const upsells = this.cartManager.getUpsellBundles(this.products);
+      for (const u of upsells) {
+        const missing = (u.missing_products || []).find(m => String(m.product_id) === cleanId);
+        if (missing) {
+          product = {
+            product_id: cleanId,
+            name: missing.name || `Produit Réf. ${cleanId}`,
+            price: Number(missing.price) || 39.9,
+            image_url: missing.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${cleanId}%2f${cleanId}_1.png&MediaId=20989035&Version=1`,
+            category: 'Catalogue',
+            in_stock: true
+          };
+          break;
+        }
+      }
+    }
+
+    // 5. Fallback if product not found anywhere
+    if (!product) {
+      product = {
+        product_id: cleanId,
+        name: `Produit Oriflame (${cleanId})`,
+        price: 39.9,
+        image_url: `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${cleanId}%2f${cleanId}_1.png&MediaId=20989035&Version=1`,
+        category: 'Catalogue',
+        in_stock: true
+      };
+    }
+
+    this.cartManager.addItem(product, 1);
+    this.renderCart();
+    this.updateCartBadge();
+    const prodName = product.name || `Réf. ${cleanId}`;
+    this.showToast(this.i18n.t('toast_added', { name: prodName }));
+    this.telemetry.trackEvent(`Added to cart: ${prodName}`, product.category || 'Deals', prodName);
+  }
+
+  addToCart(productId) {
+    this.addProductToCart(productId);
   }
 
   renderCart() {
@@ -1222,19 +1296,84 @@ class App {
       }
     }
 
+    // ── Render Applied Threshold Deals ──────────────────────────────────────
+    const appliedThresholdDeals = this.cartManager.getAppliedThresholdDeals();
+    if (appliedThresholdDeals.length > 0) {
+      html += `
+        <div style="background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%); border: 1.5px solid #7C3AED; border-radius: 10px; padding: 12px; margin-top: 14px; box-shadow: 0 2px 8px rgba(124,58,237,0.1);">
+          <div style="font-weight: 800; font-size: 0.85rem; color: #4C1D95; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+            🎯 ${isArabic ? 'تم تفعيل عرض العتبة !' : 'Deal Seuil Débloqué !'}
+          </div>
+          ${appliedThresholdDeals.map(td => {
+            const dTitle = (isArabic && td.deal.title_ar) ? td.deal.title_ar : (td.deal.title_fr || 'Deal Seuil');
+            return `
+              <div style="font-size: 0.8rem; color: #5B21B6; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; background: rgba(255,255,255,0.5); border-radius: 6px; padding: 5px 8px;">
+                <span>🏷️ <strong>${dTitle}</strong><br><span style="font-size:0.72rem;opacity:0.8;">-${td.deal.discount_percent}% sur ${td.deal.product_name || td.deal.product_id}</span></span>
+                <span style="font-weight: 900; color: #047857; font-size: 0.88rem;">-${td.totalSavings.toFixed(2)} ${currencyLabel}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // ── Render Threshold Deal Suggestions (when deals exist but not fully triggered) ──
+    const thresholdSuggestions = this.cartManager.getThresholdDealSuggestions();
+    if (thresholdSuggestions.length > 0) {
+      const s = thresholdSuggestions[0]; // Show the most relevant suggestion
+      const deal = s.deal;
+      const dTitle = (isArabic && deal.title_ar) ? deal.title_ar : (deal.title_fr || 'Deal Seuil');
+      const productName = deal.product_name || deal.product_id;
+
+      if (s.thresholdMet && !s.productInCart) {
+        // Threshold met, but deal product not in cart yet → strong CTA to add it
+        html += `
+          <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%); border: 1.5px solid #F59E0B; border-radius: 10px; padding: 12px; margin-top: 14px; box-shadow: 0 2px 4px rgba(245,158,11,0.12);">
+            <div style="font-weight: 800; font-size: 0.84rem; color: #92400E; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+              🎉 ${isArabic ? 'أنت مؤهل للحصول على خصم خاص !' : 'Vous êtes éligible à une remise spéciale !'}
+            </div>
+            <p style="font-size: 0.78rem; color: #78350F; margin: 0 0 8px;">
+              ${deal.description_fr || (isArabic
+                ? `لقد تجاوزت عتبة ${Number(deal.threshold_amount).toFixed(0)} د.ت ! أضف <strong>${productName}</strong> وستحصل على <strong>-${deal.discount_percent}%</strong> عليه فوراً !`
+                : `Vous avez commandé pour plus de ${Number(deal.threshold_amount).toFixed(0)} DT ! Ajoutez <strong>${productName}</strong> et bénéficiez de <strong>-${deal.discount_percent}%</strong> immédiatement !`)}
+            </p>
+            <button class="btn-primary" style="padding: 6px 12px; font-size: 0.78rem; background: #D97706; border-color: #B45309; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 6px;" onclick="window.app.addProductToCart('${deal.product_id}')">
+              🎯 ${isArabic ? `إضافة ${productName} بخصم -${deal.discount_percent}%` : `Ajouter ${productName} avec -${deal.discount_percent}%`}
+            </button>
+          </div>
+        `;
+      } else if (!s.thresholdMet && s.remaining <= Number(deal.threshold_amount) * 0.4) {
+        // Getting close to threshold (within 40% of it) → motivational nudge
+        html += `
+          <div style="background: #F8FAFC; border: 1px dashed #94A3B8; border-radius: 10px; padding: 10px; margin-top: 14px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #475569; display: flex; align-items: center; gap: 5px;">
+              💡 ${isArabic ? 'فرصة توفير !' : 'Opportunité d\'économie !'}
+            </div>
+            <p style="font-size: 0.76rem; color: #64748B; margin: 4px 0 0;">
+              ${isArabic
+                ? `أضف ${Number(s.remaining).toFixed(2)} د.ت أخرى لتحصل على <strong>-${deal.discount_percent}%</strong> على <strong>${productName}</strong> !`
+                : `Ajoutez encore <strong>${Number(s.remaining).toFixed(2)} ${currencyLabel}</strong> pour débloquer <strong>-${deal.discount_percent}%</strong> sur <strong>${productName}</strong> !`}
+            </p>
+          </div>
+        `;
+      }
+    }
+
     this.cartItemsList.innerHTML = html;
 
     const rawSubtotal = this.cartManager.getRawSubtotal();
-    const discount = this.cartManager.getBundleDiscount();
+    const bundleDiscount = this.cartManager.getBundleDiscount();
+    const thresholdDiscount = this.cartManager.getThresholdDealDiscount();
+    const totalDiscount = bundleDiscount + thresholdDiscount;
     const finalSubtotal = this.cartManager.getSubtotal().toFixed(2);
 
     if (this.cartSubtotal) {
-      if (discount > 0) {
+      if (totalDiscount > 0) {
         this.cartSubtotal.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: flex-end;">
             <span style="font-size: 0.8rem; text-decoration: line-through; opacity: 0.6; color: #71717A;">${rawSubtotal.toFixed(2)} ${currencyLabel}</span>
             <span style="font-size: 1.15rem; font-weight: 800; color: #047857;">${finalSubtotal} ${currencyLabel}</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 2px;">-${discount.toFixed(2)} ${currencyLabel} ÉCONOMISÉS</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: #B45309; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; margin-top: 2px;">-${totalDiscount.toFixed(2)} ${currencyLabel} ÉCONOMISÉS</span>
           </div>
         `;
       } else {

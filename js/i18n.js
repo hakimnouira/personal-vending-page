@@ -80,6 +80,18 @@ export const TRANSLATIONS = {
     ecat_desc: "Browse official catalogue pages with animated video overlay and tap product pins to add items directly to your cart.",
     ecat_prev: "◀ Previous",
     ecat_next: "Next ▶",
+    ecat_toc_label: "📑 Table of Contents",
+    ecat_search_placeholder: "🔍 Search catalog (code e.g. 46980, Giordani, Mascara...)",
+    ecat_search_no_results: "No products found in catalog",
+    ecat_search_results_count: "{count} product(s) found in catalog",
+    ecat_jump_to_page: "Jump to Page {page}",
+    ecat_sec_cover: "🌟 Page 1 – Cover & Highlights",
+    ecat_sec_fragrance_women: "🌸 p.2-25 – Women's Fragrances",
+    ecat_sec_fragrance_men: "👔 p.26-39 – Men's Fragrances",
+    ecat_sec_makeup: "💄 p.40-61 – Makeup",
+    ecat_sec_skincare: "✨ p.62-95 – Skincare",
+    ecat_sec_body_hair: "🌿 p.96-135 – Body & Hair",
+    ecat_sec_final_offers: "🔥 p.136-148 – Final Offers",
     ecat_quick_label: "Order by Product Code:",
     quick_code_placeholder: "Ref Code (e.g. 35665)",
     ecat_hint: "💡 Tip: Tap Previous / Next buttons (or swipe left/right) to flip pages. Tap product pins 🛍️ or enter the ref code above to order.",
@@ -165,6 +177,18 @@ export const TRANSLATIONS = {
     ecat_desc: "Feuilletez les pages officielles du catalogue avec vidéo animée et cliquez directement sur les produits pour les ajouter à votre commande.",
     ecat_prev: "◀ Précédente",
     ecat_next: "Suivante ▶",
+    ecat_toc_label: "📑 Sommaire & Catégories",
+    ecat_search_placeholder: "🔍 Chercher dans le catalogue (code ex: 46980, Giordani, Mascara...)",
+    ecat_search_no_results: "Aucun produit trouvé dans le catalogue",
+    ecat_search_results_count: "{count} produit(s) trouvé(s)",
+    ecat_jump_to_page: "Aller à la Page {page}",
+    ecat_sec_cover: "🌟 Page 1 – Couverture",
+    ecat_sec_fragrance_women: "🌸 p.2-25 – Parfums Femmes",
+    ecat_sec_fragrance_men: "👔 p.26-39 – Parfums Hommes",
+    ecat_sec_makeup: "💄 p.40-61 – Maquillage",
+    ecat_sec_skincare: "✨ p.62-95 – Soins Visage",
+    ecat_sec_body_hair: "🌿 p.96-135 – Corps & Cheveux",
+    ecat_sec_final_offers: "🔥 p.136-148 – Offres Finales",
     ecat_quick_label: "Commander par Code Produit :",
     quick_code_placeholder: "Réf. Produit (ex: 35665)",
     ecat_hint: "💡 Astuce : Utilisez les boutons Précédente / Suivante (ou glissez vers la gauche/droite) pour tourner les pages. Cliquez sur les pastilles 🛍️ ou entrez la référence du produit ci-dessus pour l'ajouter à votre commande.",
@@ -250,6 +274,18 @@ export const TRANSLATIONS = {
     ecat_desc: "تصفحي صفحات الكتالوج الرسمية مع الفيديو التفاعلي واضغطي مباشرة على النقاط التفاعلية لإضافة المنتجات لسلتك.",
     ecat_prev: "◀ السابقة",
     ecat_next: "التالية ▶",
+    ecat_toc_label: "📑 الفهرس والأقسام",
+    ecat_search_placeholder: "🔍 ابحث في الكتالوج (رمز المنتج، عطر، مكياج...)",
+    ecat_search_no_results: "لم يتم العثور على أي منتج في الكتالوج",
+    ecat_search_results_count: "تم العثور على {count} منتج",
+    ecat_jump_to_page: "الانتقال إلى الصفحة {page}",
+    ecat_sec_cover: "🌟 ص1 – الغلاف",
+    ecat_sec_fragrance_women: "🌸 ص2-25 – عطور نسائية",
+    ecat_sec_fragrance_men: "👔 ص26-39 – عطور رجالية",
+    ecat_sec_makeup: "💄 ص40-61 – المكياج",
+    ecat_sec_skincare: "✨ ص62-95 – العناية بالبشرة",
+    ecat_sec_body_hair: "🌿 ص96-135 – الجسم والشعر",
+    ecat_sec_final_offers: "🔥 ص136-148 – عروض الختام",
     ecat_quick_label: "الطلب بواسطة رمز المنتج:",
     quick_code_placeholder: "رمز المنتج (مثال: 35665)",
     ecat_hint: "💡 تلميح: استخدمي أزرار السابقة / التالية (أو اسحبي بإصبعك يميناً ويساراً) لتقليب الصفحات. اضغطي على النقاط 🛍️ أو ادخلي رمز المنتج أعلاه لإضافته لسلتك.",
@@ -305,6 +341,13 @@ export class I18nManager {
         } else {
           el.textContent = dict[key];
         }
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (key && dict[key]) {
+        el.placeholder = dict[key];
       }
     });
 

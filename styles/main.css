@@ -887,8 +887,522 @@ input, select, textarea {
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(197, 168, 128, 0.3);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   eCatalogue Interactive Search & Table of Contents Bar
+   ───────────────────────────────────────────────────────────── */
+.ecat-interactive-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #1E1E22;
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 60;            /* above ecat-book-stage z-index */
+  overflow: visible;      /* allow dropdown to overflow out of the bar */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  flex-wrap: wrap;
+}
+
+.ecat-search-box-wrap {
+  flex: 1.4;
+  min-width: 250px;
+  position: relative;
+  z-index: 61;            /* above the bar so dropdown sits on top */
+}
+
+.ecat-search-field {
+  display: flex;
+  align-items: center;
+  background: #27272A;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  padding: 8px 14px 8px 38px;  /* left padding for icon */
+  gap: 8px;
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.ecat-search-field::before {
+  content: "🔍";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  pointer-events: none;
+  opacity: 0.7;
+  line-height: 1;
+}
+
+[dir="rtl"] .ecat-search-field {
+  padding: 8px 38px 8px 14px;
+}
+
+[dir="rtl"] .ecat-search-field::before {
+  left: auto;
+  right: 12px;
+}
+
+.ecat-search-field:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(197, 168, 128, 0.25);
+  background: #2D2D30;
+}
+
+/* Remove native 'x' button from type=search on WebKit */
+.ecat-search-input::-webkit-search-decoration,
+.ecat-search-input::-webkit-search-cancel-button,
+.ecat-search-input::-webkit-search-results-button,
+.ecat-search-input::-webkit-search-results-decoration {
+  display: none;
+}
+
+.ecat-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 0.84rem;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+  min-width: 0;
+}
+
+.ecat-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.8rem;
+}
+
+.ecat-search-clear {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.ecat-search-clear:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Search Dropdown Results */
+.ecat-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  min-width: 320px;
+  max-width: 480px;
+  max-height: 380px;
+  overflow-y: auto;
+  background: rgba(24, 24, 27, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+  z-index: 100;
+  padding: 6px;
+  animation: slideFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[dir="rtl"] .ecat-search-dropdown {
+  left: auto;
+  right: 0;
+}
+
+.ecat-search-dropdown-header {
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 4px;
+}
+
+.ecat-search-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ecat-search-item:last-child {
+  border-bottom: none;
+}
+
+.ecat-search-item:hover {
+  background: rgba(197, 168, 128, 0.18);
+  transform: translateX(3px);
+}
+
+[dir="rtl"] .ecat-search-item:hover {
+  transform: translateX(-3px);
+}
+
+.ecat-search-item-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: #09090B;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.ecat-search-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ecat-search-item-name {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ecat-search-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+  font-size: 0.75rem;
+}
+
+.ecat-search-item-ref {
+  color: #A1A1AA;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.ecat-search-item-price {
+  color: var(--color-accent);
+  font-weight: 800;
+}
+
+.ecat-search-item-page {
+  background: linear-gradient(135deg, #EA580C 0%, #C2410C 100%);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.35);
+}
+
+.ecat-search-no-results {
+  padding: 16px;
+  text-align: center;
+  color: #A1A1AA;
+  font-size: 0.84rem;
+}
+
+/* Table of Contents Section */
+.ecat-toc-box-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 180px;
+  justify-content: flex-end;
+}
+
+.ecat-toc-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Custom-styled native select — works cross-browser */
+.ecat-toc-select {
+  /* Reset native appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background: #27272A url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C5A880' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+  background-size: 12px 8px;
+  color: #FFFFFF;
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  padding: 8px 36px 8px 12px;   /* right padding for the chevron arrow */
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-fast);
+  max-width: 300px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[dir="rtl"] .ecat-toc-select {
+  background-position: left 12px center;
+  padding: 8px 12px 8px 36px;
+}
+
+.ecat-toc-select:hover,
+.ecat-toc-select:focus {
+  border-color: var(--color-accent);
+  background-color: #2D2D30;
+  box-shadow: 0 0 0 2px rgba(197, 168, 128, 0.2);
+}
+
+.ecat-toc-select option {
+  background: #18181B;
+  color: #FFFFFF;
+  padding: 6px;
+}
+
+/* Hotspot Target Glowing Pulse Animation */
+.ecat-hotspot-pin-target {
+  animation: targetHotspotGlow 1.2s ease-in-out infinite alternate !important;
+  z-index: 60 !important;
+  transform: translate(-50%, -50%) scale(1.35) !important;
+  background: #EA580C !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+@keyframes targetHotspotGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.9), 0 0 15px rgba(234, 88, 12, 0.9);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(234, 88, 12, 0), 0 0 30px rgba(234, 88, 12, 0.8);
+  }
+}
+
+/* ─── Mobile & Phone: eCatalogue Search + TOC ─── */
+@media (max-width: 768px) {
+  /* Interactive bar stacks vertically, full-width */
+  .ecat-interactive-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  /* Search box takes full width */
+  .ecat-search-box-wrap {
+    width: 100%;
+    min-width: 0;
+    flex: none;
+    position: relative;
+  }
+
+  /* Make the search field taller for touch targets, keep icon padding */
+  .ecat-search-field {
+    padding: 11px 14px 11px 40px;
+    border-radius: 10px;
+    gap: 8px;
+  }
+
+  [dir="rtl"] .ecat-search-field {
+    padding: 11px 40px 11px 14px;
+  }
+
+  /* Bigger font for mobile readability */
+  .ecat-search-input {
+    font-size: 0.92rem;
+    /* Prevent iOS zoom on focus (requires >= 16px visually) */
+    font-size: max(0.92rem, 16px);
+  }
+
+  .ecat-search-input::placeholder {
+    font-size: 0.82rem;
+  }
+
+  /* Clear button easier to tap */
+  .ecat-search-clear {
+    font-size: 1rem;
+    padding: 4px 8px;
+    min-width: 28px;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Dropdown anchors below the search field, fills full width */
+  .ecat-search-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    max-height: 55vh;        /* never taller than 55% of screen height */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
+    padding: 4px;
+    z-index: 200;            /* above toolbar and catalogue */
+  }
+
+  /* Each result row: larger touch targets */
+  .ecat-search-item {
+    padding: 10px 10px;
+    gap: 10px;
+    border-radius: 8px;
+  }
+
+  /* Thumb slightly smaller to give text more room */
+  .ecat-search-item-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .ecat-search-item-name {
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ecat-search-item-meta {
+    font-size: 0.72rem;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .ecat-search-item-page {
+    font-size: 0.70rem;
+    padding: 3px 7px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  /* No results message */
+  .ecat-search-no-results {
+    padding: 14px;
+    font-size: 0.82rem;
+  }
+
+  /* TOC: full-width row, label pinned left, select expands */
+  .ecat-toc-box-wrap {
+    width: 100%;
+    min-width: 0;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  /* TOC label — short text, stays visible on 502px */
+  .ecat-toc-label {
+    font-size: 0.76rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+
+  /* TOC select: fills remaining width, proper touch height */
+  .ecat-toc-select {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 36px 10px 12px;  /* keep space for chevron arrow */
+    font-size: 0.83rem;
+    font-weight: 600;
+    min-height: 44px;              /* 44px is Apple HIG touch target minimum */
+    border-radius: 10px;
+    border: 1px solid rgba(197, 168, 128, 0.5);
+  }
+
+  [dir="rtl"] .ecat-toc-select {
+    padding: 10px 12px 10px 36px;
+  }
+}
+
+/* ─── Extra-small phones (< 420px): tighten further ─── */
+@media (max-width: 420px) {
+  .ecat-interactive-bar {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .ecat-search-field {
+    padding: 9px 12px 9px 36px;  /* keep icon space on tiny screens */
+  }
+
+  [dir="rtl"] .ecat-search-field {
+    padding: 9px 36px 9px 12px;
+  }
+
+  /* At 420px: hide label text (the emoji in ::before replaces it) */
+  .ecat-toc-label {
+    display: none;
+  }
+
+  /* Emoji bookmark icon replaces the hidden label */
+  .ecat-toc-box-wrap::before {
+    content: "📑";
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  /* Select takes all remaining width */
+  .ecat-toc-select {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    font-size: 0.8rem;
+    padding: 10px 32px 10px 10px;
+  }
+
+  [dir="rtl"] .ecat-toc-select {
+    padding: 10px 10px 10px 32px;
+  }
+
+  .ecat-search-item-thumb {
+    width: 36px;
+    height: 36px;
+  }
+}
+
 
 .ecat-toolbar {
   display: flex;

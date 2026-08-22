@@ -159,6 +159,8 @@ class AdminDashboard {
     this.bindCarouselEvents();
     await this.fetchBundles();
     this.bindBundleEvents();
+    await this.fetchDeals();
+    this.bindDealEvents();
 
     const urlParams = new URLSearchParams(window.location.search);
     const orderIdParam = urlParams.get('orderId');
@@ -3073,6 +3075,391 @@ class AdminDashboard {
       if (data.success) {
         alert('✅ Offre Pack supprimée');
         await this.fetchBundles();
+      } else {
+        alert('❌ Erreur: ' + data.message);
+      }
+    } catch (err) {
+      alert('❌ Erreur réseau: ' + err.message);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  //  THRESHOLD / CONDITIONAL DEALS  MANAGEMENT
+  // ═══════════════════════════════════════════════════════════
+
+  async fetchDeals() {
+    try {
+      const res = await fetch('/api/deals');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        this.deals = data.data;
+        this.renderDealsGrid();
+        this.renderDealStats();
+      }
+    } catch (e) {
+      console.warn('fetchDeals error', e);
+    }
+  }
+
+  renderDealStats() {
+    const deals = this.deals || [];
+    const totalEl = document.getElementById('stat-total-deals');
+    const activeEl = document.getElementById('stat-active-deals');
+    const maxEl = document.getElementById('stat-max-deal-discount');
+    if (totalEl) totalEl.textContent = deals.length;
+    if (activeEl) activeEl.textContent = deals.filter(d => d.active !== false).length;
+    const maxDiscount = deals.reduce((m, d) => Math.max(m, Number(d.discount_percent) || 0), 0);
+    if (maxEl) maxEl.textContent = maxDiscount > 0 ? `${maxDiscount}%` : '0%';
+  }
+
+  renderDealsGrid() {
+    const grid = document.getElementById('admin-deals-grid');
+    const countEl = document.getElementById('deals-count');
+    const deals = this.deals || [];
+    if (countEl) countEl.textContent = deals.length;
+    if (!grid) return;
+
+    if (deals.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #94A3B8;">
+          <p style="font-size: 2rem;">🎯</p>
+          <p style="font-weight: 700; color: #18181B;">Aucun deal seuil configuré</p>
+          <p style="font-size: 0.85rem;">Créez votre premier deal conditionnel ci-dessus !</p>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = deals.map(deal => {
+      const isActive = deal.active !== false;
+      const threshold = Number(deal.threshold_amount).toFixed(2);
+      const discount = Number(deal.discount_percent).toFixed(0);
+      const title = deal.title_fr || deal.title_en || 'Deal sans titre';
+      const description = deal.description_fr || '';
+      const discountedPrice = deal.product_price
+        ? (Number(deal.product_price) * (1 - Number(deal.discount_percent) / 100)).toFixed(3)
+        : null;
+
+      return `
+        <div style="background: #FFFFFF; border-radius: 14px; border: 2px solid ${isActive ? '#DDD6FE' : '#E4E4E7'}; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s;">
+          <!-- Deal Header -->
+          <div style="background: ${isActive ? 'linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)' : '#71717A'}; padding: 16px; color: #FFFFFF;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
+              <div>
+                <span style="background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 700;">
+                  🎯 DEAL SEUIL
+                </span>
+                <h5 style="margin: 8px 0 0; font-size: 0.95rem; font-family: var(--font-serif); color: #FFFFFF; font-weight: 700;">${title}</h5>
+              </div>
+              <span style="background: ${isActive ? '#059669' : '#71717A'}; color: #FFF; padding: 4px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 800; white-space: nowrap;">
+                ${isActive ? '✅ Actif' : '⏸ Inactif'}
+              </span>
+            </div>
+            <!-- Rule Summary -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
+              <div style="background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 12px; text-align: center; flex: 1; min-width: 100px;">
+                <div style="font-size: 0.7rem; text-transform: uppercase; opacity: 0.85;">Seuil Panier</div>
+                <div style="font-size: 1.3rem; font-weight: 900;">≥ ${threshold}</div>
+                <div style="font-size: 0.7rem; opacity: 0.75;">DT (hors produit cible)</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 12px; text-align: center; flex: 1; min-width: 100px;">
+                <div style="font-size: 0.7rem; text-transform: uppercase; opacity: 0.85;">Remise Offerte</div>
+                <div style="font-size: 1.3rem; font-weight: 900; color: #FDE047;">-${discount}%</div>
+                <div style="font-size: 0.7rem; opacity: 0.75;">sur le produit cible</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Target Product -->
+          <div style="padding: 14px 16px; border-bottom: 1px solid #F4F4F5;">
+            <div style="font-size: 0.76rem; font-weight: 700; color: #6B7280; text-transform: uppercase; margin-bottom: 6px;">Produit Cible</div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              ${deal.product_image
+                ? `<img src="${deal.product_image}" style="width:44px;height:44px;object-fit:contain;border-radius:8px;border:1px solid #E4E4E7;background:#FAF8F5;" onerror="window.handleProductImgError(this)" />`
+                : `<div style="width:44px;height:44px;border-radius:8px;background:#F4F4F5;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🛍️</div>`
+              }
+              <div>
+                <div style="font-weight: 700; font-size: 0.88rem; color: #18181B;">${deal.product_name || `Réf: ${deal.product_id}`}</div>
+                <div style="font-size: 0.76rem; color: #94A3B8;">Réf: ${deal.product_id}</div>
+                ${deal.product_price ? `
+                  <div style="font-size: 0.8rem; display: flex; gap: 6px; align-items: center; margin-top: 2px;">
+                    <span style="text-decoration: line-through; color: #94A3B8;">${Number(deal.product_price).toFixed(3)} TND</span>
+                    ${discountedPrice ? `<span style="font-weight: 800; color: #047857;">${discountedPrice} TND</span>` : ''}
+                    <span style="background: #FEE2E2; color: #DC2626; padding: 1px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 800;">-${discount}%</span>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+
+          ${description ? `
+            <div style="padding: 10px 16px; border-bottom: 1px solid #F4F4F5;">
+              <p style="font-size: 0.78rem; color: #6B7280; margin: 0; font-style: italic;">"${description}"</p>
+            </div>
+          ` : ''}
+
+          <!-- Action Buttons -->
+          <div style="padding: 12px 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+            <button onclick="window.adminDash && window.adminDash.toggleDeal('${deal.id}')"
+              class="btn-primary" style="flex: 1; padding: 7px 10px; font-size: 0.8rem; background: ${isActive ? '#71717A' : '#7C3AED'}; border-color: ${isActive ? '#52525B' : '#6D28D9'}; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+              ${isActive ? '⏸ Désactiver' : '▶ Activer'}
+            </button>
+            <button onclick="window.adminDash && window.adminDash.editDeal('${deal.id}')"
+              class="btn-primary" style="flex: 1; padding: 7px 10px; font-size: 0.8rem; background: #0284C7; border-color: #0369A1; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+              ✏️ Modifier
+            </button>
+            <button onclick="window.adminDash && window.adminDash.deleteDeal('${deal.id}')"
+              class="btn-primary" style="padding: 7px 10px; font-size: 0.8rem; background: var(--admin-danger); border-color: var(--admin-danger); display: inline-flex; align-items: center; justify-content: center;">
+              🗑️
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  bindDealEvents() {
+    const form = document.getElementById('form-deal');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await this.saveDeal();
+      });
+    }
+
+    const btnCancel = document.getElementById('btn-cancel-deal');
+    if (btnCancel) {
+      btnCancel.addEventListener('click', () => this.resetDealForm());
+    }
+
+    const btnCreate = document.getElementById('btn-create-new-deal');
+    if (btnCreate) {
+      btnCreate.addEventListener('click', () => {
+        this.resetDealForm();
+        document.getElementById('section-deals').scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    // Live preview updater
+    const thresholdInput = document.getElementById('deal-threshold');
+    const discountInput = document.getElementById('deal-discount');
+    const updatePreview = () => {
+      const t = Number(thresholdInput?.value) || 100;
+      const d = Number(discountInput?.value) || 30;
+      const el = document.getElementById('deal-preview-text');
+      if (el) el.textContent = `Commande ≥ ${t} DT → -${d}% 🎯`;
+    };
+    if (thresholdInput) thresholdInput.addEventListener('input', updatePreview);
+    if (discountInput) discountInput.addEventListener('input', updatePreview);
+
+    // Product selector
+    const productSelect = document.getElementById('deal-product-select');
+    if (productSelect) {
+      // Populate with catalog products
+      this._populateDealProductSelect(productSelect);
+      productSelect.addEventListener('change', () => {
+        const selectedId = productSelect.value;
+        if (selectedId) {
+          this._updateDealProductPreview(selectedId);
+          const manualInput = document.getElementById('deal-product-id-manual');
+          if (manualInput) manualInput.value = '';
+        }
+      });
+    }
+
+    const manualInput = document.getElementById('deal-product-id-manual');
+    if (manualInput) {
+      manualInput.addEventListener('blur', () => {
+        const val = manualInput.value.trim();
+        if (val) {
+          document.getElementById('deal-product-id').value = val;
+          const found = (this.products || []).find(p => String(p.product_id) === val);
+          if (found) {
+            this._updateDealProductPreview(String(found.product_id));
+          } else {
+            document.getElementById('deal-product-name').value = `Réf. ${val}`;
+            document.getElementById('deal-product-image').value = '';
+            document.getElementById('deal-product-price').value = '';
+            const preview = document.getElementById('deal-product-preview');
+            if (preview) {
+              preview.style.display = 'none';
+              const nameEl = document.getElementById('deal-product-preview-name');
+              if (nameEl) nameEl.textContent = `Réf. ${val} (non trouvé dans le catalogue)`;
+            }
+          }
+          if (productSelect) productSelect.value = '';
+        }
+      });
+    }
+  }
+
+  _populateDealProductSelect(select) {
+    const products = Array.isArray(this.products) ? this.products : [];
+    const options = [`<option value="">-- Choisir un produit du catalogue --</option>`];
+    products.forEach(p => {
+      const name = p.name_fr || p.name || p.product_id;
+      const price = p.price ? ` — ${Number(p.price).toFixed(3)} TND` : '';
+      options.push(`<option value="${p.product_id}">[${p.product_id}] ${name}${price}</option>`);
+    });
+    select.innerHTML = options.join('');
+  }
+
+  _updateDealProductPreview(productId) {
+    const product = (this.products || []).find(p => String(p.product_id) === String(productId));
+    if (!product) return;
+
+    document.getElementById('deal-product-id').value = product.product_id;
+    document.getElementById('deal-product-name').value = product.name_fr || product.name || '';
+    document.getElementById('deal-product-image').value = product.image_url || product.image || '';
+    document.getElementById('deal-product-price').value = product.price || '';
+
+    const preview = document.getElementById('deal-product-preview');
+    if (preview) {
+      preview.style.display = 'flex';
+      const img = document.getElementById('deal-product-preview-img');
+      const nameEl = document.getElementById('deal-product-preview-name');
+      const priceEl = document.getElementById('deal-product-preview-price');
+      const refEl = document.getElementById('deal-product-preview-ref');
+      if (img) img.src = product.image_url || product.image || '';
+      if (nameEl) nameEl.textContent = product.name_fr || product.name || '';
+      if (priceEl) priceEl.textContent = product.price ? `${Number(product.price).toFixed(3)} TND (avant remise)` : '';
+      if (refEl) refEl.textContent = `Réf: ${product.product_id}`;
+    }
+  }
+
+  async saveDeal() {
+    const dealId = document.getElementById('deal-id')?.value?.trim();
+    const title_fr = document.getElementById('deal-title-fr')?.value?.trim();
+    const title_ar = document.getElementById('deal-title-ar')?.value?.trim() || '';
+    const title_en = document.getElementById('deal-title-en')?.value?.trim() || '';
+    const description_fr = document.getElementById('deal-description-fr')?.value?.trim() || '';
+    const threshold_amount = document.getElementById('deal-threshold')?.value?.trim();
+    const discount_percent = document.getElementById('deal-discount')?.value?.trim();
+    const active = document.getElementById('deal-active')?.checked !== false;
+
+    // Resolve product: hidden fields take priority, manual input as fallback
+    let product_id = document.getElementById('deal-product-id')?.value?.trim()
+      || document.getElementById('deal-product-id-manual')?.value?.trim();
+    const product_name = document.getElementById('deal-product-name')?.value?.trim() || '';
+    const product_image = document.getElementById('deal-product-image')?.value?.trim() || '';
+    const product_price = document.getElementById('deal-product-price')?.value?.trim() || null;
+
+    if (!title_fr) { alert('❌ Le nom du deal (FR) est obligatoire.'); return; }
+    if (!threshold_amount || Number(threshold_amount) <= 0) { alert('❌ Le seuil de déclenchement doit être supérieur à 0 DT.'); return; }
+    if (!discount_percent || Number(discount_percent) <= 0 || Number(discount_percent) >= 100) { alert('❌ La remise doit être entre 1% et 99%.'); return; }
+    if (!product_id) { alert('❌ Sélectionnez ou entrez un produit cible.'); return; }
+
+    const payload = {
+      title_fr, title_ar, title_en, description_fr,
+      threshold_amount: Number(threshold_amount),
+      product_id, product_name, product_image,
+      product_price: product_price ? Number(product_price) : null,
+      discount_percent: Number(discount_percent),
+      active
+    };
+
+    const btnSave = document.getElementById('btn-save-deal');
+    if (btnSave) { btnSave.disabled = true; btnSave.textContent = '⏳ Enregistrement...'; }
+
+    try {
+      const method = dealId ? 'PUT' : 'POST';
+      const url = dealId ? `/api/deals/${dealId}` : '/api/deals';
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        this.showToast(`✅ ${dealId ? 'Deal mis à jour' : 'Deal créé'} avec succès !`, 'success');
+        this.resetDealForm();
+        await this.fetchDeals();
+      } else {
+        alert('❌ Erreur: ' + data.message);
+      }
+    } catch (err) {
+      alert('❌ Erreur réseau: ' + err.message);
+    } finally {
+      if (btnSave) { btnSave.disabled = false; btnSave.textContent = '🎯 Enregistrer le Deal Seuil'; }
+    }
+  }
+
+  editDeal(id) {
+    const deal = (this.deals || []).find(d => d.id === id);
+    if (!deal) return;
+
+    document.getElementById('deal-id').value = deal.id;
+    document.getElementById('deal-title-fr').value = deal.title_fr || '';
+    document.getElementById('deal-title-ar').value = deal.title_ar || '';
+    document.getElementById('deal-title-en').value = deal.title_en || '';
+    document.getElementById('deal-description-fr').value = deal.description_fr || '';
+    document.getElementById('deal-threshold').value = deal.threshold_amount || '';
+    document.getElementById('deal-discount').value = deal.discount_percent || '';
+    document.getElementById('deal-active').checked = deal.active !== false;
+
+    // Restore hidden product fields
+    document.getElementById('deal-product-id').value = deal.product_id || '';
+    document.getElementById('deal-product-name').value = deal.product_name || '';
+    document.getElementById('deal-product-image').value = deal.product_image || '';
+    document.getElementById('deal-product-price').value = deal.product_price || '';
+
+    // Show product preview
+    if (deal.product_id) {
+      const productSelect = document.getElementById('deal-product-select');
+      if (productSelect) productSelect.value = deal.product_id;
+      this._updateDealProductPreview(deal.product_id);
+    }
+
+    // Update preview text
+    const previewEl = document.getElementById('deal-preview-text');
+    if (previewEl) previewEl.textContent = `Commande ≥ ${deal.threshold_amount} DT → -${deal.discount_percent}% 🎯`;
+
+    document.getElementById('deal-form-title').textContent = '✏️ Modifier le Deal Conditionnel';
+    document.getElementById('btn-save-deal').textContent = '💾 Mettre à Jour le Deal';
+    document.getElementById('btn-cancel-deal').style.display = 'inline-block';
+
+    document.getElementById('section-deals').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  resetDealForm() {
+    const form = document.getElementById('form-deal');
+    if (form) form.reset();
+    document.getElementById('deal-id').value = '';
+    document.getElementById('deal-product-id').value = '';
+    document.getElementById('deal-product-name').value = '';
+    document.getElementById('deal-product-image').value = '';
+    document.getElementById('deal-product-price').value = '';
+    const preview = document.getElementById('deal-product-preview');
+    if (preview) preview.style.display = 'none';
+    const previewEl = document.getElementById('deal-preview-text');
+    if (previewEl) previewEl.textContent = 'Commande 100 DT → -30% 🎯';
+
+    document.getElementById('deal-form-title').textContent = '✨ Créer / Modifier un Deal Conditionnel';
+    document.getElementById('btn-save-deal').textContent = '🎯 Enregistrer le Deal Seuil';
+    document.getElementById('btn-cancel-deal').style.display = 'none';
+  }
+
+  async toggleDeal(id) {
+    try {
+      const res = await fetch(`/api/deals/${id}/toggle`, { method: 'PATCH' });
+      const data = await res.json();
+      if (data.success) {
+        await this.fetchDeals();
+      } else {
+        alert('❌ Erreur: ' + data.message);
+      }
+    } catch (err) {
+      alert('❌ Erreur réseau: ' + err.message);
+    }
+  }
+
+  async deleteDeal(id) {
+    if (!confirm('Voulez-vous vraiment supprimer ce deal conditionnel ?')) return;
+    try {
+      const res = await fetch(`/api/deals/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        this.showToast('✅ Deal supprimé.', 'info');
+        await this.fetchDeals();
       } else {
         alert('❌ Erreur: ' + data.message);
       }

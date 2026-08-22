@@ -87,6 +87,9 @@
         <div class="nav-item" data-target="section-carousel" data-admin-i18n="tab_carousel">
           🖼️ Carrousel Page d'Accueil
         </div>
+        <div class="nav-item" data-target="section-deals" style="">
+          🎯 Offres Seuil & Deals Conditionnels
+        </div>
         <!-- Order Detail nav item — shown dynamically when viewing an order -->
         <div class="nav-item" id="nav-item-order-detail" data-target="section-order-detail" style="display:none; border-left: 2px solid #C5A880; padding-left: 12px;">
           📋 Détail Commande
@@ -120,6 +123,13 @@
             <button id="btn-refresh-analytics" class="btn-primary" style="width: auto; padding: 8px 16px; font-size: 0.82rem;" data-admin-i18n="btn_refresh_stats">
               🔄 Actualiser les Statistiques
             </button>
+            <!-- ── ANALYTICS EXPORT BUTTONS ── -->
+            <a href="/api/export/analytics" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #0284C7; border-color: #0369A1; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;" title="Exporter les données analytiques en JSON">
+              ⬇️ JSON
+            </a>
+            <a href="/api/export/analytics/csv" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #059669; border-color: #047857; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;" title="Exporter les sessions visiteurs en CSV (Excel)">
+              📊 CSV Excel
+            </a>
           </div>
         </div>
 
@@ -193,9 +203,18 @@
             <h2 class="section-title">🛍️ Inspection &amp; Gestion des Commandes Client</h2>
             <p style="font-size: 0.85rem; color: var(--admin-text-muted);">Consultez la liste complète des commandes passées par vos clients (par Téléphone/WhatsApp ou Facebook Messenger), visualisez leurs coordonnées et gérez leur statut.</p>
           </div>
-          <button id="btn-refresh-orders" class="btn-primary" style="width: auto; padding: 10px 18px;">
-            🔄 Actualiser la Liste
-          </button>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <button id="btn-refresh-orders" class="btn-primary" style="width: auto; padding: 10px 18px;">
+              🔄 Actualiser la Liste
+            </button>
+            <!-- ── ORDERS EXPORT BUTTONS ── -->
+            <a href="/api/export/orders" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #0284C7; border-color: #0369A1; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;" title="Télécharger toutes les commandes en JSON">
+              ⬇️ JSON
+            </a>
+            <a href="/api/export/orders/csv" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #059669; border-color: #047857; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;" title="Exporter les commandes en CSV (Excel / Google Sheets)">
+              📊 CSV Excel
+            </a>
+          </div>
         </div>
 
         <!-- Orders Summary Cards -->
@@ -648,19 +667,58 @@
         <!-- Full System JSON Backup & Restore -->
         <div class="admin-form-box" style="background: linear-gradient(135deg, #18181B 0%, #27272A 100%); border: 1px solid #C5A880; margin-bottom: 24px;">
           <h4 style="font-weight: 700; margin-bottom: 6px; color: #C5A880; display: flex; align-items: center; gap: 8px;">
-            🔐 Sauvegarde &amp; Restauration Globale du Système (Produits + Carrousel + Paramètres)
+            🔐 Sauvegarde &amp; Restauration Globale du Système — Survie Coupure Serveur
           </h4>
           <p style="font-size: 0.82rem; color: #D4D4D8; margin-bottom: 16px;">
-            Sauvegardez l'état exact de votre boutique (produits personnalisés, carrousel, photos HD, traductions 3 langues, offres spéciales) dans un fichier JSON réutilisable à tout moment.
+            En cas d'arrêt du serveur, téléchargez ici l'intégralité de vos données : produits, commandes, carrousel, packs, paramètres, catalogue flipbook et statistiques visiteurs — tout dans un seul fichier JSON.
           </p>
-          <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-            <a id="btn-export-backup" href="/api/export/backup" download class="btn-primary" style="background: #C5A880; color: #18181B; width: auto; padding: 12px 22px; font-weight: 700; border-color: #C5A880; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-              ⬇️ Télécharger la Sauvegarde Complète JSON
+
+          <!-- FULL SYSTEM BACKUP ROW -->
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;">
+            <a id="btn-export-backup" href="/api/export/backup" download class="btn-primary" style="background: #C5A880; color: #18181B; width: auto; padding: 12px 22px; font-weight: 700; border-color: #C5A880; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+              ⬇️ Sauvegarde COMPLÈTE — Tous les Fichiers
             </a>
             <label class="btn-primary" style="background: #3F3F46; color: #E4E4E7; width: auto; padding: 12px 22px; font-weight: 700; border-color: #52525B; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
               ⬆️ Restaurer depuis une Sauvegarde JSON
               <input type="file" id="admin-backup-file" accept=".json" style="display: none;" />
             </label>
+          </div>
+
+          <!-- INDIVIDUAL FILE EXPORTS GRID -->
+          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;">
+            <p style="font-size: 0.78rem; color: #A1A1AA; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">📁 Téléchargements Individuels par Type :</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <a href="/api/export/products" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #15803D; border-color: #166534; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                📦 Produits JSON
+              </a>
+              <a href="/api/export/products/csv" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #065F46; border-color: #064E3B; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                📦 Produits CSV
+              </a>
+              <a href="/api/export/orders" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #1D4ED8; border-color: #1E40AF; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                🛍️ Commandes JSON
+              </a>
+              <a href="/api/export/orders/csv" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #1E40AF; border-color: #1E3A8A; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                🛍️ Commandes CSV
+              </a>
+              <a href="/api/export/carousel" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #7C3AED; border-color: #6D28D9; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                🖼️ Carrousel JSON
+              </a>
+              <a href="/api/export/bundles" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #C2410C; border-color: #B45309; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                🎁 Packs JSON
+              </a>
+              <a href="/api/export/settings" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #374151; border-color: #1F2937; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                ⚙️ Paramètres JSON
+              </a>
+              <a href="/api/export/flipbook" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #0C4A6E; border-color: #075985; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                📖 Flipbook JSON
+              </a>
+              <a href="/api/export/analytics" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #701A75; border-color: #581C87; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                📊 Analytics JSON
+              </a>
+              <a href="/api/export/analytics/csv" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #4A044E; border-color: #3B0764; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                📊 Analytics CSV
+              </a>
+            </div>
           </div>
           <div id="backup-restore-status" style="margin-top: 12px; font-size: 0.85rem; font-weight: 600; display: none;"></div>
         </div>
@@ -799,9 +857,15 @@
               Définissez des offres spéciales combinées : dès qu'un client ajoute ces produits ensemble dans son panier, le prix du pack s'applique automatiquement avec une remise immédiate !
             </p>
           </div>
-          <button id="btn-create-new-bundle" class="btn-primary" style="width: auto; padding: 10px 20px; background: #059669; border-color: #047857; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-            ➕ Créer une Nouvelle Offre Pack
-          </button>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <button id="btn-create-new-bundle" class="btn-primary" style="width: auto; padding: 10px 20px; background: #059669; border-color: #047857; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+              ➕ Créer une Nouvelle Offre Pack
+            </button>
+            <!-- ── BUNDLES EXPORT ── -->
+            <a href="/api/export/bundles" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #0284C7; border-color: #0369A1; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;" title="Télécharger les packs en JSON">
+              ⬇️ JSON Packs
+            </a>
+          </div>
         </div>
 
         <!-- Bundle Stats Cards -->
@@ -929,6 +993,166 @@
         <h4 style="font-weight: 700; margin-bottom: 16px;">Liste des Packs Configurés (<span id="bundles-count">0</span>)</h4>
         <div id="admin-bundles-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;">
           <!-- Rendered dynamically by admin-page.js -->
+        </div>
+      </section>
+
+      <!-- SECTION 7: THRESHOLD / CONDITIONAL DEALS -->
+      <section id="section-deals" class="admin-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🎯 Offres Seuil &amp; Deals Conditionnels</h2>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted);">
+              Définissez des remises automatiques déclenchées par le montant du panier.
+              Exemple : <em>"Si le client commande pour 100 DT (hors ce produit) → -30% sur ce produit."</em>
+              La remise ne s'applique <strong>jamais</strong> si c'est seulement l'ajout de ce produit qui fait dépasser le seuil.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <button id="btn-create-new-deal" class="btn-primary" style="width: auto; padding: 10px 20px; background: #7C3AED; border-color: #6D28D9; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+              ➕ Créer un Nouveau Deal Seuil
+            </button>
+            <a href="/api/export/deals" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #0284C7; border-color: #0369A1; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;" title="Télécharger les deals en JSON">
+              ⬇️ JSON
+            </a>
+          </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-title">Total Deals Configurés</div>
+            <div id="stat-total-deals" class="stat-value">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Deals Actifs en Boutique</div>
+            <div id="stat-active-deals" class="stat-value" style="color: var(--admin-success);">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Remise Maximale Offerte</div>
+            <div id="stat-max-deal-discount" class="stat-value" style="color: #7C3AED;">0%</div>
+          </div>
+        </div>
+
+        <!-- Create / Edit Deal Form -->
+        <div class="admin-form-box" style="background: #FFFFFF; border: 1px solid #DDD6FE; margin-bottom: 28px; box-shadow: 0 2px 8px rgba(124,58,237,0.06);">
+          <h4 style="font-weight: 700; margin-bottom: 14px; color: #18181B; display: flex; align-items: center; gap: 8px;" id="deal-form-title">
+            ✨ Créer / Modifier un Deal Conditionnel
+          </h4>
+
+          <!-- How it works callout -->
+          <div style="background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%); border: 1px solid #C4B5FD; border-radius: 10px; padding: 14px 16px; margin-bottom: 18px;">
+            <p style="font-size: 0.82rem; color: #4C1D95; margin: 0; line-height: 1.6;">
+              <strong>⚡ Logique exacte :</strong> Le seuil est calculé sur le <em>reste du panier, sans inclure le produit remisé</em>.
+              Si un client a 80 DT de produits + ajoute votre produit cible qui coûte 30 DT → le total devient 110 DT
+              <strong>mais le seuil de 100 DT n'est PAS atteint</strong> (on compte 80 DT, pas 110 DT).
+              La remise ne s'active que si les <em>autres</em> articles totalisent ≥ au seuil.
+            </p>
+          </div>
+
+          <form id="form-deal" style="display: flex; flex-direction: column; gap: 18px;">
+            <input type="hidden" id="deal-id" />
+
+            <!-- Titles -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+              <div>
+                <label style="font-weight: 700; font-size: 0.82rem; margin-bottom: 4px; display: block;">Nom du Deal (Français) *</label>
+                <input type="text" id="deal-title-fr" class="form-control" required placeholder="ex: Remise VIP -30% sur votre Parfum Préféré" />
+              </div>
+              <div>
+                <label style="font-weight: 700; font-size: 0.82rem; margin-bottom: 4px; display: block;">Nom du Deal (Arabe 🇹🇳)</label>
+                <input type="text" id="deal-title-ar" class="form-control" dir="rtl" placeholder="ex: خصم -30% على العطر المفضل" />
+              </div>
+              <div>
+                <label style="font-weight: 700; font-size: 0.82rem; margin-bottom: 4px; display: block;">Nom du Deal (Anglais)</label>
+                <input type="text" id="deal-title-en" class="form-control" placeholder="ex: VIP Deal -30% on your Favourite Fragrance" />
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label style="font-weight: 700; font-size: 0.82rem; margin-bottom: 4px; display: block;">Message affiché au client (accroche de suggestion)</label>
+              <input type="text" id="deal-description-fr" class="form-control" placeholder="ex: Bravo ! Ajoutez ce parfum à votre panier pour profiter de -30% car vous avez déjà commandé pour plus de 100 DT !" />
+            </div>
+
+            <!-- Threshold + Discount -->
+            <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%); border: 1px solid #F59E0B; border-radius: 12px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: center;">
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 800; color: #92400E; text-transform: uppercase; display: block; margin-bottom: 6px;">1. Seuil de Déclenchement (DT) *</label>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <input type="number" step="1" min="1" id="deal-threshold" class="form-control" required placeholder="100" style="font-size: 1.2rem; font-weight: 800; color: #78350F; margin-bottom: 0; border-color: #F59E0B;" />
+                  <span style="font-weight: 800; color: #92400E; white-space: nowrap;">DT minimum</span>
+                </div>
+                <p style="font-size: 0.74rem; color: #B45309; margin-top: 4px;">Total du panier SANS le produit remisé</p>
+              </div>
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 800; color: #065F46; text-transform: uppercase; display: block; margin-bottom: 6px;">2. Remise sur le Produit Cible *</label>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <input type="number" step="1" min="1" max="99" id="deal-discount" class="form-control" required placeholder="30" style="font-size: 1.2rem; font-weight: 800; color: #047857; margin-bottom: 0; border-color: #059669;" />
+                  <span style="font-weight: 800; color: #065F46;">% de remise</span>
+                </div>
+                <p style="font-size: 0.74rem; color: #047857; margin-top: 4px;">Appliqué directement dans le panier</p>
+              </div>
+              <div style="background: #FFFFFF; border-radius: 10px; padding: 12px; border: 1px solid #E4E4E7; text-align: center;">
+                <div style="font-size: 0.74rem; color: #6B7280; font-weight: 700; text-transform: uppercase;">Aperçu du Deal</div>
+                <div id="deal-preview-text" style="font-size: 0.9rem; font-weight: 800; color: #7C3AED; margin-top: 6px; line-height: 1.4;">Commande 100 DT → -30% 🎯</div>
+              </div>
+            </div>
+
+            <!-- Target Product Selector -->
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 16px;">
+              <label style="font-weight: 800; font-size: 0.88rem; color: #1E293B; margin-bottom: 6px; display: block;">
+                🛍️ Produit Cible de la Remise *
+              </label>
+              <p style="font-size: 0.78rem; color: #64748B; margin-bottom: 12px;">
+                Sélectionnez le produit sur lequel la remise sera appliquée quand le seuil est atteint.
+              </p>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                <select id="deal-product-select" class="form-control" style="flex: 1; min-width: 260px; margin-bottom: 0; font-weight: 600;">
+                  <option value="">-- Choisir un produit du catalogue --</option>
+                </select>
+                <span style="font-size: 0.78rem; color: #94A3B8;">ou</span>
+                <div>
+                  <label style="font-size: 0.76rem; font-weight: 600; color: #475569; display: block; margin-bottom: 2px;">Réf. manuelle</label>
+                  <input type="text" id="deal-product-id-manual" class="form-control" placeholder="ex: 46980" style="margin-bottom: 0; width: 110px; font-size: 0.88rem;" />
+                </div>
+              </div>
+              <!-- Selected Product Preview -->
+              <div id="deal-product-preview" style="margin-top: 12px; display: none; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 10px; display: flex; gap: 12px; align-items: center;">
+                <img id="deal-product-preview-img" src="" style="width: 50px; height: 50px; object-fit: contain; border-radius: 6px; border: 1px solid #E4E4E7; background: #FAF8F5;" onerror="window.handleProductImgError(this)" />
+                <div>
+                  <div id="deal-product-preview-name" style="font-weight: 700; font-size: 0.9rem; color: #18181B;"></div>
+                  <div id="deal-product-preview-price" style="font-size: 0.8rem; color: #059669; font-weight: 600;"></div>
+                  <div id="deal-product-preview-ref" style="font-size: 0.74rem; color: #94A3B8;"></div>
+                </div>
+              </div>
+              <input type="hidden" id="deal-product-id" />
+              <input type="hidden" id="deal-product-name" />
+              <input type="hidden" id="deal-product-image" />
+              <input type="hidden" id="deal-product-price" />
+            </div>
+
+            <!-- Active Toggle + Buttons -->
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 8px;">
+              <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.88rem;">
+                <input type="checkbox" id="deal-active" checked style="width: 18px; height: 18px; accent-color: #7C3AED;" />
+                <span>Activer immédiatement ce deal sur la boutique</span>
+              </label>
+              <div style="display: flex; gap: 10px;">
+                <button type="button" id="btn-cancel-deal" class="btn-primary" style="background: #71717A; border-color: #52525B; width: auto; padding: 10px 18px; display: none;">
+                  Annuler
+                </button>
+                <button type="submit" id="btn-save-deal" class="btn-primary" style="background: #7C3AED; border-color: #6D28D9; width: auto; padding: 10px 26px; font-weight: 700;">
+                  🎯 Enregistrer le Deal Seuil
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Deals List -->
+        <h4 style="font-weight: 700; margin-bottom: 16px;">Deals Configurés (<span id="deals-count">0</span>)</h4>
+        <div id="admin-deals-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;">
+          <!-- Rendered dynamically -->
         </div>
       </section>
 

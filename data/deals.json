@@ -1,0 +1,17 @@
+[
+  {
+    "id": "DEAL-1787419863454-7445",
+    "title_fr": "Offre Spéciale All or Nothing -30%",
+    "title_ar": "",
+    "title_en": "",
+    "description_fr": "Bravo ! Ajoutez ce parfum à votre panier pour profiter de -30% car vous avez déjà commandé pour plus de 100 DT !",
+    "threshold_amount": 100,
+    "product_id": "46060",
+    "product_name": "Parfum All or Nothing Amplified",
+    "product_image": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46060%2f46060_1.png&MediaId=20989035&Version=1",
+    "product_price": 153.9,
+    "discount_percent": 30,
+    "active": true,
+    "created_at": "2026-08-22T17:31:03.454Z"
+  }
+]

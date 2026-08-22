@@ -1,14 +1,122 @@
 {
-  "total_visits": 31,
+  "total_visits": 32,
   "sessions": [
     {
-      "session_id": "SES-L3C35S8-MT4FORY6",
-      "first_seen": "2026-08-22T13:48:32.776Z",
-      "last_active": "2026-08-22T13:54:55.774Z",
+      "session_id": "SES-N94OQPB-MT4NDH3A",
+      "first_seen": "2026-08-22T17:23:42.414Z",
+      "last_active": "2026-08-22T17:40:33.599Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 285,
+      "duration_seconds": 452,
+      "activity_trail": [
+        {
+          "time": "2026-08-22T17:23:42.414Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:23:55.478Z",
+          "offset": "0m 13s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T17:26:31.224Z",
+          "offset": "2m 49s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:26:31.297Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:26:32.376Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T17:26:49.494Z",
+          "offset": "0m 18s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:26:49.565Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:26:50.894Z",
+          "offset": "0m 1s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T17:32:01.749Z",
+          "offset": "5m 12s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:32:01.865Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:32:18.373Z",
+          "offset": "0m 17s",
+          "description": "Added to cart: Parfum All or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-22T17:32:30.348Z",
+          "offset": "0m 28s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T17:34:19.267Z",
+          "offset": "2m 17s",
+          "description": "Completed Phone/WhatsApp Order ORD-979927"
+        },
+        {
+          "time": "2026-08-22T17:39:33.483Z",
+          "offset": "7m 32s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:39:33.599Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:39:35.154Z",
+          "offset": "0m 2s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T17:39:37.733Z",
+          "offset": "0m 4s",
+          "description": "Added to cart: Eau de Parfum Love Potion"
+        },
+        {
+          "time": "2026-08-22T17:39:38.387Z",
+          "offset": "0m 5s",
+          "description": "Opened Shopping Cart Drawer"
+        }
+      ],
+      "categories_visited": [
+        "Fragrance"
+      ],
+      "products_viewed": [
+        "Parfum All or Nothing Amplified",
+        "Eau de Parfum Love Potion"
+      ]
+    },
+    {
+      "session_id": "SES-L3C35S8-MT4FORY6",
+      "first_seen": "2026-08-22T13:48:32.776Z",
+      "last_active": "2026-08-22T17:40:32.171Z",
+      "ip": "::1",
+      "device": "Desktop",
+      "language": "fr",
+      "duration_seconds": 7469,
       "activity_trail": [
         {
           "time": "2026-08-22T13:48:32.776Z",
@@ -24,19 +132,237 @@
           "time": "2026-08-22T13:50:10.780Z",
           "offset": "0m 0s",
           "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T14:33:48.029Z",
+          "offset": "43m 37s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-22T14:33:50.141Z",
+          "offset": "43m 39s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-22T14:34:09.707Z",
+          "offset": "43m 59s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T14:34:09.891Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T14:34:17.648Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-22T14:34:18.567Z",
+          "offset": "0m 9s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-22T14:34:25.263Z",
+          "offset": "0m 15s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T14:34:45.267Z",
+          "offset": "0m 35s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T16:38:38.656Z",
+          "offset": "124m 29s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T16:38:38.818Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T16:38:57.341Z",
+          "offset": "0m 19s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-22T16:38:57.574Z",
+          "offset": "0m 19s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T16:39:31.457Z",
+          "offset": "0m 53s",
+          "description": "Browsed eCatalogue Spread 32"
+        },
+        {
+          "time": "2026-08-22T16:40:12.919Z",
+          "offset": "1m 34s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T16:40:13.153Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T16:40:24.058Z",
+          "offset": "0m 11s",
+          "description": "Filtered by Category: Deals"
+        },
+        {
+          "time": "2026-08-22T16:40:24.737Z",
+          "offset": "0m 12s",
+          "description": "Filtered by Category: Skincare"
+        },
+        {
+          "time": "2026-08-22T16:40:25.930Z",
+          "offset": "0m 13s",
+          "description": "Filtered by Category: Makeup"
+        },
+        {
+          "time": "2026-08-22T16:40:26.431Z",
+          "offset": "0m 13s",
+          "description": "Filtered by Category: Fragrance"
+        },
+        {
+          "time": "2026-08-22T16:40:27.050Z",
+          "offset": "0m 14s",
+          "description": "Filtered by Category: Haircare"
+        },
+        {
+          "time": "2026-08-22T16:40:27.502Z",
+          "offset": "0m 14s",
+          "description": "Filtered by Category: Wellness"
+        },
+        {
+          "time": "2026-08-22T16:40:28.228Z",
+          "offset": "0m 15s",
+          "description": "Filtered by Category: All"
+        },
+        {
+          "time": "2026-08-22T16:41:12.620Z",
+          "offset": "0m 59s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T16:41:12.825Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T16:42:20.052Z",
+          "offset": "1m 7s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-22T16:42:53.934Z",
+          "offset": "1m 41s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-22T16:43:20.386Z",
+          "offset": "2m 8s",
+          "description": "Opened Detailed Product Info: Crème de Corps Parfumée Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T16:44:37.930Z",
+          "offset": "3m 25s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T16:47:22.941Z",
+          "offset": "6m 10s",
+          "description": "Viewed About Mouna Page"
+        },
+        {
+          "time": "2026-08-22T16:48:11.712Z",
+          "offset": "6m 59s",
+          "description": "Viewed Privacy Policy"
+        },
+        {
+          "time": "2026-08-22T16:49:26.886Z",
+          "offset": "8m 14s",
+          "description": "Switched Language to ar"
+        },
+        {
+          "time": "2026-08-22T16:50:20.506Z",
+          "offset": "9m 8s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T16:50:58.958Z",
+          "offset": "9m 46s",
+          "description": "Switched Language to en"
+        },
+        {
+          "time": "2026-08-22T16:51:19.175Z",
+          "offset": "10m 6s",
+          "description": "Opened Shopping Cart Drawer"
+        },
+        {
+          "time": "2026-08-22T16:51:47.540Z",
+          "offset": "10m 35s",
+          "description": "Switched Language to fr"
+        },
+        {
+          "time": "2026-08-22T17:01:31.784Z",
+          "offset": "20m 19s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T17:01:32.171Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T17:01:38.793Z",
+          "offset": "0m 7s",
+          "description": "Browsed eCatalogue Spread 21"
+        },
+        {
+          "time": "2026-08-22T17:01:43.598Z",
+          "offset": "0m 11s",
+          "description": "Browsed eCatalogue Spread 22"
+        },
+        {
+          "time": "2026-08-22T17:01:47.498Z",
+          "offset": "0m 15s",
+          "description": "Opened Detailed Product Info: Fond de Teint The ONE Everlasting Sync Stress-Free Vanilla"
+        },
+        {
+          "time": "2026-08-22T17:01:49.780Z",
+          "offset": "0m 18s",
+          "description": "Opened Detailed Product Info: Pinceau Teint Parfait"
         }
       ],
-      "categories_visited": [],
-      "products_viewed": []
+      "categories_visited": [
+        "Fragrance",
+        "Catalogue Oriflame",
+        "Deals",
+        "Skincare",
+        "Makeup",
+        "Haircare",
+        "Wellness",
+        "All"
+      ],
+      "products_viewed": [
+        "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
+        "Fond de Teint The ONE Everlasting Sync Stress-Free Vanilla",
+        "Pinceau Teint Parfait"
+      ]
     },
     {
       "session_id": "SES-I53EUZS-MT4DOJIY",
       "first_seen": "2026-08-22T12:52:22.624Z",
-      "last_active": "2026-08-22T13:54:57.132Z",
+      "last_active": "2026-08-22T17:40:04.138Z",
       "ip": "::1",
       "device": "Desktop",
       "language": "fr",
-      "duration_seconds": 2576,
+      "duration_seconds": 5173,
       "activity_trail": [
         {
           "time": "2026-08-22T12:52:22.624Z",
@@ -192,6 +518,121 @@
           "time": "2026-08-22T13:54:27.699Z",
           "offset": "0m 31s",
           "description": "Browsed eCatalogue Spread 75"
+        },
+        {
+          "time": "2026-08-22T14:32:04.215Z",
+          "offset": "38m 8s",
+          "description": "Browsed eCatalogue Spread 74"
+        },
+        {
+          "time": "2026-08-22T14:32:07.927Z",
+          "offset": "38m 11s",
+          "description": "Browsed eCatalogue Spread 73"
+        },
+        {
+          "time": "2026-08-22T14:32:08.844Z",
+          "offset": "38m 12s",
+          "description": "Browsed eCatalogue Spread 72"
+        },
+        {
+          "time": "2026-08-22T14:32:09.490Z",
+          "offset": "38m 13s",
+          "description": "Browsed eCatalogue Spread 71"
+        },
+        {
+          "time": "2026-08-22T14:32:09.967Z",
+          "offset": "38m 13s",
+          "description": "Browsed eCatalogue Spread 70"
+        },
+        {
+          "time": "2026-08-22T14:32:10.163Z",
+          "offset": "38m 14s",
+          "description": "Browsed eCatalogue Spread 69"
+        },
+        {
+          "time": "2026-08-22T14:35:54.756Z",
+          "offset": "41m 58s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T14:35:54.844Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T14:35:56.789Z",
+          "offset": "0m 2s",
+          "description": "Browsed eCatalogue Spread 2"
+        },
+        {
+          "time": "2026-08-22T14:35:58.167Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 3"
+        },
+        {
+          "time": "2026-08-22T14:36:00.089Z",
+          "offset": "0m 5s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme"
+        },
+        {
+          "time": "2026-08-22T14:36:03.181Z",
+          "offset": "0m 8s",
+          "description": "Browsed eCatalogue Spread 4"
+        },
+        {
+          "time": "2026-08-22T14:36:05.049Z",
+          "offset": "0m 10s",
+          "description": "Opened Detailed Product Info: Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-22T14:36:14.726Z",
+          "offset": "0m 20s",
+          "description": "Opened Detailed Product Info: Crème Parfumée pour le Corps All Or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-22T14:36:20.632Z",
+          "offset": "0m 26s",
+          "description": "Opened Detailed Product Info: Parfum All or Nothing Amplified"
+        },
+        {
+          "time": "2026-08-22T16:02:07.914Z",
+          "offset": "86m 13s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T16:02:08.034Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T16:36:48.267Z",
+          "offset": "34m 40s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T16:36:48.375Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T16:38:44.440Z",
+          "offset": "1m 56s",
+          "description": "Left Storefront"
+        },
+        {
+          "time": "2026-08-22T16:38:44.556Z",
+          "offset": "0m 0s",
+          "description": "Visited Storefront"
+        },
+        {
+          "time": "2026-08-22T16:38:47.616Z",
+          "offset": "0m 3s",
+          "description": "Browsed eCatalogue Spread 14"
+        },
+        {
+          "time": "2026-08-22T16:38:50.657Z",
+          "offset": "0m 6s",
+          "description": "Browsed eCatalogue Spread 32"
         }
       ],
       "categories_visited": [
@@ -200,7 +641,9 @@
       "products_viewed": [
         "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
         "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
-        "Parfum All or Nothing Amplified"
+        "Parfum All or Nothing Amplified",
+        "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
+        "Crème Parfumée pour le Corps All Or Nothing Amplified"
       ]
     },
     {

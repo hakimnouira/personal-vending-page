@@ -18,7 +18,19 @@
         "https://cdn.ipaper.io/iPaper/Papers/6c400931-2ccc-40e7-b3f5-40f381af161e/Pages/1/Zoom.jpg?token=WI61rfWQIPJ_pYTtVlhrDf6ZugAxhTih7MkNxh8yZ8U&token_path=%2fiPaper%2fPapers%2f6c400931-2ccc-40e7-b3f5-40f381af161e%2fPages%2f&expires=1787474184"
       ],
       "video": "https://files.cdn.ipaper.io/iPaper/Files/b836ce46-8c5b-4fd7-a3c2-20560b99328b.mp4",
-      "hotspots": []
+      "hotspots": [
+        {
+          "id": "46980",
+          "name": "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
+          "price": 34.9,
+          "in_stock": true,
+          "left": "50%",
+          "top": "68%",
+          "width": "10%",
+          "height": "10%",
+          "pageNumber": 1
+        }
+      ]
     },
     {
       "spreadIndex": 1,
@@ -50,10 +62,10 @@
           "name": "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
           "price": 34.9,
           "in_stock": true,
-          "left": 14,
-          "top": 49,
-          "width": 4,
-          "height": 5,
+          "left": "14%",
+          "top": "49%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 4
         },
         {
@@ -61,10 +73,10 @@
           "name": "Parfum Giordani Gold Essenza Supreme",
           "price": 132.9,
           "in_stock": true,
-          "left": 29,
-          "top": 86,
-          "width": 4,
-          "height": 5,
+          "left": "29%",
+          "top": "86%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 4
         },
         {
@@ -72,10 +84,10 @@
           "name": "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
           "price": 48.9,
           "in_stock": true,
-          "left": 75,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "75%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 5
         }
       ]
@@ -97,10 +109,10 @@
           "name": "Parfum All or Nothing Amplified",
           "price": 153.9,
           "in_stock": true,
-          "left": 38,
-          "top": 82,
-          "width": 4,
-          "height": 5,
+          "left": "38%",
+          "top": "82%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 6
         },
         {
@@ -108,10 +120,10 @@
           "name": "Crème Parfumée pour le Corps All Or Nothing Amplified",
           "price": 34.9,
           "in_stock": true,
-          "left": 14,
-          "top": 61,
-          "width": 4,
-          "height": 5,
+          "left": "14%",
+          "top": "61%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 6
         },
         {
@@ -119,10 +131,10 @@
           "name": "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
           "price": 48.9,
           "in_stock": true,
-          "left": 74,
-          "top": 87,
-          "width": 4,
-          "height": 5,
+          "left": "74%",
+          "top": "87%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 7
         }
       ]
@@ -144,10 +156,10 @@
           "name": "Eau de Toilette Eclat Homme",
           "price": 119.9,
           "in_stock": true,
-          "left": 71,
-          "top": 73,
-          "width": 4,
-          "height": 5,
+          "left": "71%",
+          "top": "73%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 9
         },
         {
@@ -155,10 +167,10 @@
           "name": "Eau de Toilette Eclat Femme Weekend",
           "price": 119.9,
           "in_stock": true,
-          "left": 84,
-          "top": 66,
-          "width": 4,
-          "height": 5,
+          "left": "84%",
+          "top": "66%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 9
         }
       ]
@@ -180,10 +192,10 @@
           "name": "Eau de Toilette Dark Wood Men's Collection",
           "price": 62.9,
           "in_stock": true,
-          "left": 65,
-          "top": 40,
-          "width": 4,
-          "height": 5,
+          "left": "65%",
+          "top": "40%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 11
         },
         {
@@ -191,10 +203,10 @@
           "name": "Eau de Toilette Signature Man",
           "price": 89.9,
           "in_stock": true,
-          "left": 80,
-          "top": 51,
-          "width": 4,
-          "height": 5,
+          "left": "80%",
+          "top": "51%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 11
         },
         {
@@ -202,10 +214,10 @@
           "name": "Eau de Toilette Eclat Toujours",
           "price": 62.9,
           "in_stock": true,
-          "left": 76,
-          "top": 71,
-          "width": 4,
-          "height": 5,
+          "left": "76%",
+          "top": "71%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 11
         }
       ]
@@ -227,10 +239,10 @@
           "name": "Brume Parfumée Giordani Gold Everlasting Glow",
           "price": 48.9,
           "in_stock": true,
-          "left": 16,
-          "top": 52,
-          "width": 4,
-          "height": 5,
+          "left": "16%",
+          "top": "52%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 12
         },
         {
@@ -238,10 +250,10 @@
           "name": "Eau de Parfum Giordani Gold Woman",
           "price": 89.9,
           "in_stock": true,
-          "left": 28,
-          "top": 71,
-          "width": 4,
-          "height": 5,
+          "left": "28%",
+          "top": "71%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 12
         },
         {
@@ -249,10 +261,10 @@
           "name": "Eau de Parfum Giordani Gold Man",
           "price": 89.9,
           "in_stock": true,
-          "left": 82,
-          "top": 65,
-          "width": 4,
-          "height": 5,
+          "left": "82%",
+          "top": "65%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 13
         }
       ]
@@ -274,10 +286,10 @@
           "name": "Parfum Giordani Gold Essenza Man Elixir",
           "price": 132.9,
           "in_stock": true,
-          "left": 20,
-          "top": 64,
-          "width": 4,
-          "height": 5,
+          "left": "20%",
+          "top": "64%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 14
         },
         {
@@ -285,10 +297,10 @@
           "name": "Parfum Giordani Gold Essenza",
           "price": 132.9,
           "in_stock": true,
-          "left": 85,
-          "top": 65,
-          "width": 4,
-          "height": 5,
+          "left": "85%",
+          "top": "65%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 15
         }
       ]
@@ -310,10 +322,10 @@
           "name": "Eau de Parfum Nordic Waters Infinite Blue pour lui",
           "price": 82.9,
           "in_stock": true,
-          "left": 20,
-          "top": 50,
-          "width": 4,
-          "height": 5,
+          "left": "20%",
+          "top": "50%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 16
         },
         {
@@ -321,10 +333,10 @@
           "name": "Eau de Parfum Nordic Waters pour Lui",
           "price": 82.9,
           "in_stock": true,
-          "left": 20,
-          "top": 77,
-          "width": 4,
-          "height": 5,
+          "left": "20%",
+          "top": "77%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 16
         },
         {
@@ -332,10 +344,10 @@
           "name": "Eau de Toilette Eclat Femme",
           "price": 82.9,
           "in_stock": true,
-          "left": 84,
-          "top": 61,
-          "width": 4,
-          "height": 5,
+          "left": "84%",
+          "top": "61%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 17
         }
       ]
@@ -357,10 +369,10 @@
           "name": "Eau de Toilette Greater pour Lui",
           "price": 79.9,
           "in_stock": true,
-          "left": 21,
-          "top": 66,
-          "width": 4,
-          "height": 5,
+          "left": "21%",
+          "top": "66%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 18
         },
         {
@@ -368,10 +380,10 @@
           "name": "Eau de Toilette Eclat Homme Weekend Azur",
           "price": 82.9,
           "in_stock": true,
-          "left": 81,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "81%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 19
         }
       ]
@@ -393,10 +405,10 @@
           "name": "Eau de Parfum Love Potion Sensual Ruby",
           "price": 82.9,
           "in_stock": true,
-          "left": 24,
-          "top": 71,
-          "width": 4,
-          "height": 5,
+          "left": "24%",
+          "top": "71%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 20
         },
         {
@@ -404,10 +416,10 @@
           "name": "Crème Parfumée pour le Corps Love Potion Sensual Ruby",
           "price": 34.9,
           "in_stock": true,
-          "left": 41,
-          "top": 70,
-          "width": 4,
-          "height": 5,
+          "left": "41%",
+          "top": "70%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 20
         },
         {
@@ -415,10 +427,10 @@
           "name": "Crème Parfumée pour le Corps Love Potion",
           "price": 34.9,
           "in_stock": true,
-          "left": 57,
-          "top": 34,
-          "width": 4,
-          "height": 5,
+          "left": "57%",
+          "top": "34%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 21
         },
         {
@@ -426,10 +438,10 @@
           "name": "Eau de Parfum Love Potion",
           "price": 82.9,
           "in_stock": true,
-          "left": 82,
-          "top": 73,
-          "width": 4,
-          "height": 5,
+          "left": "82%",
+          "top": "73%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 21
         }
       ]
@@ -451,10 +463,10 @@
           "name": "Brume Parfumée Amber Elixir Warm Temptation",
           "price": 48.9,
           "in_stock": true,
-          "left": 28,
-          "top": 70,
-          "width": 4,
-          "height": 5,
+          "left": "28%",
+          "top": "70%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 22
         },
         {
@@ -462,10 +474,10 @@
           "name": "Crème Parfumée pour le Corps Amber Elixir",
           "price": 34.9,
           "in_stock": true,
-          "left": 7,
-          "top": 32,
-          "width": 4,
-          "height": 5,
+          "left": "7%",
+          "top": "32%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 22
         },
         {
@@ -473,10 +485,10 @@
           "name": "Eau de Parfum Amber Elixir Mystery",
           "price": 89.9,
           "in_stock": true,
-          "left": 74,
-          "top": 66,
-          "width": 4,
-          "height": 5,
+          "left": "74%",
+          "top": "66%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 23
         }
       ]
@@ -498,10 +510,10 @@
           "name": "Eau de Parfum Possess Absolute",
           "price": 111.9,
           "in_stock": true,
-          "left": 28,
-          "top": 66,
-          "width": 4,
-          "height": 5,
+          "left": "28%",
+          "top": "66%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 24
         },
         {
@@ -509,10 +521,10 @@
           "name": "Eau De Toilette Women's Collection Charming Violet",
           "price": 79.9,
           "in_stock": true,
-          "left": 71,
-          "top": 73,
-          "width": 4,
-          "height": 5,
+          "left": "71%",
+          "top": "73%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 25
         },
         {
@@ -520,10 +532,10 @@
           "name": "Eau de Parfum Love Potion Cherry on Top",
           "price": 83.9,
           "in_stock": true,
-          "left": 59,
-          "top": 50,
-          "width": 4,
-          "height": 5,
+          "left": "59%",
+          "top": "50%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 25
         }
       ]
@@ -545,10 +557,10 @@
           "name": "Eau De Toilette Agave Power Men's Collection",
           "price": 79.9,
           "in_stock": true,
-          "left": 18,
-          "top": 51,
-          "width": 4,
-          "height": 5,
+          "left": "18%",
+          "top": "51%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 26
         },
         {
@@ -556,10 +568,10 @@
           "name": "Eau de Toilette Be the Legend",
           "price": 79.9,
           "in_stock": true,
-          "left": 32,
-          "top": 40,
-          "width": 4,
-          "height": 5,
+          "left": "32%",
+          "top": "40%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 26
         },
         {
@@ -567,10 +579,10 @@
           "name": "Eau de Parfum Possess The Secret Man",
           "price": 111.9,
           "in_stock": true,
-          "left": 76,
-          "top": 39,
-          "width": 4,
-          "height": 5,
+          "left": "76%",
+          "top": "39%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 27
         },
         {
@@ -578,10 +590,10 @@
           "name": "Eau de Parfum Possess Absolute pour Lui",
           "price": 111.9,
           "in_stock": true,
-          "left": 58,
-          "top": 53,
-          "width": 4,
-          "height": 5,
+          "left": "58%",
+          "top": "53%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 27
         }
       ]
@@ -603,10 +615,10 @@
           "name": "Eau de Parfum Giordani Gold Miss Giordani Floral",
           "price": 83.9,
           "in_stock": true,
-          "left": 40,
-          "top": 56,
-          "width": 4,
-          "height": 5,
+          "left": "40%",
+          "top": "56%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 28
         },
         {
@@ -614,10 +626,10 @@
           "name": "Eau de Toilette Joyce Jade",
           "price": 48.9,
           "in_stock": true,
-          "left": 76,
-          "top": 65,
-          "width": 4,
-          "height": 5,
+          "left": "76%",
+          "top": "65%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 29
         }
       ]
@@ -639,10 +651,10 @@
           "name": "Eau de Toilette Greater pour Elle",
           "price": 79.9,
           "in_stock": true,
-          "left": 17,
-          "top": 66,
-          "width": 4,
-          "height": 5,
+          "left": "17%",
+          "top": "66%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 30
         },
         {
@@ -650,10 +662,10 @@
           "name": "Eau de Toilette OH! SWEET DULCE DE LECHE",
           "price": 62.9,
           "in_stock": true,
-          "left": 15,
-          "top": 37,
-          "width": 4,
-          "height": 5,
+          "left": "15%",
+          "top": "37%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 30
         },
         {
@@ -661,10 +673,10 @@
           "name": "Eau de Toilette Scope Earth Wonder",
           "price": 79.9,
           "in_stock": true,
-          "left": 83,
-          "top": 64,
-          "width": 4,
-          "height": 5,
+          "left": "83%",
+          "top": "64%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 31
         }
       ]
@@ -686,10 +698,10 @@
           "name": "Eau de Toilette Lucia Bright Aura",
           "price": 62.9,
           "in_stock": true,
-          "left": 22,
-          "top": 66,
-          "width": 4,
-          "height": 5,
+          "left": "22%",
+          "top": "66%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 32
         },
         {
@@ -697,10 +709,10 @@
           "name": "Eau de Toilette Eclat Femme Weekend Riviera",
           "price": 83.9,
           "in_stock": true,
-          "left": 86,
-          "top": 54,
-          "width": 4,
-          "height": 5,
+          "left": "86%",
+          "top": "54%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 33
         }
       ]
@@ -722,10 +734,10 @@
           "name": "Eau de Parfum Nordic Waters pour Elle",
           "price": 83.9,
           "in_stock": true,
-          "left": 10,
-          "top": 69,
-          "width": 4,
-          "height": 5,
+          "left": "10%",
+          "top": "69%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 34
         },
         {
@@ -733,10 +745,10 @@
           "name": "Eau de Parfum Nordic Waters Infinite Blue pour elle",
           "price": 83.9,
           "in_stock": true,
-          "left": 30,
-          "top": 37,
-          "width": 4,
-          "height": 5,
+          "left": "30%",
+          "top": "37%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 34
         },
         {
@@ -744,10 +756,10 @@
           "name": "Eau de Toilette Joyce Turquoise",
           "price": 48.9,
           "in_stock": true,
-          "left": 70,
-          "top": 74,
-          "width": 4,
-          "height": 5,
+          "left": "70%",
+          "top": "74%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 35
         }
       ]
@@ -769,10 +781,10 @@
           "name": "Eau de Parfum Infinita you",
           "price": 119.9,
           "in_stock": true,
-          "left": 29,
-          "top": 90,
-          "width": 3,
-          "height": 5,
+          "left": "29%",
+          "top": "90%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -780,10 +792,10 @@
           "name": "Eau de Parfum Giordani Gold Mister Giordani",
           "price": 119.9,
           "in_stock": true,
-          "left": 8,
-          "top": 35,
-          "width": 3,
-          "height": 5,
+          "left": "8%",
+          "top": "35%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -791,10 +803,10 @@
           "name": "Eau de Parfum Giordani Gold Miss Giordani",
           "price": 119.9,
           "in_stock": true,
-          "left": 9,
-          "top": 89,
-          "width": 3,
-          "height": 5,
+          "left": "9%",
+          "top": "89%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -802,10 +814,10 @@
           "name": "Eau de Toilette Venture Power",
           "price": 89.9,
           "in_stock": true,
-          "left": 29,
-          "top": 37,
-          "width": 3,
-          "height": 5,
+          "left": "29%",
+          "top": "37%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -813,10 +825,10 @@
           "name": "Eau de Parfum Possess",
           "price": 159.9,
           "in_stock": true,
-          "left": 8,
-          "top": 61,
-          "width": 3,
-          "height": 5,
+          "left": "8%",
+          "top": "61%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -824,10 +836,10 @@
           "name": "Eau de Toilette Scope Time Loop",
           "price": 114.9,
           "in_stock": true,
-          "left": 8,
-          "top": 18,
-          "width": 3,
-          "height": 5,
+          "left": "8%",
+          "top": "18%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -835,10 +847,10 @@
           "name": "Eau de Toilette Glacier Rock",
           "price": 89.9,
           "in_stock": true,
-          "left": 28,
-          "top": 13,
-          "width": 3,
-          "height": 5,
+          "left": "28%",
+          "top": "13%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -846,10 +858,10 @@
           "name": "Eau de Toilette Elvie",
           "price": 89.9,
           "in_stock": true,
-          "left": 29,
-          "top": 63,
-          "width": 3,
-          "height": 5,
+          "left": "29%",
+          "top": "63%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -857,10 +869,10 @@
           "name": "Eau de Parfum Amber Elixir",
           "price": 129.9,
           "in_stock": true,
-          "left": 8,
-          "top": 75,
-          "width": 3,
-          "height": 5,
+          "left": "8%",
+          "top": "75%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -868,10 +880,10 @@
           "name": "Eau de Parfum Volare Tender",
           "price": 114.9,
           "in_stock": true,
-          "left": 29,
-          "top": 52,
-          "width": 3,
-          "height": 5,
+          "left": "29%",
+          "top": "52%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -879,10 +891,10 @@
           "name": "Eau de Parfum Infinita My Sunshine",
           "price": 119.9,
           "in_stock": true,
-          "left": 29,
-          "top": 79,
-          "width": 3,
-          "height": 5,
+          "left": "29%",
+          "top": "79%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -890,10 +902,10 @@
           "name": "Eau De Toilette Glacier Extreme",
           "price": 89.9,
           "in_stock": true,
-          "left": 28,
-          "top": 25,
-          "width": 3,
-          "height": 5,
+          "left": "28%",
+          "top": "25%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 36
         },
         {
@@ -901,10 +913,10 @@
           "name": "Beurre Corporel Garden Symphony Essense&Co.",
           "price": 39.9,
           "in_stock": true,
-          "left": 85,
-          "top": 86,
-          "width": 3,
-          "height": 5,
+          "left": "85%",
+          "top": "86%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 37
         },
         {
@@ -912,10 +924,10 @@
           "name": "Eau de Parfum Top Scents Neon Oud",
           "price": 189.9,
           "in_stock": true,
-          "left": 89,
-          "top": 46,
-          "width": 4,
-          "height": 5,
+          "left": "89%",
+          "top": "46%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 37
         },
         {
@@ -923,10 +935,10 @@
           "name": "Eau de Parfum Top Scents Rose Mode",
           "price": 189.9,
           "in_stock": true,
-          "left": 60,
-          "top": 56,
-          "width": 4,
-          "height": 5,
+          "left": "60%",
+          "top": "56%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 37
         }
       ]
@@ -948,10 +960,10 @@
           "name": "Eau de Toilette Women's Collection White Lilac",
           "price": 62.9,
           "in_stock": true,
-          "left": 38,
-          "top": 65,
-          "width": 4,
-          "height": 5,
+          "left": "38%",
+          "top": "65%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 38
         },
         {
@@ -959,10 +971,10 @@
           "name": "Eau de Toilette Women's Collection Delicate Cherry Blossom",
           "price": 62.9,
           "in_stock": true,
-          "left": 25,
-          "top": 43,
-          "width": 4,
-          "height": 5,
+          "left": "25%",
+          "top": "43%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 38
         },
         {
@@ -970,10 +982,10 @@
           "name": "Eau de Parfum Volare",
           "price": 79.9,
           "in_stock": true,
-          "left": 72,
-          "top": 34,
-          "width": 4,
-          "height": 5,
+          "left": "72%",
+          "top": "34%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 39
         },
         {
@@ -981,10 +993,10 @@
           "name": "Eau de Parfum Love Potion Secrets",
           "price": 82.9,
           "in_stock": true,
-          "left": 85,
-          "top": 71,
-          "width": 4,
-          "height": 5,
+          "left": "85%",
+          "top": "71%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 39
         }
       ]
@@ -1006,10 +1018,10 @@
           "name": "Eau de Toilette Midnight Magic Elvie",
           "price": 71.9,
           "in_stock": true,
-          "left": 19,
-          "top": 37,
-          "width": 4,
-          "height": 5,
+          "left": "19%",
+          "top": "37%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 40
         },
         {
@@ -1017,10 +1029,10 @@
           "name": "Eau de Toilette Eclat Amour",
           "price": 71.9,
           "in_stock": true,
-          "left": 28,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "28%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 40
         }
       ]
@@ -1086,10 +1098,10 @@
           "name": "Pinceau Teint Parfait",
           "price": 24.5,
           "in_stock": true,
-          "left": 67,
-          "top": 87,
-          "width": 4,
-          "height": 5,
+          "left": "67%",
+          "top": "87%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 43
         },
         {
@@ -1177,10 +1189,10 @@
           "name": "Rouleau Matifiant en Pierre Volcanique",
           "price": 29.5,
           "in_stock": true,
-          "left": 16,
-          "top": 91,
-          "width": 4,
-          "height": 5,
+          "left": "16%",
+          "top": "91%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 44
         },
         {
@@ -1188,10 +1200,10 @@
           "name": "Base THE ONE Make-Up Pro On Screen Finish",
           "price": 43.9,
           "in_stock": true,
-          "left": 10,
-          "top": 54,
-          "width": 4,
-          "height": 5,
+          "left": "10%",
+          "top": "54%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 44
         },
         {
@@ -1199,10 +1211,10 @@
           "name": "Pinceau à Poudre Dreamy",
           "price": 27.9,
           "in_stock": true,
-          "left": 39,
-          "top": 40,
-          "width": 4,
-          "height": 5,
+          "left": "39%",
+          "top": "40%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 44
         },
         {
@@ -1210,10 +1222,10 @@
           "name": "Poudre Libre The ONE Make-up Pro",
           "price": 59.9,
           "in_stock": true,
-          "left": 21,
-          "top": 50,
-          "width": 4,
-          "height": 5,
+          "left": "21%",
+          "top": "50%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 44
         },
         {
@@ -1301,10 +1313,10 @@
           "name": "Huile à lèvres Jelly THE ONE Coastal Kiss",
           "price": 46.9,
           "in_stock": true,
-          "left": 35,
-          "top": 70,
-          "width": 4,
-          "height": 5,
+          "left": "35%",
+          "top": "70%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 46
         },
         {
@@ -1359,10 +1371,10 @@
           "name": "Kit pour les Sourcils et les Yeux The ONE",
           "price": 67.9,
           "in_stock": true,
-          "left": 31,
-          "top": 32,
-          "width": 4,
-          "height": 5,
+          "left": "31%",
+          "top": "32%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 48
         },
         {
@@ -1425,10 +1437,10 @@
           "name": "Mascara Pliable False Lashes Salon Lift 360 THE ONE",
           "price": 41.9,
           "in_stock": true,
-          "left": 77,
-          "top": 59,
-          "width": 4,
-          "height": 5,
+          "left": "77%",
+          "top": "59%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 49
         },
         {
@@ -1436,10 +1448,10 @@
           "name": "Mascara 5-en-1 Wonder Lash Ultra THE ONE",
           "price": 35.9,
           "in_stock": true,
-          "left": 66,
-          "top": 51,
-          "width": 4,
-          "height": 5,
+          "left": "66%",
+          "top": "51%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 49
         },
         {
@@ -1447,10 +1459,10 @@
           "name": "Pinceau Perfecteur pour les Lèvres",
           "price": 27.9,
           "in_stock": true,
-          "left": 76,
-          "top": 89,
-          "width": 4,
-          "height": 5,
+          "left": "76%",
+          "top": "89%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 49
         },
         {
@@ -1458,10 +1470,10 @@
           "name": "Pince à épiler Ultra Précision",
           "price": 14.9,
           "in_stock": true,
-          "left": 55,
-          "top": 88,
-          "width": 4,
-          "height": 5,
+          "left": "55%",
+          "top": "88%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 49
         }
       ]
@@ -1483,10 +1495,10 @@
           "name": "Mascara Pump & Plump THE ONE - Résistant à l'eau Black",
           "price": 37.9,
           "in_stock": true,
-          "left": 81,
-          "top": 66,
-          "width": 4,
-          "height": 5,
+          "left": "81%",
+          "top": "66%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 51
         },
         {
@@ -1494,10 +1506,10 @@
           "name": "Mascara Pump & Plump THE ONE Black",
           "price": 37.9,
           "in_stock": true,
-          "left": 70,
-          "top": 45,
-          "width": 4,
-          "height": 5,
+          "left": "70%",
+          "top": "45%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 51
         }
       ]
@@ -1519,10 +1531,10 @@
           "name": "Pinceau Duo pour les Yeux",
           "price": 18.5,
           "in_stock": true,
-          "left": 17,
-          "top": 88,
-          "width": 4,
-          "height": 5,
+          "left": "17%",
+          "top": "88%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 52
         },
         {
@@ -1530,10 +1542,10 @@
           "name": "Eyeliner THE ONE Wonder Black",
           "price": 44.9,
           "in_stock": true,
-          "left": 6,
-          "top": 48,
-          "width": 4,
-          "height": 5,
+          "left": "6%",
+          "top": "48%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 52
         },
         {
@@ -1866,10 +1878,10 @@
           "name": "Miroir Glam On-The-Go",
           "price": 18.5,
           "in_stock": true,
-          "left": 68,
-          "top": 89,
-          "width": 4,
-          "height": 5,
+          "left": "68%",
+          "top": "89%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 57
         },
         {
@@ -1979,10 +1991,10 @@
           "name": "Pince à Cuticules Nail It",
           "price": 25.9,
           "in_stock": true,
-          "left": 13,
-          "top": 83,
-          "width": 4,
-          "height": 5,
+          "left": "13%",
+          "top": "83%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 58
         },
         {
@@ -1990,10 +2002,10 @@
           "name": "Duo Soin Cuticules et Ongles",
           "price": 16.9,
           "in_stock": true,
-          "left": 5,
-          "top": 52,
-          "width": 4,
-          "height": 5,
+          "left": "5%",
+          "top": "52%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 58
         },
         {
@@ -2001,10 +2013,10 @@
           "name": "Mini Kit de Manucure",
           "price": 29.9,
           "in_stock": true,
-          "left": 32,
-          "top": 22,
-          "width": 4,
-          "height": 5,
+          "left": "32%",
+          "top": "22%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 58
         },
         {
@@ -2012,10 +2024,10 @@
           "name": "Lime à Ongles en Verre Nail Perfection",
           "price": 9.5,
           "in_stock": true,
-          "left": 29,
-          "top": 55,
-          "width": 4,
-          "height": 5,
+          "left": "29%",
+          "top": "55%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 58
         },
         {
@@ -2023,10 +2035,10 @@
           "name": "Base pour Ongles  Tenue & Adhérence",
           "price": 22.5,
           "in_stock": true,
-          "left": 68,
-          "top": 58,
-          "width": 4,
-          "height": 5,
+          "left": "68%",
+          "top": "58%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 59
         },
         {
@@ -2034,10 +2046,10 @@
           "name": "Top coat - volume & brillance",
           "price": 22.5,
           "in_stock": true,
-          "left": 52,
-          "top": 57,
-          "width": 4,
-          "height": 5,
+          "left": "52%",
+          "top": "57%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 59
         },
         {
@@ -2045,10 +2057,10 @@
           "name": "Sérum pour les Ongles - Protection et Soin",
           "price": 22.5,
           "in_stock": true,
-          "left": 83,
-          "top": 57,
-          "width": 4,
-          "height": 5,
+          "left": "83%",
+          "top": "57%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 59
         }
       ]
@@ -2249,10 +2261,10 @@
           "name": "Miroir Glam Vanity",
           "price": 33.9,
           "in_stock": true,
-          "left": 13,
-          "top": 88,
-          "width": 4,
-          "height": 5,
+          "left": "13%",
+          "top": "88%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 62
         },
         {
@@ -2442,10 +2454,10 @@
           "name": "Base Riche en Sérum Giordani Gold",
           "price": 54.9,
           "in_stock": true,
-          "left": 19,
-          "top": 68,
-          "width": 4,
-          "height": 5,
+          "left": "19%",
+          "top": "68%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 66
         }
       ]
@@ -2467,10 +2479,10 @@
           "name": "Taille-crayon Exact Point Duo",
           "price": 11.9,
           "in_stock": true,
-          "left": 34,
-          "top": 89,
-          "width": 4,
-          "height": 5,
+          "left": "34%",
+          "top": "89%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 68
         },
         {
@@ -2522,10 +2534,10 @@
           "name": "Mascara OnColour Big Lash Résistant à l'Eau Mascara Big Lash waterproof Noir",
           "price": 25.9,
           "in_stock": true,
-          "left": 56,
-          "top": 86,
-          "width": 4,
-          "height": 5,
+          "left": "56%",
+          "top": "86%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 69
         },
         {
@@ -2635,10 +2647,10 @@
           "name": "Mascara Wonder Lash XXL THE ONE  Black",
           "price": 47.9,
           "in_stock": true,
-          "left": 7,
-          "top": 46,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "46%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 70
         },
         {
@@ -2646,10 +2658,10 @@
           "name": "Stylo Eyeliner The One Résistant à l'Eau Black Ink",
           "price": 42.9,
           "in_stock": true,
-          "left": 14,
-          "top": 54,
-          "width": 3,
-          "height": 5,
+          "left": "14%",
+          "top": "54%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 70
         },
         {
@@ -2657,10 +2669,10 @@
           "name": "Highlighter Liquide The ONE IlluSkin",
           "price": 54.9,
           "in_stock": true,
-          "left": 28,
-          "top": 46,
-          "width": 3,
-          "height": 5,
+          "left": "28%",
+          "top": "46%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 70
         },
         {
@@ -2987,10 +2999,10 @@
           "name": "Recourbe-cils Effet Lift",
           "price": 21.9,
           "in_stock": true,
-          "left": 59,
-          "top": 79,
-          "width": 3,
-          "height": 5,
+          "left": "59%",
+          "top": "79%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 71
         },
         {
@@ -2998,10 +3010,10 @@
           "name": "Pinceau Estompeur Effilé",
           "price": 21.9,
           "in_stock": true,
-          "left": 84,
-          "top": 77,
-          "width": 3,
-          "height": 5,
+          "left": "84%",
+          "top": "77%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 71
         },
         {
@@ -3009,10 +3021,10 @@
           "name": "Pinceau Blush & Glow",
           "price": 34.9,
           "in_stock": true,
-          "left": 82,
-          "top": 83,
-          "width": 3,
-          "height": 5,
+          "left": "82%",
+          "top": "83%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 71
         },
         {
@@ -3020,10 +3032,10 @@
           "name": "Pinceau Duo Teint Zéro Défaut",
           "price": 45.9,
           "in_stock": true,
-          "left": 76,
-          "top": 80,
-          "width": 3,
-          "height": 5,
+          "left": "76%",
+          "top": "80%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 71
         },
         {
@@ -3031,10 +3043,10 @@
           "name": "Perles Infusées de Sérum Giordani Gold - Édition Spéciale Cherry Touch",
           "price": 89.9,
           "in_stock": true,
-          "left": 65,
-          "top": 39,
-          "width": 3,
-          "height": 5,
+          "left": "65%",
+          "top": "39%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 71
         },
         {
@@ -3042,10 +3054,10 @@
           "name": "Pinceau Finition Velours",
           "price": 45.9,
           "in_stock": true,
-          "left": 69,
-          "top": 83,
-          "width": 3,
-          "height": 5,
+          "left": "69%",
+          "top": "83%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 71
         },
         {
@@ -3053,10 +3065,10 @@
           "name": "Pinceau Duo Éclat & Contour",
           "price": 45.9,
           "in_stock": true,
-          "left": 80,
-          "top": 77,
-          "width": 3,
-          "height": 5,
+          "left": "80%",
+          "top": "77%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 71
         },
         {
@@ -3257,10 +3269,10 @@
           "name": "Crème de Jour Multi-Correctrice SPF 30 Novage+ Restore",
           "price": 88.9,
           "in_stock": true,
-          "left": 20,
-          "top": 78,
-          "width": 4,
-          "height": 5,
+          "left": "20%",
+          "top": "78%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 74
         },
         {
@@ -3268,10 +3280,10 @@
           "name": "Crème de Jour Légère Multi-Active Anti-Age Novage+ IP 30",
           "price": 81.9,
           "in_stock": true,
-          "left": 14,
-          "top": 33,
-          "width": 4,
-          "height": 5,
+          "left": "14%",
+          "top": "33%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 74
         },
         {
@@ -3279,10 +3291,10 @@
           "name": "Crème de Jour Riche Multi-Active Anti-Age Novage+ IP 30",
           "price": 81.9,
           "in_stock": true,
-          "left": 20,
-          "top": 59,
-          "width": 4,
-          "height": 5,
+          "left": "20%",
+          "top": "59%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 74
         },
         {
@@ -3290,10 +3302,10 @@
           "name": "Crème de Nuit Multi-Réparatrice Novage+ Restore",
           "price": 88.9,
           "in_stock": true,
-          "left": 71,
-          "top": 76,
-          "width": 4,
-          "height": 5,
+          "left": "71%",
+          "top": "76%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 75
         },
         {
@@ -3301,10 +3313,10 @@
           "name": "Crème de Nuit Riche Multi-Active Anti-Age Novage+",
           "price": 81.9,
           "in_stock": true,
-          "left": 70,
-          "top": 56,
-          "width": 4,
-          "height": 5,
+          "left": "70%",
+          "top": "56%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 75
         },
         {
@@ -3312,10 +3324,10 @@
           "name": "Crème de Nuit Légère Multi-Active Anti-Age Novage+",
           "price": 81.9,
           "in_stock": true,
-          "left": 70,
-          "top": 34,
-          "width": 4,
-          "height": 5,
+          "left": "70%",
+          "top": "34%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 75
         }
       ]
@@ -3337,10 +3349,10 @@
           "name": "Routine Novage+ Restore",
           "price": 469.9,
           "in_stock": true,
-          "left": 29,
-          "top": 79,
-          "width": 4,
-          "height": 5,
+          "left": "29%",
+          "top": "79%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 76
         },
         {
@@ -3348,10 +3360,10 @@
           "name": "Routine Riche Novage+ Lift + Firm",
           "price": 429.9,
           "in_stock": true,
-          "left": 56,
-          "top": 37,
-          "width": 4,
-          "height": 5,
+          "left": "56%",
+          "top": "37%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 77
         },
         {
@@ -3359,10 +3371,10 @@
           "name": "Routine Mixte Novage+ Wrinkle Smooth",
           "price": 429.9,
           "in_stock": true,
-          "left": 79,
-          "top": 83,
-          "width": 4,
-          "height": 5,
+          "left": "79%",
+          "top": "83%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 77
         },
         {
@@ -3370,10 +3382,10 @@
           "name": "Routine Légère Novage+ Bright Intense",
           "price": 429.9,
           "in_stock": true,
-          "left": 80,
-          "top": 38,
-          "width": 4,
-          "height": 5,
+          "left": "80%",
+          "top": "38%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 77
         },
         {
@@ -3381,10 +3393,10 @@
           "name": "Routine Légère Novage+ Blemish + Age Defy",
           "price": 429.9,
           "in_stock": true,
-          "left": 57,
-          "top": 83,
-          "width": 4,
-          "height": 5,
+          "left": "57%",
+          "top": "83%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 77
         }
       ]
@@ -3406,10 +3418,10 @@
           "name": "Crème Contour des Yeux Novage+ Wrinkle Smooth",
           "price": 89,
           "in_stock": true,
-          "left": 29,
-          "top": 67,
-          "width": 3,
-          "height": 5,
+          "left": "29%",
+          "top": "67%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 78
         },
         {
@@ -3417,10 +3429,10 @@
           "name": "Crème Contour des Yeux et des Lèvres Rénovatrice Novage+ Restore",
           "price": 99,
           "in_stock": true,
-          "left": 30,
-          "top": 88,
-          "width": 3,
-          "height": 5,
+          "left": "30%",
+          "top": "88%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 78
         },
         {
@@ -3428,10 +3440,10 @@
           "name": "Crème Contour des Yeux Novage+ Bright Intense",
           "price": 89,
           "in_stock": true,
-          "left": 30,
-          "top": 30,
-          "width": 3,
-          "height": 5,
+          "left": "30%",
+          "top": "30%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 78
         },
         {
@@ -3439,10 +3451,10 @@
           "name": "Revitalisant pour les yeux",
           "price": 22.9,
           "in_stock": true,
-          "left": 7,
-          "top": 65,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "65%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 78
         },
         {
@@ -3450,10 +3462,10 @@
           "name": "Gel Nettoyant Novage+ Refresh",
           "price": 69,
           "in_stock": true,
-          "left": 5,
-          "top": 30,
-          "width": 3,
-          "height": 5,
+          "left": "5%",
+          "top": "30%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 78
         },
         {
@@ -3461,10 +3473,10 @@
           "name": "Crème Contour des Yeux Novage+ Lift + Firm",
           "price": 89,
           "in_stock": true,
-          "left": 29,
-          "top": 47,
-          "width": 3,
-          "height": 5,
+          "left": "29%",
+          "top": "47%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 78
         },
         {
@@ -3472,10 +3484,10 @@
           "name": "Spatule à crèmes",
           "price": 18.9,
           "in_stock": true,
-          "left": 8,
-          "top": 47,
-          "width": 3,
-          "height": 5,
+          "left": "8%",
+          "top": "47%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 78
         },
         {
@@ -3483,10 +3495,10 @@
           "name": "Sérum Novage+ Lift + Firm",
           "price": 139,
           "in_stock": true,
-          "left": 56,
-          "top": 42,
-          "width": 3,
-          "height": 5,
+          "left": "56%",
+          "top": "42%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3494,10 +3506,10 @@
           "name": "Crème de Nuit Légère Multi-Active Anti-Age Novage+",
           "price": 81.9,
           "in_stock": true,
-          "left": 79,
-          "top": 62,
-          "width": 3,
-          "height": 5,
+          "left": "79%",
+          "top": "62%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3505,10 +3517,10 @@
           "name": "Crème de Jour Riche Multi-Active Anti-Age Novage+ IP 30",
           "price": 81.9,
           "in_stock": true,
-          "left": 79,
-          "top": 35,
-          "width": 3,
-          "height": 5,
+          "left": "79%",
+          "top": "35%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3516,10 +3528,10 @@
           "name": "Crème de Jour Légère Multi-Active Anti-Age Novage+ IP 30",
           "price": 81.9,
           "in_stock": true,
-          "left": 78,
-          "top": 23,
-          "width": 3,
-          "height": 5,
+          "left": "78%",
+          "top": "23%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3527,10 +3539,10 @@
           "name": "Sérum Régénérant pour le Visage Novage+ Restore",
           "price": 149,
           "in_stock": true,
-          "left": 55,
-          "top": 89,
-          "width": 3,
-          "height": 5,
+          "left": "55%",
+          "top": "89%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3538,10 +3550,10 @@
           "name": "Sérum Novage+ Blemish + Age Defy",
           "price": 139,
           "in_stock": true,
-          "left": 56,
-          "top": 73,
-          "width": 3,
-          "height": 5,
+          "left": "56%",
+          "top": "73%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3549,10 +3561,10 @@
           "name": "Sérum Novage+ Wrinkle Smooth",
           "price": 139,
           "in_stock": true,
-          "left": 56,
-          "top": 57,
-          "width": 3,
-          "height": 5,
+          "left": "56%",
+          "top": "57%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3560,10 +3572,10 @@
           "name": "Crème de Nuit Multi-Réparatrice Novage+ Restore",
           "price": 88.9,
           "in_stock": true,
-          "left": 79,
-          "top": 88,
-          "width": 3,
-          "height": 5,
+          "left": "79%",
+          "top": "88%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3571,10 +3583,10 @@
           "name": "Sérum Novage+ Bright Intense",
           "price": 139,
           "in_stock": true,
-          "left": 56,
-          "top": 26,
-          "width": 3,
-          "height": 5,
+          "left": "56%",
+          "top": "26%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3582,10 +3594,10 @@
           "name": "Crème de Jour Multi-Correctrice SPF 30 Novage+ Restore",
           "price": 88.9,
           "in_stock": true,
-          "left": 79,
-          "top": 49,
-          "width": 3,
-          "height": 5,
+          "left": "79%",
+          "top": "49%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         },
         {
@@ -3593,10 +3605,10 @@
           "name": "Crème de Nuit Riche Multi-Active Anti-Age Novage+",
           "price": 81.9,
           "in_stock": true,
-          "left": 79,
-          "top": 76,
-          "width": 3,
-          "height": 5,
+          "left": "79%",
+          "top": "76%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 79
         }
       ]
@@ -3618,10 +3630,10 @@
           "name": "Bouclier ultra léger protecteur contre UV et signes de l'âge IP 50 Novage+ Proceuticals",
           "price": 74.9,
           "in_stock": true,
-          "left": 31,
-          "top": 51,
-          "width": 4,
-          "height": 5,
+          "left": "31%",
+          "top": "51%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 80
         },
         {
@@ -3629,10 +3641,10 @@
           "name": "Cotons Disques Exfoliants et Purifiants Novage+ Proceuticals",
           "price": 24.9,
           "in_stock": true,
-          "left": 81,
-          "top": 64,
-          "width": 4,
-          "height": 5,
+          "left": "81%",
+          "top": "64%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 81
         },
         {
@@ -3640,10 +3652,10 @@
           "name": "Power Drops Proceuticals 24h Hydratation Intense Novage+",
           "price": 74.9,
           "in_stock": true,
-          "left": 59,
-          "top": 32,
-          "width": 4,
-          "height": 5,
+          "left": "59%",
+          "top": "32%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 81
         },
         {
@@ -3651,10 +3663,10 @@
           "name": "Power Drops Rétinol Novage+ Proceuticals",
           "price": 74.9,
           "in_stock": true,
-          "left": 83,
-          "top": 33,
-          "width": 4,
-          "height": 5,
+          "left": "83%",
+          "top": "33%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 81
         },
         {
@@ -3662,10 +3674,10 @@
           "name": "Solution Exfoliante \"Peeling\" AHA Novage+ Proceuticals",
           "price": 69.9,
           "in_stock": true,
-          "left": 59,
-          "top": 73,
-          "width": 4,
-          "height": 5,
+          "left": "59%",
+          "top": "73%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 81
         }
       ]
@@ -3687,10 +3699,10 @@
           "name": "Crème Nourrissante pour le Visage au Chia et au Miel Naturel Love Nature",
           "price": 25.9,
           "in_stock": true,
-          "left": 22,
-          "top": 68,
-          "width": 4,
-          "height": 5,
+          "left": "22%",
+          "top": "68%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 82
         },
         {
@@ -3698,10 +3710,10 @@
           "name": "Eau Micellaire Apaisante au Chia et au Miel Naturel Love Nature",
           "price": 27.9,
           "in_stock": true,
-          "left": 23,
-          "top": 52,
-          "width": 4,
-          "height": 5,
+          "left": "23%",
+          "top": "52%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 82
         },
         {
@@ -3709,10 +3721,10 @@
           "name": "Brosse Nettoyante Double pour le Visage",
           "price": 27.9,
           "in_stock": true,
-          "left": 2,
-          "top": 28,
-          "width": 4,
-          "height": 5,
+          "left": "2%",
+          "top": "28%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 82
         },
         {
@@ -3720,10 +3732,10 @@
           "name": "Masque Nourrissant pour le Visage au Chia et au Miel Naturel Love Nature",
           "price": 25.9,
           "in_stock": true,
-          "left": 23,
-          "top": 90,
-          "width": 4,
-          "height": 5,
+          "left": "23%",
+          "top": "90%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 82
         },
         {
@@ -3731,10 +3743,10 @@
           "name": "Éponge Nettoyante pour le Visage",
           "price": 6.9,
           "in_stock": true,
-          "left": 3,
-          "top": 58,
-          "width": 4,
-          "height": 5,
+          "left": "3%",
+          "top": "58%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 82
         },
         {
@@ -3742,10 +3754,10 @@
           "name": "Enlève Points Noirs à Double Embout",
           "price": 11.9,
           "in_stock": true,
-          "left": 3,
-          "top": 90,
-          "width": 4,
-          "height": 5,
+          "left": "3%",
+          "top": "90%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 82
         }
       ]
@@ -3767,10 +3779,10 @@
           "name": "Baume Contour des Yeux Smooth & Hydrate Wellosophy",
           "price": 58.9,
           "in_stock": true,
-          "left": 28,
-          "top": 87,
-          "width": 4,
-          "height": 5,
+          "left": "28%",
+          "top": "87%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 84
         },
         {
@@ -3778,10 +3790,10 @@
           "name": "Masque Exfoliate & Energise Wellosophy",
           "price": 39.9,
           "in_stock": true,
-          "left": 7,
-          "top": 85,
-          "width": 4,
-          "height": 5,
+          "left": "7%",
+          "top": "85%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 84
         },
         {
@@ -3789,10 +3801,10 @@
           "name": "Gel-Sérum Smooth & Balance Wellosophy",
           "price": 92.5,
           "in_stock": true,
-          "left": 29,
-          "top": 44,
-          "width": 4,
-          "height": 5,
+          "left": "29%",
+          "top": "44%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 84
         },
         {
@@ -3800,10 +3812,10 @@
           "name": "Nettoyant Calm & Balance Wellosophy",
           "price": 46.5,
           "in_stock": true,
-          "left": 8,
-          "top": 44,
-          "width": 4,
-          "height": 5,
+          "left": "8%",
+          "top": "44%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 84
         },
         {
@@ -3811,10 +3823,10 @@
           "name": "Élixir de Nuit pour le Visage Wellosophy Relax & Recharge",
           "price": 66.9,
           "in_stock": true,
-          "left": 66,
-          "top": 87,
-          "width": 4,
-          "height": 5,
+          "left": "66%",
+          "top": "87%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 85
         },
         {
@@ -3822,10 +3834,10 @@
           "name": "Huile-en-Sérum Wellosophy Ageless & Blissful",
           "price": 84.9,
           "in_stock": true,
-          "left": 58,
-          "top": 46,
-          "width": 4,
-          "height": 5,
+          "left": "58%",
+          "top": "46%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 85
         },
         {
@@ -3833,10 +3845,10 @@
           "name": "Crème pour le Visage Wellosophy Plump & Balance",
           "price": 80.5,
           "in_stock": true,
-          "left": 80,
-          "top": 46,
-          "width": 4,
-          "height": 5,
+          "left": "80%",
+          "top": "46%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 85
         }
       ]
@@ -3858,10 +3870,10 @@
           "name": "Crème Raffermissante pour le Contour des Yeux Royal Velvet",
           "price": 64.9,
           "in_stock": true,
-          "left": 31,
-          "top": 71,
-          "width": 3,
-          "height": 5,
+          "left": "31%",
+          "top": "71%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3869,10 +3881,10 @@
           "name": "Crème de Jour Fouettée Waunt Super Recover",
           "price": 89.9,
           "in_stock": true,
-          "left": 32,
-          "top": 56,
-          "width": 3,
-          "height": 5,
+          "left": "32%",
+          "top": "56%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3880,10 +3892,10 @@
           "name": "Masque Nourissant Sleeping Beauty Waunt",
           "price": 74.9,
           "in_stock": true,
-          "left": 10,
-          "top": 40,
-          "width": 3,
-          "height": 5,
+          "left": "10%",
+          "top": "40%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3891,10 +3903,10 @@
           "name": "Baume Multi Usage Tender Care à l'Extrait de Framboise",
           "price": 19.9,
           "in_stock": true,
-          "left": 31,
-          "top": 86,
-          "width": 3,
-          "height": 5,
+          "left": "31%",
+          "top": "86%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3902,10 +3914,10 @@
           "name": "Crème de Jour Raffermissante SPF 20 Royal Velvet",
           "price": 104.9,
           "in_stock": true,
-          "left": 10,
-          "top": 71,
-          "width": 3,
-          "height": 5,
+          "left": "10%",
+          "top": "71%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3913,10 +3925,10 @@
           "name": "Baume Naturel Multi Usage Tender Care",
           "price": 19.9,
           "in_stock": true,
-          "left": 10,
-          "top": 85,
-          "width": 3,
-          "height": 5,
+          "left": "10%",
+          "top": "85%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3924,10 +3936,10 @@
           "name": "Retoucheur de Peau Waunt Woke Up Like This",
           "price": 84.9,
           "in_stock": true,
-          "left": 31,
-          "top": 40,
-          "width": 3,
-          "height": 5,
+          "left": "31%",
+          "top": "40%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3935,10 +3947,10 @@
           "name": "Masseur Anti Cellulite The Body Edition",
           "price": 36.5,
           "in_stock": true,
-          "left": 25,
-          "top": 18,
-          "width": 3,
-          "height": 5,
+          "left": "25%",
+          "top": "18%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3946,10 +3958,10 @@
           "name": "Crème Contour des Yeux Waunt 8 Hour Sleep",
           "price": 62.9,
           "in_stock": true,
-          "left": 9,
-          "top": 56,
-          "width": 3,
-          "height": 5,
+          "left": "9%",
+          "top": "56%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3957,10 +3969,10 @@
           "name": "Gommage Lissant pour le Corps The Body Edition",
           "price": 39.9,
           "in_stock": true,
-          "left": 15,
-          "top": 22,
-          "width": 3,
-          "height": 5,
+          "left": "15%",
+          "top": "22%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 86
         },
         {
@@ -3968,10 +3980,10 @@
           "name": "Gelée Après Soleil pour le Corps + Visage Sun 360",
           "price": 35.9,
           "in_stock": true,
-          "left": 78,
-          "top": 47,
-          "width": 4,
-          "height": 5,
+          "left": "78%",
+          "top": "47%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 87
         }
       ]
@@ -3993,10 +4005,10 @@
           "name": "Lotion Tonique Hydratante Opt Optimals",
           "price": 29.9,
           "in_stock": true,
-          "left": 35,
-          "top": 52,
-          "width": 4,
-          "height": 5,
+          "left": "35%",
+          "top": "52%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 88
         },
         {
@@ -4004,10 +4016,10 @@
           "name": "Gommage Exfoliant pour le Visage Opt Optimal",
           "price": 29.9,
           "in_stock": true,
-          "left": 17,
-          "top": 68,
-          "width": 4,
-          "height": 5,
+          "left": "17%",
+          "top": "68%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 88
         },
         {
@@ -4015,10 +4027,10 @@
           "name": "Crème Hydratante Riche Opt Optimals Hydra Radiance Opt Optimals",
           "price": 51.9,
           "in_stock": true,
-          "left": 53,
-          "top": 28,
-          "width": 4,
-          "height": 5,
+          "left": "53%",
+          "top": "28%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 89
         },
         {
@@ -4026,10 +4038,10 @@
           "name": "Eau Micellaire Réconfortante Opt Optimals",
           "price": 29.9,
           "in_stock": true,
-          "left": 65,
-          "top": 89,
-          "width": 4,
-          "height": 5,
+          "left": "65%",
+          "top": "89%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 89
         },
         {
@@ -4037,10 +4049,10 @@
           "name": "Crème Hydratante Légère Opt Optimals Hydra Radiance",
           "price": 51.9,
           "in_stock": true,
-          "left": 79,
-          "top": 37,
-          "width": 4,
-          "height": 5,
+          "left": "79%",
+          "top": "37%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 89
         }
       ]
@@ -4062,10 +4074,10 @@
           "name": "Nettoyant Crémeux Doux Opt Optimals",
           "price": 27.9,
           "in_stock": true,
-          "left": 14,
-          "top": 63,
-          "width": 4,
-          "height": 5,
+          "left": "14%",
+          "top": "63%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 90
         },
         {
@@ -4073,10 +4085,10 @@
           "name": "Gel Nettoyant Moussant Opt Optimals",
           "price": 27.9,
           "in_stock": true,
-          "left": 25,
-          "top": 71,
-          "width": 4,
-          "height": 5,
+          "left": "25%",
+          "top": "71%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 90
         }
       ]
@@ -4098,10 +4110,10 @@
           "name": "Masque et Gommage Purifiants 2 en 1 Love Nature à l'Extrait Naturel d'Arbre à Thé et de Citron",
           "price": 21.5,
           "in_stock": true,
-          "left": 12,
-          "top": 73,
-          "width": 4,
-          "height": 5,
+          "left": "12%",
+          "top": "73%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 92
         },
         {
@@ -4109,10 +4121,10 @@
           "name": "Tonique Purifiant Love Nature à l'Extrait d'Arbre à Thé et de Citron Naturels",
           "price": 22.5,
           "in_stock": true,
-          "left": 25,
-          "top": 73,
-          "width": 4,
-          "height": 5,
+          "left": "25%",
+          "top": "73%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 92
         },
         {
@@ -4120,10 +4132,10 @@
           "name": "Lotion Matifiante pour le Visage Love Nature à l'Extrait d'Arbre à Thé et de Citron Naturels",
           "price": 21.5,
           "in_stock": true,
-          "left": 43,
-          "top": 73,
-          "width": 4,
-          "height": 5,
+          "left": "43%",
+          "top": "73%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 92
         },
         {
@@ -4131,10 +4143,10 @@
           "name": "Huile Purifiante pour le Visage Love Nature à l'Extrait Naturel de l'Arbre à Thé et du Citron",
           "price": 21.5,
           "in_stock": true,
-          "left": 77,
-          "top": 59,
-          "width": 4,
-          "height": 5,
+          "left": "77%",
+          "top": "59%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 93
         }
       ]
@@ -4156,10 +4168,10 @@
           "name": "Nettoyant pour le Visage Glow Essentials aux Vitamines E et B3",
           "price": 16.5,
           "in_stock": true,
-          "left": 24,
-          "top": 72,
-          "width": 4,
-          "height": 5,
+          "left": "24%",
+          "top": "72%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 94
         },
         {
@@ -4167,10 +4179,10 @@
           "name": "Baume Multi Usages Tender Care à l'Extrait de Prune Sucrée",
           "price": 12.9,
           "in_stock": true,
-          "left": 69,
-          "top": 35,
-          "width": 4,
-          "height": 5,
+          "left": "69%",
+          "top": "35%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 95
         }
       ]
@@ -4283,10 +4295,10 @@
           "name": "Gel Couche de Finition Étape 2 THE ONE Ultimate",
           "price": 22.5,
           "in_stock": true,
-          "left": 42,
-          "top": 63,
-          "width": 4,
-          "height": 5,
+          "left": "42%",
+          "top": "63%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 98
         },
         {
@@ -4294,10 +4306,10 @@
           "name": "Stylo à Huile pour Ongles et Cuticules THE ONE EXPERT CARE",
           "price": 22.5,
           "in_stock": true,
-          "left": 28,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "28%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 98
         },
         {
@@ -4305,10 +4317,10 @@
           "name": "Baume à lèvres Glitter THE ONE Magical Sparkle",
           "price": 43.9,
           "in_stock": true,
-          "left": 9,
-          "top": 60,
-          "width": 4,
-          "height": 5,
+          "left": "9%",
+          "top": "60%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 98
         },
         {
@@ -4473,10 +4485,10 @@
           "name": "CRÈME POUR LES MAINS TREASURED MOMENTS",
           "price": 14.9,
           "in_stock": true,
-          "left": 23,
-          "top": 60,
-          "width": 4,
-          "height": 5,
+          "left": "23%",
+          "top": "60%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 100
         },
         {
@@ -4484,10 +4496,10 @@
           "name": "SAVON TREASURED MOMENTS",
           "price": 8.5,
           "in_stock": true,
-          "left": 18,
-          "top": 47,
-          "width": 4,
-          "height": 5,
+          "left": "18%",
+          "top": "47%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 100
         }
       ]
@@ -4509,10 +4521,10 @@
           "name": "Beurre Corporel Garden Symphony Essense&Co.",
           "price": 39.9,
           "in_stock": true,
-          "left": 34,
-          "top": 63,
-          "width": 4,
-          "height": 5,
+          "left": "34%",
+          "top": "63%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 102
         },
         {
@@ -4520,10 +4532,10 @@
           "name": "Gommage pour le Corps Garden Symphony Essense&Co.",
           "price": 39.9,
           "in_stock": true,
-          "left": 95,
-          "top": 63,
-          "width": 4,
-          "height": 5,
+          "left": "95%",
+          "top": "63%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 103
         },
         {
@@ -4531,10 +4543,10 @@
           "name": "Gel Douche Garden Symphony Essense&Co.",
           "price": 39.9,
           "in_stock": true,
-          "left": 53,
-          "top": 63,
-          "width": 4,
-          "height": 5,
+          "left": "53%",
+          "top": "63%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 103
         },
         {
@@ -4542,10 +4554,10 @@
           "name": "Masque pour les Mains Garden Symphony Essense&Co.",
           "price": 28.5,
           "in_stock": true,
-          "left": 69,
-          "top": 65,
-          "width": 4,
-          "height": 5,
+          "left": "69%",
+          "top": "65%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 103
         }
       ]
@@ -4567,10 +4579,10 @@
           "name": "Recharge du Nettoyant pour les Mains et le Corps au Citron et à la Verveine Essense&Co.",
           "price": 33.5,
           "in_stock": true,
-          "left": 30,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "30%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 104
         },
         {
@@ -4578,10 +4590,10 @@
           "name": "Lotion pour les Mains et le Corps au Citron et à la Verveine Essense&Co.",
           "price": 39.9,
           "in_stock": true,
-          "left": 68,
-          "top": 60,
-          "width": 4,
-          "height": 5,
+          "left": "68%",
+          "top": "60%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 105
         },
         {
@@ -4589,10 +4601,10 @@
           "name": "Nettoyant pour les Mains et le Corps au Citron et à la Verveine Essense&Co.",
           "price": 39.9,
           "in_stock": true,
-          "left": 80,
-          "top": 56,
-          "width": 4,
-          "height": 5,
+          "left": "80%",
+          "top": "56%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 105
         }
       ]
@@ -4614,10 +4626,10 @@
           "name": "Crème Nourrissante pour le Corps Love Nature à l'Extrait Naturel de Beurre de Cacao et à l'Huile de Noix de Coco",
           "price": 45.9,
           "in_stock": true,
-          "left": 29,
-          "top": 23,
-          "width": 4,
-          "height": 5,
+          "left": "29%",
+          "top": "23%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 106
         },
         {
@@ -4625,10 +4637,10 @@
           "name": "Gua Sha pour le corps",
           "price": 34.9,
           "in_stock": true,
-          "left": 9,
-          "top": 76,
-          "width": 4,
-          "height": 5,
+          "left": "9%",
+          "top": "76%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 106
         },
         {
@@ -4636,10 +4648,10 @@
           "name": "Lotion Nourrissante pour le Corps Love Nature au Beurre de Cacao et à l'Huile Naturelle de Noix de Coco",
           "price": 67.9,
           "in_stock": true,
-          "left": 24,
-          "top": 77,
-          "width": 4,
-          "height": 5,
+          "left": "24%",
+          "top": "77%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 106
         },
         {
@@ -4647,10 +4659,10 @@
           "name": "Lotion Énergisante pour le Corps Love Nature à l'Extrait Naturel de Menthe et de Framboise",
           "price": 54.5,
           "in_stock": true,
-          "left": 37,
-          "top": 77,
-          "width": 4,
-          "height": 5,
+          "left": "37%",
+          "top": "77%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 106
         },
         {
@@ -4658,10 +4670,10 @@
           "name": "Crème de Douche Nourrissante Love Nature à l'Extrait Naturel de Beurre de Cacao et à l'Huile de Noix de Coco",
           "price": 19.9,
           "in_stock": true,
-          "left": 61,
-          "top": 71,
-          "width": 4,
-          "height": 5,
+          "left": "61%",
+          "top": "71%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 107
         },
         {
@@ -4669,10 +4681,10 @@
           "name": "Crème de Douche Bienfaisante Love Nature  à l'Extrait Naturel d'Avoine et d'Abricot",
           "price": 19.9,
           "in_stock": true,
-          "left": 85,
-          "top": 52,
-          "width": 4,
-          "height": 5,
+          "left": "85%",
+          "top": "52%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 107
         }
       ]
@@ -4694,10 +4706,10 @@
           "name": "Shampooing pour Cheveux Secs à l'Extrait Naturel de Blé et de Noix de Coco Love Nature",
           "price": 17.9,
           "in_stock": true,
-          "left": 27,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "27%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 108
         },
         {
@@ -4705,10 +4717,10 @@
           "name": "Shampooing pour Cheveux Gras Love Nature à l'Extrait Naturel de Citron et de menthe",
           "price": 17.9,
           "in_stock": true,
-          "left": 13,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "13%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 108
         },
         {
@@ -4716,10 +4728,10 @@
           "name": "Shampooing Antipelliculaire Love Nature à l'Huile de l'Arbre à Thé et à l'Extrait Naturel d'Aloe Vera",
           "price": 17.9,
           "in_stock": true,
-          "left": 42,
-          "top": 61,
-          "width": 4,
-          "height": 5,
+          "left": "42%",
+          "top": "61%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 108
         }
       ]
@@ -4741,10 +4753,10 @@
           "name": "Brosse Double pour le Corps",
           "price": 28.5,
           "in_stock": true,
-          "left": 23,
-          "top": 88,
-          "width": 4,
-          "height": 5,
+          "left": "23%",
+          "top": "88%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 110
         },
         {
@@ -4752,10 +4764,10 @@
           "name": "Gel douche à la Pastèque Naturelle Simple Joys Love Nature",
           "price": 17.5,
           "in_stock": true,
-          "left": 30,
-          "top": 65,
-          "width": 4,
-          "height": 5,
+          "left": "30%",
+          "top": "65%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 110
         },
         {
@@ -4763,10 +4775,10 @@
           "name": "Gel Douche à l'ananas naturel Simple Joys Love Nature",
           "price": 17.5,
           "in_stock": true,
-          "left": 90,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "90%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 111
         },
         {
@@ -4774,10 +4786,10 @@
           "name": "Gel Douche à la Mangue Simple Joys Love Nature",
           "price": 17.5,
           "in_stock": true,
-          "left": 68,
-          "top": 61,
-          "width": 4,
-          "height": 5,
+          "left": "68%",
+          "top": "61%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 111
         }
       ]
@@ -4799,10 +4811,10 @@
           "name": "Crème pour les mains Dream Cream",
           "price": 10.9,
           "in_stock": true,
-          "left": 19,
-          "top": 73,
-          "width": 4,
-          "height": 5,
+          "left": "19%",
+          "top": "73%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 112
         },
         {
@@ -4810,10 +4822,10 @@
           "name": "Crème protectrice pour les mains et les ongles à l'huile naturelle de macadamia Love Nature",
           "price": 27.9,
           "in_stock": true,
-          "left": 79,
-          "top": 63,
-          "width": 4,
-          "height": 5,
+          "left": "79%",
+          "top": "63%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 113
         },
         {
@@ -4821,10 +4833,10 @@
           "name": "Crème pour les Mains Love Potion Cherry On Top",
           "price": 19.9,
           "in_stock": true,
-          "left": 58,
-          "top": 61,
-          "width": 4,
-          "height": 5,
+          "left": "58%",
+          "top": "61%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 113
         }
       ]
@@ -4846,10 +4858,10 @@
           "name": "Brosse Démêlante Styler PRO",
           "price": 25.5,
           "in_stock": true,
-          "left": 17,
-          "top": 86,
-          "width": 4,
-          "height": 5,
+          "left": "17%",
+          "top": "86%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 114
         },
         {
@@ -4857,10 +4869,10 @@
           "name": "Peigne Double Embout Styler PRO",
           "price": 10.5,
           "in_stock": true,
-          "left": 8,
-          "top": 84,
-          "width": 4,
-          "height": 5,
+          "left": "8%",
+          "top": "84%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 114
         },
         {
@@ -4868,10 +4880,10 @@
           "name": "Crème Bouclante Sans Rinçage DUOLOGI",
           "price": 41.9,
           "in_stock": true,
-          "left": 78,
-          "top": 67,
-          "width": 4,
-          "height": 5,
+          "left": "78%",
+          "top": "67%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 115
         },
         {
@@ -4879,10 +4891,10 @@
           "name": "Sérum capillaire protecteur DUOLOGI",
           "price": 39.9,
           "in_stock": true,
-          "left": 92,
-          "top": 71,
-          "width": 4,
-          "height": 5,
+          "left": "92%",
+          "top": "71%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 115
         },
         {
@@ -4890,10 +4902,10 @@
           "name": "Shampooing Définisseur de Boucles DUOLOGI",
           "price": 35.9,
           "in_stock": true,
-          "left": 63,
-          "top": 69,
-          "width": 4,
-          "height": 5,
+          "left": "63%",
+          "top": "69%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 115
         }
       ]
@@ -4915,10 +4927,10 @@
           "name": "Après Shampoing Crémeux Riche DUOLOGI",
           "price": 31.9,
           "in_stock": true,
-          "left": 32,
-          "top": 85,
-          "width": 4,
-          "height": 5,
+          "left": "32%",
+          "top": "85%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 116
         },
         {
@@ -4926,10 +4938,10 @@
           "name": "Après Shampoing Crémeux Léger DUOLOGI",
           "price": 31.9,
           "in_stock": true,
-          "left": 14,
-          "top": 52,
-          "width": 4,
-          "height": 5,
+          "left": "14%",
+          "top": "52%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 116
         },
         {
@@ -4937,10 +4949,10 @@
           "name": "Soin Pré-Shampooing Réparateur Intense DUOLOGI",
           "price": 33.9,
           "in_stock": true,
-          "left": 65,
-          "top": 84,
-          "width": 4,
-          "height": 5,
+          "left": "65%",
+          "top": "84%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 117
         },
         {
@@ -4948,10 +4960,10 @@
           "name": "Sérum Réparateur Nuit pour Cheveux Abîmés DUOLOGI",
           "price": 46.9,
           "in_stock": true,
-          "left": 79,
-          "top": 83,
-          "width": 4,
-          "height": 5,
+          "left": "79%",
+          "top": "83%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 117
         }
       ]
@@ -4973,10 +4985,10 @@
           "name": "Gel Coiffant DUOLOGl",
           "price": 41.9,
           "in_stock": true,
-          "left": 16,
-          "top": 59,
-          "width": 4,
-          "height": 5,
+          "left": "16%",
+          "top": "59%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 118
         },
         {
@@ -4984,10 +4996,10 @@
           "name": "Shampoing Sec Oil Control DUOLOGI",
           "price": 35.9,
           "in_stock": true,
-          "left": 30,
-          "top": 57,
-          "width": 4,
-          "height": 5,
+          "left": "30%",
+          "top": "57%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 118
         },
         {
@@ -4995,10 +5007,10 @@
           "name": "Brosse Thermique Ronde Styler PRO",
           "price": 27.9,
           "in_stock": true,
-          "left": 23,
-          "top": 83,
-          "width": 4,
-          "height": 5,
+          "left": "23%",
+          "top": "83%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 118
         },
         {
@@ -5006,10 +5018,10 @@
           "name": "Exfoliant Antipelliculaire Purifiant pour Cuir Chevelu DUOLOGI",
           "price": 19.9,
           "in_stock": true,
-          "left": 85,
-          "top": 38,
-          "width": 4,
-          "height": 5,
+          "left": "85%",
+          "top": "38%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 119
         },
         {
@@ -5017,10 +5029,10 @@
           "name": "Shampooing Anti Pelliculaire Purifiant DUOLOGI",
           "price": 31.9,
           "in_stock": true,
-          "left": 64,
-          "top": 83,
-          "width": 4,
-          "height": 5,
+          "left": "64%",
+          "top": "83%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 119
         }
       ]
@@ -5042,10 +5054,10 @@
           "name": "Dentifrice Optifresh Natural Oils",
           "price": 16.5,
           "in_stock": true,
-          "left": 32,
-          "top": 51,
-          "width": 4,
-          "height": 5,
+          "left": "32%",
+          "top": "51%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 120
         },
         {
@@ -5053,10 +5065,10 @@
           "name": "Dentifrice Optifresh Pro white",
           "price": 16.5,
           "in_stock": true,
-          "left": 17,
-          "top": 70,
-          "width": 4,
-          "height": 5,
+          "left": "17%",
+          "top": "70%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 120
         },
         {
@@ -5064,10 +5076,10 @@
           "name": "Brosse à dents pour enfants Optifresh - Souple",
           "price": 12.5,
           "in_stock": true,
-          "left": 63,
-          "top": 67,
-          "width": 4,
-          "height": 5,
+          "left": "63%",
+          "top": "67%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 121
         },
         {
@@ -5075,10 +5087,10 @@
           "name": "Dentifrice pour enfants Optifresh Fraise Douce",
           "price": 13.9,
           "in_stock": true,
-          "left": 69,
-          "top": 61,
-          "width": 4,
-          "height": 5,
+          "left": "69%",
+          "top": "61%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 121
         }
       ]
@@ -5100,10 +5112,10 @@
           "name": "Spray anti-transpirant anti-odeurs pour les pieds 48 heures Feet Up Expert",
           "price": 27.9,
           "in_stock": true,
-          "left": 23,
-          "top": 64,
-          "width": 4,
-          "height": 5,
+          "left": "23%",
+          "top": "64%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 122
         },
         {
@@ -5111,10 +5123,10 @@
           "name": "Extracteur de callosités Expert",
           "price": 25.5,
           "in_stock": true,
-          "left": 28,
-          "top": 87,
-          "width": 4,
-          "height": 5,
+          "left": "28%",
+          "top": "87%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 122
         },
         {
@@ -5122,10 +5134,10 @@
           "name": "Lime à Pied Expert en acier inoxydable",
           "price": 19.9,
           "in_stock": true,
-          "left": 7,
-          "top": 90,
-          "width": 4,
-          "height": 5,
+          "left": "7%",
+          "top": "90%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 122
         },
         {
@@ -5133,10 +5145,10 @@
           "name": "Mousse de rasage et nettoyage 2-en-1 North For Men Subzero",
           "price": 29.9,
           "in_stock": true,
-          "left": 62,
-          "top": 82,
-          "width": 4,
-          "height": 5,
+          "left": "62%",
+          "top": "82%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 123
         },
         {
@@ -5144,10 +5156,10 @@
           "name": "Nettoyant pour Corps et Cheveux North For Men Subzero",
           "price": 25.9,
           "in_stock": true,
-          "left": 68,
-          "top": 54,
-          "width": 4,
-          "height": 5,
+          "left": "68%",
+          "top": "54%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 123
         },
         {
@@ -5155,10 +5167,10 @@
           "name": "Gel Hydratant 2-en-1 North For Men Subzero",
           "price": 19.9,
           "in_stock": true,
-          "left": 83,
-          "top": 83,
-          "width": 4,
-          "height": 5,
+          "left": "83%",
+          "top": "83%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 123
         }
       ]
@@ -5180,10 +5192,10 @@
           "name": "Gel de Rasage Adoucissant Feminelle à l'Aloe Vera",
           "price": 20.9,
           "in_stock": true,
-          "left": 18,
-          "top": 74,
-          "width": 4,
-          "height": 5,
+          "left": "18%",
+          "top": "74%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 124
         },
         {
@@ -5191,10 +5203,10 @@
           "name": "Rasoir Réutilisable Apaisant à l'Aloe Vera",
           "price": 27.9,
           "in_stock": true,
-          "left": 68,
-          "top": 63,
-          "width": 4,
-          "height": 5,
+          "left": "68%",
+          "top": "63%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 125
         },
         {
@@ -5202,10 +5214,10 @@
           "name": "Lot de 3 Lames de Rasoir de Rechange",
           "price": 25.9,
           "in_stock": true,
-          "left": 84,
-          "top": 47,
-          "width": 4,
-          "height": 5,
+          "left": "84%",
+          "top": "47%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 125
         }
       ]
@@ -5227,10 +5239,10 @@
           "name": "Exfoliant au sucre lissant Milk & Honey Gold",
           "price": 44.9,
           "in_stock": true,
-          "left": 7,
-          "top": 91,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "91%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5238,10 +5250,10 @@
           "name": "Gel après-rasage North for Men x Giordani Gold",
           "price": 24.9,
           "in_stock": true,
-          "left": 30,
-          "top": 23,
-          "width": 3,
-          "height": 5,
+          "left": "30%",
+          "top": "23%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5249,10 +5261,10 @@
           "name": "Nettoyant Intime Apaisant à l'Aloe Vera Feminelle",
           "price": 39.9,
           "in_stock": true,
-          "left": 31,
-          "top": 47,
-          "width": 3,
-          "height": 5,
+          "left": "31%",
+          "top": "47%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5260,10 +5272,10 @@
           "name": "Gel douche à l'Aloe Vera Naturel Simple Joys Love Nature",
           "price": 21.9,
           "in_stock": true,
-          "left": 7,
-          "top": 63,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "63%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5271,10 +5283,10 @@
           "name": "Masque pour les Cheveux DUOLOGI Intense Repair",
           "price": 42.9,
           "in_stock": true,
-          "left": 7,
-          "top": 8,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "8%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5282,10 +5294,10 @@
           "name": "Nettoyant pour les Cheveux et le Corps des Enfants Love Nature Cheerful Apple",
           "price": 23.9,
           "in_stock": true,
-          "left": 7,
-          "top": 36,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "36%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5293,10 +5305,10 @@
           "name": "Shampoing protecteur de couleur DUOLOGI",
           "price": 44.9,
           "in_stock": true,
-          "left": 7,
-          "top": 22,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "22%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5304,10 +5316,10 @@
           "name": "Crème Rafraîchissante pour les Pieds Citron & Framboise Feet Up",
           "price": 24.9,
           "in_stock": true,
-          "left": 30,
-          "top": 64,
-          "width": 3,
-          "height": 5,
+          "left": "30%",
+          "top": "64%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5315,10 +5327,10 @@
           "name": "Spray Rafraîchissant pour les Pieds Citron & Framboise Feet Up",
           "price": 34.9,
           "in_stock": true,
-          "left": 31,
-          "top": 78,
-          "width": 3,
-          "height": 5,
+          "left": "31%",
+          "top": "78%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5326,10 +5338,10 @@
           "name": "Sérum Adoucissant pour les Pieds Feet Up Expert",
           "price": 32.9,
           "in_stock": true,
-          "left": 31,
-          "top": 9,
-          "width": 3,
-          "height": 5,
+          "left": "31%",
+          "top": "9%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5337,10 +5349,10 @@
           "name": "Savon Milk & Honey Gold Majestic Magnolia",
           "price": 13.9,
           "in_stock": true,
-          "left": 31,
-          "top": 90,
-          "width": 3,
-          "height": 5,
+          "left": "31%",
+          "top": "90%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5348,10 +5360,10 @@
           "name": "Gel Douche à la fraise naturelle Simple Joys Love Nature",
           "price": 21.9,
           "in_stock": true,
-          "left": 7,
-          "top": 50,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "50%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5359,10 +5371,10 @@
           "name": "Déodorant à Bille North For Men Subzero",
           "price": 19.9,
           "in_stock": true,
-          "left": 31,
-          "top": 35,
-          "width": 3,
-          "height": 5,
+          "left": "31%",
+          "top": "35%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5370,10 +5382,10 @@
           "name": "Crème de Douche Dorlotante Milk & Honey Gold",
           "price": 32.9,
           "in_stock": true,
-          "left": 7,
-          "top": 77,
-          "width": 3,
-          "height": 5,
+          "left": "7%",
+          "top": "77%",
+          "width": "3%",
+          "height": "5%",
           "pageNumber": 126
         },
         {
@@ -5381,10 +5393,10 @@
           "name": "Savon Exfoliant Énergisant Love Nature à l'Extrait biologique de Menthe et de Framboise",
           "price": 8.9,
           "in_stock": true,
-          "left": 70,
-          "top": 30,
-          "width": 4,
-          "height": 5,
+          "left": "70%",
+          "top": "30%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 127
         },
         {
@@ -5392,10 +5404,10 @@
           "name": "Savon North for Men Ultimate Balance",
           "price": 10.5,
           "in_stock": true,
-          "left": 65,
-          "top": 80,
-          "width": 4,
-          "height": 5,
+          "left": "65%",
+          "top": "80%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 127
         },
         {
@@ -5403,10 +5415,10 @@
           "name": "Savon Rafraîchissant Love Nature à l'Eau de Noix de Coco et au Melon",
           "price": 8.9,
           "in_stock": true,
-          "left": 71,
-          "top": 55,
-          "width": 4,
-          "height": 5,
+          "left": "71%",
+          "top": "55%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 127
         }
       ]
@@ -5428,10 +5440,10 @@
           "name": "Crème hydratante pour les mains Milk & Honey Gold",
           "price": 18.5,
           "in_stock": true,
-          "left": 29,
-          "top": 54,
-          "width": 4,
-          "height": 5,
+          "left": "29%",
+          "top": "54%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 128
         },
         {
@@ -5439,10 +5451,10 @@
           "name": "Savon crémeux Milk & Honey Gold",
           "price": 10.5,
           "in_stock": true,
-          "left": 12,
-          "top": 67,
-          "width": 4,
-          "height": 5,
+          "left": "12%",
+          "top": "67%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 128
         },
         {
@@ -5450,10 +5462,10 @@
           "name": "Crème nourrissante pour les mains et le corps Milk & Honey Gold",
           "price": 34.9,
           "in_stock": true,
-          "left": 76,
-          "top": 64,
-          "width": 4,
-          "height": 5,
+          "left": "76%",
+          "top": "64%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 129
         }
       ]
@@ -5475,10 +5487,10 @@
           "name": "Shampooing Nourrissant Milk & Honey Gold",
           "price": 20.9,
           "in_stock": true,
-          "left": 22,
-          "top": 75,
-          "width": 4,
-          "height": 5,
+          "left": "22%",
+          "top": "75%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 130
         },
         {
@@ -5486,10 +5498,10 @@
           "name": "Après-shampoing Nourrissant Milk & Honey Gold",
           "price": 20.9,
           "in_stock": true,
-          "left": 15,
-          "top": 64,
-          "width": 4,
-          "height": 5,
+          "left": "15%",
+          "top": "64%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 130
         }
       ]
@@ -5511,10 +5523,10 @@
           "name": "Crème Multi Usages Essentials à la Vitamine E et à l'Huile de Canola",
           "price": 25.9,
           "in_stock": true,
-          "left": 34,
-          "top": 68,
-          "width": 4,
-          "height": 5,
+          "left": "34%",
+          "top": "68%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 132
         },
         {
@@ -5522,10 +5534,10 @@
           "name": "Lotion pour le Corps Glow Essentials aux Vitamines E et B3",
           "price": 25.9,
           "in_stock": true,
-          "left": 56,
-          "top": 69,
-          "width": 4,
-          "height": 5,
+          "left": "56%",
+          "top": "69%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 133
         },
         {
@@ -5533,10 +5545,10 @@
           "name": "Savon Glow Essentials aux Vitamines E et B3",
           "price": 7.9,
           "in_stock": true,
-          "left": 75,
-          "top": 46,
-          "width": 4,
-          "height": 5,
+          "left": "75%",
+          "top": "46%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 133
         }
       ]
@@ -5558,10 +5570,10 @@
           "name": "Spray rafraîchissant pour les pieds Feet Up Everyday",
           "price": 34.9,
           "in_stock": true,
-          "left": 34,
-          "top": 72,
-          "width": 4,
-          "height": 5,
+          "left": "34%",
+          "top": "72%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 134
         },
         {
@@ -5569,10 +5581,10 @@
           "name": "Crème adoucissante pour les pieds Feet Up Everyday",
           "price": 27.9,
           "in_stock": true,
-          "left": 75,
-          "top": 74,
-          "width": 4,
-          "height": 5,
+          "left": "75%",
+          "top": "74%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 135
         },
         {
@@ -5580,10 +5592,10 @@
           "name": "Crème anti-transpirante pour les pieds Feet Up Everyday",
           "price": 17.5,
           "in_stock": true,
-          "left": 70,
-          "top": 67,
-          "width": 4,
-          "height": 5,
+          "left": "70%",
+          "top": "67%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 135
         },
         {
@@ -5591,10 +5603,10 @@
           "name": "Crème hydratante de nuit pour les pieds Feet Up Everyday",
           "price": 17.5,
           "in_stock": true,
-          "left": 61,
-          "top": 58,
-          "width": 4,
-          "height": 5,
+          "left": "61%",
+          "top": "58%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 135
         }
       ]
@@ -5616,10 +5628,10 @@
           "name": "Crème Lavante Intime Hydratante Feminelle à l'Acide Hyaluronique et à l'Extrait de Pêche",
           "price": 27.9,
           "in_stock": true,
-          "left": 42,
-          "top": 61,
-          "width": 4,
-          "height": 5,
+          "left": "42%",
+          "top": "61%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 136
         },
         {
@@ -5627,10 +5639,10 @@
           "name": "Gel Nettoyant Intime Rafraîchissant à l'Eau de Rose de Feminelle",
           "price": 27.9,
           "in_stock": true,
-          "left": 57,
-          "top": 48,
-          "width": 4,
-          "height": 5,
+          "left": "57%",
+          "top": "48%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 137
         },
         {
@@ -5638,10 +5650,10 @@
           "name": "Recharge de Gel Nettoyant Intime Rafraîchissant à l'Eau de Rose de Feminelle",
           "price": 25.5,
           "in_stock": true,
-          "left": 87,
-          "top": 71,
-          "width": 4,
-          "height": 5,
+          "left": "87%",
+          "top": "71%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 137
         }
       ]
@@ -5663,10 +5675,10 @@
           "name": "Baume Multi Usage Tender Care à l'Extrait de Mangue",
           "price": 16.9,
           "in_stock": true,
-          "left": 33,
-          "top": 48,
-          "width": 4,
-          "height": 5,
+          "left": "33%",
+          "top": "48%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 138
         },
         {
@@ -5674,10 +5686,10 @@
           "name": "Baume Multi Usage Tender Care à l'Extrait de Cassis",
           "price": 16.9,
           "in_stock": true,
-          "left": 61,
-          "top": 63,
-          "width": 4,
-          "height": 5,
+          "left": "61%",
+          "top": "63%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 139
         },
         {
@@ -5685,10 +5697,10 @@
           "name": "Baume Multi-usages Tender Care à l'Extrait de Mandarine",
           "price": 16.9,
           "in_stock": true,
-          "left": 84,
-          "top": 32,
-          "width": 4,
-          "height": 5,
+          "left": "84%",
+          "top": "32%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 139
         },
         {
@@ -5696,10 +5708,10 @@
           "name": "Baume Multi Usage Tender Care à l'Extrait de Pastèque Ruby Celebration",
           "price": 16.9,
           "in_stock": true,
-          "left": 72,
-          "top": 57,
-          "width": 4,
-          "height": 5,
+          "left": "72%",
+          "top": "57%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 139
         }
       ]
@@ -5721,10 +5733,10 @@
           "name": "Spray Parfumé pour le Corps Giordani Gold Essenza",
           "price": 25.9,
           "in_stock": true,
-          "left": 32,
-          "top": 70,
-          "width": 4,
-          "height": 5,
+          "left": "32%",
+          "top": "70%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 140
         },
         {
@@ -5732,10 +5744,10 @@
           "name": "Déodorant Parfumé anti-transpirant à bille Glacier",
           "price": 13.9,
           "in_stock": true,
-          "left": 79,
-          "top": 49,
-          "width": 4,
-          "height": 5,
+          "left": "79%",
+          "top": "49%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 141
         },
         {
@@ -5743,10 +5755,10 @@
           "name": "Déodorant Parfumé anti-transpirant à bille Possess",
           "price": 13.9,
           "in_stock": true,
-          "left": 71,
-          "top": 29,
-          "width": 4,
-          "height": 5,
+          "left": "71%",
+          "top": "29%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 141
         },
         {
@@ -5754,10 +5766,10 @@
           "name": "Déodorant Parfumé anti-transpirant à bille Giordani Gold Mister Giordani",
           "price": 13.9,
           "in_stock": true,
-          "left": 90,
-          "top": 65,
-          "width": 4,
-          "height": 5,
+          "left": "90%",
+          "top": "65%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 141
         },
         {
@@ -5765,10 +5777,10 @@
           "name": "Déodorant Parfumé anti-transpirant à bille Giordani Gold Woman",
           "price": 13.9,
           "in_stock": true,
-          "left": 71,
-          "top": 65,
-          "width": 4,
-          "height": 5,
+          "left": "71%",
+          "top": "65%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 141
         },
         {
@@ -5776,10 +5788,10 @@
           "name": "Déodorant Parfumé anti-transpirant à bille Giordani Gold Miss Giordani",
           "price": 13.9,
           "in_stock": true,
-          "left": 58,
-          "top": 54,
-          "width": 4,
-          "height": 5,
+          "left": "58%",
+          "top": "54%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 141
         }
       ]
@@ -5801,10 +5813,10 @@
           "name": "Huile Chaude pour Cheveux Secs à l'Extrait de Blé et de Noix de Coco Love Nature",
           "price": 7.5,
           "in_stock": true,
-          "left": 70,
-          "top": 52,
-          "width": 4,
-          "height": 5,
+          "left": "70%",
+          "top": "52%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 143
         },
         {
@@ -5812,10 +5824,10 @@
           "name": "Huile Nourrissante pour les Cheveux à l'Huile de Noix de Coco Love Nature",
           "price": 24.5,
           "in_stock": true,
-          "left": 55,
-          "top": 58,
-          "width": 4,
-          "height": 5,
+          "left": "55%",
+          "top": "58%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 143
         },
         {
@@ -5823,10 +5835,10 @@
           "name": "Après Shampooing pour Cheveux Secs à l'Extrait Naturel de Blé et de Noix de Coco Love Nature",
           "price": 14.9,
           "in_stock": true,
-          "left": 91,
-          "top": 60,
-          "width": 4,
-          "height": 5,
+          "left": "91%",
+          "top": "60%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 143
         }
       ]
@@ -5848,10 +5860,10 @@
           "name": "Solution Tonifiante et Clarifiante Pure Skin",
           "price": 21.5,
           "in_stock": true,
-          "left": 58,
-          "top": 62,
-          "width": 4,
-          "height": 5,
+          "left": "58%",
+          "top": "62%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 145
         },
         {
@@ -5859,10 +5871,10 @@
           "name": "Nettoyant en Profondeur pour le Visage Pure Skin",
           "price": 21.5,
           "in_stock": true,
-          "left": 91,
-          "top": 61,
-          "width": 4,
-          "height": 5,
+          "left": "91%",
+          "top": "61%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 145
         },
         {
@@ -5870,10 +5882,10 @@
           "name": "Lotion Matifiante et Rafraîchissante pour le Visage Pure Skin",
           "price": 17.9,
           "in_stock": true,
-          "left": 62,
-          "top": 50,
-          "width": 4,
-          "height": 5,
+          "left": "62%",
+          "top": "50%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 145
         },
         {
@@ -5881,10 +5893,10 @@
           "name": "Gommage Lissant pour le Visage Pure Skin",
           "price": 15.9,
           "in_stock": true,
-          "left": 72,
-          "top": 49,
-          "width": 4,
-          "height": 5,
+          "left": "72%",
+          "top": "49%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 145
         }
       ]
@@ -5906,10 +5918,10 @@
           "name": "Lotion Visage et Corps Enfants Sun Zone IP 50 Élevé",
           "price": 75.9,
           "in_stock": true,
-          "left": 88,
-          "top": 56,
-          "width": 4,
-          "height": 5,
+          "left": "88%",
+          "top": "56%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 147
         },
         {
@@ -5917,10 +5929,10 @@
           "name": "Écran Sun Zone IP 50 Élevé - Protection UV Spéciale pour le Visage et les Zones Exposées",
           "price": 52.9,
           "in_stock": true,
-          "left": 65,
-          "top": 67,
-          "width": 4,
-          "height": 5,
+          "left": "65%",
+          "top": "67%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 147
         }
       ]
@@ -5940,10 +5952,10 @@
           "name": "CC Spray Embellissant pour les Cheveux Sans Rinçage DUOLOGI",
           "price": 23.5,
           "in_stock": true,
-          "left": 35,
-          "top": 64,
-          "width": 4,
-          "height": 5,
+          "left": "35%",
+          "top": "64%",
+          "width": "4%",
+          "height": "5%",
           "pageNumber": 148
         }
       ]

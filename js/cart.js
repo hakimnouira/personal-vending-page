@@ -1,14 +1,17 @@
-// Shopping Cart Manager with Smart Mobile/Desktop Messenger Routing, i18n & Bundle Deals
-const CART_STORAGE_KEY = 'oriflame_cart_v1';
+// Shopping Cart Manager with Smart Mobile/Desktop Messenger Routing, i18n, Bundle Deals & Threshold Deals
+const CART_STORAGE_KEY    = 'oriflame_cart_v1';
 const BUNDLES_STORAGE_KEY = 'oriflame_bundles_cache_v1';
+const DEALS_STORAGE_KEY   = 'oriflame_deals_cache_v1';
 
 export class CartManager {
   constructor(i18n) {
     this.i18n = i18n;
     this.cart = this.loadCart();
     this.bundles = this.loadBundlesCache();
+    this.deals = this.loadDealsCache();
     this.listeners = [];
     this.fetchBundles();
+    this.fetchDeals();
   }
 
   loadCart() {
@@ -59,6 +62,146 @@ export class CartManager {
       localStorage.setItem(BUNDLES_STORAGE_KEY, JSON.stringify(bundles));
       this.notifyListeners();
     }
+  }
+
+  // ── THRESHOLD / CONDITIONAL DEALS ─────────────────────────────────────────
+
+  loadDealsCache() {
+    try {
+      const data = localStorage.getItem(DEALS_STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async fetchDeals() {
+    try {
+      const res = await fetch('/api/deals');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        this.deals = data.data;
+        localStorage.setItem(DEALS_STORAGE_KEY, JSON.stringify(this.deals));
+        this.notifyListeners();
+      }
+    } catch (e) {
+      // Offline fallback to cache
+    }
+  }
+
+  setDeals(deals) {
+    if (Array.isArray(deals)) {
+      this.deals = deals;
+      localStorage.setItem(DEALS_STORAGE_KEY, JSON.stringify(deals));
+      this.notifyListeners();
+    }
+  }
+
+  /**
+   * Get threshold deals that are currently ACTIVE (applied) in the cart.
+   *
+   * CRITICAL RULE: The deal product's own price must NOT be counted in the
+   * threshold calculation. Only the OTHER items in the cart count.
+   *
+   * Example: Deal = "Spend ≥ 100 DT → -30% on Perfume X (50 DT)"
+   *   - Cart has: Cream 80 DT + Perfume X 50 DT = 130 DT total
+   *   - Subtotal WITHOUT Perfume X = 80 DT  ← this is what we check
+   *   - 80 DT < 100 DT → deal does NOT apply ❌
+   *
+   *   - Cart has: Cream 60 DT + Serum 50 DT + Perfume X 50 DT = 160 DT
+   *   - Subtotal WITHOUT Perfume X = 110 DT  ← this is what we check
+   *   - 110 DT ≥ 100 DT → deal APPLIES ✅
+   */
+  getAppliedThresholdDeals() {
+    const activeDeals = (this.deals || []).filter(d => d.active !== false);
+    if (activeDeals.length === 0 || this.cart.length === 0) return [];
+
+    const applied = [];
+
+    for (const deal of activeDeals) {
+      const dealProductId = String(deal.product_id);
+
+      // Is the deal's target product in the cart?
+      const dealItem = this.cart.find(item => String(item.product_id) === dealProductId);
+      if (!dealItem) continue; // Product not in cart → deal cannot apply
+
+      // Sum of ALL cart items EXCEPT the deal target product
+      const subtotalWithoutDealProduct = this.cart.reduce((sum, item) => {
+        if (String(item.product_id) === dealProductId) return sum; // exclude it
+        return sum + (Number(item.price) * item.quantity);
+      }, 0);
+
+      // Only apply if the rest of the cart (without deal product) meets the threshold
+      if (subtotalWithoutDealProduct >= Number(deal.threshold_amount)) {
+        const originalPrice = Number(dealItem.price);
+        const discountFactor = 1 - (Number(deal.discount_percent) / 100);
+        const discountedPrice = parseFloat((originalPrice * discountFactor).toFixed(3));
+        const savingsPerUnit = parseFloat((originalPrice - discountedPrice).toFixed(3));
+        const totalSavings = parseFloat((savingsPerUnit * dealItem.quantity).toFixed(3));
+
+        if (totalSavings > 0) {
+          applied.push({
+            deal,
+            dealItem,
+            subtotalWithoutDealProduct,
+            originalPrice,
+            discountedPrice,
+            savingsPerUnit,
+            totalSavings,
+            sets: dealItem.quantity,
+          });
+        }
+      }
+    }
+
+    return applied;
+  }
+
+  /** Total threshold deal discount in TND */
+  getThresholdDealDiscount() {
+    return this.getAppliedThresholdDeals().reduce((sum, a) => sum + a.totalSavings, 0);
+  }
+
+  /**
+   * Get threshold deals that are NOT yet triggerable because the deal product
+   * is not in the cart — show as "Add this product & save X% if you spend Y DT first".
+   *
+   * Also returns deals where the product IS in cart but subtotal (without it) doesn't
+   * yet reach the threshold — so we can show "Spend X more DT to unlock the deal!"
+   */
+  getThresholdDealSuggestions() {
+    const activeDeals = (this.deals || []).filter(d => d.active !== false);
+    if (activeDeals.length === 0) return [];
+
+    const suggestions = [];
+
+    for (const deal of activeDeals) {
+      const dealProductId = String(deal.product_id);
+      const dealItem = this.cart.find(item => String(item.product_id) === dealProductId);
+
+      const subtotalWithoutDealProduct = this.cart.reduce((sum, item) => {
+        if (String(item.product_id) === dealProductId) return sum;
+        return sum + (Number(item.price) * item.quantity);
+      }, 0);
+
+      const threshold = Number(deal.threshold_amount);
+      const remaining = Math.max(0, threshold - subtotalWithoutDealProduct);
+      const alreadyApplied = dealItem && subtotalWithoutDealProduct >= threshold;
+
+      if (!alreadyApplied) {
+        suggestions.push({
+          deal,
+          dealItem,                     // null if product not in cart
+          subtotalWithoutDealProduct,
+          threshold,
+          remaining,                    // 0 means threshold met (product just not in cart)
+          productInCart: !!dealItem,
+          thresholdMet: subtotalWithoutDealProduct >= threshold,
+        });
+      }
+    }
+
+    return suggestions;
   }
 
   subscribe(listener) {
@@ -173,11 +316,17 @@ export class CartManager {
     return applied.reduce((sum, a) => sum + a.total_savings, 0);
   }
 
-  // Final subtotal with bundle package prices applied
+  // Final subtotal with ALL discounts applied (bundles + threshold deals)
   getSubtotal() {
     const raw = this.getRawSubtotal();
-    const discount = this.getBundleDiscount();
-    return Math.max(0, raw - discount);
+    const bundleDiscount = this.getBundleDiscount();
+    const thresholdDiscount = this.getThresholdDealDiscount();
+    return Math.max(0, raw - bundleDiscount - thresholdDiscount);
+  }
+
+  // Total of ALL discounts combined (bundles + threshold deals)
+  getTotalDiscount() {
+    return this.getBundleDiscount() + this.getThresholdDealDiscount();
   }
 
   // Find incomplete bundles in cart to suggest 1-click upsells (e.g. "Add X to complete the Duo Pack!")
@@ -253,14 +402,29 @@ export class CartManager {
       });
     }
 
+    const appliedThresholdDeals = this.getAppliedThresholdDeals();
+    if (appliedThresholdDeals.length > 0) {
+      message += `\n🎯 Deals Seuil Débloqués :\n`;
+      appliedThresholdDeals.forEach(td => {
+        const dTitle = (lang === 'ar' && td.deal.title_ar) ? td.deal.title_ar : (td.deal.title_fr || 'Deal Seuil');
+        message += `  • ${dTitle} : -${td.deal.discount_percent}% sur ${td.deal.product_name || td.deal.product_id} (-${td.totalSavings.toFixed(2)} ${currencyLabel})\n`;
+      });
+    }
+
     const rawSubtotal = this.getRawSubtotal().toFixed(2);
     const bundleDiscount = this.getBundleDiscount().toFixed(2);
+    const thresholdDiscount = this.getThresholdDealDiscount().toFixed(2);
     const finalTotal = this.getSubtotal().toFixed(2);
 
     message += `\n-----------------------------------\n`;
-    if (Number(bundleDiscount) > 0) {
+    if (Number(bundleDiscount) > 0 || Number(thresholdDiscount) > 0) {
       message += `Sous-total brut : ${rawSubtotal} ${currencyLabel}\n`;
-      message += `Remise Packs Combinés : -${bundleDiscount} ${currencyLabel}\n`;
+      if (Number(bundleDiscount) > 0) {
+        message += `Remise Packs Combinés : -${bundleDiscount} ${currencyLabel}\n`;
+      }
+      if (Number(thresholdDiscount) > 0) {
+        message += `Remise Deal Seuil : -${thresholdDiscount} ${currencyLabel}\n`;
+      }
     }
     message += `${totalLabel} ${finalTotal} ${currencyLabel}\n`;
 

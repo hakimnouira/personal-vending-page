@@ -1,4 +1,5 @@
-// Interactive Oriflame Digital eCatalogue (Flipbook Viewer) Module
+// Interactive Oriflame Digital eCatalogue (Flipbook Viewer) Module with Direct Search & Table of Contents
+import { TRANSLATIONS } from './i18n.js';
 
 export class ECatalogueViewer {
   constructor(appInstance) {
@@ -6,6 +7,7 @@ export class ECatalogueViewer {
     this.currentSpread = 0;
     this.totalPages = 148;
     this.spreads = [];
+    this.targetHighlightTimeout = null;
 
     this.init();
   }
@@ -40,6 +42,12 @@ export class ECatalogueViewer {
     this.spreadTitle = document.getElementById('catalogue-spread-title');
     this.bookSpreadWrap = document.getElementById('catalogue-spread-wrap');
 
+    // Search & Table of Contents elements
+    this.searchInput = document.getElementById('ecat-search-input');
+    this.searchClearBtn = document.getElementById('ecat-search-clear');
+    this.searchDropdown = document.getElementById('ecat-search-dropdown');
+    this.tocSelect = document.getElementById('catalogue-toc-select');
+
     this.bindEvents();
   }
 
@@ -49,8 +57,47 @@ export class ECatalogueViewer {
     if (this.btnFirst) this.btnFirst.addEventListener('click', () => this.goToSpread(0));
     if (this.btnLast) this.btnLast.addEventListener('click', () => this.goToSpread(this.spreads.length - 1));
 
+    // Table of Contents Category Selector
+    if (this.tocSelect) {
+      this.tocSelect.addEventListener('change', (e) => {
+        const targetSpread = parseInt(e.target.value, 10);
+        if (!isNaN(targetSpread)) {
+          this.goToSpread(targetSpread);
+        }
+      });
+    }
+
+    // Direct Catalog Search
+    if (this.searchInput) {
+      this.searchInput.addEventListener('input', (e) => {
+        this.handleSearchInput(e.target.value);
+      });
+
+      this.searchInput.addEventListener('focus', (e) => {
+        if (e.target.value.trim().length > 0) {
+          this.handleSearchInput(e.target.value);
+        }
+      });
+    }
+
+    if (this.searchClearBtn) {
+      this.searchClearBtn.addEventListener('click', () => {
+        this.clearSearch();
+      });
+    }
+
+    // Close Search Dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (this.searchDropdown && !e.target.closest('.ecat-search-box-wrap')) {
+        this.searchDropdown.style.display = 'none';
+      }
+    });
+
     // Keyboard Arrow Navigation
     document.addEventListener('keydown', (e) => {
+      // Ignore if user is currently typing in an input
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+
       const container = document.getElementById('catalogueContainer');
       if (!container) return;
       const rect = container.getBoundingClientRect();
@@ -94,14 +141,174 @@ export class ECatalogueViewer {
     }
   }
 
+  handleSearchInput(rawQuery) {
+    const query = (rawQuery || '').trim().toLowerCase();
+
+    if (!this.searchDropdown) return;
+
+    if (this.searchClearBtn) {
+      this.searchClearBtn.style.display = query.length > 0 ? 'block' : 'none';
+    }
+
+    if (query.length === 0) {
+      this.searchDropdown.style.display = 'none';
+      this.searchDropdown.innerHTML = '';
+      return;
+    }
+
+    const isArabic = document.documentElement.lang === 'ar' || document.documentElement.dir === 'rtl';
+    const lang = isArabic ? 'ar' : (document.documentElement.lang === 'en' ? 'en' : 'fr');
+    const dict = TRANSLATIONS[lang] || TRANSLATIONS.fr;
+    const currencyLabel = isArabic ? 'د.ت' : 'DT';
+
+    // Search across all spreads and hotspots
+    const results = [];
+    const seenIds = new Set();
+
+    for (let sIdx = 0; sIdx < this.spreads.length; sIdx++) {
+      const spread = this.spreads[sIdx];
+      const hotspots = spread.hotspots || [];
+
+      for (let hIdx = 0; hIdx < hotspots.length; hIdx++) {
+        const h = hotspots[hIdx];
+        const prodId = String(h.id || '').toLowerCase();
+        const prodName = String(h.name || '').toLowerCase();
+
+        if (prodId.includes(query) || prodName.includes(query)) {
+          const uniqueKey = `${h.id}-${sIdx}`;
+          if (!seenIds.has(uniqueKey)) {
+            seenIds.add(uniqueKey);
+            results.push({
+              spreadIndex: sIdx,
+              hotspotIndex: hIdx,
+              hotspot: h,
+              spreadPages: spread.pages || []
+            });
+          }
+        }
+
+        if (results.length >= 15) break;
+      }
+      if (results.length >= 15) break;
+    }
+
+    if (results.length === 0) {
+      this.searchDropdown.innerHTML = `
+        <div class="ecat-search-no-results">
+          ${dict.ecat_search_no_results || 'Aucun produit trouvé dans le catalogue'}
+        </div>
+      `;
+      this.searchDropdown.style.display = 'block';
+      return;
+    }
+
+    const headerText = (dict.ecat_search_results_count || '{count} produit(s) trouvé(s)').replace('{count}', results.length);
+
+    let html = `<div class="ecat-search-dropdown-header">${headerText}</div>`;
+
+    results.forEach(res => {
+      const h = res.hotspot;
+      const targetPage = h.pageNumber || res.spreadPages[0] || 1;
+      const existing = this.app.products.find(p => String(p.product_id) === String(h.id));
+      const thumb = h.image_url || existing?.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${h.id}%2f${h.id}_1.png&MediaId=20989035&Version=1`;
+
+      html += `
+        <div class="ecat-search-item" data-spread="${res.spreadIndex}" data-hotspot="${res.hotspotIndex}" data-id="${h.id}">
+          <img src="${thumb}" alt="${h.name}" class="ecat-search-item-thumb" onerror="window.handleProductImgError(this)" />
+          <div class="ecat-search-item-info">
+            <div class="ecat-search-item-name" title="${h.name}">${h.name}</div>
+            <div class="ecat-search-item-meta">
+              <span class="ecat-search-item-ref">#${h.id}</span>
+              <span class="ecat-search-item-price">${Number(h.price).toFixed(3).replace(/\.?0+$/, '')} ${currencyLabel}</span>
+            </div>
+          </div>
+          <span class="ecat-search-item-page">📄 Page ${targetPage}</span>
+        </div>
+      `;
+    });
+
+    this.searchDropdown.innerHTML = html;
+    this.searchDropdown.style.display = 'block';
+
+    // Bind item click events
+    this.searchDropdown.querySelectorAll('.ecat-search-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const sIdx = parseInt(item.getAttribute('data-spread'), 10);
+        const hIdx = parseInt(item.getAttribute('data-hotspot'), 10);
+        const prodId = item.getAttribute('data-id');
+        this.selectSearchResult(sIdx, hIdx, prodId);
+      });
+    });
+  }
+
+  selectSearchResult(spreadIndex, hotspotIndex, productId) {
+    if (this.searchDropdown) this.searchDropdown.style.display = 'none';
+
+    // Navigate to spread
+    this.goToSpread(spreadIndex);
+
+    // Highlight target hotspot pin
+    setTimeout(() => {
+      if (this.bookSpreadWrap) {
+        const pins = this.bookSpreadWrap.querySelectorAll('.ecat-hotspot-pin');
+        pins.forEach(pin => pin.classList.remove('ecat-hotspot-pin-target'));
+
+        if (pins[hotspotIndex]) {
+          pins[hotspotIndex].classList.add('ecat-hotspot-pin-target');
+          if (this.targetHighlightTimeout) clearTimeout(this.targetHighlightTimeout);
+          this.targetHighlightTimeout = setTimeout(() => {
+            pins[hotspotIndex]?.classList.remove('ecat-hotspot-pin-target');
+          }, 4500);
+        }
+      }
+
+      // Automatically open Quick View product modal
+      this.openHotspotModal(spreadIndex, hotspotIndex);
+    }, 150);
+
+    // Smooth scroll to catalogue if needed
+    if (this.container) {
+      this.container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  clearSearch() {
+    if (this.searchInput) {
+      this.searchInput.value = '';
+      this.searchInput.focus();
+    }
+    if (this.searchClearBtn) this.searchClearBtn.style.display = 'none';
+    if (this.searchDropdown) {
+      this.searchDropdown.style.display = 'none';
+      this.searchDropdown.innerHTML = '';
+    }
+  }
+
   goToSpread(index) {
     if (index >= 0 && index < this.spreads.length) {
       this.currentSpread = index;
       this.renderSpread();
+      this.updateTocSelect();
       if (this.app?.telemetry) {
         this.app.telemetry.trackEvent(`Browsed eCatalogue Spread ${index + 1}`);
       }
     }
+  }
+
+  updateTocSelect() {
+    if (!this.tocSelect) return;
+    const s = this.currentSpread;
+
+    let targetVal = "0";
+    if (s >= 68) targetVal = "68";
+    else if (s >= 48) targetVal = "48";
+    else if (s >= 31) targetVal = "31";
+    else if (s >= 20) targetVal = "20";
+    else if (s >= 13) targetVal = "13";
+    else if (s >= 1) targetVal = "1";
+    else targetVal = "0";
+
+    this.tocSelect.value = targetVal;
   }
 
   prevSpread() {
@@ -148,6 +355,13 @@ export class ECatalogueViewer {
       return url;
     };
 
+    const formatPos = (val) => {
+      if (val === undefined || val === null) return '0%';
+      if (typeof val === 'number') return `${val}%`;
+      if (typeof val === 'string') return (val.endsWith('%') || val.endsWith('px')) ? val : `${val}%`;
+      return `${val}%`;
+    };
+
     if (spread.spreadIndex === 0) {
       // Cover Page with Video
       contentHtml = `
@@ -167,7 +381,7 @@ export class ECatalogueViewer {
 
           <!-- Cover Hotspots -->
           ${(spread.hotspots || []).map((h, idx) => `
-            <div class="ecat-hotspot-pin" style="left: ${h.left}; top: ${h.top};" onclick="window.ecatViewer.openHotspotModal(${this.currentSpread}, ${idx})" title="${h.name}">
+            <div class="ecat-hotspot-pin" style="left: ${formatPos(h.left)}; top: ${formatPos(h.top)};" onclick="window.ecatViewer && window.ecatViewer.openHotspotModal(${this.currentSpread}, ${idx})" title="${h.name}">
               <span class="hotspot-pulse"></span>
               <span class="hotspot-icon">🛍️</span>
               <div class="hotspot-tooltip">
@@ -194,7 +408,7 @@ export class ECatalogueViewer {
 
           <!-- Clickable Interactive Product Hotspots with Exact Index -->
           ${(spread.hotspots || []).map((h, idx) => `
-            <div class="ecat-hotspot-pin" style="left: ${h.left}; top: ${h.top};" onclick="window.ecatViewer.openHotspotModal(${this.currentSpread}, ${idx})" title="${h.name}">
+            <div class="ecat-hotspot-pin" style="left: ${formatPos(h.left)}; top: ${formatPos(h.top)};" onclick="window.ecatViewer && window.ecatViewer.openHotspotModal(${this.currentSpread}, ${idx})" title="${h.name}">
               <span class="hotspot-pulse"></span>
               <span class="hotspot-icon">🛍️</span>
               <div class="hotspot-tooltip">
@@ -240,7 +454,7 @@ export class ECatalogueViewer {
       ],
       how_to_use: existing?.how_to_use || "Appliquer sur une peau propre selon les recommandations de la gamme.",
       ingredients: existing?.ingredients || "Extraits botaniques suédois et principes actifs certifiés Oriflame.",
-      in_stock: true
+      in_stock: h.in_stock !== false
     };
 
     const existingIndex = this.app.products.findIndex(p => String(p.product_id) === targetProduct.product_id);

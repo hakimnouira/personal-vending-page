@@ -26,12 +26,13 @@ const UPLOADS_DIR = path.join(__dirname, 'uploads');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
-const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
-const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
+const PRODUCTS_FILE  = path.join(DATA_DIR, 'products.json');
+const SETTINGS_FILE  = path.join(DATA_DIR, 'settings.json');
 const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
-const CAROUSEL_FILE = path.join(DATA_DIR, 'carousel.json');
-const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
-const BUNDLES_FILE = path.join(DATA_DIR, 'bundles.json');
+const CAROUSEL_FILE  = path.join(DATA_DIR, 'carousel.json');
+const ORDERS_FILE    = path.join(DATA_DIR, 'orders.json');
+const BUNDLES_FILE   = path.join(DATA_DIR, 'bundles.json');
+const DEALS_FILE     = path.join(DATA_DIR, 'deals.json');   // Threshold / Conditional Deals
 
 // Middleware
 app.use(cors());
@@ -191,6 +192,26 @@ function getOrders() {
 function saveOrders(orders) {
   try {
     fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function getDeals() {
+  try {
+    if (fs.existsSync(DEALS_FILE)) {
+      return JSON.parse(fs.readFileSync(DEALS_FILE, 'utf8'));
+    }
+    return [];
+  } catch (err) {
+    return [];
+  }
+}
+
+function saveDeals(deals) {
+  try {
+    fs.writeFileSync(DEALS_FILE, JSON.stringify(deals, null, 2), 'utf8');
     return true;
   } catch (err) {
     return false;
@@ -1318,38 +1339,401 @@ app.post('/api/products/apply-company-discount', (req, res) => {
   }
 });
 
-// ── EXPORT: Products JSON only ──────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+//  THRESHOLD / CONDITIONAL DEALS API
+//  Rule: "If cart total EXCLUDING this product >= threshold
+//         → apply discount_percent to this product"
+// ═══════════════════════════════════════════════════════════
+
+// GET all active deals (public — called by client cart)
+app.get('/api/deals', (req, res) => {
+  try {
+    const deals = getDeals();
+    res.json({ success: true, data: deals });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+// GET single deal
+app.get('/api/deals/:id', (req, res) => {
+  try {
+    const deals = getDeals();
+    const deal = deals.find(d => d.id === req.params.id);
+    if (!deal) return res.status(404).json({ success: false, message: 'Deal introuvable.' });
+    res.json({ success: true, data: deal });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+// POST create deal
+app.post('/api/deals', (req, res) => {
+  try {
+    const {
+      title_fr, title_ar, title_en,
+      description_fr,
+      threshold_amount,
+      product_id,
+      product_name,
+      product_image,
+      product_price,
+      discount_percent,
+      active
+    } = req.body;
+
+    if (!title_fr) return res.status(400).json({ success: false, message: 'Le titre (FR) est obligatoire.' });
+    if (!threshold_amount || isNaN(Number(threshold_amount)) || Number(threshold_amount) <= 0) {
+      return res.status(400).json({ success: false, message: 'Montant seuil invalide.' });
+    }
+    if (!product_id) return res.status(400).json({ success: false, message: 'Produit cible obligatoire.' });
+    if (!discount_percent || isNaN(Number(discount_percent)) || Number(discount_percent) <= 0 || Number(discount_percent) >= 100) {
+      return res.status(400).json({ success: false, message: 'Pourcentage de remise invalide (1-99).' });
+    }
+
+    const deals = getDeals();
+    const newDeal = {
+      id: `DEAL-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
+      title_fr: title_fr.trim(),
+      title_ar: (title_ar || '').trim(),
+      title_en: (title_en || '').trim(),
+      description_fr: (description_fr || '').trim(),
+      threshold_amount: parseFloat(Number(threshold_amount).toFixed(3)),
+      product_id: String(product_id).trim(),
+      product_name: (product_name || '').trim(),
+      product_image: (product_image || '').trim(),
+      product_price: product_price ? parseFloat(Number(product_price).toFixed(3)) : null,
+      discount_percent: parseFloat(Number(discount_percent).toFixed(2)),
+      active: active !== false && active !== 'false',
+      created_at: new Date().toISOString(),
+    };
+
+    deals.push(newDeal);
+    saveDeals(deals);
+
+    res.status(201).json({ success: true, message: 'Deal créé avec succès.', data: newDeal });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+// PUT update deal
+app.put('/api/deals/:id', (req, res) => {
+  try {
+    const deals = getDeals();
+    const idx = deals.findIndex(d => d.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ success: false, message: 'Deal introuvable.' });
+
+    const {
+      title_fr, title_ar, title_en,
+      description_fr,
+      threshold_amount,
+      product_id,
+      product_name,
+      product_image,
+      product_price,
+      discount_percent,
+      active
+    } = req.body;
+
+    if (title_fr !== undefined) deals[idx].title_fr = title_fr.trim();
+    if (title_ar !== undefined) deals[idx].title_ar = title_ar.trim();
+    if (title_en !== undefined) deals[idx].title_en = title_en.trim();
+    if (description_fr !== undefined) deals[idx].description_fr = description_fr.trim();
+    if (threshold_amount !== undefined) deals[idx].threshold_amount = parseFloat(Number(threshold_amount).toFixed(3));
+    if (product_id !== undefined) deals[idx].product_id = String(product_id).trim();
+    if (product_name !== undefined) deals[idx].product_name = product_name.trim();
+    if (product_image !== undefined) deals[idx].product_image = product_image.trim();
+    if (product_price !== undefined) deals[idx].product_price = parseFloat(Number(product_price).toFixed(3));
+    if (discount_percent !== undefined) deals[idx].discount_percent = parseFloat(Number(discount_percent).toFixed(2));
+    if (active !== undefined) deals[idx].active = active !== false && active !== 'false';
+    deals[idx].updated_at = new Date().toISOString();
+
+    saveDeals(deals);
+    res.json({ success: true, message: 'Deal mis à jour.', data: deals[idx] });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+// PATCH toggle active
+app.patch('/api/deals/:id/toggle', (req, res) => {
+  try {
+    const deals = getDeals();
+    const deal = deals.find(d => d.id === req.params.id);
+    if (!deal) return res.status(404).json({ success: false, message: 'Deal introuvable.' });
+    deal.active = !deal.active;
+    saveDeals(deals);
+    res.json({ success: true, message: `Deal ${deal.active ? 'activé' : 'désactivé'}.`, active: deal.active });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+// DELETE deal
+app.delete('/api/deals/:id', (req, res) => {
+  try {
+    const deals = getDeals();
+    const filtered = deals.filter(d => d.id !== req.params.id);
+    if (filtered.length === deals.length) {
+      return res.status(404).json({ success: false, message: 'Deal introuvable.' });
+    }
+    saveDeals(filtered);
+    res.json({ success: true, message: 'Deal supprimé.' });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
+//  EXPORT / DOWNLOAD ROUTES  (Server-shutdown survival kit)
+// ═══════════════════════════════════════════════════════════
+
+// Helper: convert array-of-objects → CSV string (UTF-8 BOM for Excel)
+function toCSV(rows) {
+  if (!rows || rows.length === 0) return '\uFEFF';
+  // Flatten nested objects / arrays into strings
+  const flatten = (obj, prefix = '') => {
+    return Object.keys(obj).reduce((acc, k) => {
+      const val = obj[k];
+      const key = prefix ? `${prefix}.${k}` : k;
+      if (val !== null && typeof val === 'object' && !Array.isArray(val)) {
+        Object.assign(acc, flatten(val, key));
+      } else if (Array.isArray(val)) {
+        acc[key] = val.map(v => (typeof v === 'object' ? JSON.stringify(v) : v)).join(' | ');
+      } else {
+        acc[key] = val === null || val === undefined ? '' : String(val);
+      }
+      return acc;
+    }, {});
+  };
+  const flat = rows.map(r => flatten(r));
+  const headers = [...new Set(flat.flatMap(r => Object.keys(r)))];
+  const escape = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const lines = [headers.map(escape).join(',')];
+  for (const row of flat) {
+    lines.push(headers.map(h => escape(row[h] ?? '')).join(','));
+  }
+  return '\uFEFF' + lines.join('\r\n');
+}
+
+// ── EXPORT: Products JSON ───────────────────────────────────────────────────
 app.get('/api/export/products', (req, res) => {
   try {
     const products = getProducts();
     const filename = `oriflame_products_${new Date().toISOString().slice(0, 10)}.json`;
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.send(JSON.stringify(products, null, 2));
   } catch (e) {
     res.status(500).json({ success: false, message: 'Export products failed: ' + e.message });
   }
 });
 
-// ── EXPORT: Full JSON Backup (products + carousel) ──────────────────────────
-app.get('/api/export/backup', (req, res) => {
+// ── EXPORT: Products CSV ────────────────────────────────────────────────────
+app.get('/api/export/products/csv', (req, res) => {
   try {
-    const products = fs.existsSync(PRODUCTS_FILE) ? JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8')) : [];
-    const carousel = fs.existsSync(CAROUSEL_FILE) ? JSON.parse(fs.readFileSync(CAROUSEL_FILE, 'utf8')) : [];
-    const backup = {
-      version: '1.0',
-      exported_at: new Date().toISOString(),
-      products: Array.isArray(products) ? products : (products.data || []),
-      carousel: Array.isArray(carousel) ? carousel : (carousel.data || []),
-    };
-    const filename = `oriflame-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    const products = getProducts();
+    const filename = `oriflame_products_${new Date().toISOString().slice(0, 10)}.csv`;
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(backup, null, 2));
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.send(toCSV(products));
   } catch (e) {
-    res.status(500).json({ success: false, message: 'Backup failed: ' + e.message });
+    res.status(500).json({ success: false, message: 'CSV export failed: ' + e.message });
   }
 });
+
+// ── EXPORT: Orders JSON ─────────────────────────────────────────────────────
+app.get('/api/export/orders', (req, res) => {
+  try {
+    const orders = getOrders();
+    const filename = `oriflame_orders_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(orders, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Orders export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: Orders CSV ──────────────────────────────────────────────────────
+app.get('/api/export/orders/csv', (req, res) => {
+  try {
+    const orders = getOrders();
+    // Flatten items array into readable text per order row
+    const rows = orders.map(o => ({
+      order_code: o.order_code || o.id || '',
+      client_name: o.client_name || '',
+      client_phone: o.client_phone || '',
+      channel: o.channel || '',
+      status: o.status || '',
+      total: o.total || '',
+      currency: o.currency || 'TND',
+      created_at: o.created_at || o.date || '',
+      items_count: Array.isArray(o.items) ? o.items.length : 0,
+      items_detail: Array.isArray(o.items)
+        ? o.items.map(i => `${i.name || i.product_name || ''} x${i.quantity || 1} (${i.price || ''}TND)`).join(' | ')
+        : '',
+      notes: o.notes || '',
+      address: o.address || '',
+    }));
+    const filename = `oriflame_orders_${new Date().toISOString().slice(0, 10)}.csv`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.send(toCSV(rows));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Orders CSV export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: Analytics JSON ──────────────────────────────────────────────────
+app.get('/api/export/analytics', (req, res) => {
+  try {
+    const analytics = getAnalytics();
+    const filename = `oriflame_analytics_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(analytics, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Analytics export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: Analytics CSV (sessions log) ────────────────────────────────────
+app.get('/api/export/analytics/csv', (req, res) => {
+  try {
+    const analytics = getAnalytics();
+    const sessions = Array.isArray(analytics.sessions) ? analytics.sessions : [];
+    const rows = sessions.map(s => ({
+      session_id: s.session_id || '',
+      ip: s.ip || '',
+      device: s.device || '',
+      language: s.language || '',
+      first_seen: s.first_seen || '',
+      last_active: s.last_active || '',
+      duration_seconds: s.duration_seconds || 0,
+      duration_readable: `${Math.floor((s.duration_seconds||0)/60)}m ${Math.round((s.duration_seconds||0)%60)}s`,
+      categories_visited: Array.isArray(s.categories_visited) ? s.categories_visited.join(' | ') : '',
+      products_viewed: Array.isArray(s.products_viewed) ? s.products_viewed.join(' | ') : '',
+      trail_summary: Array.isArray(s.activity_trail)
+        ? s.activity_trail.map(t => `[${t.offset}] ${t.description}`).join(' → ')
+        : '',
+    }));
+    const filename = `oriflame_analytics_${new Date().toISOString().slice(0, 10)}.csv`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.send(toCSV(rows));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Analytics CSV export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: Bundles JSON ────────────────────────────────────────────────────
+app.get('/api/export/bundles', (req, res) => {
+  try {
+    const bundles = getBundles();
+    const filename = `oriflame_bundles_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(bundles, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Bundles export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: Deals (Threshold/Conditional) JSON ─────────────────────────────
+app.get('/api/export/deals', (req, res) => {
+  try {
+    const deals = getDeals();
+    const filename = `oriflame_deals_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(deals, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Deals export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: Carousel JSON ───────────────────────────────────────────────────
+app.get('/api/export/carousel', (req, res) => {
+  try {
+    const carousel = getCarousel();
+    const filename = `oriflame_carousel_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(carousel, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Carousel export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: Settings JSON (minus password) ──────────────────────────────────
+app.get('/api/export/settings', (req, res) => {
+  try {
+    const settings = getSettings();
+    const safe = { ...settings };
+    delete safe.admin_pwd; // never export the password
+    const filename = `oriflame_settings_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(safe, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Settings export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: Flipbook data JSON ──────────────────────────────────────────────
+app.get('/api/export/flipbook', (req, res) => {
+  try {
+    const flipbookPath = path.join(DATA_DIR, 'flipbook.json');
+    if (!fs.existsSync(flipbookPath)) {
+      return res.status(404).json({ success: false, message: 'Aucune donnée flipbook trouvée.' });
+    }
+    const flipbook = JSON.parse(fs.readFileSync(flipbookPath, 'utf8'));
+    const filename = `oriflame_flipbook_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(flipbook, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Flipbook export failed: ' + e.message });
+  }
+});
+
+// ── EXPORT: COMPLETE SYSTEM BACKUP (ALL 6 data files) ──────────────────────
+app.get('/api/export/backup', (req, res) => {
+  try {
+    const readSafe = (file) => {
+      try { return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null; }
+      catch { return null; }
+    };
+    const flipbookPath = path.join(DATA_DIR, 'flipbook.json');
+    const settings = readSafe(SETTINGS_FILE) || {};
+    const safeSettings = { ...settings };
+    delete safeSettings.admin_pwd;
+
+    const backup = {
+      version: '2.1',
+      exported_at: new Date().toISOString(),
+      app_name: 'Mouna Nouira – Oriflame Boutique',
+      products:  readSafe(PRODUCTS_FILE)  || [],
+      carousel:  readSafe(CAROUSEL_FILE)  || [],
+      orders:    readSafe(ORDERS_FILE)    || [],
+      bundles:   readSafe(BUNDLES_FILE)   || [],
+      deals:     readSafe(DEALS_FILE)     || [],
+      settings:  safeSettings,
+      analytics: readSafe(ANALYTICS_FILE) || { total_visits: 0, sessions: [] },
+      flipbook:  readSafe(flipbookPath)   || null,
+    };
+
+    const filename = `oriflame-FULL-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(backup, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Full backup failed: ' + e.message });
+  }
+});
+
 
 // ── IMPORT: Restore from JSON Backup ────────────────────────────────────────
 app.post('/api/import/backup', uploadJson.single('backup'), (req, res) => {

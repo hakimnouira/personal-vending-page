@@ -78,6 +78,40 @@
 
       <!-- eCatalogue Interactive Flipbook Box -->
       <div id="catalogueContainer" class="ecatalogue-container">
+        <!-- eCatalogue Interactive Search & Table of Contents Bar -->
+        <div class="ecat-interactive-bar">
+          <!-- Direct Catalog Search Engine -->
+          <div class="ecat-search-box-wrap">
+            <div class="ecat-search-field">
+              <input type="search" id="ecat-search-input" class="ecat-search-input"
+                inputmode="search"
+                enterkeyhint="search"
+                data-i18n-placeholder="ecat_search_placeholder"
+                placeholder="Chercher dans le catalogue (ex: 46980, Giordani...)"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false" />
+              <button type="button" id="ecat-search-clear" class="ecat-search-clear" title="Effacer" aria-label="Effacer la recherche" style="display: none;">✕</button>
+            </div>
+            <div id="ecat-search-dropdown" class="ecat-search-dropdown" style="display: none;"></div>
+          </div>
+
+          <!-- Quick Table of Contents / Category Jumper -->
+          <div class="ecat-toc-box-wrap">
+            <label for="catalogue-toc-select" class="ecat-toc-label" data-i18n="ecat_toc_label">📑 Sommaire :</label>
+            <select id="catalogue-toc-select" class="ecat-toc-select" aria-label="Sommaire du catalogue">
+              <option value="0"  data-i18n="ecat_sec_cover">🌟 Page 1 – Couverture</option>
+              <option value="1"  data-i18n="ecat_sec_fragrance_women">🌸 p.2-25 – Parfums Femmes</option>
+              <option value="13" data-i18n="ecat_sec_fragrance_men">👔 p.26-39 – Parfums Hommes</option>
+              <option value="20" data-i18n="ecat_sec_makeup">💄 p.40-61 – Maquillage</option>
+              <option value="31" data-i18n="ecat_sec_skincare">✨ p.62-95 – Soins Visage</option>
+              <option value="48" data-i18n="ecat_sec_body_hair">🌿 p.96-135 – Corps & Cheveux</option>
+              <option value="68" data-i18n="ecat_sec_final_offers">🔥 p.136-148 – Offres Finales</option>
+            </select>
+          </div>
+        </div>
+
         <!-- Flipbook Control Bar -->
         <div class="ecat-toolbar">
           <div class="ecat-nav-buttons">
