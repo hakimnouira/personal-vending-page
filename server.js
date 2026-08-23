@@ -5,6 +5,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import axios from 'axios';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/scraper.js';
 import { scrapeFlipbookFromUrl, getFlipbookData, getOrRefreshFlipbookData } from './services/flipbook-scraper.js';
@@ -38,6 +39,75 @@ const DEALS_FILE     = path.join(DATA_DIR, 'deals.json');   // Threshold / Condi
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// ── Admin Authentication Sessions & Verification ───────────────────────────
+const ADMIN_SESSIONS = new Map(); // token -> expiry timestamp (ms)
+const ADMIN_SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
+
+function parseCookies(req) {
+  const header = req.headers.cookie;
+  const out = {};
+  if (!header) return out;
+  header.split(';').forEach(pair => {
+    const idx = pair.indexOf('=');
+    if (idx === -1) return;
+    const key = pair.slice(0, idx).trim();
+    const val = decodeURIComponent(pair.slice(idx + 1).trim());
+    out[key] = val;
+  });
+  return out;
+}
+
+function createAdminSession() {
+  const token = crypto.randomBytes(32).toString('hex');
+  ADMIN_SESSIONS.set(token, Date.now() + ADMIN_SESSION_TTL_MS);
+  return token;
+}
+
+function isValidAdminSession(token) {
+  if (!token) return false;
+  const expiry = ADMIN_SESSIONS.get(token);
+  if (!expiry) return false;
+  if (Date.now() > expiry) {
+    ADMIN_SESSIONS.delete(token);
+    return false;
+  }
+  return true;
+}
+
+function requireAdmin(req, res, next) {
+  const { admin_session } = parseCookies(req);
+  if (isValidAdminSession(admin_session)) return next();
+  return res.status(401).json({ success: false, message: 'Unauthorized. Please log in again.' });
+}
+
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body || {};
+  const settings = getSettings();
+  const correctPassword = settings.admin_pwd || 'mouna2026';
+
+  if (typeof password === 'string' && password.trim() === correctPassword.trim()) {
+    const token = createAdminSession();
+    const isHttps = req.headers['x-forwarded-proto'] === 'https' || req.secure;
+    res.setHeader('Set-Cookie',
+      `admin_session=${token}; HttpOnly; Path=/; Max-Age=${ADMIN_SESSION_TTL_MS / 1000}; SameSite=Strict${isHttps ? '; Secure' : ''}`
+    );
+    return res.json({ success: true });
+  }
+  return res.status(401).json({ success: false, message: 'Incorrect password' });
+});
+
+app.post('/api/admin/logout', (req, res) => {
+  const { admin_session } = parseCookies(req);
+  if (admin_session) ADMIN_SESSIONS.delete(admin_session);
+  res.setHeader('Set-Cookie', 'admin_session=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict');
+  res.json({ success: true });
+});
+
+app.get('/api/admin/session', (req, res) => {
+  const { admin_session } = parseCookies(req);
+  res.json({ success: true, authenticated: isValidAdminSession(admin_session) });
+});
 
 // Dynamic root route for perfect Open Graph / Facebook Crawler previews
 app.get(['/', '/index.html'], (req, res, next) => {

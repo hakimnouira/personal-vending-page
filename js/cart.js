@@ -1,5 +1,5 @@
 // Shopping Cart Manager with Smart Mobile/Desktop Messenger Routing, i18n, Bundle Deals & Threshold Deals
-const CART_STORAGE_KEY    = 'oriflame_cart_v1';
+const CART_STORAGE_KEY    = 'oriflame_cart_session_v2';
 const BUNDLES_STORAGE_KEY = 'oriflame_bundles_cache_v1';
 const DEALS_STORAGE_KEY   = 'oriflame_deals_cache_v1';
 
@@ -16,20 +16,23 @@ export class CartManager {
 
   loadCart() {
     try {
-      const data = localStorage.getItem(CART_STORAGE_KEY);
+      // Clear legacy permanent localStorage cart if present so new visitors start with 0 items
+      localStorage.removeItem('oriflame_cart_v1');
+
+      const data = sessionStorage.getItem(CART_STORAGE_KEY);
       return data ? JSON.parse(data) : [];
     } catch (e) {
-      console.error("Failed to load cart from LocalStorage", e);
+      console.error("Failed to load cart from SessionStorage", e);
       return [];
     }
   }
 
   saveCart() {
     try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(this.cart));
+      sessionStorage.setItem(CART_STORAGE_KEY, JSON.stringify(this.cart));
       this.notifyListeners();
     } catch (e) {
-      console.error("Failed to save cart to LocalStorage", e);
+      console.error("Failed to save cart to SessionStorage", e);
     }
   }
 
@@ -248,6 +251,10 @@ export class CartManager {
 
   clearCart() {
     this.cart = [];
+    try {
+      sessionStorage.removeItem(CART_STORAGE_KEY);
+      localStorage.removeItem('oriflame_cart_v1');
+    } catch (e) {}
     this.saveCart();
   }
 

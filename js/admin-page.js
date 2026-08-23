@@ -190,38 +190,66 @@ class AdminDashboard {
   }
 
   bindEvents() {
-    // Language Switcher (Login + Main)
+    // Language Selectors
     const handleLangChange = (e) => {
-      this.i18n.setLang(e.target.value);
-      this.renderStockTable();
-      if (this.analytics) this.renderAnalytics(this.analytics);
+      const lang = e.target.value;
+      this.i18n.setLang(lang);
+      this.i18n.applyTranslations();
+      if (this.langSelect) this.langSelect.value = lang;
+      if (this.loginLangSelect) this.loginLangSelect.value = lang;
     };
-
     if (this.langSelect) this.langSelect.addEventListener('change', handleLangChange);
     if (this.loginLangSelect) this.loginLangSelect.addEventListener('change', handleLangChange);
 
-    // Login Form
+    // Login Form (Clean inline error - NO intrusive alert popup)
     if (this.loginForm) {
+      if (this.pwdInput) {
+        this.pwdInput.addEventListener('input', () => {
+          this.pwdInput.style.borderColor = '';
+          const errEl = document.getElementById('admin-login-error');
+          if (errEl) errEl.style.display = 'none';
+        });
+      }
+
       this.loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const pwd = (this.pwdInput ? this.pwdInput.value : '').trim();
-        try {
-          const res = await fetch('/api/settings');
-          const data = await res.json();
-          const targetPwd = (data.data?.admin_pwd || 'mouna2026').trim();
+        const errEl = document.getElementById('admin-login-error');
+        if (errEl) errEl.style.display = 'none';
 
-          if (pwd === targetPwd || pwd === 'mouna2026' || pwd.toLowerCase() === 'mouna2026') {
+        try {
+          const res = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pwd })
+          });
+          const data = await res.json();
+
+          if (res.ok && data.success) {
             sessionStorage.setItem('oriflame_admin_auth', 'true');
+            if (errEl) errEl.style.display = 'none';
             this.showDashboard();
           } else {
-            alert(this.i18n.getLang() === 'ar' ? '❌ رمز المرور غير صحيح. كلمة المرور هي: mouna2026' : '❌ Mot de passe incorrect. Le mot de passe par défaut est : mouna2026');
+            // Display inline error without alert() window
+            const isAr = this.i18n.getLang() === 'ar';
+            const msg = isAr ? '❌ كلمة المرور غير صحيحة' : '❌ Mot de passe incorrect';
+            if (errEl) {
+              errEl.textContent = msg;
+              errEl.style.display = 'block';
+            }
+            if (this.pwdInput) {
+              this.pwdInput.style.borderColor = '#DC2626';
+              this.pwdInput.focus();
+              this.pwdInput.select();
+            }
           }
         } catch (err) {
-          if (pwd === 'mouna2026' || pwd.toLowerCase() === 'mouna2026') {
-            sessionStorage.setItem('oriflame_admin_auth', 'true');
-            this.showDashboard();
-          } else {
-            alert('❌ Mot de passe incorrect. Le mot de passe par défaut est : mouna2026');
+          console.error('Login request failed', err);
+          const isAr = this.i18n.getLang() === 'ar';
+          const msg = isAr ? '⚠️ خطأ في الاتصال بالخادم' : '⚠️ Erreur de connexion au serveur';
+          if (errEl) {
+            errEl.textContent = msg;
+            errEl.style.display = 'block';
           }
         }
       });
@@ -229,7 +257,8 @@ class AdminDashboard {
 
     // Logout
     if (this.btnLogout) {
-      this.btnLogout.addEventListener('click', () => {
+      this.btnLogout.addEventListener('click', async () => {
+        try { await fetch('/api/admin/logout', { method: 'POST' }); } catch (e) {}
         sessionStorage.removeItem('oriflame_admin_auth');
         window.location.reload();
       });
