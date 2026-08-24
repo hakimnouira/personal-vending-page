@@ -1,13 +1,37 @@
 // Oriflame Digital Flipbook Scraper Service with Dynamic Token Refresh & 100% Authentic Live Enrichments
+// Storage: Neon Postgres (primary) + local data/flipbook.json (fast read cache)
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { getFlipbookFromDB, saveFlipbookToDB } from '../dataAccess.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const FLIPBOOK_FILE = path.join(DATA_DIR, 'flipbook.json');
+
+/** Write the local cache file (best-effort, never throws). */
+function writeLocalCache(data) {
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(FLIPBOOK_FILE, JSON.stringify(data, null, 2), 'utf8');
+  } catch (e) {
+    console.warn('Could not write local flipbook cache:', e.message);
+  }
+}
+
+/** Read the local cache file (best-effort, returns null on any error). */
+function readLocalCache() {
+  try {
+    if (fs.existsSync(FLIPBOOK_FILE)) {
+      return JSON.parse(fs.readFileSync(FLIPBOOK_FILE, 'utf8'));
+    }
+  } catch (e) {
+    console.warn('Could not read local flipbook cache:', e.message);
+  }
+  return null;
+}
 
 export async function scrapeFlipbookFromUrl(inputUrl = '') {
   try {
@@ -229,7 +253,10 @@ export async function scrapeFlipbookFromUrl(inputUrl = '') {
       spreads
     };
 
-    fs.writeFileSync(FLIPBOOK_FILE, JSON.stringify(flipbookData, null, 2), 'utf8');
+    // ── Persist to Neon (primary) and local file (cache) ──
+    await saveFlipbookToDB(flipbookData);
+    writeLocalCache(flipbookData);
+
     console.log(`✅ Flipbook scrape complete: ${spreads.length} spreads generated with live tokens.`);
     return flipbookData;
   } catch (err) {
@@ -238,34 +265,45 @@ export async function scrapeFlipbookFromUrl(inputUrl = '') {
   }
 }
 
+/**
+ * Get flipbook data, refreshing if the token is about to expire.
+ * Priority: Neon DB → local file cache → live scrape.
+ */
 export async function getOrRefreshFlipbookData() {
   try {
-    if (fs.existsSync(FLIPBOOK_FILE)) {
-      const data = JSON.parse(fs.readFileSync(FLIPBOOK_FILE, 'utf8'));
-      // Check if token expires within 30 minutes
+    // 1. Try Neon first
+    let data = await getFlipbookFromDB();
+
+    // 2. Fall back to local file if Neon unavailable/empty
+    if (!data) {
+      data = readLocalCache();
+    }
+
+    if (data) {
+      // If token expires within 30 minutes, trigger a background refresh
       if (data.expires) {
         const expiresEpochSec = parseInt(data.expires, 10);
         const nowSec = Math.floor(Date.now() / 1000);
         if (expiresEpochSec - nowSec < 1800) {
-          console.log('Flipbook token is expiring soon, refreshing live in background...');
+          console.log('Flipbook token is expiring soon, refreshing in background...');
           scrapeFlipbookFromUrl().catch(e => console.warn('Background flipbook refresh note:', e.message));
         }
       }
       return data;
     }
+
+    // 3. Nothing in DB or cache — do a live scrape now
     return await scrapeFlipbookFromUrl();
   } catch (e) {
+    console.warn('getOrRefreshFlipbookData error:', e.message);
     return null;
   }
 }
 
+/**
+ * Synchronous-style getter used by legacy callers — reads local cache only.
+ * Async callers should use getOrRefreshFlipbookData() instead.
+ */
 export function getFlipbookData() {
-  try {
-    if (fs.existsSync(FLIPBOOK_FILE)) {
-      return JSON.parse(fs.readFileSync(FLIPBOOK_FILE, 'utf8'));
-    }
-    return null;
-  } catch (e) {
-    return null;
-  }
+  return readLocalCache();
 }

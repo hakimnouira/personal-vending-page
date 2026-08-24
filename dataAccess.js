@@ -657,3 +657,83 @@ export async function saveAnalytics(analytics) {
     client.release();
   }
 }
+
+// ── FLIPBOOK / eCATALOGUE ─────────────────────────────────────────────────
+
+/**
+ * Ensure the flipbook_data table exists (idempotent).
+ */
+async function ensureFlipbookTable() {
+  await query(`
+    CREATE TABLE IF NOT EXISTS flipbook_data (
+      id              SERIAL PRIMARY KEY,
+      catalogue_code  TEXT NOT NULL DEFAULT 'latest',
+      data            JSONB NOT NULL,
+      scraped_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      expires_epoch   BIGINT,
+      UNIQUE (catalogue_code)
+    )
+  `);
+}
+
+/**
+ * Read the latest flipbook data from Neon.
+ * Returns the stored JS object, or null if not yet scraped.
+ */
+export async function getFlipbookFromDB(catalogueCode = 'latest') {
+  try {
+    await ensureFlipbookTable();
+    const res = await query(
+      'SELECT data FROM flipbook_data WHERE catalogue_code = $1 LIMIT 1',
+      [catalogueCode]
+    );
+    if (res.rows.length > 0) return res.rows[0].data;
+    if (catalogueCode !== 'latest') {
+      const fallback = await query(
+        "SELECT data FROM flipbook_data WHERE catalogue_code = 'latest' LIMIT 1"
+      );
+      if (fallback.rows.length > 0) return fallback.rows[0].data;
+    }
+    return null;
+  } catch (err) {
+    console.error('getFlipbookFromDB error:', err.message);
+    return null;
+  }
+}
+
+/**
+ * Upsert flipbook data into Neon.
+ * @param {object} flipbookData - The full flipbook object (spreads, tokens, etc.)
+ */
+export async function saveFlipbookToDB(flipbookData) {
+  try {
+    await ensureFlipbookTable();
+    const code = flipbookData.catalogueCode || 'latest';
+    const expiresEpoch = flipbookData.expires ? parseInt(flipbookData.expires, 10) : null;
+    await query(
+      `INSERT INTO flipbook_data (catalogue_code, data, scraped_at, expires_epoch)
+       VALUES ($1, $2, NOW(), $3)
+       ON CONFLICT (catalogue_code) DO UPDATE
+         SET data = EXCLUDED.data,
+             scraped_at = NOW(),
+             expires_epoch = EXCLUDED.expires_epoch`,
+      [code, JSON.stringify(flipbookData), expiresEpoch]
+    );
+    if (code !== 'latest') {
+      await query(
+        `INSERT INTO flipbook_data (catalogue_code, data, scraped_at, expires_epoch)
+         VALUES ('latest', $1, NOW(), $2)
+         ON CONFLICT (catalogue_code) DO UPDATE
+           SET data = EXCLUDED.data,
+               scraped_at = NOW(),
+               expires_epoch = EXCLUDED.expires_epoch`,
+        [JSON.stringify(flipbookData), expiresEpoch]
+      );
+    }
+    console.log(`✅ Flipbook saved to Neon (code: ${code}, expires: ${flipbookData.expires})`);
+    return true;
+  } catch (err) {
+    console.error('saveFlipbookToDB error:', err.message);
+    return false;
+  }
+}
