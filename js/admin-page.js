@@ -227,10 +227,16 @@ class AdminDashboard {
 
           if (res.ok && data.success) {
             sessionStorage.setItem('oriflame_admin_auth', 'true');
+            if (data.token) {
+              sessionStorage.setItem('oriflame_admin_token', data.token);
+            }
             if (errEl) errEl.style.display = 'none';
+            if (this.pwdInput) {
+              this.pwdInput.style.borderColor = '';
+              this.pwdInput.value = '';
+            }
             this.showDashboard();
           } else {
-            // Display inline error without alert() window
             const isAr = this.i18n.getLang() === 'ar';
             const msg = isAr ? '❌ كلمة المرور غير صحيحة' : '❌ Mot de passe incorrect';
             if (errEl) {
@@ -424,13 +430,29 @@ class AdminDashboard {
     if (this.btnRefreshAnalytics) {
       this.btnRefreshAnalytics.addEventListener('click', () => this.fetchAnalytics());
     }
+
     const btnRefreshOrders = document.getElementById('btn-refresh-orders');
     if (btnRefreshOrders) {
-      btnRefreshOrders.addEventListener('click', () => this.fetchOrders());
+      btnRefreshOrders.addEventListener('click', async () => {
+        btnRefreshOrders.disabled = true;
+        btnRefreshOrders.textContent = '⏳ Actualisation...';
+        await this.fetchOrders();
+        btnRefreshOrders.disabled = false;
+        btnRefreshOrders.textContent = '🔄 Actualiser la Liste';
+        this.showToast('✅ Liste des commandes actualisée', 'info');
+      });
     }
     const btnClearAllOrders = document.getElementById('btn-clear-all-orders');
     if (btnClearAllOrders) {
       btnClearAllOrders.addEventListener('click', () => this.deleteAllOrders());
+    }
+    const btnBackToOrders = document.getElementById('btn-back-to-orders');
+    if (btnBackToOrders) {
+      btnBackToOrders.addEventListener('click', () => this.switchSection('section-orders'));
+    }
+    const btnPrintOrder = document.getElementById('btn-print-order');
+    if (btnPrintOrder) {
+      btnPrintOrder.addEventListener('click', () => window.print());
     }
 
     // Analytics Search Filter & Clear All Sessions
@@ -1020,6 +1042,11 @@ class AdminDashboard {
         await this.saveFeaturedDeals();
       });
     }
+
+    // Bind Threshold Deals Management Events
+    if (typeof this.bindDealEvents === 'function') {
+      this.bindDealEvents();
+    }
   }
 
   applyDiscountOverrides(productsList) {
@@ -1081,6 +1108,10 @@ class AdminDashboard {
       this.renderStockTable();
       this.populateFeaturedDealsDropdown();
       this.renderFeaturedDealsAdminGrid();
+      const dealProductSelect = document.getElementById('deal-product-select');
+      if (dealProductSelect && typeof this._populateDealProductSelect === 'function') {
+        this._populateDealProductSelect(dealProductSelect);
+      }
     }
   }
 
@@ -1551,6 +1582,29 @@ class AdminDashboard {
           <span style="font-weight:600; font-size:0.95rem;">TOTAL DE LA COMMANDE :</span>
           <span style="font-weight:800; font-size:1.35rem; color:#C5A880;">${Number(order.total_amount).toFixed(2)} ${order.currency || 'TND'}</span>
         </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:20px; border-top:1px solid #E8E5DF; padding-top:16px;">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn-primary" style="background:#27272A; border-color:#3F3F46; width:auto; padding:8px 16px; font-size:0.85rem;" onclick="window.adminDash.switchSection('section-orders')">
+              ← Retour aux Commandes
+            </button>
+            ${order.status === 'pending' ? `
+              <button class="btn-primary" style="background:#059669; border-color:#047857; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.updateOrderStatus('${order.order_id}', 'confirmed')">
+                ✓ Valider la Commande
+              </button>
+            ` : ''}
+            ${order.status !== 'shipped' ? `
+              <button class="btn-primary" style="background:#2563EB; border-color:#1D4ED8; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.updateOrderStatus('${order.order_id}', 'shipped')">
+                🚚 Marquer Expédiée
+              </button>
+            ` : ''}
+          </div>
+          <div>
+            <button class="btn-primary" style="background:#DC2626; border-color:#B91C1C; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.deleteOrder('${order.order_id}')">
+              🗑️ Supprimer cette Commande
+            </button>
+          </div>
+        </div>
       `;
     }
 
@@ -1592,9 +1646,20 @@ class AdminDashboard {
 
     try {
       const res = await fetch(`/api/orders/${encodeURIComponent(cleanId)}`, { method: 'DELETE' });
+      if (res.status === 401) {
+        alert(isAr ? 'انتهت صلاحية الجلسة. يرجى تسجيل الدخول مجدداً.' : 'Session expirée. Veuillez vous reconnecter.');
+        sessionStorage.removeItem('oriflame_admin_auth');
+        this.showLogin();
+        return;
+      }
       const data = await res.json();
       if (data.success) {
         this.showToast(isAr ? '✅ تم حذف الطلب بنجاح' : '✅ Commande supprimée avec succès', 'success');
+        this.orders = (this.orders || []).filter(o => o.order_id !== cleanId);
+        this.renderOrdersTable();
+        const navItem = document.getElementById('nav-item-order-detail');
+        if (navItem) navItem.style.display = 'none';
+        this.switchSection('section-orders');
         await this.fetchOrders();
       } else {
         alert('Erreur: ' + (data.message || 'Échec de la suppression'));
@@ -3320,66 +3385,106 @@ class AdminDashboard {
     if (thresholdInput) thresholdInput.addEventListener('input', updatePreview);
     if (discountInput) discountInput.addEventListener('input', updatePreview);
 
-    // Product selector
+    // Product selector & manual code inputs
     const productSelect = document.getElementById('deal-product-select');
+    const manualInput = document.getElementById('deal-product-id-manual');
+
+    const handleManualCode = () => {
+      if (!manualInput) return;
+      const val = manualInput.value.trim();
+      if (val) {
+        const found = (this.products || []).find(p => String(p.product_id).trim() === val);
+        if (found) {
+          this._updateDealProductPreview(String(found.product_id));
+          if (productSelect) productSelect.value = String(found.product_id);
+        } else {
+          document.getElementById('deal-product-id').value = val;
+          document.getElementById('deal-product-name').value = `Réf. ${val}`;
+          document.getElementById('deal-product-image').value = '';
+          document.getElementById('deal-product-price').value = '';
+          const preview = document.getElementById('deal-product-preview');
+          if (preview) {
+            preview.style.display = 'flex';
+            const img = document.getElementById('deal-product-preview-img');
+            const nameEl = document.getElementById('deal-product-preview-name');
+            const priceEl = document.getElementById('deal-product-preview-price');
+            const refEl = document.getElementById('deal-product-preview-ref');
+            if (img) img.src = getProductFallbackSvg(this.i18n.getLang());
+            if (nameEl) nameEl.textContent = `Produit personnalisé (Réf: ${val})`;
+            if (priceEl) priceEl.textContent = 'Prix non défini dans le catalogue';
+            if (refEl) refEl.textContent = `Réf: ${val}`;
+          }
+          if (productSelect) productSelect.value = '';
+        }
+      } else {
+        document.getElementById('deal-product-id').value = '';
+        const preview = document.getElementById('deal-product-preview');
+        if (preview) preview.style.display = 'none';
+        if (productSelect) productSelect.value = '';
+      }
+    };
+
     if (productSelect) {
-      // Populate with catalog products
       this._populateDealProductSelect(productSelect);
       productSelect.addEventListener('change', () => {
         const selectedId = productSelect.value;
         if (selectedId) {
           this._updateDealProductPreview(selectedId);
-          const manualInput = document.getElementById('deal-product-id-manual');
+          if (manualInput) manualInput.value = selectedId;
+        } else {
+          document.getElementById('deal-product-id').value = '';
+          const preview = document.getElementById('deal-product-preview');
+          if (preview) preview.style.display = 'none';
           if (manualInput) manualInput.value = '';
         }
       });
     }
 
-    const manualInput = document.getElementById('deal-product-id-manual');
     if (manualInput) {
-      manualInput.addEventListener('blur', () => {
-        const val = manualInput.value.trim();
-        if (val) {
-          document.getElementById('deal-product-id').value = val;
-          const found = (this.products || []).find(p => String(p.product_id) === val);
-          if (found) {
-            this._updateDealProductPreview(String(found.product_id));
-          } else {
-            document.getElementById('deal-product-name').value = `Réf. ${val}`;
-            document.getElementById('deal-product-image').value = '';
-            document.getElementById('deal-product-price').value = '';
-            const preview = document.getElementById('deal-product-preview');
-            if (preview) {
-              preview.style.display = 'none';
-              const nameEl = document.getElementById('deal-product-preview-name');
-              if (nameEl) nameEl.textContent = `Réf. ${val} (non trouvé dans le catalogue)`;
-            }
-          }
-          if (productSelect) productSelect.value = '';
-        }
-      });
+      manualInput.addEventListener('input', handleManualCode);
+      manualInput.addEventListener('keyup', handleManualCode);
+      manualInput.addEventListener('change', handleManualCode);
+      manualInput.addEventListener('paste', () => setTimeout(handleManualCode, 50));
+      manualInput.addEventListener('blur', handleManualCode);
     }
   }
 
   _populateDealProductSelect(select) {
+    if (!select) return;
     const products = Array.isArray(this.products) ? this.products : [];
-    const options = [`<option value="">-- Choisir un produit du catalogue --</option>`];
+    const currentVal = select.value || '';
+    const options = [`<option value="">-- Choisir un produit du catalogue (${products.length} disponibles) --</option>`];
     products.forEach(p => {
       const name = p.name_fr || p.name || p.product_id;
       const price = p.price ? ` — ${Number(p.price).toFixed(3)} TND` : '';
       options.push(`<option value="${p.product_id}">[${p.product_id}] ${name}${price}</option>`);
     });
     select.innerHTML = options.join('');
+    if (currentVal) select.value = currentVal;
   }
 
   _updateDealProductPreview(productId) {
-    const product = (this.products || []).find(p => String(p.product_id) === String(productId));
+    if (!productId) return;
+    const product = (this.products || []).find(p => String(p.product_id).trim() === String(productId).trim());
     if (!product) return;
 
-    document.getElementById('deal-product-id').value = product.product_id;
-    document.getElementById('deal-product-name').value = product.name_fr || product.name || '';
-    document.getElementById('deal-product-image').value = product.image_url || product.image || '';
-    document.getElementById('deal-product-price').value = product.price || '';
+    const prodId = String(product.product_id).trim();
+    const name = (product.name_fr || product.name || `Produit ${prodId}`).trim();
+    const imgUrl = product.image_url
+      || (Array.isArray(product.images) && product.images[0])
+      || (product.variants && product.variants[0] && product.variants[0].image_url)
+      || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
+    const price = product.price != null ? Number(product.price) : 0;
+
+    const idInput = document.getElementById('deal-product-id');
+    const nameInput = document.getElementById('deal-product-name');
+    const imgInput = document.getElementById('deal-product-image');
+    const priceInput = document.getElementById('deal-product-price');
+
+    if (idInput) idInput.value = prodId;
+    if (nameInput) nameInput.value = name;
+    if (imgInput) imgInput.value = imgUrl;
+    if (priceInput) priceInput.value = price;
 
     const preview = document.getElementById('deal-product-preview');
     if (preview) {
@@ -3388,10 +3493,13 @@ class AdminDashboard {
       const nameEl = document.getElementById('deal-product-preview-name');
       const priceEl = document.getElementById('deal-product-preview-price');
       const refEl = document.getElementById('deal-product-preview-ref');
-      if (img) img.src = product.image_url || product.image || '';
-      if (nameEl) nameEl.textContent = product.name_fr || product.name || '';
-      if (priceEl) priceEl.textContent = product.price ? `${Number(product.price).toFixed(3)} TND (avant remise)` : '';
-      if (refEl) refEl.textContent = `Réf: ${product.product_id}`;
+      if (img) {
+        img.src = imgUrl;
+        img.alt = name;
+      }
+      if (nameEl) nameEl.textContent = name;
+      if (priceEl) priceEl.textContent = price > 0 ? `${price.toFixed(3)} TND (avant remise)` : '';
+      if (refEl) refEl.textContent = `Réf: ${prodId}`;
     }
   }
 
