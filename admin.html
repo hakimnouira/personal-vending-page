@@ -1081,37 +1081,45 @@
               <input type="text" id="deal-description-fr" class="form-control" placeholder="ex: Bravo ! Ajoutez ce parfum à votre panier pour profiter de -30% car vous avez déjà commandé pour plus de 100 DT !" />
             </div>
 
-            <!-- Threshold + Discount -->
-            <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%); border: 1px solid #F59E0B; border-radius: 12px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: center;">
+            <!-- Threshold + Discount + Final Price -->
+            <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%); border: 1px solid #F59E0B; border-radius: 12px; padding: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; align-items: start;">
               <div>
                 <label style="font-size: 0.82rem; font-weight: 800; color: #92400E; text-transform: uppercase; display: block; margin-bottom: 6px;">1. Seuil de Déclenchement (DT) *</label>
                 <div style="display: flex; align-items: center; gap: 6px;">
                   <input type="number" step="1" min="1" id="deal-threshold" class="form-control" required placeholder="100" style="font-size: 1.2rem; font-weight: 800; color: #78350F; margin-bottom: 0; border-color: #F59E0B;" />
-                  <span style="font-weight: 800; color: #92400E; white-space: nowrap;">DT minimum</span>
+                  <span style="font-weight: 800; color: #92400E; white-space: nowrap;">DT min</span>
                 </div>
-                <p style="font-size: 0.74rem; color: #B45309; margin-top: 4px;">Total du panier SANS le produit remisé</p>
+                <p style="font-size: 0.74rem; color: #B45309; margin-top: 4px;">Total panier minimum pour débloquer l'offre</p>
               </div>
               <div>
-                <label style="font-size: 0.82rem; font-weight: 800; color: #065F46; text-transform: uppercase; display: block; margin-bottom: 6px;">2. Remise sur le Produit Cible *</label>
+                <label style="font-size: 0.82rem; font-weight: 800; color: #065F46; text-transform: uppercase; display: block; margin-bottom: 6px;">2. Remise sur le Produit (%) *</label>
                 <div style="display: flex; align-items: center; gap: 6px;">
-                  <input type="number" step="1" min="1" max="99" id="deal-discount" class="form-control" required placeholder="30" style="font-size: 1.2rem; font-weight: 800; color: #047857; margin-bottom: 0; border-color: #059669;" />
-                  <span style="font-weight: 800; color: #065F46;">% de remise</span>
+                  <input type="number" step="1" min="1" max="99" id="deal-discount" class="form-control" placeholder="50" style="font-size: 1.2rem; font-weight: 800; color: #047857; margin-bottom: 0; border-color: #059669;" />
+                  <span style="font-weight: 800; color: #065F46;">%</span>
                 </div>
-                <p style="font-size: 0.74rem; color: #047857; margin-top: 4px;">Appliqué directement dans le panier</p>
+                <p style="font-size: 0.74rem; color: #047857; margin-top: 4px;">Entrez la remise OU le prix final</p>
+              </div>
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 800; color: #1E40AF; text-transform: uppercase; display: block; margin-bottom: 6px;">3. Prix Deal Spécial (DT)</label>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <input type="number" step="0.1" min="0.1" id="deal-final-price" class="form-control" placeholder="19.900" style="font-size: 1.2rem; font-weight: 800; color: #1D4ED8; margin-bottom: 0; border-color: #3B82F6;" />
+                  <span style="font-weight: 800; color: #1E40AF;">DT</span>
+                </div>
+                <p style="font-size: 0.74rem; color: #1D4ED8; margin-top: 4px;">Calcul automatique bidirectionnel</p>
               </div>
               <div style="background: #FFFFFF; border-radius: 10px; padding: 12px; border: 1px solid #E4E4E7; text-align: center;">
-                <div style="font-size: 0.74rem; color: #6B7280; font-weight: 700; text-transform: uppercase;">Aperçu du Deal</div>
-                <div id="deal-preview-text" style="font-size: 0.9rem; font-weight: 800; color: #7C3AED; margin-top: 6px; line-height: 1.4;">Commande 100 DT → -30% 🎯</div>
+                <div style="font-size: 0.74rem; color: #6B7280; font-weight: 700; text-transform: uppercase;">Aperçu de la Règle</div>
+                <div id="deal-preview-text" style="font-size: 0.88rem; font-weight: 800; color: #7C3AED; margin-top: 6px; line-height: 1.4;">Commande ≥ 100 DT → Offre Spéciale 🎯</div>
               </div>
             </div>
 
             <!-- Target Product Selector -->
             <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 16px;">
               <label style="font-weight: 800; font-size: 0.88rem; color: #1E293B; margin-bottom: 6px; display: block;">
-                🛍️ Produit Cible de la Remise *
+                🛍️ Produit Cible de l'Offre *
               </label>
               <p style="font-size: 0.78rem; color: #64748B; margin-bottom: 12px;">
-                Sélectionnez le produit sur lequel la remise sera appliquée quand le seuil est atteint.
+                Sélectionnez le produit qui sera proposé à prix réduit (sans la remise standard) dès que le seuil de commande est atteint.
               </p>
               <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                 <select id="deal-product-select" class="form-control" style="flex: 1; min-width: 260px; margin-bottom: 0; font-weight: 600;">
@@ -1124,12 +1132,16 @@
                 </div>
               </div>
               <!-- Selected Product Preview -->
-              <div id="deal-product-preview" style="margin-top: 12px; display: none; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 10px; gap: 12px; align-items: center;">
-                <img id="deal-product-preview-img" src="" style="width: 50px; height: 50px; object-fit: contain; border-radius: 6px; border: 1px solid #E4E4E7; background: #FAF8F5;" onerror="window.handleProductImgError(this)" />
-                <div>
-                  <div id="deal-product-preview-name" style="font-weight: 700; font-size: 0.9rem; color: #18181B;"></div>
-                  <div id="deal-product-preview-price" style="font-size: 0.8rem; color: #059669; font-weight: 600;"></div>
-                  <div id="deal-product-preview-ref" style="font-size: 0.74rem; color: #94A3B8;"></div>
+              <div id="deal-product-preview" style="margin-top: 12px; display: none; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; gap: 14px; align-items: center;">
+                <img id="deal-product-preview-img" src="" style="width: 55px; height: 55px; object-fit: contain; border-radius: 6px; border: 1px solid #E4E4E7; background: #FAF8F5;" onerror="window.handleProductImgError(this)" />
+                <div style="flex: 1;">
+                  <div id="deal-product-preview-name" style="font-weight: 700; font-size: 0.92rem; color: #18181B;"></div>
+                  <div id="deal-product-preview-ref" style="font-size: 0.76rem; color: #94A3B8;"></div>
+                  <div id="deal-product-preview-pricing" style="margin-top: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <span id="deal-product-preview-orig" style="font-size: 0.85rem; color: #94A3B8; text-decoration: line-through;"></span>
+                    <span id="deal-product-preview-price" style="font-size: 1rem; color: #059669; font-weight: 800;"></span>
+                    <span id="deal-product-preview-badge" class="badge" style="background: #FEF3C7; color: #B45309; font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 99px;"></span>
+                  </div>
                 </div>
               </div>
               <input type="hidden" id="deal-product-id" />

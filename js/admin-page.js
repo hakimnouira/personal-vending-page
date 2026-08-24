@@ -3428,17 +3428,78 @@ class AdminDashboard {
       });
     }
 
-    // Live preview updater
+    // Live preview updater & Bidirectional Discount <-> Final Price Calculator
     const thresholdInput = document.getElementById('deal-threshold');
     const discountInput = document.getElementById('deal-discount');
-    const updatePreview = () => {
+    const finalPriceInput = document.getElementById('deal-final-price');
+
+    const updateDealPreviewText = () => {
       const t = Number(thresholdInput?.value) || 100;
-      const d = Number(discountInput?.value) || 30;
+      const d = Number(discountInput?.value) || 0;
+      const f = parseFloat(finalPriceInput?.value);
       const el = document.getElementById('deal-preview-text');
-      if (el) el.textContent = `Commande ≥ ${t} DT → -${d}% 🎯`;
+      if (el) {
+        if (!isNaN(f) && f > 0) {
+          el.textContent = `Commande ≥ ${t} DT → Produit à ${f.toFixed(3)} DT (-${d}%) 🎯`;
+        } else {
+          el.textContent = `Commande ≥ ${t} DT → -${d}% sur le produit cible 🎯`;
+        }
+      }
     };
-    if (thresholdInput) thresholdInput.addEventListener('input', updatePreview);
-    if (discountInput) discountInput.addEventListener('input', updatePreview);
+
+    const updateProductPreviewCard = () => {
+      const basePrice = Number(document.getElementById('deal-product-price')?.value) || 0;
+      const discount = parseFloat(discountInput?.value) || 0;
+      const finalPrice = parseFloat(finalPriceInput?.value);
+
+      const origEl = document.getElementById('deal-product-preview-orig');
+      const priceEl = document.getElementById('deal-product-preview-price');
+      const badgeEl = document.getElementById('deal-product-preview-badge');
+
+      if (basePrice > 0) {
+        if (origEl) {
+          origEl.textContent = `Prix initial : ${basePrice.toFixed(3)} TND`;
+          origEl.style.display = 'inline';
+        }
+        if (priceEl) {
+          const effectivePrice = (!isNaN(finalPrice) && finalPrice > 0) ? finalPrice : (basePrice * (1 - discount / 100));
+          priceEl.textContent = `Prix Deal Spécial : ${effectivePrice.toFixed(3)} TND`;
+        }
+        if (badgeEl) {
+          badgeEl.textContent = `-${Math.round(discount)}% DE REMISE`;
+          badgeEl.style.display = discount > 0 ? 'inline-block' : 'none';
+        }
+      }
+      updateDealPreviewText();
+    };
+
+    if (thresholdInput) thresholdInput.addEventListener('input', updateDealPreviewText);
+
+    // 1. User types in Remise (%) -> Calculate Final Price
+    if (discountInput) {
+      discountInput.addEventListener('input', () => {
+        const basePrice = Number(document.getElementById('deal-product-price')?.value) || 0;
+        const discount = parseFloat(discountInput.value);
+        if (basePrice > 0 && !isNaN(discount) && discount >= 0 && discount <= 100) {
+          const finalPrice = basePrice * (1 - discount / 100);
+          if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 100) / 100).toFixed(3);
+        }
+        updateProductPreviewCard();
+      });
+    }
+
+    // 2. User types in Final Price (DT) -> Calculate Remise (%)
+    if (finalPriceInput) {
+      finalPriceInput.addEventListener('input', () => {
+        const basePrice = Number(document.getElementById('deal-product-price')?.value) || 0;
+        const finalPrice = parseFloat(finalPriceInput.value);
+        if (basePrice > 0 && !isNaN(finalPrice) && finalPrice >= 0 && finalPrice <= basePrice) {
+          const discount = Math.round(((basePrice - finalPrice) / basePrice) * 100);
+          if (discountInput) discountInput.value = Math.max(1, Math.min(99, discount));
+        }
+        updateProductPreviewCard();
+      });
+    }
 
     // Product selector & manual code inputs
     const productSelect = document.getElementById('deal-product-select');
@@ -3464,10 +3525,14 @@ class AdminDashboard {
             const nameEl = document.getElementById('deal-product-preview-name');
             const priceEl = document.getElementById('deal-product-preview-price');
             const refEl = document.getElementById('deal-product-preview-ref');
+            const origEl = document.getElementById('deal-product-preview-orig');
+            const badgeEl = document.getElementById('deal-product-preview-badge');
             if (img) img.src = getProductFallbackSvg(this.i18n.getLang());
             if (nameEl) nameEl.textContent = `Produit personnalisé (Réf: ${val})`;
             if (priceEl) priceEl.textContent = 'Prix non défini dans le catalogue';
             if (refEl) refEl.textContent = `Réf: ${val}`;
+            if (origEl) origEl.style.display = 'none';
+            if (badgeEl) badgeEl.style.display = 'none';
           }
           if (productSelect) productSelect.value = '';
         }
@@ -3511,8 +3576,9 @@ class AdminDashboard {
     const options = [`<option value="">-- Choisir un produit du catalogue (${products.length} disponibles) --</option>`];
     products.forEach(p => {
       const name = p.name_fr || p.name || p.product_id;
-      const price = p.price ? ` — ${Number(p.price).toFixed(3)} TND` : '';
-      options.push(`<option value="${p.product_id}">[${p.product_id}] ${name}${price}</option>`);
+      const basePrice = Number(p.original_catalog_price || p.original_price || p.price || 0);
+      const priceStr = basePrice > 0 ? ` — ${basePrice.toFixed(3)} TND (prix catalogue)` : '';
+      options.push(`<option value="${p.product_id}">[${p.product_id}] ${name}${priceStr}</option>`);
     });
     select.innerHTML = options.join('');
     if (currentVal) select.value = currentVal;
@@ -3529,32 +3595,80 @@ class AdminDashboard {
       || (Array.isArray(product.images) && product.images[0])
       || (product.variants && product.variants[0] && product.variants[0].image_url)
       || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
-    const price = product.price != null ? Number(product.price) : 0;
+    
+    // Always use the original catalog price without company discount
+    const basePrice = Number(product.original_catalog_price || product.original_price || product.price || 0);
 
     const idInput = document.getElementById('deal-product-id');
     const nameInput = document.getElementById('deal-product-name');
     const imgInput = document.getElementById('deal-product-image');
     const priceInput = document.getElementById('deal-product-price');
+    const discountInput = document.getElementById('deal-discount');
+    const finalPriceInput = document.getElementById('deal-final-price');
 
     if (idInput) idInput.value = prodId;
     if (nameInput) nameInput.value = name;
     if (imgInput) imgInput.value = imgUrl;
-    if (priceInput) priceInput.value = price;
+    if (priceInput) priceInput.value = basePrice;
+
+    // Calculate initial values
+    let discount = parseFloat(discountInput?.value);
+    let finalPrice = parseFloat(finalPriceInput?.value);
+
+    if (basePrice > 0) {
+      if (!isNaN(discount) && discount > 0) {
+        finalPrice = basePrice * (1 - discount / 100);
+        if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 100) / 100).toFixed(3);
+      } else if (!isNaN(finalPrice) && finalPrice > 0 && finalPrice < basePrice) {
+        discount = Math.round(((basePrice - finalPrice) / basePrice) * 100);
+        if (discountInput) discountInput.value = Math.max(1, Math.min(99, discount));
+      } else {
+        discount = 50;
+        finalPrice = basePrice * 0.5;
+        if (discountInput) discountInput.value = '50';
+        if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 100) / 100).toFixed(3);
+      }
+    }
 
     const preview = document.getElementById('deal-product-preview');
     if (preview) {
       preview.style.display = 'flex';
       const img = document.getElementById('deal-product-preview-img');
       const nameEl = document.getElementById('deal-product-preview-name');
-      const priceEl = document.getElementById('deal-product-preview-price');
       const refEl = document.getElementById('deal-product-preview-ref');
+      const origEl = document.getElementById('deal-product-preview-orig');
+      const priceEl = document.getElementById('deal-product-preview-price');
+      const badgeEl = document.getElementById('deal-product-preview-badge');
+
       if (img) {
         img.src = imgUrl;
         img.alt = name;
       }
       if (nameEl) nameEl.textContent = name;
-      if (priceEl) priceEl.textContent = price > 0 ? `${price.toFixed(3)} TND (avant remise)` : '';
       if (refEl) refEl.textContent = `Réf: ${prodId}`;
+
+      if (basePrice > 0) {
+        if (origEl) {
+          origEl.textContent = `Prix initial : ${basePrice.toFixed(3)} TND`;
+          origEl.style.display = 'inline';
+        }
+        if (priceEl) {
+          const effectivePrice = (!isNaN(finalPrice) && finalPrice > 0) ? finalPrice : (basePrice * (1 - (discount || 0) / 100));
+          priceEl.textContent = `Prix Deal Spécial : ${effectivePrice.toFixed(3)} TND`;
+        }
+        if (badgeEl) {
+          badgeEl.textContent = `-${Math.round(discount || 0)}% DE REMISE`;
+          badgeEl.style.display = (discount || 0) > 0 ? 'inline-block' : 'none';
+        }
+      }
+    }
+
+    const thresholdInput = document.getElementById('deal-threshold');
+    const t = Number(thresholdInput?.value) || 100;
+    const el = document.getElementById('deal-preview-text');
+    if (el && basePrice > 0) {
+      const effectivePrice = (!isNaN(finalPrice) && finalPrice > 0) ? finalPrice : (basePrice * (1 - (discount || 0) / 100));
+      el.textContent = `Commande ≥ ${t} DT → ${name} à ${effectivePrice.toFixed(3)} DT (-${Math.round(discount || 0)}%) 🎯`;
     }
   }
 
@@ -3565,7 +3679,8 @@ class AdminDashboard {
     const title_en = document.getElementById('deal-title-en')?.value?.trim() || '';
     const description_fr = document.getElementById('deal-description-fr')?.value?.trim() || '';
     const threshold_amount = document.getElementById('deal-threshold')?.value?.trim();
-    const discount_percent = document.getElementById('deal-discount')?.value?.trim();
+    let discount_percent = document.getElementById('deal-discount')?.value?.trim();
+    const final_price_val = document.getElementById('deal-final-price')?.value?.trim();
     const active = document.getElementById('deal-active')?.checked !== false;
 
     // Resolve product: hidden fields take priority, manual input as fallback
@@ -3577,8 +3692,21 @@ class AdminDashboard {
 
     if (!title_fr) { alert('❌ Le nom du deal (FR) est obligatoire.'); return; }
     if (!threshold_amount || Number(threshold_amount) <= 0) { alert('❌ Le seuil de déclenchement doit être supérieur à 0 DT.'); return; }
-    if (!discount_percent || Number(discount_percent) <= 0 || Number(discount_percent) >= 100) { alert('❌ La remise doit être entre 1% et 99%.'); return; }
     if (!product_id) { alert('❌ Sélectionnez ou entrez un produit cible.'); return; }
+
+    // If discount was not typed but final price was typed, compute discount
+    if ((!discount_percent || Number(discount_percent) <= 0) && final_price_val && product_price) {
+      const base = Number(product_price);
+      const target = Number(final_price_val);
+      if (base > 0 && target > 0 && target < base) {
+        discount_percent = String(Math.round(((base - target) / base) * 100));
+      }
+    }
+
+    if (!discount_percent || Number(discount_percent) <= 0 || Number(discount_percent) >= 100) {
+      alert('❌ Veuillez indiquer une remise valide (1% à 99%) ou un prix deal inférieur au prix initial.');
+      return;
+    }
 
     const payload = {
       title_fr, title_ar, title_en, description_fr,
@@ -3634,6 +3762,15 @@ class AdminDashboard {
     document.getElementById('deal-product-image').value = deal.product_image || '';
     document.getElementById('deal-product-price').value = deal.product_price || '';
 
+    // Calculate final price for the input
+    if (deal.product_price && deal.discount_percent) {
+      const base = Number(deal.product_price);
+      const disc = Number(deal.discount_percent);
+      const fp = base * (1 - disc / 100);
+      const fpInput = document.getElementById('deal-final-price');
+      if (fpInput) fpInput.value = (Math.round(fp * 100) / 100).toFixed(3);
+    }
+
     // Show product preview
     if (deal.product_id) {
       const productSelect = document.getElementById('deal-product-select');
@@ -3660,10 +3797,12 @@ class AdminDashboard {
     document.getElementById('deal-product-name').value = '';
     document.getElementById('deal-product-image').value = '';
     document.getElementById('deal-product-price').value = '';
+    const finalPriceInput = document.getElementById('deal-final-price');
+    if (finalPriceInput) finalPriceInput.value = '';
     const preview = document.getElementById('deal-product-preview');
     if (preview) preview.style.display = 'none';
     const previewEl = document.getElementById('deal-preview-text');
-    if (previewEl) previewEl.textContent = 'Commande 100 DT → -30% 🎯';
+    if (previewEl) previewEl.textContent = 'Commande ≥ 100 DT → Offre Spéciale 🎯';
 
     document.getElementById('deal-form-title').textContent = '✨ Créer / Modifier un Deal Conditionnel';
     document.getElementById('btn-save-deal').textContent = '🎯 Enregistrer le Deal Seuil';
