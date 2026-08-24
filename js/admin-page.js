@@ -1047,6 +1047,11 @@ class AdminDashboard {
     if (typeof this.bindDealEvents === 'function') {
       this.bindDealEvents();
     }
+
+    // Bind Carousel Banner Form Events
+    if (typeof this.bindCarouselEvents === 'function') {
+      this.bindCarouselEvents();
+    }
   }
 
   applyDiscountOverrides(productsList) {
@@ -2682,9 +2687,11 @@ class AdminDashboard {
   bindCarouselEvents() {
     const form = document.getElementById('form-carousel-slide');
     const urlInput = document.getElementById('carousel-image-url');
+    const fileInput = document.getElementById('carousel-image-file');
     const previewBox = document.getElementById('carousel-img-preview-box');
     const previewImg = document.getElementById('carousel-img-preview');
     const cancelBtn = document.getElementById('btn-cancel-carousel-slide');
+    const saveBtn = document.getElementById('btn-save-carousel-slide');
 
     if (urlInput && previewBox && previewImg) {
       urlInput.addEventListener('input', () => {
@@ -2692,10 +2699,43 @@ class AdminDashboard {
         if (val) {
           previewImg.src = val;
           previewBox.style.display = 'block';
-        } else {
+        } else if (!fileInput || !fileInput.files[0]) {
           previewBox.style.display = 'none';
         }
       });
+    }
+
+    if (fileInput && previewBox && previewImg) {
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (file) {
+          try {
+            previewImg.src = URL.createObjectURL(file);
+            previewBox.style.display = 'block';
+          } catch (e) {}
+        }
+      });
+    }
+
+    // Auto-lookup product details if user attaches an offer code
+    const offerCodeInput = document.getElementById('carousel-offer-code');
+    const offerNameInput = document.getElementById('carousel-offer-name');
+    const offerPriceInput = document.getElementById('carousel-offer-price');
+    const offerOrigPriceInput = document.getElementById('carousel-offer-original-price');
+
+    if (offerCodeInput) {
+      const handleOfferCodeLookup = () => {
+        const code = offerCodeInput.value.trim();
+        if (!code) return;
+        const prod = (this.rawProducts || []).find(p => String(p.product_id).trim() === code || (p.code && String(p.code).trim() === code));
+        if (prod) {
+          if (offerNameInput && !offerNameInput.value) offerNameInput.value = prod.name || prod.name_fr || '';
+          if (offerPriceInput && !offerPriceInput.value) offerPriceInput.value = prod.price != null ? String(prod.price) : '';
+          if (offerOrigPriceInput && !offerOrigPriceInput.value && prod.original_price) offerOrigPriceInput.value = String(prod.original_price);
+        }
+      };
+      offerCodeInput.addEventListener('input', handleOfferCodeLookup);
+      offerCodeInput.addEventListener('blur', handleOfferCodeLookup);
     }
 
     if (cancelBtn) {
@@ -2708,8 +2748,8 @@ class AdminDashboard {
       form.setAttribute('data-bound', 'true');
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const slideId = document.getElementById('carousel-slide-id').value;
-        const imageUrl = document.getElementById('carousel-image-url').value;
+        const slideId = (document.getElementById('carousel-slide-id').value || '').trim();
+        const imageUrl = (document.getElementById('carousel-image-url').value || '').trim();
         const imageFile = document.getElementById('carousel-image-file').files[0];
         const badge = document.getElementById('carousel-badge').value;
         const title = document.getElementById('carousel-title').value;
@@ -2721,6 +2761,11 @@ class AdminDashboard {
         const offer_price = document.getElementById('carousel-offer-price').value;
         const offer_original_price = document.getElementById('carousel-offer-original-price').value;
         const active = document.getElementById('carousel-active').checked;
+
+        if (!imageUrl && !imageFile && !slideId) {
+          alert(this.i18n.getLang() === 'ar' ? 'يرجى إدخال رابط الصورة أو رفع ملف صورة' : 'Veuillez saisir une URL d\'image ou téléverser un fichier.');
+          return;
+        }
 
         const formData = new FormData();
         if (imageUrl) formData.append('image_url', imageUrl);
@@ -2736,8 +2781,13 @@ class AdminDashboard {
         formData.append('offer_original_price', offer_original_price);
         formData.append('active', active);
 
+        if (saveBtn) {
+          saveBtn.disabled = true;
+          saveBtn.textContent = '⏳ Enregistrement...';
+        }
+
         try {
-          const url = slideId ? `/api/carousel/${slideId}` : '/api/carousel';
+          const url = slideId ? `/api/carousel/${encodeURIComponent(slideId)}` : '/api/carousel';
           const method = slideId ? 'PUT' : 'POST';
 
           const res = await fetch(url, { method, body: formData });
@@ -2752,6 +2802,11 @@ class AdminDashboard {
           }
         } catch (err) {
           alert('❌ Erreur réseau: ' + err.message);
+        } finally {
+          if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.textContent = slideId ? 'Enregistrer les Modifications' : 'Enregistrer la Diapositive';
+          }
         }
       });
     }

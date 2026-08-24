@@ -460,6 +460,13 @@ export async function saveCarousel(slides) {
     `;
 
     for (const s of slides) {
+      const parseSafeNumeric = (v) => {
+        if (v == null || v === '') return null;
+        const cleaned = String(v).replace(/[^0-9.]/g, '');
+        const n = parseFloat(cleaned);
+        return isNaN(n) ? null : n;
+      };
+
       const values = [
         String(s.id),
         s.image_url || '',
@@ -470,8 +477,8 @@ export async function saveCarousel(slides) {
         s.button_text || 'Feuilleter le Catalogue',
         s.offer_product_code || '',
         s.offer_product_name || '',
-        s.offer_price != null && s.offer_price !== '' ? Number(s.offer_price) : null,
-        s.offer_original_price != null && s.offer_original_price !== '' ? Number(s.offer_original_price) : null,
+        parseSafeNumeric(s.offer_price),
+        parseSafeNumeric(s.offer_original_price),
         s.active !== false
       ];
       await client.query(insertSql, values);
