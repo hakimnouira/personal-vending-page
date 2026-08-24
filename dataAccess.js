@@ -285,18 +285,25 @@ export async function saveDeals(deals) {
     `;
 
     for (const d of deals) {
+      const parseSafeNum = (v) => {
+        if (v == null || v === '') return 0;
+        const cleaned = String(v).trim().replace(/\s+/g, '').replace(/,/g, '.').replace(/[^0-9.]/g, '');
+        const n = parseFloat(cleaned);
+        return isNaN(n) ? 0 : n;
+      };
+
       const values = [
         String(d.id),
         d.title_fr || '',
         d.title_ar || '',
         d.title_en || '',
         d.description_fr || '',
-        d.threshold_amount != null ? Number(d.threshold_amount) : 0,
+        parseSafeNum(d.threshold_amount),
         d.product_id || '',
         d.product_name || '',
         d.product_image || '',
-        d.product_price != null ? Number(d.product_price) : 0,
-        d.discount_percent != null ? Number(d.discount_percent) : 0,
+        parseSafeNum(d.product_price),
+        parseSafeNum(d.discount_percent),
         d.active !== false,
         d.created_at ? new Date(d.created_at) : new Date()
       ];

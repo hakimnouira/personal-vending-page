@@ -569,10 +569,18 @@ class AdminDashboard {
         const descEn = document.getElementById('edit-prod-desc-en').value.trim();
         const category = document.getElementById('edit-prod-category').value;
         const size = document.getElementById('edit-prod-size').value.trim();
-        const price = parseFloat(document.getElementById('edit-prod-price').value);
-        const originalCatalogPrice = parseFloat(document.getElementById('edit-prod-catalog-price').value) || price;
+
+        const parseDec = (v) => {
+          if (v == null || v === '') return null;
+          const s = String(v).trim().replace(/\s+/g, '').replace(/,/g, '.');
+          const n = parseFloat(s);
+          return isNaN(n) ? null : n;
+        };
+
+        const price = parseDec(document.getElementById('edit-prod-price').value) || 0;
+        const originalCatalogPrice = parseDec(document.getElementById('edit-prod-catalog-price').value) || price;
         const origPriceVal = document.getElementById('edit-prod-original-price').value.trim();
-        const originalPrice = origPriceVal ? parseFloat(origPriceVal) : '';
+        const originalPrice = parseDec(origPriceVal);
         const inStock = document.getElementById('edit-prod-in-stock').checked;
         const discountApplied = document.getElementById('edit-prod-discount-applied').checked;
         const imgUrl = document.getElementById('edit-prod-image-url').value.trim();
@@ -600,7 +608,7 @@ class AdminDashboard {
             fd.append('size', size);
             fd.append('price', price);
             fd.append('original_catalog_price', originalCatalogPrice);
-            if (originalPrice !== '') fd.append('original_price', originalPrice);
+            if (originalPrice != null) fd.append('original_price', originalPrice);
             fd.append('in_stock', inStock);
             fd.append('company_discount_applied', discountApplied);
             if (galleryUrls.length > 0) fd.append('images', JSON.stringify(galleryUrls));
@@ -628,7 +636,7 @@ class AdminDashboard {
               size,
               price,
               original_catalog_price: originalCatalogPrice,
-              original_price: originalPrice !== '' ? originalPrice : null,
+              original_price: originalPrice != null ? originalPrice : null,
               in_stock: inStock,
               company_discount_applied: discountApplied,
               image_url: finalMainImg,
@@ -3428,29 +3436,36 @@ class AdminDashboard {
       });
     }
 
+    const parseDec = (v) => {
+      if (v == null || v === '') return null;
+      const s = String(v).trim().replace(/\s+/g, '').replace(/,/g, '.');
+      const n = parseFloat(s);
+      return isNaN(n) ? null : n;
+    };
+
     // Live preview updater & Bidirectional Discount <-> Final Price Calculator
     const thresholdInput = document.getElementById('deal-threshold');
     const discountInput = document.getElementById('deal-discount');
     const finalPriceInput = document.getElementById('deal-final-price');
 
     const updateDealPreviewText = () => {
-      const t = Number(thresholdInput?.value) || 100;
-      const d = Number(discountInput?.value) || 0;
-      const f = parseFloat(finalPriceInput?.value);
+      const t = parseDec(thresholdInput?.value) || 100;
+      const d = parseDec(discountInput?.value) || 0;
+      const f = parseDec(finalPriceInput?.value);
       const el = document.getElementById('deal-preview-text');
       if (el) {
-        if (!isNaN(f) && f > 0) {
-          el.textContent = `Commande ≥ ${t} DT → Produit à ${f.toFixed(3)} DT (-${d}%) 🎯`;
+        if (f != null && f > 0) {
+          el.textContent = `Commande ≥ ${t} DT → Produit à ${f.toFixed(3)} DT (-${Math.round(d)}%) 🎯`;
         } else {
-          el.textContent = `Commande ≥ ${t} DT → -${d}% sur le produit cible 🎯`;
+          el.textContent = `Commande ≥ ${t} DT → -${Math.round(d)}% sur le produit cible 🎯`;
         }
       }
     };
 
     const updateProductPreviewCard = () => {
-      const basePrice = Number(document.getElementById('deal-product-price')?.value) || 0;
-      const discount = parseFloat(discountInput?.value) || 0;
-      const finalPrice = parseFloat(finalPriceInput?.value);
+      const basePrice = parseDec(document.getElementById('deal-product-price')?.value) || 0;
+      const discount = parseDec(discountInput?.value) || 0;
+      const finalPrice = parseDec(finalPriceInput?.value);
 
       const origEl = document.getElementById('deal-product-preview-orig');
       const priceEl = document.getElementById('deal-product-preview-price');
@@ -3462,7 +3477,7 @@ class AdminDashboard {
           origEl.style.display = 'inline';
         }
         if (priceEl) {
-          const effectivePrice = (!isNaN(finalPrice) && finalPrice > 0) ? finalPrice : (basePrice * (1 - discount / 100));
+          const effectivePrice = (finalPrice != null && finalPrice > 0) ? finalPrice : (basePrice * (1 - discount / 100));
           priceEl.textContent = `Prix Deal Spécial : ${effectivePrice.toFixed(3)} TND`;
         }
         if (badgeEl) {
@@ -3475,25 +3490,25 @@ class AdminDashboard {
 
     if (thresholdInput) thresholdInput.addEventListener('input', updateDealPreviewText);
 
-    // 1. User types in Remise (%) -> Calculate Final Price
+    // 1. User types in Remise (%) -> Calculate Final Price (supports 33,5 or 50)
     if (discountInput) {
       discountInput.addEventListener('input', () => {
-        const basePrice = Number(document.getElementById('deal-product-price')?.value) || 0;
-        const discount = parseFloat(discountInput.value);
-        if (basePrice > 0 && !isNaN(discount) && discount >= 0 && discount <= 100) {
+        const basePrice = parseDec(document.getElementById('deal-product-price')?.value) || 0;
+        const discount = parseDec(discountInput.value);
+        if (basePrice > 0 && discount != null && discount >= 0 && discount <= 100) {
           const finalPrice = basePrice * (1 - discount / 100);
-          if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 100) / 100).toFixed(3);
+          if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 1000) / 1000).toFixed(3);
         }
         updateProductPreviewCard();
       });
     }
 
-    // 2. User types in Final Price (DT) -> Calculate Remise (%)
+    // 2. User types in Final Price (DT) (supports comma e.g. 134,589) -> Calculate Remise (%)
     if (finalPriceInput) {
       finalPriceInput.addEventListener('input', () => {
-        const basePrice = Number(document.getElementById('deal-product-price')?.value) || 0;
-        const finalPrice = parseFloat(finalPriceInput.value);
-        if (basePrice > 0 && !isNaN(finalPrice) && finalPrice >= 0 && finalPrice <= basePrice) {
+        const basePrice = parseDec(document.getElementById('deal-product-price')?.value) || 0;
+        const finalPrice = parseDec(finalPriceInput.value);
+        if (basePrice > 0 && finalPrice != null && finalPrice >= 0 && finalPrice <= basePrice) {
           const discount = Math.round(((basePrice - finalPrice) / basePrice) * 100);
           if (discountInput) discountInput.value = Math.max(1, Math.min(99, discount));
         }
@@ -3589,6 +3604,13 @@ class AdminDashboard {
     const product = (this.products || []).find(p => String(p.product_id).trim() === String(productId).trim());
     if (!product) return;
 
+    const parseDec = (v) => {
+      if (v == null || v === '') return null;
+      const s = String(v).trim().replace(/\s+/g, '').replace(/,/g, '.');
+      const n = parseFloat(s);
+      return isNaN(n) ? null : n;
+    };
+
     const prodId = String(product.product_id).trim();
     const name = (product.name_fr || product.name || `Produit ${prodId}`).trim();
     const imgUrl = product.image_url
@@ -3597,7 +3619,7 @@ class AdminDashboard {
       || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
     
     // Always use the original catalog price without company discount
-    const basePrice = Number(product.original_catalog_price || product.original_price || product.price || 0);
+    const basePrice = parseDec(product.original_catalog_price || product.original_price || product.price) || 0;
 
     const idInput = document.getElementById('deal-product-id');
     const nameInput = document.getElementById('deal-product-name');
@@ -3612,21 +3634,21 @@ class AdminDashboard {
     if (priceInput) priceInput.value = basePrice;
 
     // Calculate initial values
-    let discount = parseFloat(discountInput?.value);
-    let finalPrice = parseFloat(finalPriceInput?.value);
+    let discount = parseDec(discountInput?.value);
+    let finalPrice = parseDec(finalPriceInput?.value);
 
     if (basePrice > 0) {
-      if (!isNaN(discount) && discount > 0) {
+      if (discount != null && discount > 0) {
         finalPrice = basePrice * (1 - discount / 100);
-        if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 100) / 100).toFixed(3);
-      } else if (!isNaN(finalPrice) && finalPrice > 0 && finalPrice < basePrice) {
+        if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 1000) / 1000).toFixed(3);
+      } else if (finalPrice != null && finalPrice > 0 && finalPrice < basePrice) {
         discount = Math.round(((basePrice - finalPrice) / basePrice) * 100);
         if (discountInput) discountInput.value = Math.max(1, Math.min(99, discount));
       } else {
         discount = 50;
         finalPrice = basePrice * 0.5;
         if (discountInput) discountInput.value = '50';
-        if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 100) / 100).toFixed(3);
+        if (finalPriceInput) finalPriceInput.value = (Math.round(finalPrice * 1000) / 1000).toFixed(3);
       }
     }
 
@@ -3653,7 +3675,7 @@ class AdminDashboard {
           origEl.style.display = 'inline';
         }
         if (priceEl) {
-          const effectivePrice = (!isNaN(finalPrice) && finalPrice > 0) ? finalPrice : (basePrice * (1 - (discount || 0) / 100));
+          const effectivePrice = (finalPrice != null && finalPrice > 0) ? finalPrice : (basePrice * (1 - (discount || 0) / 100));
           priceEl.textContent = `Prix Deal Spécial : ${effectivePrice.toFixed(3)} TND`;
         }
         if (badgeEl) {
@@ -3664,23 +3686,30 @@ class AdminDashboard {
     }
 
     const thresholdInput = document.getElementById('deal-threshold');
-    const t = Number(thresholdInput?.value) || 100;
+    const t = parseDec(thresholdInput?.value) || 100;
     const el = document.getElementById('deal-preview-text');
     if (el && basePrice > 0) {
-      const effectivePrice = (!isNaN(finalPrice) && finalPrice > 0) ? finalPrice : (basePrice * (1 - (discount || 0) / 100));
+      const effectivePrice = (finalPrice != null && finalPrice > 0) ? finalPrice : (basePrice * (1 - (discount || 0) / 100));
       el.textContent = `Commande ≥ ${t} DT → ${name} à ${effectivePrice.toFixed(3)} DT (-${Math.round(discount || 0)}%) 🎯`;
     }
   }
 
   async saveDeal() {
+    const parseDec = (v) => {
+      if (v == null || v === '') return null;
+      const s = String(v).trim().replace(/\s+/g, '').replace(/,/g, '.');
+      const n = parseFloat(s);
+      return isNaN(n) ? null : n;
+    };
+
     const dealId = document.getElementById('deal-id')?.value?.trim();
     const title_fr = document.getElementById('deal-title-fr')?.value?.trim();
     const title_ar = document.getElementById('deal-title-ar')?.value?.trim() || '';
     const title_en = document.getElementById('deal-title-en')?.value?.trim() || '';
     const description_fr = document.getElementById('deal-description-fr')?.value?.trim() || '';
-    const threshold_amount = document.getElementById('deal-threshold')?.value?.trim();
-    let discount_percent = document.getElementById('deal-discount')?.value?.trim();
-    const final_price_val = document.getElementById('deal-final-price')?.value?.trim();
+    const threshold_amount = parseDec(document.getElementById('deal-threshold')?.value);
+    let discount_percent = parseDec(document.getElementById('deal-discount')?.value);
+    const final_price_val = parseDec(document.getElementById('deal-final-price')?.value);
     const active = document.getElementById('deal-active')?.checked !== false;
 
     // Resolve product: hidden fields take priority, manual input as fallback
@@ -3688,22 +3717,20 @@ class AdminDashboard {
       || document.getElementById('deal-product-id-manual')?.value?.trim();
     const product_name = document.getElementById('deal-product-name')?.value?.trim() || '';
     const product_image = document.getElementById('deal-product-image')?.value?.trim() || '';
-    const product_price = document.getElementById('deal-product-price')?.value?.trim() || null;
+    const product_price = parseDec(document.getElementById('deal-product-price')?.value);
 
     if (!title_fr) { alert('❌ Le nom du deal (FR) est obligatoire.'); return; }
-    if (!threshold_amount || Number(threshold_amount) <= 0) { alert('❌ Le seuil de déclenchement doit être supérieur à 0 DT.'); return; }
+    if (threshold_amount == null || threshold_amount <= 0) { alert('❌ Le seuil de déclenchement doit être supérieur à 0 DT.'); return; }
     if (!product_id) { alert('❌ Sélectionnez ou entrez un produit cible.'); return; }
 
     // If discount was not typed but final price was typed, compute discount
-    if ((!discount_percent || Number(discount_percent) <= 0) && final_price_val && product_price) {
-      const base = Number(product_price);
-      const target = Number(final_price_val);
-      if (base > 0 && target > 0 && target < base) {
-        discount_percent = String(Math.round(((base - target) / base) * 100));
+    if ((discount_percent == null || discount_percent <= 0) && final_price_val != null && product_price != null) {
+      if (product_price > 0 && final_price_val > 0 && final_price_val < product_price) {
+        discount_percent = Math.round(((product_price - final_price_val) / product_price) * 100);
       }
     }
 
-    if (!discount_percent || Number(discount_percent) <= 0 || Number(discount_percent) >= 100) {
+    if (discount_percent == null || discount_percent <= 0 || discount_percent >= 100) {
       alert('❌ Veuillez indiquer une remise valide (1% à 99%) ou un prix deal inférieur au prix initial.');
       return;
     }
@@ -3712,7 +3739,7 @@ class AdminDashboard {
       title_fr, title_ar, title_en, description_fr,
       threshold_amount: Number(threshold_amount),
       product_id, product_name, product_image,
-      product_price: product_price ? Number(product_price) : null,
+      product_price: product_price != null ? Number(product_price) : null,
       discount_percent: Number(discount_percent),
       active
     };
@@ -3744,6 +3771,13 @@ class AdminDashboard {
   }
 
   editDeal(id) {
+    const parseDec = (v) => {
+      if (v == null || v === '') return null;
+      const s = String(v).trim().replace(/\s+/g, '').replace(/,/g, '.');
+      const n = parseFloat(s);
+      return isNaN(n) ? null : n;
+    };
+
     const deal = (this.deals || []).find(d => d.id === id);
     if (!deal) return;
 
@@ -3764,11 +3798,11 @@ class AdminDashboard {
 
     // Calculate final price for the input
     if (deal.product_price && deal.discount_percent) {
-      const base = Number(deal.product_price);
-      const disc = Number(deal.discount_percent);
+      const base = parseDec(deal.product_price);
+      const disc = parseDec(deal.discount_percent);
       const fp = base * (1 - disc / 100);
       const fpInput = document.getElementById('deal-final-price');
-      if (fpInput) fpInput.value = (Math.round(fp * 100) / 100).toFixed(3);
+      if (fpInput) fpInput.value = (Math.round(fp * 1000) / 1000).toFixed(3);
     }
 
     // Show product preview

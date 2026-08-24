@@ -1086,26 +1086,26 @@
               <div>
                 <label style="font-size: 0.82rem; font-weight: 800; color: #92400E; text-transform: uppercase; display: block; margin-bottom: 6px;">1. Seuil de Déclenchement (DT) *</label>
                 <div style="display: flex; align-items: center; gap: 6px;">
-                  <input type="number" step="1" min="1" id="deal-threshold" class="form-control" required placeholder="100" style="font-size: 1.2rem; font-weight: 800; color: #78350F; margin-bottom: 0; border-color: #F59E0B;" />
+                  <input type="text" inputmode="decimal" id="deal-threshold" class="form-control" required placeholder="100" style="font-size: 1.2rem; font-weight: 800; color: #78350F; margin-bottom: 0; border-color: #F59E0B;" />
                   <span style="font-weight: 800; color: #92400E; white-space: nowrap;">DT min</span>
                 </div>
-                <p style="font-size: 0.74rem; color: #B45309; margin-top: 4px;">Total panier minimum pour débloquer l'offre</p>
+                <p style="font-size: 0.74rem; color: #B45309; margin-top: 4px;">Total panier minimum pour débloquer l'offre (ex: 100 ou 134,589)</p>
               </div>
               <div>
                 <label style="font-size: 0.82rem; font-weight: 800; color: #065F46; text-transform: uppercase; display: block; margin-bottom: 6px;">2. Remise sur le Produit (%) *</label>
                 <div style="display: flex; align-items: center; gap: 6px;">
-                  <input type="number" step="1" min="1" max="99" id="deal-discount" class="form-control" placeholder="50" style="font-size: 1.2rem; font-weight: 800; color: #047857; margin-bottom: 0; border-color: #059669;" />
+                  <input type="text" inputmode="decimal" id="deal-discount" class="form-control" placeholder="50" style="font-size: 1.2rem; font-weight: 800; color: #047857; margin-bottom: 0; border-color: #059669;" />
                   <span style="font-weight: 800; color: #065F46;">%</span>
                 </div>
-                <p style="font-size: 0.74rem; color: #047857; margin-top: 4px;">Entrez la remise OU le prix final</p>
+                <p style="font-size: 0.74rem; color: #047857; margin-top: 4px;">Entrez la remise OU le prix final (ex: 50 ou 33,5)</p>
               </div>
               <div>
                 <label style="font-size: 0.82rem; font-weight: 800; color: #1E40AF; text-transform: uppercase; display: block; margin-bottom: 6px;">3. Prix Deal Spécial (DT)</label>
                 <div style="display: flex; align-items: center; gap: 6px;">
-                  <input type="number" step="0.1" min="0.1" id="deal-final-price" class="form-control" placeholder="19.900" style="font-size: 1.2rem; font-weight: 800; color: #1D4ED8; margin-bottom: 0; border-color: #3B82F6;" />
+                  <input type="text" inputmode="decimal" id="deal-final-price" class="form-control" placeholder="19.900" style="font-size: 1.2rem; font-weight: 800; color: #1D4ED8; margin-bottom: 0; border-color: #3B82F6;" />
                   <span style="font-weight: 800; color: #1E40AF;">DT</span>
                 </div>
-                <p style="font-size: 0.74rem; color: #1D4ED8; margin-top: 4px;">Calcul automatique bidirectionnel</p>
+                <p style="font-size: 0.74rem; color: #1D4ED8; margin-top: 4px;">Calcul automatique (ex: 19,900 ou 134,589)</p>
               </div>
               <div style="background: #FFFFFF; border-radius: 10px; padding: 12px; border: 1px solid #E4E4E7; text-align: center;">
                 <div style="font-size: 0.74rem; color: #6B7280; font-weight: 700; text-transform: uppercase;">Aperçu de la Règle</div>
@@ -1291,15 +1291,15 @@
             </div>
             <div>
               <label style="font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: block;">Prix Actuel dans la Boutique (DT) *</label>
-              <input type="number" step="0.01" id="edit-prod-price" class="form-control" required style="margin-bottom: 0; font-weight: 700;" />
+              <input type="text" inputmode="decimal" id="edit-prod-price" class="form-control" required placeholder="ex: 134,589" style="margin-bottom: 0; font-weight: 700;" />
             </div>
             <div>
               <label style="font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: block;">Prix Brut Catalogue Officiel (DT)</label>
-              <input type="number" step="0.01" id="edit-prod-catalog-price" class="form-control" placeholder="Prix avant -20%" style="margin-bottom: 0;" />
+              <input type="text" inputmode="decimal" id="edit-prod-catalog-price" class="form-control" placeholder="ex: 169,000" style="margin-bottom: 0;" />
             </div>
             <div>
               <label style="font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: block;">Prix Barré Promotionnel (Optionnel DT)</label>
-              <input type="number" step="0.01" id="edit-prod-original-price" class="form-control" placeholder="ex: 47.10" style="margin-bottom: 0;" />
+              <input type="text" inputmode="decimal" id="edit-prod-original-price" class="form-control" placeholder="ex: 47,100" style="margin-bottom: 0;" />
             </div>
             <div style="display: flex; flex-direction: column; justify-content: center; gap: 8px;">
               <label style="display: flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem; color: #047857;">
