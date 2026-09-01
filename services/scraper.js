@@ -285,8 +285,193 @@ export async function scrapeAllOriflameCategories() {
     }
   }
 
+  // 2.5 Permanent Multi-Shade Family Grouping & Sub-Shade Deduplication
+  const knownShadeFamilies = [
+    {
+      parentId: '38883',
+      baseName: 'Baume à Lèvres The ONE Lip Spa',
+      category: 'Makeup',
+      shades: [
+        { code: '38883', name: 'Pink', hex: '#B2535B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38883%2f38883_1.png&MediaId=14359194&Version=1', in_stock: true, price: 36.9, origPrice: 46.9 },
+        { code: '38885', name: 'Raspberry', hex: '#8E294B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38885%2f38885_1.png&MediaId=14359350&Version=2', in_stock: true, price: 36.9, origPrice: 46.9 },
+      ]
+    },
+    {
+      parentId: '38690',
+      baseName: 'Rouge à lèvres Cremeux OnColour',
+      category: 'Makeup',
+      shades: [
+        { code: '38690', name: 'Coral Red', hex: '#D52B28', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38690%2f38690_1.png&MediaId=20989035&Version=1', in_stock: true, price: 19.9, origPrice: 29.9 },
+        { code: '38691', name: 'Orange Coral', hex: '#E74425', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38691%2f38691_1.png&MediaId=20989035&Version=1', in_stock: true, price: 19.9, origPrice: 29.9 },
+        { code: '38693', name: 'Bright Fuchsia', hex: '#E41A64', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38693%2f38693_1.png&MediaId=17991659&Version=1', in_stock: true, price: 19.9, origPrice: 29.9 },
+        { code: '38689', name: 'Cranberry Red', hex: '#921F36', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38689%2f38689_1.png&MediaId=17991652&Version=3', in_stock: false, price: 29.9, origPrice: 29.9 },
+        { code: '38692', name: 'Punch Pink', hex: '#D05476', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38692%2f38692_1.png&MediaId=17991658&Version=2', in_stock: false, price: 29.9, origPrice: 29.9 },
+      ]
+    },
+    {
+      parentId: '41797',
+      baseName: 'Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix',
+      category: 'Makeup',
+      shades: [
+        { code: '41797', name: 'Ultra Nude', hex: '#A8574B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41797%2f41797_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
+        { code: '41800', name: 'Ultra Raspberry', hex: '#872D43', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41800%2f41800_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
+        { code: '41804', name: 'Ultra Red', hex: '#A21727', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41804%2f41804_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
+        { code: '41806', name: 'Ultra Burgundy', hex: '#631826', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41806%2f41806_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
+      ]
+    },
+    {
+      parentId: '42106',
+      baseName: 'Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold',
+      category: 'Makeup',
+      shades: [
+        { code: '42106', name: 'Light Ivory Neutral', hex: '#E7BA9D', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42106%2f42106_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 },
+        { code: '42102', name: 'Porcelain Cool', hex: '#F0CBB6', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42102%2f42102_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 },
+        { code: '42103', name: 'Light Rose Warm', hex: '#EAC3A9', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42103%2f42103_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 },
+        { code: '42104', name: 'Beige Warm', hex: '#DFB091', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42104%2f42104_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 },
+        { code: '42105', name: 'Natural Beige Neutral', hex: '#D6A687', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42105%2f42105_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 }
+      ]
+    },
+    {
+      parentId: '46888',
+      baseName: 'Feutre à lèvres Stain & Stay THE ONE',
+      category: 'Makeup',
+      shades: [
+        { code: '46888', name: 'Nude', hex: '#AC6358', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46888%2f46888_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 62.9 },
+        { code: '46893', name: 'Brick', hex: '#8B2C2F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46893%2f46893_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 62.9 }
+      ]
+    },
+    {
+      parentId: '46907',
+      baseName: 'Fond de Teint The ONE Everlasting Sync Stress-Free',
+      category: 'Makeup',
+      shades: [
+        { code: '46907', name: 'Vanilla', hex: '#EED3BE', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46907%2f46907_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
+        { code: '46908', name: 'Porcelain', hex: '#E8C5AC', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46908%2f46908_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
+        { code: '46909', name: 'Marble', hex: '#E6BC9F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46909%2f46909_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
+        { code: '46910', name: 'Light Rose', hex: '#DFA78D', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46910%2f46910_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
+        { code: '46912', name: 'Soft Sand', hex: '#D29B7F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46912%2f46912_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
+        { code: '46913', name: 'Beige Warm', hex: '#C58C71', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46913%2f46913_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 }
+      ]
+    },
+    {
+      parentId: '46938',
+      baseName: 'Illuminateur Multi-Usages THE ONE',
+      category: 'Makeup',
+      shades: [
+        { code: '46938', name: 'Nude Optimism', hex: '#D4A373', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46938%2f46938_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
+        { code: '46939', name: 'Coral Confidence', hex: '#E76F51', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46939%2f46939_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
+        { code: '46940', name: 'Pink Pride', hex: '#E56B6F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46940%2f46940_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
+        { code: '46941', name: 'Grape Attraction', hex: '#B56576', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46941%2f46941_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 }
+      ]
+    },
+    {
+      parentId: '47704',
+      baseName: 'Eyeliner High Impact THE ONE',
+      category: 'Makeup',
+      shades: [
+        { code: '47704', name: 'Black', hex: '#1C1917', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47704%2f47704_1.png&MediaId=20989035&Version=1', in_stock: true, price: 29.9, origPrice: 42.9 },
+        { code: '47707', name: 'Brown', hex: '#573D30', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47707%2f47707_1.png&MediaId=20989035&Version=1', in_stock: true, price: 29.9, origPrice: 42.9 }
+      ]
+    },
+    {
+      parentId: '47739',
+      baseName: 'Anti-Cernes Perfecteur Tout-en-Un THE ONE',
+      category: 'Makeup',
+      shades: [
+        { code: '47739', name: 'Fair Light', hex: '#EED9C7', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 },
+        { code: '47740', name: 'Medium Light', hex: '#E6C4A7', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47740%2f47740_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 },
+        { code: '47741', name: 'Deep Light', hex: '#D8B091', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47741%2f47741_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 },
+        { code: '47742', name: 'Green Neutralizer', hex: '#C2D5C0', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47742%2f47742_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 },
+        { code: '47743', name: 'Peach Brightener', hex: '#F0C7A9', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47743%2f47743_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 }
+      ]
+    }
+  ];
+
+  // Apply shade family groupings and remove secondary standalone shade cards
+  knownShadeFamilies.forEach(fam => {
+    let parent = allScrapedMap.get(fam.parentId) || currentMap.get(fam.parentId);
+    if (!parent && fam.shades.length > 0) {
+      // Create parent if missing
+      parent = {
+        product_id: fam.parentId,
+        name: fam.baseName,
+        name_fr: fam.baseName,
+        category: fam.category,
+        price: fam.shades[0].price,
+        original_price: fam.shades[0].origPrice,
+        original_catalog_price: fam.shades[0].price,
+        company_discount_applied: false,
+        company_discount_percent: 0,
+        is_promo: fam.shades[0].origPrice > fam.shades[0].price,
+        discount_percent: Math.round(((fam.shades[0].origPrice - fam.shades[0].price) / fam.shades[0].origPrice) * 100),
+        size: 'Format Standard',
+        suitable_for: 'Tous types de peaux • Produit certifié Oriflame Suède',
+        image_url: fam.shades[0].img,
+        images: [fam.shades[0].img],
+        description: `Produit officiel Oriflame Tunisie (${fam.parentId}). Formule scandinave haute performance.`,
+        description_fr: `Produit officiel Oriflame Tunisie (${fam.parentId}). Formule scandinave haute performance.`,
+        benefits: ["100% Produit original certifié par Mouna Nouira", "Formule suédoise aux extraits naturels bienfaisants"],
+        how_to_use: "Appliquer délicatement selon les recommandations de la gamme.",
+        ingredients: "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+        in_stock: fam.shades.some(s => s.in_stock !== false)
+      };
+    }
+
+    if (parent) {
+      parent.name = fam.baseName;
+      parent.name_fr = fam.baseName;
+      parent.variants = fam.shades.map(s => {
+        const existingShade = allScrapedMap.get(s.code) || currentMap.get(s.code);
+        const sPrice = existingShade ? Number(existingShade.price) : s.price;
+        const sOrigPrice = existingShade ? (Number(existingShade.original_price) || s.origPrice) : s.origPrice;
+        const sInStock = existingShade ? existingShade.in_stock : s.in_stock;
+        return {
+          product_id: s.code,
+          name: `${fam.baseName} - ${s.name}`,
+          shade_name: s.name,
+          hex_color: s.hex,
+          image_url: existingShade?.image_url || s.img,
+          price: sPrice,
+          original_price: sOrigPrice,
+          in_stock: sInStock !== false
+        };
+      });
+
+      parent.in_stock = parent.variants.some(v => v.in_stock !== false);
+      allScrapedMap.set(fam.parentId, parent);
+
+      // Remove secondary sub-shade codes from top-level map to prevent duplicate cards
+      fam.shades.forEach(s => {
+        if (s.code !== fam.parentId) {
+          allScrapedMap.delete(s.code);
+        }
+      });
+    }
+  });
+
+  // Also deduplicate any dynamically scraped variants from concept.products
+  allScrapedMap.forEach((prod, pId) => {
+    if (Array.isArray(prod.variants) && prod.variants.length > 1) {
+      prod.variants.forEach(v => {
+        if (v.product_id && String(v.product_id) !== String(pId)) {
+          allScrapedMap.delete(String(v.product_id));
+        }
+      });
+    }
+  });
+
+  // Ensure special dual-price reference products (like 23378) keep authentic initial deal price
+  const p23378 = allScrapedMap.get('23378');
+  if (p23378) {
+    p23378.original_price = 89.9;
+    p23378.original_catalog_price = 54.9;
+    p23378.price = 54.9;
+    p23378.is_promo = true;
+    p23378.discount_percent = 39;
+  }
+
   const scrapedProducts = Array.from(allScrapedMap.values());
-  console.log(`Total unique products scraped across all categories: ${scrapedProducts.length}`);
+  console.log(`Total unique products after multi-shade grouping: ${scrapedProducts.length}`);
 
   // 3. Compute Synchronisation Statistics (New, Modified, Unchanged, Deleted)
   let newCount = 0;
@@ -335,12 +520,23 @@ export async function scrapeAllOriflameCategories() {
   const cleanMerged = mergedProducts.map(p => ({
     ...p,
     price: Number(p.price),
-    original_catalog_price: Number(p.price),
+    original_catalog_price: Number(p.original_catalog_price || p.price),
     company_discount_applied: false,
     company_discount_percent: 0
   }));
 
   fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(cleanMerged, null, 2), 'utf8');
+
+  // Also persist directly into Neon Postgres if database is active
+  try {
+    const dataAccess = await import('../dataAccess.js');
+    if (typeof dataAccess.saveProducts === 'function') {
+      await dataAccess.saveProducts(cleanMerged);
+      console.log(`Persisted ${cleanMerged.length} products to Neon Postgres.`);
+    }
+  } catch (dbErr) {
+    console.warn("Neon DB sync note during scrape:", dbErr.message);
+  }
 
   // Reset global company discount flag so newly scraped products can receive discount cleanly
   const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');

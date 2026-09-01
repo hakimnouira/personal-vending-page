@@ -1257,18 +1257,25 @@ class App {
     this.productGrid.innerHTML = filtered.map(p => {
       const prodName = this.getProductName(p);
       const prodDesc = this.getProductDescription(p);
-      const hasVariants = Array.isArray(p.variants) && p.variants.length > 1;
+      
+      // Filter out out-of-stock / exhausted shade variants
+      const validVariants = Array.isArray(p.variants) ? p.variants.filter(v => v.in_stock !== false) : [];
+      const hasVariants = validVariants.length > 1;
       let initialVariant = null;
       if (hasVariants) {
         if (this.searchQuery) {
-          initialVariant = p.variants.find(v => 
+          initialVariant = validVariants.find(v => 
             String(v.product_id).toLowerCase().includes(this.searchQuery) ||
             String(v.shade_name || '').toLowerCase().includes(this.searchQuery)
-          ) || p.variants[0];
+          ) || validVariants[0];
         } else {
-          initialVariant = p.variants[0];
+          initialVariant = validVariants[0];
         }
+      } else if (validVariants.length === 1) {
+        initialVariant = validVariants[0];
       }
+
+      const isCardInStock = (Array.isArray(p.variants) && p.variants.length > 0) ? (validVariants.length > 0 && p.in_stock !== false) : (p.in_stock !== false);
 
       const activePrice = initialVariant ? (initialVariant.price || p.price) : p.price;
       const activeOrigPrice = initialVariant ? (initialVariant.original_price || null) : p.original_price;
@@ -1288,8 +1295,8 @@ class App {
                 : `<span class="category-badge">${p.category}</span>`
               }
             </div>
-            <span class="stock-indicator ${p.in_stock ? 'in-stock' : 'out-stock'}">
-              ${p.in_stock ? inStockText : outStockText}
+            <span class="stock-indicator ${isCardInStock ? 'in-stock' : 'out-stock'}">
+              ${isCardInStock ? inStockText : outStockText}
             </span>
           </div>
           <div class="product-body">
@@ -1298,11 +1305,11 @@ class App {
             ${hasVariants ? `
               <div class="product-shades-row" onclick="event.stopPropagation();">
                 <div class="shades-header-label">
-                  <span>🎨 ${p.variants.length} ${isArabic ? 'درجات' : 'Nuances :'}</span>
+                  <span>🎨 ${validVariants.length} ${isArabic ? 'درجات' : 'Nuances :'}</span>
                   <span class="shade-active-badge" id="shade-badge-${p.product_id}">💄 ${initialVariant.shade_name || initialVariant.product_id}</span>
                 </div>
                 <div class="shades-swatches-list">
-                  ${p.variants.map((v, vIdx) => `
+                  ${validVariants.map((v, vIdx) => `
                     <button type="button" 
                       class="shade-swatch-btn ${String(v.product_id) === String(initialVariant.product_id) ? 'active' : ''}" 
                       style="${this.getSwatchStyle(v.hex_color)}" 
@@ -1321,7 +1328,7 @@ class App {
                 ${displayOrigPrice ? `<span class="product-price-strike">${Number(displayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
                 <span class="product-price ${isPromo ? 'promo-price' : ''}">${Number(activePrice).toFixed(2)} <span style="font-size:0.85rem; font-weight:600; color:var(--color-text-secondary);">${currencyLabel}</span></span>
               </div>
-              <button class="btn-add-cart" id="btn-add-card-${p.product_id}" ${!p.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${defaultAddId}')">
+              <button class="btn-add-cart" id="btn-add-card-${p.product_id}" ${!isCardInStock ? 'disabled' : ''} onclick="window.app.addToCart('${defaultAddId}')">
                 ${addBtnText}
               </button>
             </div>
@@ -1848,10 +1855,12 @@ class App {
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';
 
-    const hasVariants = Array.isArray(product.variants) && product.variants.length > 1;
+    // Filter out out-of-stock / exhausted shade variants
+    const validVariants = Array.isArray(product.variants) ? product.variants.filter(v => v.in_stock !== false) : [];
+    const hasVariants = validVariants.length > 1;
     const activeVariant = hasVariants 
-      ? ((initialVariantId && product.variants.find(v => String(v.product_id) === String(initialVariantId))) || product.variants[0])
-      : null;
+      ? ((initialVariantId && validVariants.find(v => String(v.product_id) === String(initialVariantId))) || validVariants[0])
+      : (validVariants[0] || null);
 
     const activeImage = activeVariant?.image_url || product.image_url;
     const activeRef = activeVariant ? activeVariant.product_id : product.product_id;
@@ -1921,11 +1930,11 @@ class App {
           ${hasVariants ? `
             <div class="quickview-shades-box">
               <div class="quickview-shades-title">
-                <span>🎨 ${isArabic ? 'اختيار الدرجة / اللون' : 'Choix de la Teinte / Nuance'} (${product.variants.length})</span>
+                <span>🎨 ${isArabic ? 'اختيار الدرجة / اللون' : 'Choix de la Teinte / Nuance'} (${validVariants.length})</span>
                 <span class="shade-active-badge" id="qv-active-shade-label">💄 ${activeVariant.shade_name || activeVariant.product_id} • Réf. ${activeVariant.product_id}</span>
               </div>
               <div class="quickview-shades-grid">
-                ${product.variants.map((v, vIdx) => `
+                ${validVariants.map((v, vIdx) => `
                   <button type="button" 
                     class="quickview-shade-swatch ${String(v.product_id) === String(activeVariant.product_id) ? 'active' : ''}" 
                     style="${this.getSwatchStyle(v.hex_color)}" 
