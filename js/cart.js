@@ -140,10 +140,13 @@ export class CartManager {
 
       // Only apply if the rest of the cart (without deal product) meets the threshold
       if (subtotalWithoutDealProduct >= Number(deal.threshold_amount)) {
-        const originalPrice = Number(dealItem.price);
+        const itemCartPrice = Number(dealItem.price);
+        const basePrice = Number(deal.product_price) > 0 ? Number(deal.product_price) : (Number(dealItem.original_price) || itemCartPrice);
         const discountFactor = 1 - (Number(deal.discount_percent) / 100);
-        const discountedPrice = parseFloat((originalPrice * discountFactor).toFixed(3));
-        const savingsPerUnit = parseFloat((originalPrice - discountedPrice).toFixed(3));
+        const targetDealPrice = parseFloat((basePrice * discountFactor).toFixed(3));
+        
+        // The customer pays targetDealPrice per unit. Savings = cart price - target deal price
+        const savingsPerUnit = Math.max(0, parseFloat((itemCartPrice - targetDealPrice).toFixed(3)));
         const totalSavings = parseFloat((savingsPerUnit * dealItem.quantity).toFixed(3));
 
         if (totalSavings > 0) {
@@ -151,8 +154,9 @@ export class CartManager {
             deal,
             dealItem,
             subtotalWithoutDealProduct,
-            originalPrice,
-            discountedPrice,
+            originalPrice: basePrice,
+            cartPrice: itemCartPrice,
+            discountedPrice: targetDealPrice,
             savingsPerUnit,
             totalSavings,
             sets: dealItem.quantity,

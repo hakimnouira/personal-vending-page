@@ -1642,7 +1642,7 @@ class App {
             return `
               <div style="font-size: 0.8rem; color: #5B21B6; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; background: rgba(255,255,255,0.5); border-radius: 6px; padding: 5px 8px;">
                 <div>
-                  <span>🏷️ <strong>${dTitle}</strong><br><span style="font-size:0.72rem;opacity:0.8;">-${td.deal.discount_percent}% sur ${td.deal.product_name || td.deal.product_id}</span></span>
+                  <span>🏷️ <strong>${dTitle}</strong><br><span style="font-size:0.72rem;opacity:0.8;">-${td.deal.discount_percent}% sur ${td.deal.product_name || td.deal.product_id} (${td.discountedPrice.toFixed(2)} ${currencyLabel} au lieu de ${td.originalPrice.toFixed(2)} ${currencyLabel})</span></span>
                   ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${td.deal.end_date}" style="margin:2px 0 0; font-size:0.68rem; padding:1px 6px;">${timeLeftStr}</div>` : ''}
                 </div>
                 <span style="font-weight: 900; color: #047857; font-size: 0.88rem;">-${td.totalSavings.toFixed(2)} ${currencyLabel}</span>
@@ -1656,32 +1656,58 @@ class App {
     // ── Render Threshold Deal Suggestions (when deals exist but not fully triggered) ──
     const thresholdSuggestions = this.cartManager.getThresholdDealSuggestions();
     if (thresholdSuggestions.length > 0) {
-      const s = thresholdSuggestions[0]; // Show the most relevant suggestion
-      const deal = s.deal;
-      const dTitle = (isArabic && deal.title_ar) ? deal.title_ar : (deal.title_fr || 'Deal Seuil');
-      const productName = deal.product_name || deal.product_id;
-      const timeLeftStr = deal.end_date ? this.formatDealTimeLeft(deal.end_date, isArabic) : null;
+      const unlockedDeals = thresholdSuggestions.filter(s => s.thresholdMet && !s.productInCart);
+      const upcomingDeals = thresholdSuggestions.filter(s => !s.thresholdMet && s.remaining <= Number(s.deal.threshold_amount) * 0.4);
 
-      if (s.thresholdMet && !s.productInCart) {
-        // Threshold met, but deal product not in cart yet → strong CTA to add it
+      if (unlockedDeals.length > 0) {
         html += `
-          <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%); border: 1.5px solid #F59E0B; border-radius: 10px; padding: 12px; margin-top: 14px; box-shadow: 0 2px 4px rgba(245,158,11,0.12);">
-            <div style="font-weight: 800; font-size: 0.84rem; color: #92400E; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-              🎉 ${isArabic ? 'أنت مؤهل للحصول على خصم خاص !' : 'Vous êtes éligible à une remise spéciale !'}
+          <div style="background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%); border: 1.5px solid #F59E0B; border-radius: 10px; padding: 12px; margin-top: 14px; box-shadow: 0 2px 8px rgba(245,158,11,0.15);">
+            <div style="font-weight: 800; font-size: 0.85rem; color: #92400E; display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+              🎉 ${isArabic ? 'أنت مؤهل لهذه العروض والخصومات الخاصة !' : 'Vous êtes éligible à ces remises spéciales !'}
             </div>
-            <p style="font-size: 0.78rem; color: #78350F; margin: 0 0 8px;">
-              ${deal.description_fr || (isArabic
-                ? `لقد تجاوزت عتبة ${Number(deal.threshold_amount).toFixed(0)} د.ت ! أضف <strong>${productName}</strong> وستحصل على <strong>-${deal.discount_percent}%</strong> عليه فوراً !`
-                : `Vous avez commandé pour plus de ${Number(deal.threshold_amount).toFixed(0)} DT ! Ajoutez <strong>${productName}</strong> et bénéficiez de <strong>-${deal.discount_percent}%</strong> immédiatement !`)}
-            </p>
-            ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${deal.end_date}" style="margin:0 0 8px;">${timeLeftStr}</div>` : ''}
-            <button class="btn-primary" style="padding: 6px 12px; font-size: 0.78rem; background: #D97706; border-color: #B45309; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 6px;" onclick="window.app.addProductToCart('${deal.product_id}')">
-              🎯 ${isArabic ? `إضافة ${productName} بخصم -${deal.discount_percent}%` : `Ajouter ${productName} avec -${deal.discount_percent}%`}
-            </button>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              ${unlockedDeals.map(s => {
+                const deal = s.deal;
+                const dTitle = (isArabic && deal.title_ar) ? deal.title_ar : (deal.title_fr || 'Offre Spéciale');
+                const productName = deal.product_name || deal.product_id;
+                const timeLeftStr = deal.end_date ? this.formatDealTimeLeft(deal.end_date, isArabic) : null;
+                const baseP = Number(deal.product_price) || 0;
+                const dealPrice = baseP > 0 ? (baseP * (1 - Number(deal.discount_percent) / 100)) : 0;
+                const prodImg = deal.product_image || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${deal.product_id}%2f${deal.product_id}_1.png&MediaId=20989035&Version=1`;
+
+                return `
+                  <div style="background: rgba(255, 255, 255, 0.85); border: 1px solid #FDE68A; border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                      <img src="${prodImg}" alt="${productName}" style="width: 44px; height: 44px; object-fit: contain; border-radius: 6px; background: #FFF; border: 1px solid #F3F4F6; flex-shrink: 0;" onerror="this.src='/images/placeholder.png'" />
+                      <div style="flex: 1; min-width: 0;">
+                        <div style="font-size: 0.82rem; font-weight: 700; color: #78350F; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${productName}</div>
+                        <div style="font-size: 0.74rem; color: #B45309; font-weight: 700; margin-top: 2px;">
+                          ${dealPrice > 0 ? `${dealPrice.toFixed(2)} ${currencyLabel}` : ''}
+                          ${baseP > 0 ? `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.7rem; font-weight: normal; color: #6B7280; margin-left: 4px;">${baseP.toFixed(2)} ${currencyLabel}</span>` : ''}
+                          <span style="background: #FEE2E2; color: #DC2626; padding: 1px 5px; border-radius: 4px; font-size: 0.68rem; font-weight: 800; margin-left: 4px;">-${deal.discount_percent}%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; border-top: 1px dashed rgba(245,158,11,0.3); padding-top: 6px;">
+                      ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${deal.end_date}" style="margin: 0; font-size: 0.68rem; padding: 2px 6px;">${timeLeftStr}</div>` : '<div></div>'}
+                      <button class="btn-primary" style="padding: 5px 12px; font-size: 0.76rem; background: #D97706; border-color: #B45309; display: inline-flex; justify-content: center; align-items: center; gap: 4px; border-radius: 6px; font-weight: 700;" onclick="window.app.addProductToCart('${deal.product_id}')">
+                        🎯 ${isArabic ? `إضافة للسلة` : `Ajouter au Panier`}
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
           </div>
         `;
-      } else if (!s.thresholdMet && s.remaining <= Number(deal.threshold_amount) * 0.4) {
-        // Getting close to threshold (within 40% of it) → motivational nudge
+      }
+
+      if (upcomingDeals.length > 0 && unlockedDeals.length === 0) {
+        const u = upcomingDeals[0];
+        const deal = u.deal;
+        const productName = deal.product_name || deal.product_id;
+        const timeLeftStr = deal.end_date ? this.formatDealTimeLeft(deal.end_date, isArabic) : null;
+
         html += `
           <div style="background: #F8FAFC; border: 1px dashed #94A3B8; border-radius: 10px; padding: 10px; margin-top: 14px;">
             <div style="font-size: 0.78rem; font-weight: 700; color: #475569; display: flex; align-items: center; gap: 5px;">
@@ -1689,8 +1715,8 @@ class App {
             </div>
             <p style="font-size: 0.76rem; color: #64748B; margin: 4px 0 0;">
               ${isArabic
-                ? `أضف ${Number(s.remaining).toFixed(2)} د.ت أخرى لتحصل على <strong>-${deal.discount_percent}%</strong> على <strong>${productName}</strong> !`
-                : `Ajoutez encore <strong>${Number(s.remaining).toFixed(2)} ${currencyLabel}</strong> pour débloquer <strong>-${deal.discount_percent}%</strong> sur <strong>${productName}</strong> !`}
+                ? `أضف ${Number(u.remaining).toFixed(2)} د.ت أخرى لتحصل على <strong>-${deal.discount_percent}%</strong> على <strong>${productName}</strong> !`
+                : `Ajoutez encore <strong>${Number(u.remaining).toFixed(2)} ${currencyLabel}</strong> pour débloquer <strong>-${deal.discount_percent}%</strong> sur <strong>${productName}</strong> !`}
             </p>
             ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${deal.end_date}" style="margin:4px 0 0;">${timeLeftStr}</div>` : ''}
           </div>

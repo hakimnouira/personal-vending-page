@@ -434,7 +434,7 @@ export async function scrapeProductFromUrl(url) {
     if (codeMatch) code = codeMatch[1];
 
     const rawDesc = $('meta[name="description"]').attr('content') || $('.product-description, [data-testid="product-description"]').first().text().trim() || `Produit officiel Oriflame Tunisie (${code}).`;
-    const mainImg = $('meta[property="og:image"]').attr('content') || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_1.png&MediaId=20989035&Version=1`;
+    let mainImg = $('meta[property="og:image"]').attr('content') || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_1.png&MediaId=20989035&Version=1`;
     
     // Extract any gallery images from the page
     const foundImages = [mainImg];
@@ -544,7 +544,22 @@ export async function scrapeProductFromUrl(url) {
       }
     }
 
-    if (inStock) {
+    // If this URL is for a specific shade/variant code, resolve shade details
+    if (variants.length > 0) {
+      const matchedVariant = variants.find(v => String(v.product_id) === String(code));
+      if (matchedVariant) {
+        title = matchedVariant.name;
+        price = matchedVariant.price;
+        if (matchedVariant.original_price) originalPrice = matchedVariant.original_price;
+        inStock = matchedVariant.in_stock !== false;
+        if (matchedVariant.image_url) {
+          mainImg = matchedVariant.image_url;
+          foundImages[0] = mainImg;
+        }
+      } else if (variants.some(v => v.in_stock)) {
+        inStock = true;
+      }
+    } else if (inStock) {
       inStock = isProductInStock(title + ' ' + rawDesc + ' ' + rawHtmlText, { title, description: rawDesc });
     }
 
