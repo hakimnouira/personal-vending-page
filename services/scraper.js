@@ -50,8 +50,8 @@ export async function scrapeAllOriflameCategories() {
             if (prodId && cleanName) {
               const cat = classifyCategory(cleanName);
               const price = Number(e.price) || 39.90;
-              const originalPrice = calculateEstimatedOriginalPrice(price);
-              const discountPercent = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+              const originalPrice = Number(e.original_price) || Number(e.basicCataloguePrice) || Number(e.basicPrice) || calculateEstimatedOriginalPrice(price);
+              const discountPercent = originalPrice && originalPrice > price ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
               const mainImg = `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
               const galleryImages = [
                 mainImg,
@@ -72,7 +72,7 @@ export async function scrapeAllOriflameCategories() {
                 name_fr: cleanName,
                 category: cat,
                 price: price,
-                original_price: originalPrice,
+                original_price: (originalPrice && originalPrice > price) ? originalPrice : (existing?.original_price || originalPrice),
                 original_catalog_price: price,
                 company_discount_applied: false,
                 company_discount_percent: 0,
@@ -99,6 +99,39 @@ export async function scrapeAllOriflameCategories() {
       console.log(`Loaded ${allScrapedMap.size} products from official catalogue enrichments.`);
     } catch (e) {
       console.warn("Enrichment extraction note:", e.message);
+    }
+  }
+
+  // 1.5 Extract genuine promo prices from active digital Flipbook catalogue hotspots
+  const FLIPBOOK_FILE = path.join(DATA_DIR, 'flipbook.json');
+  if (fs.existsSync(FLIPBOOK_FILE)) {
+    try {
+      const fbData = JSON.parse(fs.readFileSync(FLIPBOOK_FILE, 'utf8'));
+      const pages = Array.isArray(fbData) ? fbData : (fbData.pages || []);
+      pages.forEach(pg => {
+        (pg.hotspots || []).forEach(h => {
+          const hid = String(h.id || '').trim();
+          const hPrice = Number(h.price);
+          if (hid && hPrice > 0) {
+            const existing = allScrapedMap.get(hid);
+            if (existing) {
+              if (hPrice < existing.price) {
+                existing.original_price = existing.price;
+                existing.price = hPrice;
+                existing.original_catalog_price = hPrice;
+                existing.is_promo = true;
+                existing.discount_percent = Math.round(((existing.original_price - hPrice) / existing.original_price) * 100);
+              } else {
+                existing.price = hPrice;
+                existing.original_catalog_price = hPrice;
+              }
+            }
+          }
+        });
+      });
+      console.log(`Synchronized active Flipbook catalogue hotspot prices into scraper map.`);
+    } catch (e) {
+      console.warn("Flipbook extraction note:", e.message);
     }
   }
 
@@ -351,10 +384,8 @@ function inferSizeFromName(name = '') {
 }
 
 function calculateEstimatedOriginalPrice(price) {
-  if (!price || price <= 0) return null;
-  // Estimate realistic catalog non-discounted strikethrough price if not explicitly provided
-  const markup = Math.round(price * 1.35 * 10) / 10;
-  return markup > price ? markup : null;
+  // Do NOT synthesize fake original prices; only genuine catalogue prices should be stored
+  return null;
 }
 
 export async function scrapeProductFromUrl(url) {

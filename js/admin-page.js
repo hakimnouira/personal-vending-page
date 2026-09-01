@@ -1115,7 +1115,8 @@ class AdminDashboard {
     }
 
     if (prods) {
-      this.products = this.applyDiscountOverrides(prods);
+      try { localStorage.removeItem('oriflame_discount_overrides_v1'); } catch (e) {}
+      this.products = prods;
       this.rawProducts = this.products;
       try { localStorage.setItem('oriflame_products_v1', JSON.stringify(this.products)); } catch (e) {}
       this.renderStockTable();
@@ -1192,6 +1193,7 @@ class AdminDashboard {
       const isDiscounted = Boolean(p.company_discount_applied);
       const catalogPrice = Number(p.original_catalog_price !== undefined && p.original_catalog_price !== null ? p.original_catalog_price : p.price).toFixed(2);
       const currentPrice = Number(p.price).toFixed(2);
+      const origPrice = p.original_price ? Number(p.original_price).toFixed(2) : null;
 
       const discountBadge = isDiscounted
         ? `<div style="margin-top: 3px;">
@@ -1199,7 +1201,7 @@ class AdminDashboard {
              <div style="font-size:0.75rem; color:#6B7280; margin-top:2px;">Prix Catalogue : <del style="color:#DC2626; font-weight:600;">${catalogPrice} DT</del></div>
            </div>`
         : `<div style="margin-top: 3px;">
-             <span class="badge" style="background:#F4F4F5; color:#4B5563; border:1px solid #E5E7EB; font-size:0.72rem; font-weight:600;">⚪ Prix Brut (Sans Remise)</span>
+             <span class="badge" style="background:#F4F4F5; color:#4B5563; border:1px solid #E5E7EB; font-size:0.72rem; font-weight:600;">⚪ Prix Brut (${catalogPrice} DT)</span>
            </div>`;
 
       const discountActionBtn = isDiscounted
@@ -3612,17 +3614,47 @@ class AdminDashboard {
 
   _populateDealProductSelect(select) {
     if (!select) return;
-    const products = Array.isArray(this.products) ? this.products : [];
-    const currentVal = select.value || '';
     const isAr = this.i18n ? this.i18n.getLang() === 'ar' : false;
     const initialLabel = isAr ? 'السعر العادي' : 'Prix initial';
     const currLabel = isAr ? 'د.ت' : 'TND';
-    const options = [`<option value="">-- Choisir un produit du catalogue (${products.length} disponibles) --</option>`];
-    products.forEach(p => {
+
+    // Combine products from this.products + any unique products from flipbook or localStorage
+    const productMap = new Map();
+    (this.products || []).forEach(p => {
+      if (p && p.product_id) productMap.set(String(p.product_id).trim(), p);
+    });
+
+    try {
+      const flipbookData = JSON.parse(localStorage.getItem('oriflame_flipbook_v1') || 'null');
+      const pages = Array.isArray(flipbookData) ? flipbookData : (flipbookData?.pages || []);
+      pages.forEach(pg => {
+        (pg.products || []).forEach(fp => {
+          const fid = String(fp.product_id || fp.code || '').trim();
+          if (fid && !productMap.has(fid)) {
+            productMap.set(fid, {
+              product_id: fid,
+              name: fp.name || `Produit ${fid}`,
+              name_fr: fp.name || `Produit ${fid}`,
+              price: Number(fp.price) || 0,
+              original_price: Number(fp.original_price) || Number(fp.price) || 0,
+              image_url: fp.image_url || ''
+            });
+          }
+        });
+      });
+    } catch (e) {}
+
+    const allProducts = Array.from(productMap.values());
+    allProducts.sort((a, b) => (String(a.product_id) || '').localeCompare(String(b.product_id) || '', undefined, { numeric: true }));
+
+    const currentVal = select.value || '';
+    const options = [`<option value="">-- Choisir parmi TOUS les produits (${allProducts.length} disponibles) --</option>`];
+    allProducts.forEach(p => {
       const name = (isAr && p.name_ar) ? p.name_ar : (p.name_fr || p.name || p.product_id);
       const basePrice = Math.max(Number(p.original_price || 0), Number(p.original_catalog_price || 0), Number(p.price || 0));
       const priceStr = basePrice > 0 ? ` — ${basePrice.toFixed(3)} ${currLabel} (${initialLabel})` : '';
-      options.push(`<option value="${p.product_id}">[${p.product_id}] ${name}${priceStr}</option>`);
+      const catStr = p.category ? ` [${p.category}]` : '';
+      options.push(`<option value="${p.product_id}">[${p.product_id}] ${name}${catStr}${priceStr}</option>`);
     });
     select.innerHTML = options.join('');
     if (currentVal) select.value = currentVal;
@@ -3630,7 +3662,29 @@ class AdminDashboard {
 
   _updateDealProductPreview(productId) {
     if (!productId) return;
-    const product = (this.products || []).find(p => String(p.product_id).trim() === String(productId).trim());
+    const cleanId = String(productId).trim();
+    let product = (this.products || []).find(p => String(p.product_id).trim() === cleanId);
+
+    if (!product) {
+      try {
+        const flipbookData = JSON.parse(localStorage.getItem('oriflame_flipbook_v1') || 'null');
+        const pages = Array.isArray(flipbookData) ? flipbookData : (flipbookData?.pages || []);
+        for (const pg of pages) {
+          const found = (pg.products || []).find(fp => String(fp.product_id || fp.code).trim() === cleanId);
+          if (found) {
+            product = {
+              product_id: cleanId,
+              name: found.name || `Produit ${cleanId}`,
+              name_fr: found.name || `Produit ${cleanId}`,
+              price: Number(found.price) || 0,
+              original_price: Number(found.original_price) || Number(found.price) || 0,
+              image_url: found.image_url || ''
+            };
+            break;
+          }
+        }
+      } catch (e) {}
+    }
     if (!product) return;
 
     const parseDec = (v) => {

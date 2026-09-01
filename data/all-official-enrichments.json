@@ -17145,6 +17145,7 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 44.9,
+          "original_price": 52.9,
           "category": "Automatic"
         },
         {
@@ -28433,7 +28434,7 @@
           "name": "12760-Baume Naturel Multi Usage Tender Care",
           "packagesize": 1,
           "customsizeunit": null,
-          "price": 19.9,
+          "price": 12.9,
           "category": "Automatic"
         },
         {
