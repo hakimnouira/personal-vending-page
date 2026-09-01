@@ -1859,3 +1859,11 @@ app.listen(PORT, () => {
   console.log(`  Database Backend: Neon Postgres`);
   console.log(`===================================================`);
 });
+
+process.on('uncaughtException', (err) => {
+  console.error('Handled uncaughtException:', err?.message || err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Handled unhandledRejection:', reason?.message || reason);
+});

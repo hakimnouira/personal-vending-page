@@ -638,7 +638,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "40683-Parfum Giordani Gold Essenza Supreme ",
@@ -663,7 +664,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 132.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 189.9
         },
         {
           "pageIndex": 3,
@@ -772,7 +774,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "popupMediaGallery": {
@@ -947,7 +950,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 153.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 219.9
         },
         {
           "desc": "47020-Crème Parfumée pour le Corps All Or Nothing Amplified",
@@ -972,7 +976,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 5,
@@ -1129,7 +1134,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 6,
@@ -1358,7 +1364,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 119.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "42499-Eau de Toilette Eclat Femme Weekend",
@@ -1383,7 +1390,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 119.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 8,
@@ -1612,7 +1620,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "48671-Eau de Toilette Signature Man",
@@ -1637,7 +1646,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "desc": "35651-Eau de Toilette Eclat Toujours",
@@ -1662,7 +1672,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 10,
@@ -1771,7 +1782,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "38531-Eau de Parfum Giordani Gold Woman",
@@ -1796,7 +1808,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "pageIndex": 11,
@@ -1971,7 +1984,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "pageIndex": 12,
@@ -2110,7 +2124,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 132.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 189.9
         },
         {
           "pageIndex": 13,
@@ -2255,7 +2270,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 132.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 189.9
         },
         {
           "popupMediaGallery": {
@@ -2394,7 +2410,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "38550-Eau de Parfum Nordic Waters pour Lui",
@@ -2419,7 +2436,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 15,
@@ -2564,7 +2582,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 16,
@@ -2673,7 +2692,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 17,
@@ -2818,7 +2838,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 18,
@@ -2927,7 +2948,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "47019-Crème Parfumée pour le Corps Love Potion Sensual Ruby ",
@@ -2952,7 +2974,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 19,
@@ -3097,7 +3120,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "42751-Eau de Parfum Love Potion",
@@ -3122,7 +3146,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 20,
@@ -3231,7 +3256,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "47012-Crème Parfumée pour le Corps Amber Elixir ",
@@ -3256,7 +3282,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 21,
@@ -3401,7 +3428,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "pageIndex": 22,
@@ -3528,7 +3556,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 111.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 159.9
         },
         {
           "pageIndex": 23,
@@ -3637,7 +3666,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 24,
@@ -3680,7 +3710,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 24,
@@ -3789,7 +3820,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 25,
@@ -3832,7 +3864,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 25,
@@ -3941,7 +3974,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 111.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 159.9
         },
         {
           "pageIndex": 26,
@@ -3984,7 +4018,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 111.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 159.9
         },
         {
           "pageIndex": 26,
@@ -4111,7 +4146,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 27,
@@ -4220,7 +4256,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 28,
@@ -4365,7 +4402,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "desc": "44288-Eau de Toilette OH! SWEET DULCE DE LECHE",
@@ -4390,7 +4428,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 29,
@@ -4517,7 +4556,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 30,
@@ -4644,7 +4684,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 31,
@@ -4771,7 +4812,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 32,
@@ -4880,6 +4922,7 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
+          "original_price": 119.9,
           "category": "Automatic"
         },
         {
@@ -4923,7 +4966,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 33,
@@ -5032,7 +5076,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 34,
@@ -7620,7 +7665,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "40683-Parfum Giordani Gold Essenza Supreme ",
@@ -7645,7 +7691,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 132.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 189.9
         },
         {
           "pageIndex": 3,
@@ -7754,7 +7801,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "popupMediaGallery": {
@@ -7929,7 +7977,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 153.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 219.9
         },
         {
           "desc": "47020-Crème Parfumée pour le Corps All Or Nothing Amplified",
@@ -7954,7 +8003,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 5,
@@ -8111,7 +8161,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 6,
@@ -8340,7 +8391,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 119.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "42499-Eau de Toilette Eclat Femme Weekend",
@@ -8365,7 +8417,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 119.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 8,
@@ -8594,7 +8647,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "48671-Eau de Toilette Signature Man",
@@ -8619,7 +8673,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "desc": "35651-Eau de Toilette Eclat Toujours",
@@ -8644,7 +8699,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 10,
@@ -8753,7 +8809,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "38531-Eau de Parfum Giordani Gold Woman",
@@ -8778,7 +8835,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "pageIndex": 11,
@@ -8953,7 +9011,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "pageIndex": 12,
@@ -9092,7 +9151,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 132.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 189.9
         },
         {
           "pageIndex": 13,
@@ -9237,7 +9297,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 132.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 189.9
         },
         {
           "popupMediaGallery": {
@@ -9376,7 +9437,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "38550-Eau de Parfum Nordic Waters pour Lui",
@@ -9401,7 +9463,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 15,
@@ -9546,7 +9609,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 16,
@@ -9655,7 +9719,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 17,
@@ -9800,7 +9865,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 18,
@@ -9909,7 +9975,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "47019-Crème Parfumée pour le Corps Love Potion Sensual Ruby ",
@@ -9934,7 +10001,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 19,
@@ -10079,7 +10147,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "42751-Eau de Parfum Love Potion",
@@ -10104,7 +10173,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 20,
@@ -10213,7 +10283,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "47012-Crème Parfumée pour le Corps Amber Elixir ",
@@ -10238,7 +10309,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 21,
@@ -10383,7 +10455,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "pageIndex": 22,
@@ -10510,7 +10583,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 111.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 159.9
         },
         {
           "pageIndex": 23,
@@ -10619,7 +10693,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 24,
@@ -10662,7 +10737,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 24,
@@ -10771,7 +10847,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 25,
@@ -10814,7 +10891,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 25,
@@ -10923,7 +11001,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 111.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 159.9
         },
         {
           "pageIndex": 26,
@@ -10966,7 +11045,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 111.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 159.9
         },
         {
           "pageIndex": 26,
@@ -11093,7 +11173,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 27,
@@ -11202,7 +11283,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 28,
@@ -11347,7 +11429,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "desc": "44288-Eau de Toilette OH! SWEET DULCE DE LECHE",
@@ -11372,7 +11455,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 29,
@@ -11499,7 +11583,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 30,
@@ -11626,7 +11711,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 31,
@@ -11753,7 +11839,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 32,
@@ -11862,6 +11949,7 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
+          "original_price": 119.9,
           "category": "Automatic"
         },
         {
@@ -11905,7 +11993,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 83.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 33,
@@ -12014,7 +12103,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 48.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 34,
@@ -14008,7 +14098,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 119.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "46045-Eau de Parfum Giordani Gold Mister Giordani",
@@ -14033,7 +14124,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 119.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "47513- Eau de Parfum Giordani Gold Miss Giordani",
@@ -14058,7 +14150,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 119.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "44308-Eau de Toilette Venture Power ",
@@ -14083,7 +14176,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "42519-Eau de Parfum Possess",
@@ -14108,7 +14202,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 159.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 159.9
         },
         {
           "desc": "46056-Eau de Toilette Scope Time Loop ",
@@ -14133,7 +14228,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 114.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "desc": "42816-Eau de Toilette Glacier Rock",
@@ -14158,7 +14254,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "42502-Eau de Toilette Elvie",
@@ -14183,7 +14280,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "42495-Eau de Parfum Amber Elixir ",
@@ -14208,7 +14306,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 129.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "desc": "46052-Eau de Parfum Volare Tender ",
@@ -14233,7 +14332,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 114.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "desc": "44315- Eau de Parfum Infinita My Sunshine",
@@ -14258,7 +14358,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 119.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "desc": "40667-Eau De Toilette Glacier Extreme ",
@@ -14283,7 +14384,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 35,
@@ -14392,7 +14494,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 52.9
         },
         {
           "desc": "47723-Eau de Parfum Top Scents Neon Oud ",
@@ -14417,7 +14520,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 189.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 189.9
         },
         {
           "desc": "47722-Eau de Parfum Top Scents Rose Mode",
@@ -14442,7 +14546,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 189.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 189.9
         },
         {
           "pageIndex": 36,
@@ -14587,7 +14692,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "42828-Eau de Toilette Women's Collection Delicate Cherry Blossom ",
@@ -14612,7 +14718,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 37,
@@ -14721,7 +14828,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 79.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 114.9
         },
         {
           "pageIndex": 38,
@@ -14764,7 +14872,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 82.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119.9
         },
         {
           "pageIndex": 38,
@@ -14891,7 +15000,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 71.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "35649-Eau de Toilette Eclat Amour",
@@ -14916,7 +15026,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 71.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 39,
@@ -15243,7 +15354,8 @@
           "packagesize": 1,
           "parentid": 1128243872,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 79.9
         },
         {
           "desc": "46939-Illuminateur Multi-Usages THE ONE Coral Confidence",
@@ -15264,7 +15376,8 @@
           "packagesize": 1,
           "parentid": 1128243872,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 79.9
         },
         {
           "desc": "46941-Illuminateur Multi-Usages THE ONE Grape Attraction",
@@ -15285,7 +15398,8 @@
           "packagesize": 1,
           "parentid": 1128243872,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 79.9
         },
         {
           "desc": "46940-Illuminateur Multi-Usages THE ONE Pink Pride",
@@ -15306,7 +15420,8 @@
           "packagesize": 1,
           "parentid": 1128243872,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 79.9
         },
         {
           "pageIndex": 42,
@@ -15367,7 +15482,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 24.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "46910-Fond de Teint The ONE Everlasting Sync Stress-Free Light Rose",
@@ -15388,7 +15504,8 @@
           "packagesize": 1,
           "parentid": 1128243873,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 67.9
         },
         {
           "desc": "46908-Fond de Teint The ONE Everlasting Sync Stress-Free Porcelain",
@@ -15409,7 +15526,8 @@
           "packagesize": 1,
           "parentid": 1128243873,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 67.9
         },
         {
           "desc": "46912-Fond de Teint The ONE Everlasting Sync Stress-Free Soft Sand",
@@ -15430,7 +15548,8 @@
           "packagesize": 1,
           "parentid": 1128243873,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 67.9
         },
         {
           "desc": "46909-Fond de Teint The ONE Everlasting Sync Stress-Free Marble",
@@ -15451,7 +15570,8 @@
           "packagesize": 1,
           "parentid": 1128243873,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 67.9
         },
         {
           "desc": "46913-Fond de Teint The ONE Everlasting Sync Stress-Free Beige Warm",
@@ -15472,7 +15592,8 @@
           "packagesize": 1,
           "parentid": 1128243873,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 67.9
         },
         {
           "desc": "46907-Fond de Teint The ONE Everlasting Sync Stress-Free Vanilla",
@@ -15493,7 +15614,8 @@
           "packagesize": 1,
           "parentid": 1128243873,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 67.9
         },
         {
           "pageIndex": 42,
@@ -15602,7 +15724,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 29.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 36.9
         },
         {
           "desc": "44547-Base THE ONE Make-Up Pro On Screen Finish",
@@ -15627,7 +15750,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 43.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "pageIndex": 43,
@@ -15670,7 +15794,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "43416-Poudre Libre The ONE Make-up Pro ",
@@ -15695,7 +15820,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 59.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "pageIndex": 43,
@@ -15938,7 +16064,8 @@
           "packagesize": 1,
           "parentid": 1128243882,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "46571-Ombre à paupières liquide longue tenue Matte THE ONE Espresso",
@@ -15959,7 +16086,8 @@
           "packagesize": 1,
           "parentid": 1128243882,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "46570-Ombre à paupières liquide longue tenue Matte THE ONE Bronze",
@@ -15980,7 +16108,8 @@
           "packagesize": 1,
           "parentid": 1128243882,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "45361-Ombre à paupières liquide longue tenue THE ONE Metallic Soft Pink",
@@ -16001,7 +16130,8 @@
           "packagesize": 1,
           "parentid": 1128243881,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "45364-Ombre à paupières liquide longue tenue THE ONE Metallic Beige",
@@ -16022,7 +16152,8 @@
           "packagesize": 1,
           "parentid": 1128243881,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "45362-Ombre à paupières liquide longue tenue THE ONE Metallic Rosy Peach",
@@ -16043,7 +16174,8 @@
           "packagesize": 1,
           "parentid": 1128243881,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "pageIndex": 45,
@@ -16086,7 +16218,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 46.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 62.9
         },
         {
           "pageIndex": 45,
@@ -16311,7 +16444,8 @@
           "packagesize": 1,
           "parentid": 1128243887,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 47.9
         },
         {
           "desc": "47973-Fard à paupières THE ONE Cool Grip Peach Sunset",
@@ -16332,7 +16466,8 @@
           "packagesize": 1,
           "parentid": 1128243887,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 47.9
         },
         {
           "desc": "47974-Fard à paupières THE ONE Cool Grip Sunlit Glow",
@@ -16353,7 +16488,8 @@
           "packagesize": 1,
           "parentid": 1128243887,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 47.9
         },
         {
           "desc": "40898-Kit pour les Sourcils et les Yeux The ONE",
@@ -16378,7 +16514,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 67.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 84.9
         },
         {
           "pageIndex": 47,
@@ -16453,7 +16590,8 @@
           "packagesize": 1,
           "parentid": 1128243890,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "43985-Stylo pour les Sourcils The ONE Tattoo Effect Warm Brown",
@@ -16474,7 +16612,8 @@
           "packagesize": 1,
           "parentid": 1128243890,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "47252-Pommade à Sourcils THE ONE Medium Brown",
@@ -16495,7 +16634,8 @@
           "packagesize": 1,
           "parentid": 1128243889,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "47253-Pommade à Sourcils THE ONE Dark Brown",
@@ -16516,7 +16656,8 @@
           "packagesize": 1,
           "parentid": 1128243889,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "43987-Stylo pour les Sourcils The ONE Tattoo Effect Dark Brown",
@@ -16537,7 +16678,8 @@
           "packagesize": 1,
           "parentid": 1128243890,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "pageIndex": 47,
@@ -16664,7 +16806,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 41.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 55.9
         },
         {
           "desc": "43123-Mascara 5-en-1 Wonder Lash Ultra THE ONE",
@@ -16689,7 +16832,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 35.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 47.9
         },
         {
           "desc": "47833-Pinceau Perfecteur pour les Lèvres",
@@ -16714,7 +16858,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "47836-Pince à épiler Ultra Précision",
@@ -16739,7 +16884,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 14.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 18.9
         },
         {
           "pageIndex": 48,
@@ -16968,7 +17114,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 37.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "46896-Mascara Pump & Plump THE ONE Black",
@@ -16993,7 +17140,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 37.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "pageIndex": 50,
@@ -17120,7 +17268,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 18.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "35742-Eyeliner THE ONE Wonder Black",
@@ -17287,7 +17436,8 @@
           "packagesize": 1,
           "parentid": 1128243904,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "43350-Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited Sunset Rose",
@@ -17308,7 +17458,8 @@
           "packagesize": 1,
           "parentid": 1128243904,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "46352-Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited Sandy Bronze",
@@ -17329,7 +17480,8 @@
           "packagesize": 1,
           "parentid": 1128243901,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "46351-Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited Peach Perfect",
@@ -17350,7 +17502,8 @@
           "packagesize": 1,
           "parentid": 1128243901,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "43347-Fards à Paupières et Crayons pour les Yeux Duo The ONE Colour Unlimited Emerald Green",
@@ -17371,7 +17524,8 @@
           "packagesize": 1,
           "parentid": 1128243904,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "pageIndex": 52,
@@ -17428,7 +17582,8 @@
           "packagesize": 1,
           "parentid": 1128243907,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "46136- BB Crème Embellissante MAX SPF 15 THE ONE Light Ivory Neutral",
@@ -17449,7 +17604,8 @@
           "packagesize": 1,
           "parentid": 1128243907,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "46135- BB Crème Embellissante MAX SPF 15 THE ONE Light Beige Nude",
@@ -17470,7 +17626,8 @@
           "packagesize": 1,
           "parentid": 1128243907,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "pageIndex": 52,
@@ -17713,7 +17870,8 @@
           "packagesize": 1,
           "parentid": 1128243909,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "46892-Feutre à lèvres Stain & Stay THE ONE Cherry",
@@ -17734,7 +17892,8 @@
           "packagesize": 1,
           "parentid": 1128243908,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 62.9
         },
         {
           "desc": "46397-Gloss à Lèvres Hydratant et Brillant THE ONE Shimmering Coral",
@@ -17755,7 +17914,8 @@
           "packagesize": 1,
           "parentid": 1128243909,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "46889-Feutre à lèvres Stain & Stay THE ONE Melon",
@@ -17776,7 +17936,8 @@
           "packagesize": 1,
           "parentid": 1128243908,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 62.9
         },
         {
           "desc": "46394-Gloss à Lèvres Hydratant et Brillant THE ONE Bare Brilliance",
@@ -17797,7 +17958,8 @@
           "packagesize": 1,
           "parentid": 1128243909,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "46890-Feutre à lèvres Stain & Stay THE ONE Rose",
@@ -17818,7 +17980,8 @@
           "packagesize": 1,
           "parentid": 1128243908,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 62.9
         },
         {
           "desc": "46398-Gloss à Lèvres Hydratant et Brillant THE ONE Creamy Caramel",
@@ -17839,7 +18002,8 @@
           "packagesize": 1,
           "parentid": 1128243909,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "46396-Gloss à Lèvres Hydratant et Brillant THE ONE Blushing Rose",
@@ -17860,7 +18024,8 @@
           "packagesize": 1,
           "parentid": 1128243909,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "46893-Feutre à lèvres Stain & Stay THE ONE Brick",
@@ -17881,7 +18046,8 @@
           "packagesize": 1,
           "parentid": 1128243908,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 62.9
         },
         {
           "desc": "46891-Feutre à lèvres Stain & Stay THE ONE Chili",
@@ -17902,7 +18068,8 @@
           "packagesize": 1,
           "parentid": 1128243908,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 62.9
         },
         {
           "desc": "46888-Feutre à lèvres Stain & Stay THE ONE Nude",
@@ -17923,7 +18090,8 @@
           "packagesize": 1,
           "parentid": 1128243908,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 62.9
         },
         {
           "pageIndex": 54,
@@ -17980,7 +18148,8 @@
           "packagesize": 1,
           "parentid": 1128243912,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 76.8
         },
         {
           "desc": "38883-Baume à Lèvres The ONE Lip Spa Pink",
@@ -18001,7 +18170,8 @@
           "packagesize": 1,
           "parentid": 1128243912,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 76.8
         },
         {
           "pageIndex": 54,
@@ -18226,7 +18396,8 @@
           "packagesize": 1,
           "parentid": 1128243913,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "41639-Rouge à Lèvres Mat THE ONE Color Unlimited Everlasting Rose",
@@ -18247,7 +18418,8 @@
           "packagesize": 1,
           "parentid": 1128243913,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "41636-Rouge à Lèvres Mat THE ONE Color Unlimited Infinite Peach",
@@ -18268,7 +18440,8 @@
           "packagesize": 1,
           "parentid": 1128243913,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "41635-Rouge à Lèvres Mat THE ONE Color Unlimited Nonstop Nude",
@@ -18289,7 +18462,8 @@
           "packagesize": 1,
           "parentid": 1128243913,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "41640-Rouge à Lèvres Mat THE ONE Color Unlimited Timeless Mauve",
@@ -18310,7 +18484,8 @@
           "packagesize": 1,
           "parentid": 1128243913,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "41638-Rouge à Lèvres Mat THE ONE Color Unlimited Forever Truffle",
@@ -18331,7 +18506,8 @@
           "packagesize": 1,
           "parentid": 1128243913,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "pageIndex": 56,
@@ -18374,7 +18550,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 18.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "pageIndex": 56,
@@ -18413,7 +18590,8 @@
           "packagesize": 1,
           "parentid": 1128243917,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "41797-Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix Ultra Nude",
@@ -18434,7 +18612,8 @@
           "packagesize": 1,
           "parentid": 1128243917,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "41805-Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix Ultra Bordeaux",
@@ -18455,7 +18634,8 @@
           "packagesize": 1,
           "parentid": 1128243917,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "41806-Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix Ultra Burgundy",
@@ -18476,7 +18656,8 @@
           "packagesize": 1,
           "parentid": 1128243917,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "41800-Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix Ultra Raspberry",
@@ -18497,7 +18678,8 @@
           "packagesize": 1,
           "parentid": 1128243917,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "41807-Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix Ultra Mocha",
@@ -18518,7 +18700,8 @@
           "packagesize": 1,
           "parentid": 1128243917,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "41799-Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix Ultra Rose",
@@ -18539,7 +18722,8 @@
           "packagesize": 1,
           "parentid": 1128243917,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "desc": "41798-Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix Ultra Terracotta",
@@ -18560,7 +18744,8 @@
           "packagesize": 1,
           "parentid": 1128243917,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 59.9
         },
         {
           "pageIndex": 56,
@@ -18669,7 +18854,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "48165-Duo Soin Cuticules et Ongles",
@@ -18694,7 +18880,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 22.9
         },
         {
           "desc": "48067-Mini Kit de Manucure",
@@ -18719,7 +18906,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 29.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "48064-Lime à Ongles en Verre Nail Perfection",
@@ -18744,7 +18932,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 9.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 12.9
         },
         {
           "pageIndex": 57,
@@ -18889,7 +19078,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 22.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46873-Top coat - volume & brillance",
@@ -18914,7 +19104,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 22.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "47736-Sérum pour les Ongles - Protection et Soin",
@@ -18939,7 +19130,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 22.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 58,
@@ -19266,7 +19458,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "48667-Vernis à Ongles Gel Tuxedo",
@@ -19287,7 +19480,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46880-Vernis à Ongles Gel Sweet Lilac",
@@ -19308,7 +19502,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46875-Vernis à Ongles Gel Vanilla Latte",
@@ -19329,7 +19524,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46882-Vernis à Ongles Gel Passion",
@@ -19350,7 +19546,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46881-Vernis à Ongles Gel Rose In Paris",
@@ -19371,7 +19568,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46886-Vernis à Ongles Gel Wild Sage",
@@ -19392,7 +19590,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46877-Vernis à Ongles Gel Toasty",
@@ -19413,7 +19612,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46876-Vernis à Ongles Gel Sugar",
@@ -19434,7 +19634,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46887-Vernis à Ongles Gel Hot Cocoa",
@@ -19455,7 +19656,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46879-Vernis à Ongles Gel Cotton Candy",
@@ -19476,7 +19678,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46878-Vernis à Ongles Gel Cutie Pie",
@@ -19497,7 +19700,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46883-Vernis à Ongles Gel Spicy",
@@ -19518,7 +19722,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46885-Vernis à Ongles Gel Cloud",
@@ -19539,7 +19744,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46884-Vernis à Ongles Gel Fearless",
@@ -19560,7 +19766,8 @@
           "packagesize": 1,
           "parentid": 1128243929,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         }
       ],
       "animationSequences": [
@@ -20892,7 +21099,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 33.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "pageIndex": 61,
@@ -20931,7 +21139,8 @@
           "packagesize": 1,
           "parentid": 1128243930,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "47181-Baume à Lèvres Waunt Smooth Like Butter Soft Beige",
@@ -20952,7 +21161,8 @@
           "packagesize": 1,
           "parentid": 1128243930,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "47182-Baume à Lèvres Waunt Smooth Like Butter Peachy Pink",
@@ -20973,7 +21183,8 @@
           "packagesize": 1,
           "parentid": 1128243930,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 61,
@@ -21198,7 +21409,8 @@
           "packagesize": 1,
           "parentid": 1128243934,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 79.9
         },
         {
           "desc": "47843-Gelée Lèvres & Joues en Stick WAUNT Blush Worthy Peach Splash",
@@ -21219,7 +21431,8 @@
           "packagesize": 1,
           "parentid": 1128243934,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 79.9
         },
         {
           "desc": "47842-Gelée Lèvres & Joues en Stick WAUNT Blush Worthy Fresh Pink",
@@ -21240,7 +21453,8 @@
           "packagesize": 1,
           "parentid": 1128243934,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 79.9
         },
         {
           "pageIndex": 63,
@@ -21297,7 +21511,8 @@
           "packagesize": 1,
           "parentid": 1128243935,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "42103-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Marble Neutral",
@@ -21314,6 +21529,7 @@
           "alttext": "42103-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Marble Neutral",
           "styleid": -1,
           "price": 75.9,
+          "original_price": 89.9,
           "name": "42103-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Marble Neutral",
           "packagesize": 1,
           "parentid": 1128243935,
@@ -21335,6 +21551,7 @@
           "alttext": "42106-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Light Ivory Neutral",
           "styleid": -1,
           "price": 75.9,
+          "original_price": 89.9,
           "name": "42106-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Light Ivory Neutral",
           "packagesize": 1,
           "parentid": 1128243935,
@@ -21356,6 +21573,7 @@
           "alttext": "42102-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Porcelain Warm",
           "styleid": -1,
           "price": 75.9,
+          "original_price": 89.9,
           "name": "42102-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Porcelain Warm",
           "packagesize": 1,
           "parentid": 1128243935,
@@ -21377,6 +21595,7 @@
           "alttext": "42105-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Soft Sand",
           "styleid": -1,
           "price": 75.9,
+          "original_price": 89.9,
           "name": "42105-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Soft Sand",
           "packagesize": 1,
           "parentid": 1128243935,
@@ -21398,6 +21617,7 @@
           "alttext": "42104-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Light Beige Neutral",
           "styleid": -1,
           "price": 75.9,
+          "original_price": 89.9,
           "name": "42104-Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold  Light Beige Neutral",
           "packagesize": 1,
           "parentid": 1128243935,
@@ -21627,7 +21847,8 @@
           "packagesize": 1,
           "parentid": 1128243938,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 84.9
         },
         {
           "desc": "42113-CC Crème Giordani Gold IP 30 + Protection UVA  Medium",
@@ -21648,7 +21869,8 @@
           "packagesize": 1,
           "parentid": 1128243938,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 84.9
         },
         {
           "desc": "42118-Base Riche en Sérum Giordani Gold",
@@ -21673,7 +21895,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 54.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 65,
@@ -21938,7 +22161,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 11.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 14.9
         },
         {
           "pageIndex": 67,
@@ -22043,7 +22267,8 @@
           "packagesize": 1,
           "parentid": 1128243943,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "41370-Crayon pour les Yeux OnColour Perfect Duo  Jungle & Olive Green",
@@ -22064,7 +22289,8 @@
           "packagesize": 1,
           "parentid": 1128243943,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "41367-Crayon pour les Yeux OnColour Perfect Duo  Grey & White",
@@ -22085,7 +22311,8 @@
           "packagesize": 1,
           "parentid": 1128243943,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "41369-Crayon pour les Yeux OnColour Perfect Duo  Blue & Sapphire",
@@ -22106,7 +22333,8 @@
           "packagesize": 1,
           "parentid": 1128243943,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 68,
@@ -22149,7 +22377,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "pageIndex": 68,
@@ -22206,7 +22435,8 @@
           "packagesize": 1,
           "parentid": 1128243945,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46601-Rouge à lèvres OnColour Cream Rosy Pink",
@@ -22227,7 +22457,8 @@
           "packagesize": 1,
           "parentid": 1128243947,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46600-Rouge à lèvres OnColour Cream Deep Red",
@@ -22248,7 +22479,8 @@
           "packagesize": 1,
           "parentid": 1128243947,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "38692-Rouge à lèvres Cremeux OnColour   Punch Pink",
@@ -22269,7 +22501,8 @@
           "packagesize": 1,
           "parentid": 1128243945,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "38689-Rouge à lèvres Cremeux OnColour   Cranberry Red",
@@ -22290,7 +22523,8 @@
           "packagesize": 1,
           "parentid": 1128243945,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "38690-Rouge à lèvres Cremeux OnColour   Coral Red",
@@ -22311,7 +22545,8 @@
           "packagesize": 1,
           "parentid": 1128243945,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "46604-Rouge à lèvres OnColour Cream Romantic Pink",
@@ -22332,7 +22567,8 @@
           "packagesize": 1,
           "parentid": 1128243947,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "38693-Rouge à lèvres Cremeux OnColour   Bright Fuchsia",
@@ -22353,7 +22589,8 @@
           "packagesize": 1,
           "parentid": 1128243945,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 68,
@@ -22480,7 +22717,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 47.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 47.9
         },
         {
           "pageIndex": 69,
@@ -22613,7 +22851,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 42.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "36133-Highlighter Liquide The ONE IlluSkin",
@@ -22638,7 +22877,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 54.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "pageIndex": 69,
@@ -22743,7 +22983,8 @@
           "packagesize": 1,
           "parentid": 1128243952,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "43633-Rouge à lèvres Mat OnColour  Magnetic Magenta",
@@ -22764,7 +23005,8 @@
           "packagesize": 1,
           "parentid": 1128243954,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "47525-Bâtonnet Correcteur Perfecteur OnColour  Light Ivory",
@@ -22785,7 +23027,8 @@
           "packagesize": 1,
           "parentid": 1128243955,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "43295-Rouge à Lèvres THE ONE Colour Stylist Super Pout Amber Nude",
@@ -22806,7 +23049,8 @@
           "packagesize": 1,
           "parentid": 1128243952,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "43636-Rouge à lèvres Mat OnColour  Earthy Brown",
@@ -22827,7 +23071,8 @@
           "packagesize": 1,
           "parentid": 1128243954,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "43297-Rouge à Lèvres THE ONE Colour Stylist Super Pout Sleek Pink",
@@ -22848,7 +23093,8 @@
           "packagesize": 1,
           "parentid": 1128243952,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "43301-Rouge à Lèvres THE ONE Colour Stylist Super Pout Brown Flame",
@@ -22869,7 +23115,8 @@
           "packagesize": 1,
           "parentid": 1128243952,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "47706-Eyeliner High Impact THE ONE Blue",
@@ -22890,7 +23137,8 @@
           "packagesize": 1,
           "parentid": 1128243953,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 76.8
         },
         {
           "desc": "47704-Eyeliner High Impact THE ONE Black",
@@ -22911,7 +23159,8 @@
           "packagesize": 1,
           "parentid": 1128243953,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 76.8
         },
         {
           "desc": "43639-Rouge à lèvres Mat OnColour  Brick Red",
@@ -22932,7 +23181,8 @@
           "packagesize": 1,
           "parentid": 1128243954,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "47741-Anti-Cernes Perfecteur Tout-en-Un THE ONE  Deep Light",
@@ -22953,7 +23203,8 @@
           "packagesize": 1,
           "parentid": 1128243951,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "43302-Rouge à Lèvres THE ONE Colour Stylist Super Pout Red Pout",
@@ -22974,7 +23225,8 @@
           "packagesize": 1,
           "parentid": 1128243952,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "43637-Rouge à lèvres Mat OnColour  Shock Fuchsia",
@@ -22995,7 +23247,8 @@
           "packagesize": 1,
           "parentid": 1128243954,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "43634-Rouge à lèvres Mat OnColour  Red Punch",
@@ -23016,7 +23269,8 @@
           "packagesize": 1,
           "parentid": 1128243954,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "48040-Mascara Coloré Hypnotic Colour THE ONE Blazing Blue",
@@ -23037,7 +23291,8 @@
           "packagesize": 1,
           "parentid": 1128243956,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "48038-Mascara Coloré Hypnotic Colour THE ONE Purple Pop",
@@ -23058,7 +23313,8 @@
           "packagesize": 1,
           "parentid": 1128243956,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "47708-Eyeliner High Impact THE ONE Emerald Green",
@@ -23079,7 +23335,8 @@
           "packagesize": 1,
           "parentid": 1128243953,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 76.8
         },
         {
           "desc": "47743-Anti-Cernes Perfecteur Tout-en-Un THE ONE  Peach",
@@ -23100,7 +23357,8 @@
           "packagesize": 1,
           "parentid": 1128243951,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "48039-Mascara Coloré Hypnotic Colour THE ONE Bright Burgundy",
@@ -23121,7 +23379,8 @@
           "packagesize": 1,
           "parentid": 1128243956,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "desc": "47705-Eyeliner High Impact THE ONE Grey",
@@ -23142,7 +23401,8 @@
           "packagesize": 1,
           "parentid": 1128243953,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 76.8
         },
         {
           "desc": "43298-Rouge à Lèvres THE ONE Colour Stylist Super Pout Rosewood Cherry",
@@ -23163,7 +23423,8 @@
           "packagesize": 1,
           "parentid": 1128243952,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "47707-Eyeliner High Impact THE ONE Brown",
@@ -23184,7 +23445,8 @@
           "packagesize": 1,
           "parentid": 1128243953,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 76.8
         },
         {
           "desc": "47742-Anti-Cernes Perfecteur Tout-en-Un THE ONE  Green",
@@ -23205,7 +23467,8 @@
           "packagesize": 1,
           "parentid": 1128243951,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "43296-Rouge à Lèvres THE ONE Colour Stylist Super Pout Sumptuous Mauve",
@@ -23226,7 +23489,8 @@
           "packagesize": 1,
           "parentid": 1128243952,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "43635-Rouge à lèvres Mat OnColour  Sassy Red",
@@ -23247,7 +23511,8 @@
           "packagesize": 1,
           "parentid": 1128243954,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "desc": "47739-Anti-Cernes Perfecteur Tout-en-Un THE ONE  Light Fair",
@@ -23268,7 +23533,8 @@
           "packagesize": 1,
           "parentid": 1128243951,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "47740-Anti-Cernes Perfecteur Tout-en-Un THE ONE  Medium Light",
@@ -23289,7 +23555,8 @@
           "packagesize": 1,
           "parentid": 1128243951,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "47526-Bâtonnet Correcteur Perfecteur OnColour  Nude Beige",
@@ -23310,7 +23577,8 @@
           "packagesize": 1,
           "parentid": 1128243955,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "43299-Rouge à Lèvres THE ONE Colour Stylist Super Pout Taupe Blush",
@@ -23331,7 +23599,8 @@
           "packagesize": 1,
           "parentid": 1128243952,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "47835-Recourbe-cils Effet Lift",
@@ -23356,7 +23625,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47829-Pinceau Estompeur Effilé",
@@ -23381,7 +23651,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47828-Pinceau Blush & Glow",
@@ -23406,7 +23677,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "47822-Pinceau Duo Teint Zéro Défaut",
@@ -23431,7 +23703,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 45.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 45.9
         },
         {
           "desc": "46901-Perles Infusées de Sérum Giordani Gold - Édition Spéciale Cherry Touch",
@@ -23456,7 +23729,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "47824-Pinceau Finition Velours",
@@ -23481,7 +23755,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 45.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 45.9
         },
         {
           "pageIndex": 70,
@@ -23524,7 +23799,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 45.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 45.9
         },
         {
           "pageIndex": 70,
@@ -23563,7 +23839,8 @@
           "packagesize": 1,
           "parentid": 1128243965,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "44829-Rouge à Lèvres Giordani Gold Iconic Elixir Intense IP 15  Luxe Scarlet",
@@ -23584,7 +23861,8 @@
           "packagesize": 1,
           "parentid": 1128243965,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "44824-Rouge à Lèvres Giordani Gold Iconic Elixir Intense IP 15  Suede Coral",
@@ -23605,7 +23883,8 @@
           "packagesize": 1,
           "parentid": 1128243965,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "44823-Rouge à Lèvres Giordani Gold Iconic Elixir Intense IP 15  Dreamy Caramel",
@@ -23626,7 +23905,8 @@
           "packagesize": 1,
           "parentid": 1128243965,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "44821-Rouge à Lèvres Giordani Gold Iconic Elixir Intense IP 15  Velvet Blush",
@@ -23647,7 +23927,8 @@
           "packagesize": 1,
           "parentid": 1128243965,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "44826-Rouge à Lèvres Giordani Gold Iconic Elixir Intense IP 15  Chocolat Velour",
@@ -23668,7 +23949,8 @@
           "packagesize": 1,
           "parentid": 1128243965,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "44827-Rouge à Lèvres Giordani Gold Iconic Elixir Intense IP 15  Rosewood Haze",
@@ -23689,7 +23971,8 @@
           "packagesize": 1,
           "parentid": 1128243965,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "desc": "44830-Rouge à Lèvres Giordani Gold Iconic Elixir Intense IP 15  Cherry Lush",
@@ -23710,7 +23993,8 @@
           "packagesize": 1,
           "parentid": 1128243965,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "pageIndex": 70,
@@ -23935,7 +24219,8 @@
           "packagesize": 1,
           "parentid": 1128243969,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "desc": "46587-Gloss Oh! Sweet Glossy OnColour Crystal Coco",
@@ -23956,7 +24241,8 @@
           "packagesize": 1,
           "parentid": 1128243969,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "desc": "46593-Gloss Oh! Sweet Glossy OnColour Blackcurrant",
@@ -23977,7 +24263,8 @@
           "packagesize": 1,
           "parentid": 1128243969,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "desc": "46588-Gloss Oh! Sweet Glossy OnColour Pink Lemonade",
@@ -23998,7 +24285,8 @@
           "packagesize": 1,
           "parentid": 1128243969,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "desc": "46592-Gloss Oh! Sweet Glossy OnColour Peach Candy",
@@ -24019,7 +24307,8 @@
           "packagesize": 1,
           "parentid": 1128243969,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "desc": "46589-Gloss Oh! Sweet Glossy OnColour Mango",
@@ -24040,7 +24329,8 @@
           "packagesize": 1,
           "parentid": 1128243969,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "desc": "46594-Gloss Oh! Sweet Glossy OnColour Dulce de Leche",
@@ -24061,7 +24351,8 @@
           "packagesize": 1,
           "parentid": 1128243969,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "pageIndex": 72,
@@ -24206,7 +24497,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 88.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119
         },
         {
           "desc": "41044-Crème de Jour Légère Multi-Active Anti-Age Novage+ IP 30",
@@ -24231,7 +24523,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 81.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109
         },
         {
           "desc": "41048-Crème de Jour Riche Multi-Active Anti-Age Novage+ IP 30",
@@ -24256,7 +24549,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 81.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109
         },
         {
           "pageIndex": 73,
@@ -24365,7 +24659,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 88.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119
         },
         {
           "desc": "41058-Crème de Nuit Riche Multi-Active Anti-Age Novage+",
@@ -24390,7 +24685,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 81.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109
         },
         {
           "desc": "41057-Crème de Nuit Légère Multi-Active Anti-Age Novage+",
@@ -24415,7 +24711,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 81.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109
         },
         {
           "pageIndex": 74,
@@ -24560,7 +24857,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 469.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 555
         },
         {
           "pageIndex": 75,
@@ -24669,7 +24967,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 429.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 515
         },
         {
           "desc": "45590-Routine Mixte Novage+ Wrinkle Smooth",
@@ -24694,7 +24993,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 429.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 515
         },
         {
           "desc": "45598-Routine Légère Novage+ Bright Intense ",
@@ -24719,7 +25019,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 429.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 515
         },
         {
           "pageIndex": 76,
@@ -24762,7 +25063,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 429.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 515
         },
         {
           "pageIndex": 76,
@@ -24871,7 +25173,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89
         },
         {
           "desc": "41070-Crème Contour des Yeux et des Lèvres Rénovatrice Novage+ Restore",
@@ -24896,7 +25199,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 99,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 99
         },
         {
           "desc": "41033-Crème Contour des Yeux Novage+ Bright Intense",
@@ -24921,7 +25225,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89
         },
         {
           "desc": "47422-Revitalisant pour les yeux",
@@ -24946,7 +25251,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 22.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 28.9
         },
         {
           "pageIndex": 77,
@@ -24989,7 +25295,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 69,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69
         },
         {
           "desc": "42425-Crème Contour des Yeux Novage+ Lift + Firm",
@@ -25014,7 +25321,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89
         },
         {
           "desc": "47421-Spatule à crèmes",
@@ -25039,7 +25347,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 18.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 23.9
         },
         {
           "pageIndex": 77,
@@ -25148,7 +25457,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 139,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 139
         },
         {
           "desc": "41057-Crème de Nuit Légère Multi-Active Anti-Age Novage+",
@@ -25173,7 +25483,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 81.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109
         },
         {
           "desc": "41048-Crème de Jour Riche Multi-Active Anti-Age Novage+ IP 30",
@@ -25198,7 +25509,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 81.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109
         },
         {
           "pageIndex": 78,
@@ -25241,7 +25553,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 81.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109
         },
         {
           "desc": "41075-Sérum Régénérant pour le Visage Novage+ Restore",
@@ -25266,7 +25579,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 149,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 149
         },
         {
           "desc": "41039-Sérum Novage+ Blemish + Age Defy",
@@ -25291,7 +25605,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 139,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 139
         },
         {
           "desc": "41035-Sérum Novage+ Wrinkle Smooth",
@@ -25316,7 +25631,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 139,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 139
         },
         {
           "desc": "44285-Crème de Nuit Multi-Réparatrice Novage+ Restore",
@@ -25341,7 +25657,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 88.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119
         },
         {
           "desc": "41040-Sérum Novage+ Bright Intense",
@@ -25366,7 +25683,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 139,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 139
         },
         {
           "desc": "44098-Crème de Jour Multi-Correctrice SPF 30 Novage+ Restore ",
@@ -25391,7 +25709,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 88.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 119
         },
         {
           "desc": "41058-Crème de Nuit Riche Multi-Active Anti-Age Novage+",
@@ -25416,7 +25735,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 81.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109
         },
         {
           "pageIndex": 78,
@@ -25525,7 +25845,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 74.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 99.9
         },
         {
           "pageIndex": 79,
@@ -25670,7 +25991,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 24.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "42444-Power Drops Proceuticals 24h Hydratation Intense Novage+",
@@ -25695,7 +26017,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 74.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 99.9
         },
         {
           "desc": "47102-Power Drops Rétinol Novage+ Proceuticals  ",
@@ -25720,7 +26043,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 74.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 99.9
         },
         {
           "desc": "47104-Solution Exfoliante \"Peeling\" AHA Novage+ Proceuticals ",
@@ -25745,7 +26069,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 69.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 99.9
         },
         {
           "pageIndex": 80,
@@ -25854,7 +26179,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "47002-Eau Micellaire Apaisante au Chia et au Miel Naturel Love Nature",
@@ -25879,7 +26205,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "47519-Brosse Nettoyante Double pour le Visage",
@@ -25904,7 +26231,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "47001-Masque Nourrissant pour le Visage au Chia et au Miel Naturel Love Nature ",
@@ -25929,7 +26257,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "47523-Éponge Nettoyante pour le Visage",
@@ -25954,7 +26283,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 6.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 8.9
         },
         {
           "desc": "26825-Enlève Points Noirs à Double Embout",
@@ -25979,7 +26309,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 11.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 14.9
         },
         {
           "pageIndex": 81,
@@ -26226,7 +26557,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 58.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "45152-Masque Exfoliate & Energise Wellosophy",
@@ -26251,7 +26583,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 47.9
         },
         {
           "desc": "45139-Gel-Sérum Smooth & Balance Wellosophy",
@@ -26276,7 +26609,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 92.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 109.9
         },
         {
           "desc": "45149-Nettoyant Calm & Balance Wellosophy",
@@ -26301,7 +26635,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 46.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 54.9
         },
         {
           "pageIndex": 83,
@@ -26410,7 +26745,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 66.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 79.9
         },
         {
           "desc": "45147-Huile-en-Sérum Wellosophy Ageless & Blissful",
@@ -26435,7 +26771,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 84.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 99.9
         },
         {
           "pageIndex": 84,
@@ -26478,7 +26815,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 80.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 94.9
         },
         {
           "pageIndex": 84,
@@ -28292,7 +28630,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 64.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 64.9
         },
         {
           "desc": "41365-Crème de Jour Fouettée Waunt Super Recover",
@@ -28317,7 +28656,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 89.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "41373-Masque Nourissant Sleeping Beauty Waunt",
@@ -28342,7 +28682,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 74.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 74.9
         },
         {
           "pageIndex": 85,
@@ -28385,7 +28726,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "desc": "47005-Crème de Jour Raffermissante SPF 20 Royal Velvet",
@@ -28410,7 +28752,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 104.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 104.9
         },
         {
           "desc": "12760-Baume Naturel Multi Usage Tender Care",
@@ -28435,7 +28778,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 12.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "desc": "40670-Retoucheur de Peau Waunt Woke Up Like This ",
@@ -28460,7 +28804,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 84.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 84.9
         },
         {
           "desc": "46015-Masseur Anti Cellulite The Body Edition ",
@@ -28485,7 +28830,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 36.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 45.9
         },
         {
           "desc": "41353-Crème Contour des Yeux Waunt 8 Hour Sleep ",
@@ -28510,7 +28856,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 62.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 62.9
         },
         {
           "desc": "44370-Gommage Lissant pour le Corps The Body Edition ",
@@ -28535,7 +28882,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 85,
@@ -28644,7 +28992,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 35.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 44.9
         },
         {
           "pageIndex": 86,
@@ -28789,7 +29138,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 29.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "45286-Gommage Exfoliant pour le Visage Opt Optimal",
@@ -28814,7 +29164,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 29.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 87,
@@ -28923,7 +29274,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 51.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "45287-Eau Micellaire Réconfortante Opt Optimals",
@@ -28948,7 +29300,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 29.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 88,
@@ -28991,7 +29344,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 51.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "pageIndex": 88,
@@ -29100,7 +29454,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "46543-Gel Nettoyant Moussant Opt Optimals",
@@ -29125,7 +29480,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 89,
@@ -29372,7 +29728,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "34843-Tonique Purifiant Love Nature à l'Extrait d'Arbre à Thé et de Citron Naturels",
@@ -29397,7 +29754,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 22.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "34845-Lotion Matifiante pour le Visage Love Nature à l'Extrait d'Arbre à Thé et de Citron Naturels",
@@ -29422,7 +29780,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "pageIndex": 91,
@@ -29531,7 +29890,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "pageIndex": 92,
@@ -29658,7 +30018,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "47439-Baume Multi Usages Tender Care à l'Extrait de Prune Sucrée",
@@ -29683,7 +30044,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 12.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "pageIndex": 95,
@@ -29926,7 +30288,8 @@
           "packagesize": 1,
           "parentid": 1128244064,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "46930-Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Cinnamon",
@@ -29947,7 +30310,8 @@
           "packagesize": 1,
           "parentid": 1128244064,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "46919-Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Sand",
@@ -29968,7 +30332,8 @@
           "packagesize": 1,
           "parentid": 1128244064,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "46923-Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Frosty Charcoal",
@@ -29989,7 +30354,8 @@
           "packagesize": 1,
           "parentid": 1128244064,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "46928-Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Deep Brown",
@@ -30010,7 +30376,8 @@
           "packagesize": 1,
           "parentid": 1128244064,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "46927-Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Nude Beige",
@@ -30031,7 +30398,8 @@
           "packagesize": 1,
           "parentid": 1128244064,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "46929-Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Burgundy",
@@ -30052,7 +30420,8 @@
           "packagesize": 1,
           "parentid": 1128244064,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "43185-Gel Couche de Finition Étape 2 THE ONE Ultimate ",
@@ -30077,7 +30446,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 22.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "41760-Stylo à Huile pour Ongles et Cuticules THE ONE EXPERT CARE",
@@ -30102,7 +30472,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 22.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "pageIndex": 97,
@@ -30145,7 +30516,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 43.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 67.9
         },
         {
           "pageIndex": 97,
@@ -30406,7 +30778,8 @@
           "packagesize": 1,
           "parentid": 1128244071,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "45562-Rouge à lèvres Giordani Gold Eternal Glow IP 25 Rusty Crimson",
@@ -30427,7 +30800,8 @@
           "packagesize": 1,
           "parentid": 1128244071,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "41415-Crayon à sourcils double face Giordani Gold Precise Medium Brown",
@@ -30448,7 +30822,8 @@
           "packagesize": 1,
           "parentid": 1128244069,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 84.9
         },
         {
           "desc": "42669-Rouge à lèvres mat Iconic Giordani Gold IP 15 Marvelous Cherry",
@@ -30469,7 +30844,8 @@
           "packagesize": 1,
           "parentid": 1128244072,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "45563-Rouge à lèvres Giordani Gold Eternal Glow IP 25 Romance Red",
@@ -30490,7 +30866,8 @@
           "packagesize": 1,
           "parentid": 1128244071,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "45556-Rouge à lèvres Giordani Gold Eternal Glow IP 25 Noble Nude",
@@ -30511,7 +30888,8 @@
           "packagesize": 1,
           "parentid": 1128244071,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "45560-Rouge à lèvres Giordani Gold Eternal Glow IP 25 Dusty Blush",
@@ -30532,7 +30910,8 @@
           "packagesize": 1,
           "parentid": 1128244071,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "42667-Rouge à lèvres mat Iconic Giordani Gold IP 15 Rusty Currant",
@@ -30553,7 +30932,8 @@
           "packagesize": 1,
           "parentid": 1128244072,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "41414-Crayon à sourcils double face Giordani Gold Precise  Giordani Gold Precise Two Sided Brow Pencil",
@@ -30574,7 +30954,8 @@
           "packagesize": 1,
           "parentid": 1128244069,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 84.9
         },
         {
           "desc": "45558-Rouge à lèvres Giordani Gold Eternal Glow IP 25 Luxe Amber",
@@ -30595,7 +30976,8 @@
           "packagesize": 1,
           "parentid": 1128244071,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "42662-Rouge à lèvres mat Iconic Giordani Gold IP 15 Unexpected Rose",
@@ -30616,7 +30998,8 @@
           "packagesize": 1,
           "parentid": 1128244072,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 69.9
         },
         {
           "desc": "45557-Rouge à lèvres Giordani Gold Eternal Glow IP 25 Dolce Caramel",
@@ -30637,7 +31020,8 @@
           "packagesize": 1,
           "parentid": 1128244071,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "45565-Rouge à lèvres Giordani Gold Eternal Glow IP 25 Tender Cranberry",
@@ -30658,7 +31042,8 @@
           "packagesize": 1,
           "parentid": 1128244071,
           "customsizeunit": null,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "desc": "47201-CRÈME POUR LES MAINS TREASURED MOMENTS",
@@ -30683,7 +31068,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 14.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "pageIndex": 99,
@@ -30726,7 +31112,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 8.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "pageIndex": 99,
@@ -30955,7 +31342,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 52.9
         },
         {
           "pageIndex": 101,
@@ -31064,7 +31452,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 52.9
         },
         {
           "pageIndex": 102,
@@ -31107,7 +31496,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 52.9
         },
         {
           "desc": "47702-Masque pour les Mains Garden Symphony Essense&Co.",
@@ -31132,7 +31522,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 28.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "pageIndex": 102,
@@ -31259,7 +31650,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 33.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 44.9
         },
         {
           "pageIndex": 103,
@@ -31368,7 +31760,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 52.9
         },
         {
           "pageIndex": 104,
@@ -31411,7 +31804,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 52.9
         },
         {
           "pageIndex": 104,
@@ -31520,7 +31914,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 45.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 57.9
         },
         {
           "desc": "47532-Gua Sha pour le corps",
@@ -31545,7 +31940,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 43.9
         },
         {
           "desc": "41490-Lotion Nourrissante pour le Corps Love Nature au Beurre de Cacao et à l'Huile Naturelle de Noix de Coco ",
@@ -31570,7 +31966,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 67.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 84.9
         },
         {
           "desc": "41505-Lotion Énergisante pour le Corps Love Nature à l'Extrait Naturel de Menthe et de Framboise",
@@ -31595,7 +31992,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 54.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 67.9
         },
         {
           "pageIndex": 105,
@@ -31740,7 +32138,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "41519-Crème de Douche Bienfaisante Love Nature  à l'Extrait Naturel d'Avoine et d'Abricot ",
@@ -31765,7 +32164,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 106,
@@ -31874,7 +32274,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 22.9
         },
         {
           "desc": "41354-Shampooing pour Cheveux Gras Love Nature à l'Extrait Naturel de Citron et de menthe ",
@@ -31899,7 +32300,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 22.9
         },
         {
           "pageIndex": 107,
@@ -31942,7 +32344,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 22.9
         },
         {
           "pageIndex": 107,
@@ -32171,7 +32574,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 28.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 35.9
         },
         {
           "desc": "46986-Gel douche à la Pastèque Naturelle Simple Joys Love Nature ",
@@ -32196,7 +32600,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "pageIndex": 109,
@@ -32305,7 +32710,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "46987-Gel Douche à la Mangue Simple Joys Love Nature",
@@ -32330,7 +32736,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "pageIndex": 110,
@@ -32475,7 +32882,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 10.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 13.9
         },
         {
           "pageIndex": 111,
@@ -32584,7 +32992,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "pageIndex": 112,
@@ -32627,7 +33036,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 112,
@@ -32754,7 +33164,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 31.9
         },
         {
           "desc": "46402-Peigne Double Embout Styler PRO",
@@ -32779,7 +33190,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 10.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 12.9
         },
         {
           "pageIndex": 113,
@@ -32888,7 +33300,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 41.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 52.9
         },
         {
           "desc": "44964-Sérum capillaire protecteur DUOLOGI",
@@ -32913,7 +33326,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "desc": "46622-Shampooing Définisseur de Boucles DUOLOGI",
@@ -32938,7 +33352,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 35.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 44.9
         },
         {
           "pageIndex": 114,
@@ -33083,7 +33498,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 31.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "44961-Après Shampoing Crémeux Léger DUOLOGI ",
@@ -33108,7 +33524,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 31.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 115,
@@ -33217,7 +33634,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 33.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "47262-Sérum Réparateur Nuit pour Cheveux Abîmés DUOLOGI",
@@ -33242,7 +33660,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 46.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 58.9
         },
         {
           "pageIndex": 116,
@@ -33387,7 +33806,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 41.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 52.9
         },
         {
           "desc": "44962-Shampoing Sec Oil Control DUOLOGI",
@@ -33412,7 +33832,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 35.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 44.9
         },
         {
           "desc": "46358-Brosse Thermique Ronde Styler PRO",
@@ -33437,7 +33858,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "pageIndex": 117,
@@ -33546,7 +33968,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "44951-Shampooing Anti Pelliculaire Purifiant DUOLOGI ",
@@ -33571,7 +33994,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 31.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 118,
@@ -34845,7 +35269,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "desc": "49127-Dentifrice Optifresh Pro white  ",
@@ -34870,7 +35295,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "pageIndex": 119,
@@ -34979,7 +35405,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 12.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 15.9
         },
         {
           "pageIndex": 120,
@@ -35022,7 +35449,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 17.9
         },
         {
           "pageIndex": 120,
@@ -35131,7 +35559,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "pageIndex": 121,
@@ -35174,7 +35603,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 31.9
         },
         {
           "desc": "47429-Lime à Pied Expert en acier inoxydable",
@@ -35199,7 +35629,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 121,
@@ -35308,7 +35739,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 29.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "46631-Nettoyant pour Corps et Cheveux North For Men Subzero ",
@@ -35333,7 +35765,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "pageIndex": 122,
@@ -35376,7 +35809,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 122,
@@ -35503,7 +35937,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 20.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 123,
@@ -35612,7 +36047,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "48072-Lot de 3 Lames de Rasoir de Rechange",
@@ -35637,7 +36073,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 36.9
         },
         {
           "pageIndex": 124,
@@ -35782,7 +36219,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 44.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 44.9
         },
         {
           "desc": "47271-Gel après-rasage North for Men x Giordani Gold",
@@ -35807,7 +36245,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 24.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "46965-Nettoyant Intime Apaisant à l'Aloe Vera Feminelle",
@@ -35832,7 +36271,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "47009-Gel douche à l'Aloe Vera Naturel Simple Joys Love Nature ",
@@ -35857,7 +36297,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "44963-Masque pour les Cheveux DUOLOGI Intense Repair",
@@ -35882,7 +36323,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 42.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "40775-Nettoyant pour les Cheveux et le Corps des Enfants Love Nature Cheerful Apple",
@@ -35907,7 +36349,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 23.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 23.9
         },
         {
           "desc": "44956-Shampoing protecteur de couleur DUOLOGI",
@@ -35932,7 +36375,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 44.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 44.9
         },
         {
           "desc": "47889-Crème Rafraîchissante pour les Pieds Citron & Framboise Feet Up",
@@ -35957,7 +36401,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 24.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "47696-Spray Rafraîchissant pour les Pieds Citron & Framboise Feet Up",
@@ -35982,7 +36427,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "46981-Sérum Adoucissant pour les Pieds Feet Up Expert",
@@ -36007,7 +36453,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 32.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "47538-Savon Milk & Honey Gold Majestic Magnolia",
@@ -36032,7 +36479,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 13.9
         },
         {
           "desc": "47193-Gel Douche à la fraise naturelle Simple Joys Love Nature",
@@ -36057,7 +36505,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "46633-Déodorant à Bille North For Men Subzero ",
@@ -36082,7 +36531,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "desc": "46970-Crème de Douche Dorlotante Milk & Honey Gold ",
@@ -36107,7 +36557,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 32.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "pageIndex": 125,
@@ -36216,7 +36667,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 8.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "desc": "43929-Savon North for Men Ultimate Balance",
@@ -36241,7 +36693,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 10.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 13.9
         },
         {
           "desc": "41489-Savon Rafraîchissant Love Nature à l'Eau de Noix de Coco et au Melon",
@@ -36266,7 +36719,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 8.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "pageIndex": 126,
@@ -36411,7 +36865,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 18.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "46971-Savon crémeux Milk & Honey Gold",
@@ -36436,7 +36891,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 10.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 13.9
         },
         {
           "pageIndex": 127,
@@ -36563,7 +37019,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 46.9
         },
         {
           "pageIndex": 128,
@@ -36672,7 +37129,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 20.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 129,
@@ -36715,7 +37173,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 20.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 129,
@@ -36944,7 +37403,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 36.9
         },
         {
           "pageIndex": 131,
@@ -37053,7 +37513,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 36.9
         },
         {
           "pageIndex": 132,
@@ -37096,7 +37557,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 7.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "pageIndex": 132,
@@ -37205,7 +37667,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 133,
@@ -37350,7 +37813,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "46374-Crème anti-transpirante pour les pieds Feet Up Everyday",
@@ -37375,7 +37839,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "46373-Crème hydratante de nuit pour les pieds Feet Up Everyday",
@@ -37400,7 +37865,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 134,
@@ -37509,7 +37975,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 135,
@@ -37654,7 +38121,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "47452-Recharge de Gel Nettoyant Intime Rafraîchissant à l'Eau de Rose de Feminelle",
@@ -37679,7 +38147,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 136,
@@ -37806,7 +38275,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "pageIndex": 137,
@@ -37933,7 +38403,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "desc": "46989-Baume Multi-usages Tender Care à l'Extrait de Mandarine",
@@ -37958,7 +38429,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "desc": "49133-Baume Multi Usage Tender Care à l'Extrait de Pastèque Ruby Celebration",
@@ -37983,7 +38455,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "pageIndex": 138,
@@ -38092,7 +38565,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 139,
@@ -38237,7 +38711,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47761-Déodorant Parfumé anti-transpirant à bille Possess",
@@ -38262,7 +38737,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47762-Déodorant Parfumé anti-transpirant à bille Giordani Gold Mister Giordani ",
@@ -38287,7 +38763,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47760-Déodorant Parfumé anti-transpirant à bille Giordani Gold Woman",
@@ -38312,7 +38789,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47759-Déodorant Parfumé anti-transpirant à bille Giordani Gold Miss Giordani ",
@@ -38337,7 +38815,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "pageIndex": 140,
@@ -38566,7 +39045,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 7.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "desc": "41568-Huile Nourrissante pour les Cheveux à l'Huile de Noix de Coco Love Nature",
@@ -38591,7 +39071,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 24.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "41295-Après Shampooing pour Cheveux Secs à l'Extrait Naturel de Blé et de Noix de Coco Love Nature",
@@ -38616,7 +39097,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 14.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 22.9
         },
         {
           "pageIndex": 142,
@@ -38845,7 +39327,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "41671-Nettoyant en Profondeur pour le Visage Pure Skin",
@@ -38870,7 +39353,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "41673-Lotion Matifiante et Rafraîchissante pour le Visage Pure Skin",
@@ -38895,7 +39379,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 27.9
         },
         {
           "desc": "41675-Gommage Lissant pour le Visage Pure Skin",
@@ -38920,7 +39405,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 15.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 144,
@@ -39149,7 +39635,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 75.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "desc": "23378-Écran Sun Zone IP 50 Élevé - Protection UV Spéciale pour le Visage et les Zones Exposées",
@@ -39174,7 +39661,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 52.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 146,
@@ -39283,7 +39771,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 23.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "popupMediaGallery": {
@@ -40618,7 +41107,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "desc": "49127-Dentifrice Optifresh Pro white  ",
@@ -40643,7 +41133,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 20.9
         },
         {
           "pageIndex": 119,
@@ -40752,7 +41243,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 12.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 15.9
         },
         {
           "pageIndex": 120,
@@ -40795,7 +41287,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 17.9
         },
         {
           "pageIndex": 120,
@@ -40904,7 +41397,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "pageIndex": 121,
@@ -40947,7 +41441,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 31.9
         },
         {
           "desc": "47429-Lime à Pied Expert en acier inoxydable",
@@ -40972,7 +41467,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 121,
@@ -41081,7 +41577,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 29.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "46631-Nettoyant pour Corps et Cheveux North For Men Subzero ",
@@ -41106,7 +41603,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "pageIndex": 122,
@@ -41149,7 +41647,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 122,
@@ -41276,7 +41775,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 20.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 123,
@@ -41385,7 +41885,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "48072-Lot de 3 Lames de Rasoir de Rechange",
@@ -41410,7 +41911,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 36.9
         },
         {
           "pageIndex": 124,
@@ -41555,7 +42057,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 44.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 44.9
         },
         {
           "desc": "47271-Gel après-rasage North for Men x Giordani Gold",
@@ -41580,7 +42083,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 24.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "46965-Nettoyant Intime Apaisant à l'Aloe Vera Feminelle",
@@ -41605,7 +42109,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 39.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "47009-Gel douche à l'Aloe Vera Naturel Simple Joys Love Nature ",
@@ -41630,7 +42135,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "44963-Masque pour les Cheveux DUOLOGI Intense Repair",
@@ -41655,7 +42161,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 42.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "desc": "40775-Nettoyant pour les Cheveux et le Corps des Enfants Love Nature Cheerful Apple",
@@ -41680,7 +42187,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 23.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 23.9
         },
         {
           "desc": "44956-Shampoing protecteur de couleur DUOLOGI",
@@ -41705,7 +42213,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 44.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 44.9
         },
         {
           "desc": "47889-Crème Rafraîchissante pour les Pieds Citron & Framboise Feet Up",
@@ -41730,7 +42239,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 24.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "47696-Spray Rafraîchissant pour les Pieds Citron & Framboise Feet Up",
@@ -41755,7 +42265,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 34.9
         },
         {
           "desc": "46981-Sérum Adoucissant pour les Pieds Feet Up Expert",
@@ -41780,7 +42291,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 32.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "47538-Savon Milk & Honey Gold Majestic Magnolia",
@@ -41805,7 +42317,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 13.9
         },
         {
           "desc": "47193-Gel Douche à la fraise naturelle Simple Joys Love Nature",
@@ -41830,7 +42343,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "46633-Déodorant à Bille North For Men Subzero ",
@@ -41855,7 +42369,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 19.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "desc": "46970-Crème de Douche Dorlotante Milk & Honey Gold ",
@@ -41880,7 +42395,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 32.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "pageIndex": 125,
@@ -41989,7 +42505,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 8.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "desc": "43929-Savon North for Men Ultimate Balance",
@@ -42014,7 +42531,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 10.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 13.9
         },
         {
           "desc": "41489-Savon Rafraîchissant Love Nature à l'Eau de Noix de Coco et au Melon",
@@ -42039,7 +42557,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 8.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "pageIndex": 126,
@@ -42184,7 +42703,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 18.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "46971-Savon crémeux Milk & Honey Gold",
@@ -42209,7 +42729,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 10.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 13.9
         },
         {
           "pageIndex": 127,
@@ -42336,7 +42857,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 46.9
         },
         {
           "pageIndex": 128,
@@ -42445,7 +42967,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 20.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 129,
@@ -42488,7 +43011,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 20.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 129,
@@ -42717,7 +43241,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 36.9
         },
         {
           "pageIndex": 131,
@@ -42826,7 +43351,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 36.9
         },
         {
           "pageIndex": 132,
@@ -42869,7 +43395,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 7.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "pageIndex": 132,
@@ -42978,7 +43505,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 34.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 49.9
         },
         {
           "pageIndex": 133,
@@ -43123,7 +43651,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "46374-Crème anti-transpirante pour les pieds Feet Up Everyday",
@@ -43148,7 +43677,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "desc": "46373-Crème hydratante de nuit pour les pieds Feet Up Everyday",
@@ -43173,7 +43703,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 134,
@@ -43282,7 +43813,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 135,
@@ -43427,7 +43959,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 27.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "desc": "47452-Recharge de Gel Nettoyant Intime Rafraîchissant à l'Eau de Rose de Feminelle",
@@ -43452,7 +43985,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 29.9
         },
         {
           "pageIndex": 136,
@@ -43579,7 +44113,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "pageIndex": 137,
@@ -43706,7 +44241,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "desc": "46989-Baume Multi-usages Tender Care à l'Extrait de Mandarine",
@@ -43731,7 +44267,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "desc": "49133-Baume Multi Usage Tender Care à l'Extrait de Pastèque Ruby Celebration",
@@ -43756,7 +44293,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 16.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 19.9
         },
         {
           "pageIndex": 138,
@@ -43865,7 +44403,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 25.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 39.9
         },
         {
           "pageIndex": 139,
@@ -44010,7 +44549,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47761-Déodorant Parfumé anti-transpirant à bille Possess",
@@ -44035,7 +44575,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47762-Déodorant Parfumé anti-transpirant à bille Giordani Gold Mister Giordani ",
@@ -44060,7 +44601,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47760-Déodorant Parfumé anti-transpirant à bille Giordani Gold Woman",
@@ -44085,7 +44627,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "desc": "47759-Déodorant Parfumé anti-transpirant à bille Giordani Gold Miss Giordani ",
@@ -44110,7 +44653,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 13.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 21.9
         },
         {
           "pageIndex": 140,
@@ -44339,7 +44883,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 7.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 11.9
         },
         {
           "desc": "41568-Huile Nourrissante pour les Cheveux à l'Huile de Noix de Coco Love Nature",
@@ -44364,7 +44909,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 24.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 37.9
         },
         {
           "desc": "41295-Après Shampooing pour Cheveux Secs à l'Extrait Naturel de Blé et de Noix de Coco Love Nature",
@@ -44389,7 +44935,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 14.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 22.9
         },
         {
           "pageIndex": 142,
@@ -44618,7 +45165,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "41671-Nettoyant en Profondeur pour le Visage Pure Skin",
@@ -44643,7 +45191,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 21.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 32.9
         },
         {
           "desc": "41673-Lotion Matifiante et Rafraîchissante pour le Visage Pure Skin",
@@ -44668,7 +45217,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 17.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 27.9
         },
         {
           "desc": "41675-Gommage Lissant pour le Visage Pure Skin",
@@ -44693,7 +45243,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 15.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 24.9
         },
         {
           "pageIndex": 144,
@@ -44922,7 +45473,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 75.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 129.9
         },
         {
           "desc": "23378-Écran Sun Zone IP 50 Élevé - Protection UV Spéciale pour le Visage et les Zones Exposées",
@@ -44947,7 +45499,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 52.9,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 89.9
         },
         {
           "pageIndex": 146,
@@ -45056,7 +45609,8 @@
           "packagesize": 1,
           "customsizeunit": null,
           "price": 23.5,
-          "category": "Automatic"
+          "category": "Automatic",
+          "original_price": 42.9
         },
         {
           "popupMediaGallery": {
