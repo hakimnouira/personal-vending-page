@@ -224,27 +224,50 @@ export async function scrapeAllOriflameCategories() {
                     }).filter(v => v.product_id);
                   }
 
+                  const existingItem = allScrapedMap.get(prodId) || currentMap.get(prodId);
+                  
+                  // Compute lowest selling price and highest un-discounted regular price
+                  const candidatePrices = [
+                    currentPrice,
+                    existingItem ? Number(existingItem.price) : null,
+                    existingItem ? Number(existingItem.original_catalog_price) : null
+                  ].filter(p => typeof p === 'number' && p > 0);
+
+                  const candidateOriginalPrices = [
+                    basicPrice,
+                    isPromo ? basicPrice : null,
+                    existingItem ? Number(existingItem.original_price) : null
+                  ].filter(p => typeof p === 'number' && p > 0);
+
+                  let finalSellingPrice = candidatePrices.length > 0 ? Math.min(...candidatePrices) : currentPrice;
+                  let finalOriginalPrice = candidateOriginalPrices.length > 0 ? Math.max(...candidateOriginalPrices) : (basicPrice > currentPrice ? basicPrice : null);
+                  if (finalOriginalPrice && finalOriginalPrice < finalSellingPrice) {
+                    finalOriginalPrice = finalSellingPrice;
+                  }
+                  const finalIsPromo = Boolean(finalOriginalPrice && finalOriginalPrice > finalSellingPrice);
+                  const finalDiscount = finalIsPromo ? Math.round(((finalOriginalPrice - finalSellingPrice) / finalOriginalPrice) * 100) : 0;
+
                   allScrapedMap.set(prodId, {
                     product_id: prodId,
                     name: name,
                     name_fr: name,
                     category: classifyCategory(name) || item.cat,
-                    price: currentPrice,
-                    original_price: isPromo ? basicPrice : null,
-                    original_catalog_price: currentPrice,
+                    price: finalSellingPrice,
+                    original_price: finalOriginalPrice,
+                    original_catalog_price: finalSellingPrice,
                     company_discount_applied: false,
                     company_discount_percent: 0,
-                    is_promo: isPromo,
-                    discount_percent: discount,
+                    is_promo: finalIsPromo,
+                    discount_percent: finalDiscount,
                     size: inferSizeFromName(name),
                     suitable_for: "Tous types de peaux • Testé sous contrôle dermatologique",
                     image_url: mainImg,
                     images: galleryImgs,
                     variants: (variants && variants.length > 1) ? variants : undefined,
-                    description: p.description || `Produit officiel Oriflame Tunisie (${prodId}). Formule scandinave haute performance.`,
+                    description: p.description || existingItem?.description || `Produit officiel Oriflame Tunisie (${prodId}). Formule scandinave haute performance.`,
                     benefits: [
                       "100% Produit authentique Oriflame Suède",
-                      discount > 0 ? `Offre promotionnelle exclusive : -${discount}% de réduction` : "Formule haute concentration",
+                      finalDiscount > 0 ? `Offre promotionnelle exclusive : -${finalDiscount}% de réduction` : "Formule haute concentration",
                       "Disponible pour livraison immédiate partout en Tunisie"
                     ],
                     how_to_use: "Appliquer délicatement sur une peau propre selon la routine recommandée.",
@@ -495,11 +518,30 @@ export async function scrapeProductFromUrl(url) {
       } catch (e) {}
     }
 
-    if (!originalPrice) {
-      const priceText = $('.price, [data-testid="price"], .product-price').first().text();
-      const parsedP = parsePrice(priceText);
-      if (parsedP > 0) price = parsedP;
-      originalPrice = calculateEstimatedOriginalPrice(price);
+    // Extract dual prices (selling price vs Prix normal) from HTML text
+    const normalMatch = html.match(/Prix\s*(?:normal|régulier|initial|standard)\s*[:：]?\s*([0-9]+[.,][0-9]{2})\s*DT/i) ||
+                        html.match(/السعر\s*(?:العادي|الأصلي|الأساسي)\s*[:：]?\s*([0-9]+[.,][0-9]{2})\s*DT/i);
+    if (normalMatch) {
+      originalPrice = parseFloat(normalMatch[1].replace(',', '.'));
+    }
+
+    const allPrices = Array.from(html.matchAll(/([0-9]+[.,][0-9]{2})\s*DT/gi))
+      .map(m => parseFloat(m[1].replace(',', '.')))
+      .filter(p => p > 5 && p < 1000);
+
+    if (allPrices.length > 0) {
+      if (originalPrice) {
+        const lowerPrices = allPrices.filter(p => p < originalPrice);
+        if (lowerPrices.length > 0) {
+          price = lowerPrices[0];
+        }
+      } else {
+        price = allPrices[0];
+        if (allPrices.length > 1) {
+          const maxP = Math.max(...allPrices);
+          if (maxP > price) originalPrice = maxP;
+        }
+      }
     }
 
     if (inStock) {
