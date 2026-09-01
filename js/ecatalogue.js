@@ -383,7 +383,7 @@ export class ECatalogueViewer {
           ` : ''}
 
           <div class="ecat-cover-badge">
-            <span>✨ CATALOGUE OFFICIEL EN COURS (08 2026)</span>
+            <span>✨ CATALOGUE OFFICIEL EN COURS</span>
           </div>
 
           <!-- Cover Hotspots -->
