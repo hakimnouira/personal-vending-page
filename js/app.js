@@ -254,7 +254,9 @@ class App {
       try { localStorage.removeItem('oriflame_discount_overrides_v1'); } catch (e) {}
       this.products = prods;
       try { localStorage.setItem('oriflame_products_v1', JSON.stringify(this.products)); } catch (e) {}
-      this.populateCategoryList();
+      if (typeof this.populateCategoryList === 'function') {
+        this.populateCategoryList();
+      }
     }
   }
 
