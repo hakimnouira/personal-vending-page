@@ -116,14 +116,16 @@ export async function scrapeFlipbookFromUrl(inputUrl = '') {
         if (!hotspotsByPage[pIdx]) hotspotsByPage[pIdx] = [];
 
         let rawName = e.name || e.desc || e.alttext || '';
-        let prodId = e.productId || '';
+        let rawProdId = String(e.productId || '').trim();
         let cleanName = rawName;
 
         const m = rawName.match(/^([0-9]{4,6})[\s-]+(.+)$/);
         if (m) {
-          if (!prodId) prodId = m[1];
           cleanName = m[2].trim();
         }
+
+        const numMatch = rawProdId.match(/^([0-9]{4,6})/);
+        const prodId = numMatch ? numMatch[1] : (m ? m[1] : rawProdId.replace(/\+.*$/, '').trim());
 
         const inStock = !(
           rawName.includes('متوفر قريباً') ||

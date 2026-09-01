@@ -53,81 +53,92 @@ export async function saveProducts(products) {
       await client.query('DELETE FROM products');
     }
 
-    const insertSql = `
-      INSERT INTO products (
-        product_id, name, name_fr, name_ar, name_en, category,
-        price, original_price, original_catalog_price,
-        company_discount_applied, company_discount_percent,
-        is_promo, discount_percent, size, suitable_for,
-        in_stock, description, description_fr, description_ar, description_en,
-        benefits, ingredients, how_to_use, image_url, images, variants
-      ) VALUES (
-        $1, $2, $3, $4, $5, $6,
-        $7, $8, $9,
-        $10, $11,
-        $12, $13, $14, $15,
-        $16, $17, $18, $19, $20,
-        $21, $22, $23, $24, $25, $26
-      )
-      ON CONFLICT (product_id) DO UPDATE SET
-        name = EXCLUDED.name,
-        name_fr = EXCLUDED.name_fr,
-        name_ar = EXCLUDED.name_ar,
-        name_en = EXCLUDED.name_en,
-        category = EXCLUDED.category,
-        price = EXCLUDED.price,
-        original_price = EXCLUDED.original_price,
-        original_catalog_price = EXCLUDED.original_catalog_price,
-        company_discount_applied = EXCLUDED.company_discount_applied,
-        company_discount_percent = EXCLUDED.company_discount_percent,
-        is_promo = EXCLUDED.is_promo,
-        discount_percent = EXCLUDED.discount_percent,
-        size = EXCLUDED.size,
-        suitable_for = EXCLUDED.suitable_for,
-        in_stock = EXCLUDED.in_stock,
-        description = EXCLUDED.description,
-        description_fr = EXCLUDED.description_fr,
-        description_ar = EXCLUDED.description_ar,
-        description_en = EXCLUDED.description_en,
-        benefits = EXCLUDED.benefits,
-        ingredients = EXCLUDED.ingredients,
-        how_to_use = EXCLUDED.how_to_use,
-        image_url = EXCLUDED.image_url,
-        images = EXCLUDED.images,
-        variants = EXCLUDED.variants;
-    `;
+    if (products.length > 0) {
+      const BATCH_SIZE = 50;
+      for (let i = 0; i < products.length; i += BATCH_SIZE) {
+        const batch = products.slice(i, i + BATCH_SIZE);
+        const valuePlaceholders = [];
+        const values = [];
+        let paramIndex = 1;
 
-    for (const p of products) {
-      const values = [
-        String(p.product_id),
-        p.name || `Produit ${p.product_id}`,
-        p.name_fr || p.name || '',
-        p.name_ar || '',
-        p.name_en || '',
-        p.category || 'Général',
-        p.price != null ? Number(p.price) : 0,
-        p.original_price != null ? Number(p.original_price) : null,
-        p.original_catalog_price != null ? Number(p.original_catalog_price) : null,
-        Boolean(p.company_discount_applied),
-        p.company_discount_percent != null ? Number(p.company_discount_percent) : 0,
-        Boolean(p.is_promo),
-        p.discount_percent != null ? Number(p.discount_percent) : 0,
-        p.size || '',
-        p.suitable_for || '',
-        p.in_stock !== false,
-        p.description || '',
-        p.description_fr || p.description || '',
-        p.description_ar || '',
-        p.description_en || '',
-        JSON.stringify(Array.isArray(p.benefits) ? p.benefits : []),
-        p.ingredients || '',
-        p.how_to_use || '',
-        p.image_url || '',
-        JSON.stringify(Array.isArray(p.images) ? p.images : (p.image_url ? [p.image_url] : [])),
-        JSON.stringify(Array.isArray(p.variants) ? p.variants : [])
-      ];
-      await client.query(insertSql, values);
+        for (const p of batch) {
+          const rowParams = [];
+          for (let c = 0; c < 26; c++) {
+            rowParams.push(`$${paramIndex++}`);
+          }
+          valuePlaceholders.push(`(${rowParams.join(', ')})`);
+
+          values.push(
+            String(p.product_id),
+            p.name || `Produit ${p.product_id}`,
+            p.name_fr || p.name || '',
+            p.name_ar || '',
+            p.name_en || '',
+            p.category || 'Général',
+            p.price != null ? Number(p.price) : 0,
+            p.original_price != null ? Number(p.original_price) : null,
+            p.original_catalog_price != null ? Number(p.original_catalog_price) : null,
+            Boolean(p.company_discount_applied),
+            p.company_discount_percent != null ? Number(p.company_discount_percent) : 0,
+            Boolean(p.is_promo),
+            p.discount_percent != null ? Number(p.discount_percent) : 0,
+            p.size || '',
+            p.suitable_for || '',
+            p.in_stock !== false,
+            p.description || '',
+            p.description_fr || p.description || '',
+            p.description_ar || '',
+            p.description_en || '',
+            JSON.stringify(Array.isArray(p.benefits) ? p.benefits : []),
+            p.ingredients || '',
+            p.how_to_use || '',
+            p.image_url || '',
+            JSON.stringify(Array.isArray(p.images) ? p.images : (p.image_url ? [p.image_url] : [])),
+            JSON.stringify(Array.isArray(p.variants) ? p.variants : [])
+          );
+        }
+
+        const batchSql = `
+          INSERT INTO products (
+            product_id, name, name_fr, name_ar, name_en, category,
+            price, original_price, original_catalog_price,
+            company_discount_applied, company_discount_percent,
+            is_promo, discount_percent, size, suitable_for,
+            in_stock, description, description_fr, description_ar, description_en,
+            benefits, ingredients, how_to_use, image_url, images, variants
+          ) VALUES ${valuePlaceholders.join(', ')}
+          ON CONFLICT (product_id) DO UPDATE SET
+            name = EXCLUDED.name,
+            name_fr = EXCLUDED.name_fr,
+            name_ar = EXCLUDED.name_ar,
+            name_en = EXCLUDED.name_en,
+            category = EXCLUDED.category,
+            price = EXCLUDED.price,
+            original_price = EXCLUDED.original_price,
+            original_catalog_price = EXCLUDED.original_catalog_price,
+            company_discount_applied = EXCLUDED.company_discount_applied,
+            company_discount_percent = EXCLUDED.company_discount_percent,
+            is_promo = EXCLUDED.is_promo,
+            discount_percent = EXCLUDED.discount_percent,
+            size = EXCLUDED.size,
+            suitable_for = EXCLUDED.suitable_for,
+            in_stock = EXCLUDED.in_stock,
+            description = EXCLUDED.description,
+            description_fr = EXCLUDED.description_fr,
+            description_ar = EXCLUDED.description_ar,
+            description_en = EXCLUDED.description_en,
+            benefits = EXCLUDED.benefits,
+            ingredients = EXCLUDED.ingredients,
+            how_to_use = EXCLUDED.how_to_use,
+            image_url = EXCLUDED.image_url,
+            images = EXCLUDED.images,
+            variants = EXCLUDED.variants;
+        `;
+
+        await client.query(batchSql, values);
+      }
     }
+
     await client.query('COMMIT');
     return true;
   } catch (err) {

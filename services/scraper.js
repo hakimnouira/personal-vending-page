@@ -36,14 +36,16 @@ export async function scrapeAllOriflameCategories() {
         list.forEach(e => {
           if (e.type === 13) {
             let rawName = e.name || e.desc || e.alttext || '';
-            let prodId = e.productId || '';
+            let rawProdId = String(e.productId || '').trim();
             let cleanName = rawName;
 
             const match = rawName.match(/^([0-9]{4,6})[\s-]+(.+)$/);
             if (match) {
-              if (!prodId) prodId = match[1];
               cleanName = match[2].trim();
             }
+
+            const numMatch = rawProdId.match(/^([0-9]{4,6})/);
+            const prodId = numMatch ? numMatch[1] : (match ? match[1] : rawProdId.replace(/\+.*$/, '').trim());
 
             if (prodId && cleanName) {
               const cat = classifyCategory(cleanName);

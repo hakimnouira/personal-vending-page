@@ -144,6 +144,18 @@ class App {
     return val || 'Mounanouira.Oriflame';
   }
 
+  getSwatchStyle(val, fallback = '#DE7B90') {
+    if (!val) return `background-color: ${fallback};`;
+    const s = String(val).trim();
+    if (s.startsWith('http://') || s.startsWith('https://') || s.startsWith('/')) {
+      return `background-image: url('${s}'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: ${fallback};`;
+    }
+    if (s.startsWith('#') || s.startsWith('rgb') || s.startsWith('hsl')) {
+      return `background-color: ${s};`;
+    }
+    return `background-color: ${s};`;
+  }
+
   applyDiscountOverrides(productsList) {
     if (!Array.isArray(productsList) || productsList.length === 0) return productsList;
     try {
@@ -1244,7 +1256,7 @@ class App {
                   ${p.variants.map((v, vIdx) => `
                     <button type="button" 
                       class="shade-swatch-btn ${String(v.product_id) === String(initialVariant.product_id) ? 'active' : ''}" 
-                      style="background-color: ${v.hex_color || '#DE7B90'};" 
+                      style="${this.getSwatchStyle(v.hex_color)}" 
                       title="${v.shade_name || v.product_id} (Réf. ${v.product_id})"
                       onclick="window.app.selectCardVariant('${p.product_id}', '${v.product_id}', this)">
                     </button>
@@ -1504,7 +1516,7 @@ class App {
           <div class="cart-item-title">${item.name}</div>
           ${item.shade_name ? `
             <div class="cart-item-shade-tag">
-              <span class="cart-item-shade-dot" style="background:${item.hex_color || '#DE7B90'}"></span>
+              <span class="cart-item-shade-dot" style="${this.getSwatchStyle(item.hex_color)}"></span>
               <span>${isArabic ? 'الدرجة' : 'Nuance'} : <strong>${item.shade_name}</strong> (Réf. ${item.product_id})</span>
             </div>
           ` : `
@@ -1834,7 +1846,7 @@ class App {
                 ${product.variants.map((v, vIdx) => `
                   <button type="button" 
                     class="quickview-shade-swatch ${String(v.product_id) === String(activeVariant.product_id) ? 'active' : ''}" 
-                    style="background-color: ${v.hex_color || '#DE7B90'};" 
+                    style="${this.getSwatchStyle(v.hex_color)}" 
                     title="${v.shade_name || v.product_id} (Réf. ${v.product_id})"
                     onclick="window.app.selectQuickViewVariant('${product.product_id}', '${v.product_id}', this)">
                   </button>

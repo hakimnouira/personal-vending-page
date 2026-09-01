@@ -209,16 +209,23 @@ export class ECatalogueViewer {
     results.forEach(res => {
       const h = res.hotspot;
       const targetPage = h.pageNumber || res.spreadPages[0] || 1;
-      const existing = this.app.products.find(p => String(p.product_id) === String(h.id));
-      const thumb = h.image_url || existing?.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${h.id}%2f${h.id}_1.png&MediaId=20989035&Version=1`;
+      const cleanHotspotId = String(h.id || '').replace(/\+.*$/, '').trim();
+      const existing = this.app.products.find(p => 
+        String(p.product_id) === cleanHotspotId || 
+        (Array.isArray(p.variants) && p.variants.some(v => String(v.product_id) === cleanHotspotId))
+      );
+      const matchingVariant = existing && Array.isArray(existing.variants)
+        ? existing.variants.find(v => String(v.product_id) === cleanHotspotId)
+        : null;
+      const thumb = h.image_url || matchingVariant?.image_url || existing?.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${cleanHotspotId}%2f${cleanHotspotId}_1.png&MediaId=20989035&Version=1`;
 
       html += `
-        <div class="ecat-search-item" data-spread="${res.spreadIndex}" data-hotspot="${res.hotspotIndex}" data-id="${h.id}">
+        <div class="ecat-search-item" data-spread="${res.spreadIndex}" data-hotspot="${res.hotspotIndex}" data-id="${cleanHotspotId}">
           <img src="${thumb}" alt="${h.name}" class="ecat-search-item-thumb" onerror="window.handleProductImgError(this)" />
           <div class="ecat-search-item-info">
             <div class="ecat-search-item-name" title="${h.name}">${h.name}</div>
             <div class="ecat-search-item-meta">
-              <span class="ecat-search-item-ref">#${h.id}</span>
+              <span class="ecat-search-item-ref">#${cleanHotspotId}</span>
               <span class="ecat-search-item-price">${Number(h.price).toFixed(3).replace(/\.?0+$/, '')} ${currencyLabel}</span>
             </div>
           </div>
@@ -429,31 +436,42 @@ export class ECatalogueViewer {
     if (!spread || !spread.hotspots || !spread.hotspots[hotspotIdx]) return;
     const h = spread.hotspots[hotspotIdx];
 
-    const prodId = String(h.id);
-    const existing = this.app.products.find(p => String(p.product_id) === prodId);
+    const prodId = String(h.id || '').replace(/\+.*$/, '').trim();
 
-    // Official Oriflame Tunisia HD Product Packshot CDN URL
-    const officialOriflamePhoto = h.image_url || existing?.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
+    // Check if prodId is an existing product or a variant of an existing concept product
+    const existing = this.app.products.find(p => 
+      String(p.product_id) === prodId || 
+      (Array.isArray(p.variants) && p.variants.some(v => String(v.product_id) === prodId))
+    );
+
+    if (existing) {
+      // If product has variants, open Quick View with the clicked variant pre-selected!
+      this.app.openQuickView(existing.product_id, null, prodId);
+      return;
+    }
+
+    // Official Oriflame Tunisia HD Product Packshot CDN URL fallback
+    const officialOriflamePhoto = h.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
 
     const targetProduct = {
       product_id: prodId,
       name: h.name,
       price: Number(h.price),
-      original_price: h.original_price || (existing ? existing.original_price : null),
-      is_promo: Boolean((h.original_price && h.original_price > h.price) || existing?.is_promo),
-      discount_percent: h.original_price ? Math.round(((h.original_price - h.price) / h.original_price) * 100) : (existing?.discount_percent || 0),
-      category: h.category || existing?.category || 'Catalogue Oriflame',
-      size: h.size || existing?.size || 'Format Officiel',
-      suitable_for: existing?.suitable_for || 'Tous types de peaux • Produit certifié Oriflame Suède',
-      description: h.description || existing?.description || `Article officiel Oriflame (${prodId}).`,
+      original_price: h.original_price || null,
+      is_promo: Boolean(h.original_price && h.original_price > h.price),
+      discount_percent: h.original_price ? Math.round(((h.original_price - h.price) / h.original_price) * 100) : 0,
+      category: h.category || 'Catalogue Oriflame',
+      size: h.size || 'Format Officiel',
+      suitable_for: 'Tous types de peaux • Produit certifié Oriflame Suède',
+      description: h.description || `Article officiel Oriflame (${prodId}).`,
       image_url: officialOriflamePhoto,
-      benefits: existing?.benefits || [
+      benefits: [
         "100% Produit authentique certifié par Mouna Nouira",
         "Formule haute qualité issue du catalogue officiel Oriflame Tunisie",
         "Disponible pour commande immédiate via Facebook Messenger"
       ],
-      how_to_use: existing?.how_to_use || "Appliquer sur une peau propre selon les recommandations de la gamme.",
-      ingredients: existing?.ingredients || "Extraits botaniques suédois et principes actifs certifiés Oriflame.",
+      how_to_use: "Appliquer sur une peau propre selon les recommandations de la gamme.",
+      ingredients: "Extraits botaniques suédois et principes actifs certifiés Oriflame.",
       in_stock: h.in_stock !== false
     };
 
