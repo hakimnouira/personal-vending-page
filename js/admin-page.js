@@ -3401,8 +3401,8 @@ class AdminDashboard {
                 <div style="font-size: 0.76rem; color: #94A3B8;">Réf: ${deal.product_id}</div>
                 ${deal.product_price ? `
                   <div style="font-size: 0.8rem; display: flex; gap: 6px; align-items: center; margin-top: 2px;">
-                    <span style="text-decoration: line-through; color: #94A3B8;">Prix initial : ${Number(deal.product_price).toFixed(3)} TND</span>
-                    ${discountedPrice ? `<span style="font-weight: 800; color: #047857;">${discountedPrice} TND</span>` : ''}
+                    <span style="text-decoration: line-through; color: #94A3B8;">${(this.i18n && this.i18n.getLang() === 'ar') ? 'السعر العادي' : 'Prix initial'} : ${Number(deal.product_price).toFixed(3)} ${(this.i18n && this.i18n.getLang() === 'ar') ? 'د.ت' : 'TND'}</span>
+                    ${discountedPrice ? `<span style="font-weight: 800; color: #047857;">${discountedPrice} ${(this.i18n && this.i18n.getLang() === 'ar') ? 'د.ت' : 'TND'}</span>` : ''}
                     <span style="background: #FEE2E2; color: #DC2626; padding: 1px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 800;">-${discount}%</span>
                   </div>
                 ` : ''}
@@ -3495,8 +3495,11 @@ class AdminDashboard {
       const badgeEl = document.getElementById('deal-product-preview-badge');
 
       if (basePrice > 0) {
+        const isAr = this.i18n ? this.i18n.getLang() === 'ar' : false;
+        const initialLabel = isAr ? 'السعر العادي' : 'Prix initial';
+        const currLabel = isAr ? 'د.ت' : 'TND';
         if (origEl) {
-          origEl.textContent = `Prix initial : ${basePrice.toFixed(3)} TND`;
+          origEl.textContent = `${initialLabel} : ${basePrice.toFixed(3)} ${currLabel}`;
           origEl.style.display = 'inline';
         }
         if (priceEl) {
@@ -3611,11 +3614,14 @@ class AdminDashboard {
     if (!select) return;
     const products = Array.isArray(this.products) ? this.products : [];
     const currentVal = select.value || '';
+    const isAr = this.i18n ? this.i18n.getLang() === 'ar' : false;
+    const initialLabel = isAr ? 'السعر العادي' : 'Prix initial';
+    const currLabel = isAr ? 'د.ت' : 'TND';
     const options = [`<option value="">-- Choisir un produit du catalogue (${products.length} disponibles) --</option>`];
     products.forEach(p => {
-      const name = p.name_fr || p.name || p.product_id;
+      const name = (isAr && p.name_ar) ? p.name_ar : (p.name_fr || p.name || p.product_id);
       const basePrice = Math.max(Number(p.original_price || 0), Number(p.original_catalog_price || 0), Number(p.price || 0));
-      const priceStr = basePrice > 0 ? ` — ${basePrice.toFixed(3)} TND (Prix initial)` : '';
+      const priceStr = basePrice > 0 ? ` — ${basePrice.toFixed(3)} ${currLabel} (${initialLabel})` : '';
       options.push(`<option value="${p.product_id}">[${p.product_id}] ${name}${priceStr}</option>`);
     });
     select.innerHTML = options.join('');
@@ -3697,8 +3703,11 @@ class AdminDashboard {
       if (refEl) refEl.textContent = `Réf: ${prodId}`;
 
       if (basePrice > 0) {
+        const isAr = this.i18n ? this.i18n.getLang() === 'ar' : false;
+        const initialLabel = isAr ? 'السعر العادي' : 'Prix initial';
+        const currLabel = isAr ? 'د.ت' : 'TND';
         if (origEl) {
-          origEl.textContent = `Prix initial : ${basePrice.toFixed(3)} TND`;
+          origEl.textContent = `${initialLabel} : ${basePrice.toFixed(3)} ${currLabel}`;
           origEl.style.display = 'inline';
         }
         if (priceEl) {
