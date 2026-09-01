@@ -238,7 +238,37 @@ export async function deleteOrderById(orderId) {
 }
 
 // ── DEALS ────────────────────────────────────────────────────────────────
+let dealsTableChecked = false;
+async function ensureDealsColumns() {
+  if (dealsTableChecked) return;
+  try {
+    await query(`
+      CREATE TABLE IF NOT EXISTS deals (
+        id TEXT PRIMARY KEY,
+        title_fr TEXT,
+        title_ar TEXT,
+        title_en TEXT,
+        description_fr TEXT,
+        threshold_amount NUMERIC(10, 2) DEFAULT 0,
+        product_id TEXT,
+        product_name TEXT,
+        product_image TEXT,
+        product_price NUMERIC(10, 2) DEFAULT 0,
+        discount_percent NUMERIC(5, 2) DEFAULT 0,
+        active BOOLEAN DEFAULT TRUE,
+        end_date TIMESTAMPTZ,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+      ALTER TABLE deals ADD COLUMN IF NOT EXISTS end_date TIMESTAMPTZ;
+    `);
+    dealsTableChecked = true;
+  } catch (err) {
+    console.error('ensureDealsColumns error:', err);
+  }
+}
+
 export async function getDeals() {
+  await ensureDealsColumns();
   try {
     const res = await query('SELECT * FROM deals ORDER BY created_at DESC');
     return res.rows.map(row => ({
@@ -254,6 +284,7 @@ export async function getDeals() {
       product_price: row.product_price != null ? Number(row.product_price) : 0,
       discount_percent: row.discount_percent != null ? Number(row.discount_percent) : 0,
       active: row.active !== false,
+      end_date: row.end_date ? new Date(row.end_date).toISOString() : null,
       created_at: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString()
     }));
   } catch (err) {
@@ -264,6 +295,7 @@ export async function getDeals() {
 
 export async function saveDeals(deals) {
   if (!Array.isArray(deals)) return false;
+  await ensureDealsColumns();
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -278,8 +310,8 @@ export async function saveDeals(deals) {
       INSERT INTO deals (
         id, title_fr, title_ar, title_en, description_fr,
         threshold_amount, product_id, product_name, product_image,
-        product_price, discount_percent, active, created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+        product_price, discount_percent, active, end_date, created_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       ON CONFLICT (id) DO UPDATE SET
         title_fr = EXCLUDED.title_fr,
         title_ar = EXCLUDED.title_ar,
@@ -292,6 +324,7 @@ export async function saveDeals(deals) {
         product_price = EXCLUDED.product_price,
         discount_percent = EXCLUDED.discount_percent,
         active = EXCLUDED.active,
+        end_date = EXCLUDED.end_date,
         created_at = EXCLUDED.created_at;
     `;
 
@@ -316,6 +349,7 @@ export async function saveDeals(deals) {
         parseSafeNum(d.product_price),
         parseSafeNum(d.discount_percent),
         d.active !== false,
+        d.end_date ? new Date(d.end_date) : null,
         d.created_at ? new Date(d.created_at) : new Date()
       ];
       await client.query(insertSql, values);

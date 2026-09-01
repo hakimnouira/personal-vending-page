@@ -1361,7 +1361,8 @@ app.post('/api/deals', requireAdmin, async (req, res) => {
       product_image,
       product_price,
       discount_percent,
-      active
+      active,
+      end_date
     } = req.body;
 
     if (!title_fr) return res.status(400).json({ success: false, message: 'Le titre (FR) est obligatoire.' });
@@ -1387,6 +1388,7 @@ app.post('/api/deals', requireAdmin, async (req, res) => {
       product_price: product_price ? parseFloat(Number(product_price).toFixed(3)) : null,
       discount_percent: parseFloat(Number(discount_percent).toFixed(2)),
       active: active !== false && active !== 'false',
+      end_date: end_date ? new Date(end_date).toISOString() : null,
       created_at: new Date().toISOString(),
     };
 
@@ -1415,7 +1417,8 @@ app.put('/api/deals/:id', requireAdmin, async (req, res) => {
       product_image,
       product_price,
       discount_percent,
-      active
+      active,
+      end_date
     } = req.body;
 
     if (title_fr !== undefined) deals[idx].title_fr = title_fr.trim();
@@ -1429,6 +1432,7 @@ app.put('/api/deals/:id', requireAdmin, async (req, res) => {
     if (product_price !== undefined) deals[idx].product_price = parseFloat(Number(product_price).toFixed(3));
     if (discount_percent !== undefined) deals[idx].discount_percent = parseFloat(Number(discount_percent).toFixed(2));
     if (active !== undefined) deals[idx].active = active !== false && active !== 'false';
+    if (end_date !== undefined) deals[idx].end_date = end_date ? new Date(end_date).toISOString() : null;
 
     await saveDeals(deals);
     res.json({ success: true, message: 'Deal mis à jour.', data: deals[idx] });

@@ -156,6 +156,42 @@ class App {
     return `background-color: ${s};`;
   }
 
+  formatDealTimeLeft(endDate, isArabic = false) {
+    if (!endDate) return null;
+    const expDate = new Date(endDate);
+    const msLeft = expDate.getTime() - Date.now();
+    if (msLeft <= 0) return null;
+    const days = Math.floor(msLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((msLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((msLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((msLeft % (1000 * 60)) / 1000);
+
+    if (days > 0) {
+      return isArabic 
+        ? `⏳ ينتهي خلال ${days} يوم و ${hours} ساعة` 
+        : `⏳ Expire dans ${days}j ${hours}h ${minutes}m`;
+    }
+    return isArabic 
+      ? `⏳ عرض محدود : ${hours} س ${minutes} د ${seconds} ث` 
+      : `⏳ Offre Flash : ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  tickDealCountdowns() {
+    const pills = document.querySelectorAll('.deal-countdown-pill[data-end-date]');
+    if (!pills || pills.length === 0) return;
+    const isArabic = this.i18n ? this.i18n.getLang() === 'ar' : false;
+    pills.forEach(pill => {
+      const end = pill.getAttribute('data-end-date');
+      const formatted = this.formatDealTimeLeft(end, isArabic);
+      if (formatted) {
+        pill.textContent = formatted;
+        pill.style.display = 'inline-flex';
+      } else {
+        pill.style.display = 'none';
+      }
+    });
+  }
+
   applyDiscountOverrides(productsList) {
     if (!Array.isArray(productsList) || productsList.length === 0) return productsList;
     try {
@@ -914,6 +950,9 @@ class App {
     } else {
       document.addEventListener('fb-sdk-ready', () => this._subscribeSendToMessenger());
     }
+
+    // Live Countdown Timer ticker every second for all deal badges
+    setInterval(() => this.tickDealCountdowns(), 1000);
   }
 
   _onFbSdkReady() {
@@ -1141,6 +1180,10 @@ class App {
       const prodName = this.getProductName(p);
       const { totalDiscount, displayOrigPrice } = this.calculateDiscountMetrics(p.price, p.original_price, p);
 
+      // Check if product has a time-limited deal in cartManager.deals
+      const matchingDeal = (this.cartManager?.deals || []).find(d => String(d.product_id) === String(p.product_id) && d.active !== false && d.end_date);
+      const dealTimeStr = matchingDeal ? this.formatDealTimeLeft(matchingDeal.end_date, isArabic) : null;
+
       return `
         <div class="mini-deal-card" onclick="window.app.openQuickView('${p.product_id}')" style="cursor:pointer;">
           <div class="mini-deal-img-wrap">
@@ -1148,6 +1191,7 @@ class App {
             <span class="promo-pill">-${totalDiscount || 25}%</span>
           </div>
           <h4 class="mini-deal-title">${prodName}</h4>
+          ${dealTimeStr ? `<div class="deal-countdown-pill" data-end-date="${matchingDeal.end_date}">${dealTimeStr}</div>` : ''}
           <div class="price-wrap">
             <span class="current-deal-price">${Number(p.price).toFixed(2)} ${currencyLabel}</span>
             ${displayOrigPrice ? `<span class="original-price-strike">${Number(displayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
@@ -1589,9 +1633,13 @@ class App {
           </div>
           ${appliedThresholdDeals.map(td => {
             const dTitle = (isArabic && td.deal.title_ar) ? td.deal.title_ar : (td.deal.title_fr || 'Deal Seuil');
+            const timeLeftStr = td.deal.end_date ? this.formatDealTimeLeft(td.deal.end_date, isArabic) : null;
             return `
               <div style="font-size: 0.8rem; color: #5B21B6; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; background: rgba(255,255,255,0.5); border-radius: 6px; padding: 5px 8px;">
-                <span>🏷️ <strong>${dTitle}</strong><br><span style="font-size:0.72rem;opacity:0.8;">-${td.deal.discount_percent}% sur ${td.deal.product_name || td.deal.product_id}</span></span>
+                <div>
+                  <span>🏷️ <strong>${dTitle}</strong><br><span style="font-size:0.72rem;opacity:0.8;">-${td.deal.discount_percent}% sur ${td.deal.product_name || td.deal.product_id}</span></span>
+                  ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${td.deal.end_date}" style="margin:2px 0 0; font-size:0.68rem; padding:1px 6px;">${timeLeftStr}</div>` : ''}
+                </div>
                 <span style="font-weight: 900; color: #047857; font-size: 0.88rem;">-${td.totalSavings.toFixed(2)} ${currencyLabel}</span>
               </div>
             `;
@@ -1607,6 +1655,7 @@ class App {
       const deal = s.deal;
       const dTitle = (isArabic && deal.title_ar) ? deal.title_ar : (deal.title_fr || 'Deal Seuil');
       const productName = deal.product_name || deal.product_id;
+      const timeLeftStr = deal.end_date ? this.formatDealTimeLeft(deal.end_date, isArabic) : null;
 
       if (s.thresholdMet && !s.productInCart) {
         // Threshold met, but deal product not in cart yet → strong CTA to add it
@@ -1620,6 +1669,7 @@ class App {
                 ? `لقد تجاوزت عتبة ${Number(deal.threshold_amount).toFixed(0)} د.ت ! أضف <strong>${productName}</strong> وستحصل على <strong>-${deal.discount_percent}%</strong> عليه فوراً !`
                 : `Vous avez commandé pour plus de ${Number(deal.threshold_amount).toFixed(0)} DT ! Ajoutez <strong>${productName}</strong> et bénéficiez de <strong>-${deal.discount_percent}%</strong> immédiatement !`)}
             </p>
+            ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${deal.end_date}" style="margin:0 0 8px;">${timeLeftStr}</div>` : ''}
             <button class="btn-primary" style="padding: 6px 12px; font-size: 0.78rem; background: #D97706; border-color: #B45309; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 6px;" onclick="window.app.addProductToCart('${deal.product_id}')">
               🎯 ${isArabic ? `إضافة ${productName} بخصم -${deal.discount_percent}%` : `Ajouter ${productName} avec -${deal.discount_percent}%`}
             </button>
@@ -1637,6 +1687,7 @@ class App {
                 ? `أضف ${Number(s.remaining).toFixed(2)} د.ت أخرى لتحصل على <strong>-${deal.discount_percent}%</strong> على <strong>${productName}</strong> !`
                 : `Ajoutez encore <strong>${Number(s.remaining).toFixed(2)} ${currencyLabel}</strong> pour débloquer <strong>-${deal.discount_percent}%</strong> sur <strong>${productName}</strong> !`}
             </p>
+            ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${deal.end_date}" style="margin:4px 0 0;">${timeLeftStr}</div>` : ''}
           </div>
         `;
       }

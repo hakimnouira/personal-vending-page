@@ -3336,6 +3336,28 @@ class AdminDashboard {
         ? (Number(deal.product_price) * (1 - Number(deal.discount_percent) / 100)).toFixed(3)
         : null;
 
+      let timeBadge = '';
+      if (deal.end_date) {
+        const expDate = new Date(deal.end_date);
+        const msLeft = expDate.getTime() - Date.now();
+        if (msLeft > 0) {
+          const days = Math.floor(msLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((msLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((msLeft % (1000 * 60 * 60)) / (1000 * 60));
+          timeBadge = `
+            <div style="background: #FDF4FF; border: 1px solid #F0ABFC; border-radius: 6px; padding: 4px 8px; margin-top: 6px; display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; color: #86198F; font-weight: 800;">
+              <span>⏳ Expire dans :</span>
+              <span style="color: #C026D3;">${days > 0 ? `${days}j ` : ''}${hours}h ${minutes}m</span>
+              <span style="opacity: 0.7; font-weight: 600;">(${expDate.toLocaleDateString('fr-FR')})</span>
+            </div>`;
+        } else {
+          timeBadge = `
+            <div style="background: #FEE2E2; border: 1px solid #FCA5A5; border-radius: 6px; padding: 4px 8px; margin-top: 6px; display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; color: #DC2626; font-weight: 800;">
+              <span>🔴 Offre Expirée (${expDate.toLocaleDateString('fr-FR')})</span>
+            </div>`;
+        }
+      }
+
       return `
         <div style="background: #FFFFFF; border-radius: 14px; border: 2px solid ${isActive ? '#DDD6FE' : '#E4E4E7'}; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s;">
           <!-- Deal Header -->
@@ -3379,11 +3401,12 @@ class AdminDashboard {
                 <div style="font-size: 0.76rem; color: #94A3B8;">Réf: ${deal.product_id}</div>
                 ${deal.product_price ? `
                   <div style="font-size: 0.8rem; display: flex; gap: 6px; align-items: center; margin-top: 2px;">
-                    <span style="text-decoration: line-through; color: #94A3B8;">${Number(deal.product_price).toFixed(3)} TND</span>
+                    <span style="text-decoration: line-through; color: #94A3B8;">Prix initial : ${Number(deal.product_price).toFixed(3)} TND</span>
                     ${discountedPrice ? `<span style="font-weight: 800; color: #047857;">${discountedPrice} TND</span>` : ''}
                     <span style="background: #FEE2E2; color: #DC2626; padding: 1px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 800;">-${discount}%</span>
                   </div>
                 ` : ''}
+                ${timeBadge}
               </div>
             </div>
           </div>
@@ -3591,8 +3614,8 @@ class AdminDashboard {
     const options = [`<option value="">-- Choisir un produit du catalogue (${products.length} disponibles) --</option>`];
     products.forEach(p => {
       const name = p.name_fr || p.name || p.product_id;
-      const basePrice = Number(p.original_catalog_price || p.original_price || p.price || 0);
-      const priceStr = basePrice > 0 ? ` — ${basePrice.toFixed(3)} TND (prix catalogue)` : '';
+      const basePrice = Math.max(Number(p.original_price || 0), Number(p.original_catalog_price || 0), Number(p.price || 0));
+      const priceStr = basePrice > 0 ? ` — ${basePrice.toFixed(3)} TND (Prix initial)` : '';
       options.push(`<option value="${p.product_id}">[${p.product_id}] ${name}${priceStr}</option>`);
     });
     select.innerHTML = options.join('');
@@ -3618,8 +3641,12 @@ class AdminDashboard {
       || (product.variants && product.variants[0] && product.variants[0].image_url)
       || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
     
-    // Always use the original catalog price without company discount
-    const basePrice = parseDec(product.original_catalog_price || product.original_price || product.price) || 0;
+    // Always use the true Prix Initial (highest un-discounted catalog price)
+    const basePrice = Math.max(
+      Number(product.original_price || 0),
+      Number(product.original_catalog_price || 0),
+      Number(product.price || 0)
+    );
 
     const idInput = document.getElementById('deal-product-id');
     const nameInput = document.getElementById('deal-product-name');
@@ -3694,6 +3721,32 @@ class AdminDashboard {
     }
   }
 
+  setDealDatePreset(preset) {
+    const input = document.getElementById('deal-end-date');
+    const preview = document.getElementById('deal-end-date-preview');
+    if (!input) return;
+    if (preset == null) {
+      input.value = '';
+      if (preview) preview.textContent = 'Offre sans limite de temps (permanente)';
+      return;
+    }
+    const now = new Date();
+    let targetDate = new Date();
+    if (preset === 'month') {
+      targetDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 0, 0);
+    } else if (typeof preset === 'number') {
+      targetDate = new Date(now.getTime() + preset * 24 * 60 * 60 * 1000);
+      targetDate.setHours(23, 59, 0, 0);
+    }
+    const tzOffset = targetDate.getTimezoneOffset() * 60000;
+    const localISOTime = (new Date(targetDate.getTime() - tzOffset)).toISOString().slice(0, 16);
+    input.value = localISOTime;
+    if (preview) {
+      const days = Math.ceil((targetDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+      preview.textContent = `Expire dans ~${days} jour${days > 1 ? 's' : ''} (${targetDate.toLocaleDateString('fr-FR')})`;
+    }
+  }
+
   async saveDeal() {
     const parseDec = (v) => {
       if (v == null || v === '') return null;
@@ -3711,6 +3764,10 @@ class AdminDashboard {
     let discount_percent = parseDec(document.getElementById('deal-discount')?.value);
     const final_price_val = parseDec(document.getElementById('deal-final-price')?.value);
     const active = document.getElementById('deal-active')?.checked !== false;
+
+    // Time condition expiration date
+    const end_date_val = document.getElementById('deal-end-date')?.value?.trim();
+    const end_date = end_date_val ? new Date(end_date_val).toISOString() : null;
 
     // Resolve product: hidden fields take priority, manual input as fallback
     let product_id = document.getElementById('deal-product-id')?.value?.trim()
@@ -3741,7 +3798,8 @@ class AdminDashboard {
       product_id, product_name, product_image,
       product_price: product_price != null ? Number(product_price) : null,
       discount_percent: Number(discount_percent),
-      active
+      active,
+      end_date
     };
 
     const btnSave = document.getElementById('btn-save-deal');
@@ -3790,6 +3848,27 @@ class AdminDashboard {
     document.getElementById('deal-discount').value = deal.discount_percent || '';
     document.getElementById('deal-active').checked = deal.active !== false;
 
+    // Expiration date
+    if (deal.end_date) {
+      const d = new Date(deal.end_date);
+      const tzOffset = d.getTimezoneOffset() * 60000;
+      const localISO = (new Date(d.getTime() - tzOffset)).toISOString().slice(0, 16);
+      document.getElementById('deal-end-date').value = localISO;
+      const diffDays = Math.ceil((d.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      const preview = document.getElementById('deal-end-date-preview');
+      if (preview) {
+        if (diffDays > 0) {
+          preview.textContent = `Expire dans ~${diffDays} jour${diffDays > 1 ? 's' : ''} (${d.toLocaleDateString('fr-FR')})`;
+        } else {
+          preview.textContent = `🔴 Offre Expirée le ${d.toLocaleDateString('fr-FR')}`;
+        }
+      }
+    } else {
+      document.getElementById('deal-end-date').value = '';
+      const preview = document.getElementById('deal-end-date-preview');
+      if (preview) preview.textContent = 'Offre sans limite de temps';
+    }
+
     // Restore hidden product fields
     document.getElementById('deal-product-id').value = deal.product_id || '';
     document.getElementById('deal-product-name').value = deal.product_name || '';
@@ -3833,6 +3912,10 @@ class AdminDashboard {
     document.getElementById('deal-product-price').value = '';
     const finalPriceInput = document.getElementById('deal-final-price');
     if (finalPriceInput) finalPriceInput.value = '';
+    const endDateInput = document.getElementById('deal-end-date');
+    if (endDateInput) endDateInput.value = '';
+    const endPreview = document.getElementById('deal-end-date-preview');
+    if (endPreview) endPreview.textContent = '';
     const preview = document.getElementById('deal-product-preview');
     if (preview) preview.style.display = 'none';
     const previewEl = document.getElementById('deal-preview-text');

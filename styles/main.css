@@ -3519,4 +3519,26 @@ footer p {
   background-repeat: no-repeat;
 }
 
+.deal-countdown-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #FDF4FF 0%, #FAE8FF 100%);
+  color: #86198F;
+  border: 1px solid #F0ABFC;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin: 4px 0 6px;
+  width: fit-content;
+  box-shadow: 0 1px 3px rgba(134,25,143,0.08);
+  animation: pulse-countdown 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse-countdown {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.82; }
+}
+
 

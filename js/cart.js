@@ -116,7 +116,11 @@ export class CartManager {
    *   - 110 DT ≥ 100 DT → deal APPLIES ✅
    */
   getAppliedThresholdDeals() {
-    const activeDeals = (this.deals || []).filter(d => d.active !== false);
+    const activeDeals = (this.deals || []).filter(d => {
+      if (d.active === false) return false;
+      if (d.end_date && new Date(d.end_date).getTime() < Date.now()) return false;
+      return true;
+    });
     if (activeDeals.length === 0 || this.cart.length === 0) return [];
 
     const applied = [];
@@ -173,7 +177,11 @@ export class CartManager {
    * yet reach the threshold — so we can show "Spend X more DT to unlock the deal!"
    */
   getThresholdDealSuggestions() {
-    const activeDeals = (this.deals || []).filter(d => d.active !== false);
+    const activeDeals = (this.deals || []).filter(d => {
+      if (d.active === false) return false;
+      if (d.end_date && new Date(d.end_date).getTime() < Date.now()) return false;
+      return true;
+    });
     if (activeDeals.length === 0) return [];
 
     const suggestions = [];
