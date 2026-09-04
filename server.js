@@ -1852,9 +1852,9 @@ app.post('/api/import/backup', requireAdmin, uploadJson.single('backup'), async 
   }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
   console.log(`===================================================`);
-  console.log(`  Oriflame Assistant Server running on http://0.0.0.0:${PORT}`);
+  console.log(`  Oriflame Assistant Server running on http://localhost:${PORT}`);
   console.log(`  Admin Portal URL: http://localhost:${PORT}/admin`);
   console.log(`  Database Backend: Neon Postgres`);
   console.log(`===================================================`);

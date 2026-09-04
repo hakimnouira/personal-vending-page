@@ -35,32 +35,10 @@ function readLocalCache() {
 
 export async function scrapeFlipbookFromUrl(inputUrl = '') {
   try {
-    let catalogueCode = '';
+    let catalogueCode = '2026008';
     if (inputUrl) {
-      const codeMatch = inputUrl.match(/cataloguecode=([0-9]+)/i) || inputUrl.match(/\/([0-9]{7})-brp/i) || inputUrl.match(/^([0-9]{7})$/);
+      const codeMatch = inputUrl.match(/cataloguecode=([0-9]+)/i) || inputUrl.match(/\/([0-9]{7})-brp/i);
       if (codeMatch) catalogueCode = codeMatch[1];
-    }
-
-    if (!catalogueCode) {
-      // Check existing cached / DB flipbook first to maintain user's active catalogue
-      const cached = readLocalCache();
-      if (cached?.catalogueCode) {
-        catalogueCode = cached.catalogueCode;
-      } else {
-        // Dynamically check live digital catalogue code from Oriflame Tunisia
-        try {
-          const checkRes = await axios.get('https://tn.oriflame.com/products/digital-catalogue-current', {
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-            timeout: 6000
-          });
-          const m = checkRes.data.match(/cataloguecode=([0-9]{7})/i) || checkRes.data.match(/\/([0-9]{7})-brp/i) || checkRes.data.match(/202[0-9]{4}/);
-          if (m) catalogueCode = m[1] || m[0];
-        } catch (e) {}
-      }
-    }
-
-    if (!catalogueCode) {
-      catalogueCode = '2026009';
     }
 
     const catalogueUrl = (inputUrl && inputUrl.includes('tn-catalogue.oriflame.com'))
@@ -309,8 +287,8 @@ export async function getOrRefreshFlipbookData() {
         const expiresEpochSec = parseInt(data.expires, 10);
         const nowSec = Math.floor(Date.now() / 1000);
         if (expiresEpochSec - nowSec < 1800) {
-          console.log(`Flipbook token is expiring soon, refreshing in background for catalogue ${data.catalogueCode || 'current'}...`);
-          scrapeFlipbookFromUrl(data.catalogueCode || '').catch(e => console.warn('Background flipbook refresh note:', e.message));
+          console.log('Flipbook token is expiring soon, refreshing in background...');
+          scrapeFlipbookFromUrl().catch(e => console.warn('Background flipbook refresh note:', e.message));
         }
       }
       return data;
