@@ -499,7 +499,8 @@ export class CartManager {
       message += `\n🎯 Deals Seuil Débloqués :\n`;
       appliedThresholdDeals.forEach(td => {
         const dTitle = (lang === 'ar' && td.deal.title_ar) ? td.deal.title_ar : (td.deal.title_fr || 'Deal Seuil');
-        message += `  • ${dTitle} : -${td.deal.discount_percent}% sur ${td.deal.product_name || td.deal.product_id} (-${td.totalSavings.toFixed(2)} ${currencyLabel})\n`;
+        const clientDiscount = Math.floor(Number(td.deal.discount_percent));
+        message += `  • ${dTitle} : -${clientDiscount}% sur ${td.deal.product_name || td.deal.product_id} (-${td.totalSavings.toFixed(2)} ${currencyLabel})\n`;
       });
     }
 

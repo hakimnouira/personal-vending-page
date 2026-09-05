@@ -627,6 +627,29 @@
           </div>
         </div>
 
+        <!-- Email Notification Settings -->
+        <div class="admin-form-box" style="background: #F8FAFC; border: 1px solid #CBD5E1; margin-bottom: 24px;">
+          <h4 style="font-weight: 700; margin-bottom: 8px; color: #1E293B; display: flex; align-items: center; gap: 8px;">
+            📧 Adresse Email de Réception des Commandes Clients
+          </h4>
+          <p style="font-size: 0.82rem; color: var(--admin-text-muted); margin-bottom: 12px;">
+            Renseignez votre adresse email (ex: <em>votre.email@gmail.com</em>). Dès qu'une cliente clique sur <strong>Commander sur Messenger</strong> ou <strong>Commander par Téléphone / WhatsApp</strong>, vous recevrez instantanément un récapitulatif complet de sa commande avec son nom, son numéro et le détail de son panier.
+          </p>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="email" id="setting-notification-email" class="form-control" style="max-width: 380px; margin-bottom: 0;" placeholder="ex: mouna.nouira@gmail.com" />
+            <button id="btn-save-notification-email" class="btn-primary" style="width: auto; padding: 10px 20px; background: #2563EB; border-color: #1D4ED8;">
+              Enregistrer l'Email
+            </button>
+            <button id="btn-test-email" type="button" class="btn-primary" style="width: auto; padding: 10px 16px; background: #059669; border-color: #047857; font-size: 0.85rem;">
+              🧪 Envoyer un Email Test
+            </button>
+          </div>
+          <div id="email-preview-box" style="margin-top: 10px; font-size: 0.82rem; color: #2563EB; font-weight: 600;">
+            ✉️ Adresse email de notification active : <span id="email-preview-val" style="color: #1D4ED8; font-weight: 700;">Aucune adresse configurée</span>
+          </div>
+          <div id="email-test-status" style="margin-top: 6px; font-size: 0.82rem; font-weight: 700; display: none;"></div>
+        </div>
+
         <!-- Passcode Change -->
         <div class="admin-form-box" style="background: #FAF8F5; margin-bottom: 24px;">
           <h4 style="font-weight: 700; margin-bottom: 8px;" data-admin-i18n="pwd_title">Code d'Accès Administrateur</h4>

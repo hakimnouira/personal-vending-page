@@ -133,6 +133,8 @@ class AdminDashboard {
     this.btnSaveFbHandle = document.getElementById('btn-save-fb-handle');
     this.whatsappPhoneInput = document.getElementById('setting-whatsapp-phone');
     this.btnSaveWhatsappPhone = document.getElementById('btn-save-whatsapp-phone');
+    this.emailInput = document.getElementById('setting-notification-email');
+    this.btnSaveEmail = document.getElementById('btn-save-notification-email');
     this.newPwdInput = document.getElementById('setting-new-pwd');
     this.btnSavePwd = document.getElementById('btn-save-pwd');
 
@@ -990,6 +992,83 @@ class AdminDashboard {
 
         const isArabic = this.i18n.getLang() === 'ar';
         alert(isArabic ? `✅ تم حفظ رقم الواتساب بنجاح! (+216 ${clean})` : `✅ Numéro WhatsApp enregistré avec succès ! (+216 ${clean})`);
+      });
+    }
+
+    // Save Notification Email Settings
+    if (this.btnSaveEmail && this.emailInput) {
+      this.btnSaveEmail.addEventListener('click', async () => {
+        const raw = this.emailInput.value.trim();
+        if (raw && (!raw.includes('@') || !raw.includes('.'))) {
+          return alert('Veuillez entrer une adresse email valide');
+        }
+
+        await this.saveSettingsAPI({ notification_email: raw });
+        const previewVal = document.getElementById('email-preview-val');
+        if (previewVal) {
+          previewVal.textContent = raw || 'Aucune adresse configurée';
+          previewVal.style.color = raw ? '#1D4ED8' : '#6B7280';
+        }
+
+        const isArabic = this.i18n.getLang() === 'ar';
+        alert(isArabic
+          ? (raw ? `✅ تم حفظ البريد الإلكتروني بنجاح! (${raw})` : '✅ تم حذف البريد الإلكتروني.')
+          : (raw ? `✅ Adresse email enregistrée avec succès ! (${raw})` : '✅ Notification email désactivée.'));
+      });
+    }
+
+    const btnTestEmail = document.getElementById('btn-test-email');
+    if (btnTestEmail) {
+      btnTestEmail.addEventListener('click', async () => {
+        const email = (this.emailInput ? this.emailInput.value : '').trim();
+        if (!email || !email.includes('@')) {
+          return alert('Veuillez d\'abord renseigner et enregistrer une adresse email.');
+        }
+
+        const statusEl = document.getElementById('email-test-status');
+        if (statusEl) {
+          statusEl.style.display = 'block';
+          statusEl.style.color = '#2563EB';
+          statusEl.textContent = '⏳ Envoi de l\'email test en cours...';
+        }
+
+        btnTestEmail.disabled = true;
+        try {
+          const adminToken = sessionStorage.getItem('oriflame_admin_token') || '';
+          const headers = { 'Content-Type': 'application/json' };
+          if (adminToken) {
+            headers['x-admin-token'] = adminToken;
+            headers['Authorization'] = `Bearer ${adminToken}`;
+          }
+          const res = await fetch('/api/admin/test-email', {
+            method: 'POST',
+            credentials: 'include',
+            headers,
+            body: JSON.stringify({ email })
+          });
+          const data = await res.json();
+          if (data.success) {
+            if (statusEl) {
+              statusEl.style.color = '#059669';
+              statusEl.textContent = `✅ ${data.message}`;
+            }
+            alert(`✅ ${data.message}`);
+          } else {
+            if (statusEl) {
+              statusEl.style.color = '#DC2626';
+              statusEl.textContent = `❌ ${data.message}`;
+            }
+            alert(`❌ ${data.message}`);
+          }
+        } catch (e) {
+          if (statusEl) {
+            statusEl.style.color = '#DC2626';
+            statusEl.textContent = '❌ Erreur réseau: ' + e.message;
+          }
+          alert('❌ Erreur: ' + e.message);
+        } finally {
+          btnTestEmail.disabled = false;
+        }
       });
     }
 
@@ -1948,6 +2027,15 @@ class AdminDashboard {
           const cleanPhone = this.cleanPhoneNumber(phone);
           this.whatsappPhoneInput.value = cleanPhone;
           this.updateWhatsappPreviewLink(cleanPhone);
+        }
+        if (this.emailInput) {
+          const email = data.data.notification_email || '';
+          this.emailInput.value = email;
+          const previewVal = document.getElementById('email-preview-val');
+          if (previewVal) {
+            previewVal.textContent = email || 'Aucune adresse configurée';
+            previewVal.style.color = email ? '#1D4ED8' : '#6B7280';
+          }
         }
         if (data.data.featured_deal_ids && Array.isArray(data.data.featured_deal_ids)) {
           this.featuredDealIds = data.data.featured_deal_ids;
@@ -3459,7 +3547,9 @@ class AdminDashboard {
     grid.innerHTML = deals.map(deal => {
       const isActive = deal.active !== false;
       const threshold = Number(deal.threshold_amount).toFixed(2);
-      const discount = Number(deal.discount_percent).toFixed(0);
+      const discount = Number.isInteger(Number(deal.discount_percent))
+        ? Number(deal.discount_percent).toString()
+        : Number(deal.discount_percent).toFixed(2).replace(/\.?0+$/, '');
       const title = deal.title_fr || deal.title_en || 'Deal sans titre';
       const description = deal.description_fr || '';
       const discountedPrice = deal.product_price
@@ -3608,9 +3698,9 @@ class AdminDashboard {
       const el = document.getElementById('deal-preview-text');
       if (el) {
         if (f != null && f > 0) {
-          el.textContent = `Commande ≥ ${t} DT → Produit à ${f.toFixed(3)} DT (-${Math.round(d)}%) 🎯`;
+          el.textContent = `Commande ≥ ${t} DT → Produit à ${f.toFixed(3)} DT (-${d}%) 🎯`;
         } else {
-          el.textContent = `Commande ≥ ${t} DT → -${Math.round(d)}% sur le produit cible 🎯`;
+          el.textContent = `Commande ≥ ${t} DT → -${d}% sur le produit cible 🎯`;
         }
       }
     };
@@ -3637,7 +3727,7 @@ class AdminDashboard {
           priceEl.textContent = `Prix Deal Spécial : ${effectivePrice.toFixed(3)} TND`;
         }
         if (badgeEl) {
-          badgeEl.textContent = `-${Math.round(discount)}% DE REMISE`;
+          badgeEl.textContent = `-${discount}% DE REMISE`;
           badgeEl.style.display = discount > 0 ? 'inline-block' : 'none';
         }
       }
@@ -3646,7 +3736,7 @@ class AdminDashboard {
 
     if (thresholdInput) thresholdInput.addEventListener('input', updateDealPreviewText);
 
-    // 1. User types in Remise (%) -> Calculate Final Price (supports 33,5 or 50)
+    // 1. User types in Remise (%) -> Calculate Final Price (supports 33,5 or 62.3)
     if (discountInput) {
       discountInput.addEventListener('input', () => {
         const basePrice = parseDec(document.getElementById('deal-product-price')?.value) || 0;
@@ -3659,14 +3749,16 @@ class AdminDashboard {
       });
     }
 
-    // 2. User types in Final Price (DT) (supports comma e.g. 134,589) -> Calculate Remise (%)
+    // 2. User types in Final Price (DT) (supports comma e.g. 134,589) -> Calculate Remise (%) WITHOUT integer rounding
     if (finalPriceInput) {
       finalPriceInput.addEventListener('input', () => {
         const basePrice = parseDec(document.getElementById('deal-product-price')?.value) || 0;
         const finalPrice = parseDec(finalPriceInput.value);
         if (basePrice > 0 && finalPrice != null && finalPrice >= 0 && finalPrice <= basePrice) {
-          const discount = Math.round(((basePrice - finalPrice) / basePrice) * 100);
-          if (discountInput) discountInput.value = Math.max(1, Math.min(99, discount));
+          const rawDiscount = ((basePrice - finalPrice) / basePrice) * 100;
+          // Keep the exact number without integer rounding (e.g. 62.3 or 62.35)
+          const exactDiscount = Math.round(rawDiscount * 100) / 100;
+          if (discountInput) discountInput.value = exactDiscount;
         }
         updateProductPreviewCard();
       });
@@ -3977,7 +4069,7 @@ class AdminDashboard {
     // If discount was not typed but final price was typed, compute discount
     if ((discount_percent == null || discount_percent <= 0) && final_price_val != null && product_price != null) {
       if (product_price > 0 && final_price_val > 0 && final_price_val < product_price) {
-        discount_percent = Math.round(((product_price - final_price_val) / product_price) * 100);
+        discount_percent = Math.round((((product_price - final_price_val) / product_price) * 100) * 100) / 100;
       }
     }
 

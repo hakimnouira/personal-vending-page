@@ -8,9 +8,13 @@ import pg from 'pg';
 
 const { Client } = pg;
 
-const NEON_BASE = 'postgresql://neondb_owner:npg_mT2tafI7Hlzh@ep-spring-salad-axpj634w-pooler.c-4.us-east-2.aws.neon.tech/';
-const DEV_URL   = process.env.DEV_DATABASE_URL || `${NEON_BASE}neondb_dev?sslmode=require`;
-const PROD_URL  = process.env.PROD_DATABASE_URL || `${NEON_BASE}neondb?sslmode=require`;
+// Connection URLs are loaded securely from .env (NEVER hardcode database credentials here)
+const DEV_URL   = process.env.DEV_DATABASE_URL || process.env.DATABASE_URL;
+const PROD_URL  = process.env.PROD_DATABASE_URL;
+
+if (!DEV_URL || !PROD_URL) {
+  console.warn('⚠️ DEV_DATABASE_URL ou PROD_DATABASE_URL non définies dans .env');
+}
 
 export async function syncDatabase(direction = 'dev-to-prod', options = {}) {
   const isDevToProd = direction === 'dev-to-prod';
@@ -303,14 +307,16 @@ export async function syncDatabase(direction = 'dev-to-prod', options = {}) {
       const insertSettingsSql = `
         INSERT INTO settings (
           id, facebook_username, currency, admin_pwd, phone, whatsapp_phone,
+          notification_email,
           company_discount_applied, company_discount_percent, company_discount_applied_at, featured_deal_ids
-        ) VALUES (1, $1, $2, $3, $4, $5, $6, $7, $8, $9)
+        ) VALUES (1, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         ON CONFLICT (id) DO UPDATE SET
           facebook_username = EXCLUDED.facebook_username,
           currency = EXCLUDED.currency,
           admin_pwd = EXCLUDED.admin_pwd,
           phone = EXCLUDED.phone,
           whatsapp_phone = EXCLUDED.whatsapp_phone,
+          notification_email = EXCLUDED.notification_email,
           company_discount_applied = EXCLUDED.company_discount_applied,
           company_discount_percent = EXCLUDED.company_discount_percent,
           company_discount_applied_at = EXCLUDED.company_discount_applied_at,
@@ -322,6 +328,7 @@ export async function syncDatabase(direction = 'dev-to-prod', options = {}) {
         s.admin_pwd || 'mouna2024',
         s.phone || '55 756 629',
         s.whatsapp_phone || '55756629',
+        s.notification_email || '',
         s.company_discount_applied === true,
         s.company_discount_percent != null ? Number(s.company_discount_percent) : 20,
         s.company_discount_applied_at ? new Date(s.company_discount_applied_at) : null,

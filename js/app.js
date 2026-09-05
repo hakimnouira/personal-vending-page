@@ -67,12 +67,16 @@ class App {
 
     await this.fetchSettings();
     await this.fetchProducts();
+    if (this.cartManager && typeof this.cartManager.fetchBundles === 'function') {
+      try { await this.cartManager.fetchBundles(); } catch (e) {}
+    }
     await this.initCarousel();
     
     // Initialize Interactive Digital eCatalogue Flipbook
     window.ecatViewer = new ECatalogueViewer(this);
 
     this.renderDealsShowcase();
+    this.renderBundlesShowcase();
     this.renderProducts();
     this.renderCart();
     this.updateCartBadge();
@@ -533,6 +537,8 @@ class App {
     this.productsCount = document.getElementById('products-count');
     this.dealsCarouselGrid = document.getElementById('deals-carousel-grid');
     this.promoShowcaseSection = document.getElementById('promo-showcase-section');
+    this.bundlesShowcaseSection = document.getElementById('bundles-showcase-section');
+    this.bundlesShowcaseGrid = document.getElementById('bundles-showcase-grid');
 
     // Cart Elements
     this.floatingCartBtn = document.getElementById('floating-cart-btn');
@@ -606,6 +612,9 @@ class App {
           pill.classList.add('active');
           this.activeCategory = pill.dataset.category || 'All';
           this.telemetry.trackEvent(`Filtered by Category: ${this.activeCategory}`, this.activeCategory);
+          if (this.activeCategory === 'Bundles' && this.bundlesShowcaseSection) {
+            this.bundlesShowcaseSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
           this.renderProducts();
         }
       });
@@ -1241,6 +1250,98 @@ class App {
     }).join('');
   }
 
+  renderBundlesShowcase() {
+    if (!this.bundlesShowcaseGrid) return;
+    const isArabic = this.i18n.getLang() === 'ar';
+    const currencyLabel = isArabic ? 'د.ت' : 'TND';
+
+    const activeBundles = (this.cartManager?.bundles || []).filter(b => 
+      b.active !== false && Array.isArray(b.product_ids) && b.product_ids.length >= 2
+    );
+
+    if (activeBundles.length === 0) {
+      if (this.bundlesShowcaseSection) this.bundlesShowcaseSection.style.display = 'none';
+      return;
+    }
+
+    if (this.bundlesShowcaseSection) this.bundlesShowcaseSection.style.display = 'block';
+
+    this.bundlesShowcaseGrid.innerHTML = activeBundles.map(bundle => {
+      const bTitle = (isArabic && bundle.title_ar) ? bundle.title_ar : (bundle.title_fr || bundle.title);
+      const bDesc = (isArabic && bundle.description_ar) ? bundle.description_ar : (bundle.description_fr || bundle.description || '');
+      const isDuo = bundle.product_ids.length === 2;
+      const packLabel = isDuo 
+        ? (isArabic ? 'باقة ثنائية خاصة' : 'PACK DUO PRIVILÈGE') 
+        : (isArabic ? 'باقة ثلاثية خاصة' : 'PACK TRIO PRIVILÈGE');
+
+      // Resolve bundle products from loaded catalog
+      const bundleProducts = bundle.product_ids.map(id => {
+        return this.products.find(p => String(p.product_id) === String(id)) || {
+          product_id: id,
+          name: `Réf. ${id}`,
+          price: 0,
+          image_url: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80'
+        };
+      });
+
+      const totalRegPrice = bundleProducts.reduce((sum, p) => sum + (Number(p.price) || 0), 0);
+      const packPrice = Number(bundle.bundle_price);
+      const savings = Math.max(0, totalRegPrice - packPrice);
+      const savingsPercent = totalRegPrice > 0 ? Math.round((savings / totalRegPrice) * 100) : 0;
+
+      return `
+        <div class="bundle-showcase-card">
+          <div class="bundle-card-top-bar">
+            <span>🎁 ${packLabel}</span>
+            ${savings > 0 ? `<span class="bundle-savings-badge">${isArabic ? `وفّري ${savings.toFixed(2)} د.ت (-${savingsPercent}%)` : `Économisez ${savings.toFixed(2)} DT (-${savingsPercent}%)`}</span>` : ''}
+          </div>
+
+          <div class="bundle-img-stage">
+            ${bundleProducts.map((p, idx) => `
+              ${idx > 0 ? '<div class="bundle-plus-circle">＋</div>' : ''}
+              <div class="bundle-prod-thumb" onclick="window.app.openQuickView('${p.product_id}')" title="${this.getProductName(p)}">
+                <img src="${p.image_url}" alt="${this.getProductName(p)}" onerror="window.handleProductImgError(this)" />
+                <span>${this.getProductName(p)}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="bundle-card-body">
+            <h4 class="bundle-card-title">${bTitle}</h4>
+            ${bDesc ? `<p class="bundle-card-desc">${bDesc}</p>` : ''}
+            
+            <ul class="bundle-items-checklist">
+              ${bundleProducts.map(p => `<li>${this.getProductName(p)} (${Number(p.price).toFixed(2)} ${currencyLabel})</li>`).join('')}
+            </ul>
+
+            <div class="bundle-price-row">
+              <div class="bundle-price-box">
+                ${totalRegPrice > packPrice ? `<span class="bundle-orig-price">${totalRegPrice.toFixed(2)} ${currencyLabel}</span>` : ''}
+                <span class="bundle-final-price">${packPrice.toFixed(2)} <small>${currencyLabel}</small></span>
+              </div>
+              <button type="button" class="btn-add-bundle" onclick="window.app.addBundleToCart('${bundle.id}')">
+                🛍️ ${isArabic ? 'إضافة الباقة كاملة' : 'Ajouter le Pack'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  addBundleToCart(bundleId) {
+    const bundle = (this.cartManager?.bundles || []).find(b => String(b.id) === String(bundleId));
+    if (!bundle || !Array.isArray(bundle.product_ids)) return;
+
+    bundle.product_ids.forEach(pid => {
+      this.addProductToCart(pid);
+    });
+
+    this.renderCart();
+    this.updateCartBadge();
+    this.openCartDrawer();
+  }
+
   renderProducts() {
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';
@@ -1249,6 +1350,14 @@ class App {
       let matchesCategory = false;
       if (this.activeCategory === 'All') matchesCategory = true;
       else if (this.activeCategory === 'Deals') matchesCategory = Boolean(product.is_promo);
+      else if (this.activeCategory === 'Bundles') {
+        const activeBundlePids = new Set(
+          (this.cartManager?.bundles || [])
+            .filter(b => b.active !== false && Array.isArray(b.product_ids))
+            .flatMap(b => b.product_ids.map(String))
+        );
+        matchesCategory = activeBundlePids.has(String(product.product_id));
+      }
       else matchesCategory = product.category.toLowerCase() === this.activeCategory.toLowerCase();
 
       const pName = (this.getProductName(product) || product.name || '').toLowerCase();
@@ -1355,6 +1464,19 @@ class App {
 
             ${p.size ? `<div class="product-meta-row"><span>📦 ${p.size}</span></div>` : ''}
             <p class="product-description">${prodDesc || ''}</p>
+            ${(() => {
+              const cardBundle = (this.cartManager?.bundles || []).find(b =>
+                b.active !== false && Array.isArray(b.product_ids) && b.product_ids.map(String).includes(String(p.product_id))
+              );
+              if (!cardBundle) return '';
+              const bLabel = cardBundle.product_ids.length === 2 ? (isArabic ? 'متوفر في باقة ثنائية' : 'Pack Duo dispo') : (isArabic ? 'متوفر في باقة ثلاثية' : 'Pack Trio dispo');
+              return `
+                <div class="product-bundle-tag" onclick="event.stopPropagation(); window.app.openQuickView('${p.product_id}')" title="${cardBundle.title}">
+                  🎁 <strong>${bLabel}</strong>
+                  <span style="background: rgba(4,120,87,0.15); padding: 1px 5px; border-radius: 4px; font-size: 0.68rem; font-weight: 800;">${cardBundle.bundle_price} DT</span>
+                </div>
+              `;
+            })()}
             <div class="product-footer">
               <div class="price-container">
                 ${displayOrigPrice ? `<span class="product-price-strike">${Number(displayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
@@ -1680,10 +1802,11 @@ class App {
           ${appliedThresholdDeals.map(td => {
             const dTitle = (isArabic && td.deal.title_ar) ? td.deal.title_ar : (td.deal.title_fr || 'Deal Seuil');
             const timeLeftStr = td.deal.end_date ? this.formatDealTimeLeft(td.deal.end_date, isArabic) : null;
+            const clientDiscount = Math.floor(Number(td.deal.discount_percent));
             return `
               <div style="font-size: 0.8rem; color: #5B21B6; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; background: rgba(255,255,255,0.5); border-radius: 6px; padding: 5px 8px;">
                 <div>
-                  <span>🏷️ <strong>${dTitle}</strong><br><span style="font-size:0.72rem;opacity:0.8;">-${td.deal.discount_percent}% sur ${td.deal.product_name || td.deal.product_id} (${td.discountedPrice.toFixed(2)} ${currencyLabel} au lieu de ${td.originalPrice.toFixed(2)} ${currencyLabel})</span></span>
+                  <span>🏷️ <strong>${dTitle}</strong><br><span style="font-size:0.72rem;opacity:0.8;">-${clientDiscount}% sur ${td.deal.product_name || td.deal.product_id} (${td.discountedPrice.toFixed(2)} ${currencyLabel} au lieu de ${td.originalPrice.toFixed(2)} ${currencyLabel})</span></span>
                   ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${td.deal.end_date}" style="margin:2px 0 0; font-size:0.68rem; padding:1px 6px;">${timeLeftStr}</div>` : ''}
                 </div>
                 <span style="font-weight: 900; color: #047857; font-size: 0.88rem;">-${td.totalSavings.toFixed(2)} ${currencyLabel}</span>
@@ -1714,6 +1837,7 @@ class App {
                 const timeLeftStr = deal.end_date ? this.formatDealTimeLeft(deal.end_date, isArabic) : null;
                 const baseP = Number(deal.product_price) || 0;
                 const dealPrice = baseP > 0 ? (baseP * (1 - Number(deal.discount_percent) / 100)) : 0;
+                const clientDiscount = Math.floor(Number(deal.discount_percent));
                 const prodImg = deal.product_image || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${deal.product_id}%2f${deal.product_id}_1.png&MediaId=20989035&Version=1`;
 
                 return `
@@ -1725,7 +1849,7 @@ class App {
                         <div style="font-size: 0.74rem; color: #B45309; font-weight: 700; margin-top: 2px;">
                           ${dealPrice > 0 ? `${dealPrice.toFixed(2)} ${currencyLabel}` : ''}
                           ${baseP > 0 ? `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.7rem; font-weight: normal; color: #6B7280; margin-left: 4px;">${baseP.toFixed(2)} ${currencyLabel}</span>` : ''}
-                          <span style="background: #FEE2E2; color: #DC2626; padding: 1px 5px; border-radius: 4px; font-size: 0.68rem; font-weight: 800; margin-left: 4px;">-${deal.discount_percent}%</span>
+                          <span style="background: #FEE2E2; color: #DC2626; padding: 1px 5px; border-radius: 4px; font-size: 0.68rem; font-weight: 800; margin-left: 4px;">-${clientDiscount}%</span>
                         </div>
                       </div>
                     </div>
@@ -1748,6 +1872,7 @@ class App {
         const deal = u.deal;
         const productName = deal.product_name || deal.product_id;
         const timeLeftStr = deal.end_date ? this.formatDealTimeLeft(deal.end_date, isArabic) : null;
+        const clientDiscount = Math.floor(Number(deal.discount_percent));
 
         html += `
           <div style="background: #F8FAFC; border: 1px dashed #94A3B8; border-radius: 10px; padding: 10px; margin-top: 14px;">
@@ -1756,8 +1881,8 @@ class App {
             </div>
             <p style="font-size: 0.76rem; color: #64748B; margin: 4px 0 0;">
               ${isArabic
-                ? `أضف ${Number(u.remaining).toFixed(2)} د.ت أخرى لتحصل على <strong>-${deal.discount_percent}%</strong> على <strong>${productName}</strong> !`
-                : `Ajoutez encore <strong>${Number(u.remaining).toFixed(2)} ${currencyLabel}</strong> pour débloquer <strong>-${deal.discount_percent}%</strong> sur <strong>${productName}</strong> !`}
+                ? `أضف ${Number(u.remaining).toFixed(2)} د.ت أخرى لتحصل على <strong>-${clientDiscount}%</strong> على <strong>${productName}</strong> !`
+                : `Ajoutez encore <strong>${Number(u.remaining).toFixed(2)} ${currencyLabel}</strong> pour débloquer <strong>-${clientDiscount}%</strong> sur <strong>${productName}</strong> !`}
             </p>
             ${timeLeftStr ? `<div class="deal-countdown-pill" data-end-date="${deal.end_date}" style="margin:4px 0 0;">${timeLeftStr}</div>` : ''}
           </div>
@@ -2044,6 +2169,54 @@ class App {
           <div class="guarantee-note">
             🌿 ${this.i18n.t('guarantee_badge')}
           </div>
+
+          ${(() => {
+            const b = (this.cartManager?.bundles || []).find(item =>
+              item.active !== false && Array.isArray(item.product_ids) && item.product_ids.map(String).includes(String(product.product_id))
+            );
+            if (!b) return '';
+            const bTitle = (isArabic && b.title_ar) ? b.title_ar : (b.title_fr || b.title);
+            const bDesc = (isArabic && b.description_ar) ? b.description_ar : (b.description_fr || b.description || '');
+            const otherIds = b.product_ids.filter(id => String(id) !== String(product.product_id));
+            const otherProducts = otherIds.map(id => this.products.find(p => String(p.product_id) === String(id))).filter(Boolean);
+            const allBundleProds = b.product_ids.map(id => this.products.find(p => String(p.product_id) === String(id))).filter(Boolean);
+            const totalOriginal = allBundleProds.reduce((sum, p) => sum + (Number(p.price) || 0), 0);
+            const bundlePrice = Number(b.bundle_price);
+            const savings = Math.max(0, totalOriginal - bundlePrice);
+
+            return `
+              <div class="qv-bundle-upsell-box">
+                <div class="qv-bundle-header">
+                  <span class="qv-bundle-badge">🎁 ${b.product_ids.length === 2 ? (isArabic ? 'عرض باقة ثنائية خاصة' : 'OFFRE PACK DUO EXCLUSIVE') : (isArabic ? 'عرض باقة ثلاثية خاصة' : 'OFFRE PACK TRIO EXCLUSIVE')}</span>
+                  ${savings > 0 ? `<span class="qv-bundle-save">${isArabic ? `وفّري ${savings.toFixed(2)} د.ت` : `Économisez ${savings.toFixed(2)} DT`}</span>` : ''}
+                </div>
+                <div class="qv-bundle-title">${bTitle}</div>
+                ${bDesc ? `<div style="font-size:0.78rem; color:#4B5563; margin-bottom:8px; line-height:1.4;">${bDesc}</div>` : ''}
+                <div class="qv-bundle-products-preview">
+                  <div class="qv-bundle-prod-item">
+                    <img src="${product.image_url}" alt="${prodName}" onerror="window.handleProductImgError(this)" />
+                    <span>${prodName}</span>
+                  </div>
+                  <span style="font-weight:900; color:#059669; font-size:1.1rem; padding:0 2px;">＋</span>
+                  ${otherProducts.map(op => `
+                    <div class="qv-bundle-prod-item">
+                      <img src="${op.image_url}" alt="${this.getProductName(op)}" onerror="window.handleProductImgError(this)" />
+                      <span>${this.getProductName(op)}</span>
+                    </div>
+                  `).join('')}
+                </div>
+                <div class="qv-bundle-action-row">
+                  <div>
+                    ${totalOriginal > bundlePrice ? `<span class="bundle-orig-price">${totalOriginal.toFixed(2)} ${currencyLabel}</span> ` : ''}
+                    <span style="font-size:1.25rem; font-weight:900; color:#059669;">${bundlePrice.toFixed(2)} <small style="font-size:0.8rem; color:#374151;">${currencyLabel}</small></span>
+                  </div>
+                  <button type="button" class="btn-add-bundle-qv" onclick="window.app.addBundleToCart('${b.id}'); window.app.closeModal(document.getElementById('quickview-modal-overlay'));">
+                    🎁 ${isArabic ? 'إضافة الباقة كاملة' : 'Ajouter le Pack Complet'}
+                  </button>
+                </div>
+              </div>
+            `;
+          })()}
 
           <!-- Price & Action Footer -->
           <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E8E5DF; padding-top: 18px; margin-top: 18px; flex-wrap: wrap; gap: 12px;">

@@ -558,16 +558,17 @@ export async function getSettings() {
         admin_pwd: s.admin_pwd || 'mouna2024',
         phone: s.phone || '55 756 629',
         whatsapp_phone: s.whatsapp_phone || '55756629',
+        notification_email: s.notification_email || '',
         company_discount_applied: Boolean(s.company_discount_applied),
         company_discount_percent: s.company_discount_percent != null ? Number(s.company_discount_percent) : 20,
         company_discount_applied_at: s.company_discount_applied_at ? new Date(s.company_discount_applied_at).toISOString() : null,
         featured_deal_ids: Array.isArray(s.featured_deal_ids) ? s.featured_deal_ids : []
       };
     }
-    return { facebook_username: 'Mounanouira.Oriflame', currency: 'TND', admin_pwd: 'mouna2024' };
+    return { facebook_username: 'Mounanouira.Oriflame', currency: 'TND', admin_pwd: 'mouna2024', notification_email: '' };
   } catch (err) {
     console.error('getSettings error:', err);
-    return { facebook_username: 'Mounanouira.Oriflame', currency: 'TND', admin_pwd: 'mouna2024' };
+    return { facebook_username: 'Mounanouira.Oriflame', currency: 'TND', admin_pwd: 'mouna2024', notification_email: '' };
   }
 }
 
@@ -577,15 +578,17 @@ export async function saveSettings(settings) {
     const queryText = `
       INSERT INTO settings (
         id, facebook_username, currency, admin_pwd, phone, whatsapp_phone,
+        notification_email,
         company_discount_applied, company_discount_percent,
         company_discount_applied_at, featured_deal_ids
-      ) VALUES (1, $1, $2, $3, $4, $5, $6, $7, $8, $9)
+      ) VALUES (1, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       ON CONFLICT (id) DO UPDATE SET
         facebook_username = EXCLUDED.facebook_username,
         currency = EXCLUDED.currency,
         admin_pwd = EXCLUDED.admin_pwd,
         phone = EXCLUDED.phone,
         whatsapp_phone = EXCLUDED.whatsapp_phone,
+        notification_email = EXCLUDED.notification_email,
         company_discount_applied = EXCLUDED.company_discount_applied,
         company_discount_percent = EXCLUDED.company_discount_percent,
         company_discount_applied_at = EXCLUDED.company_discount_applied_at,
@@ -598,6 +601,7 @@ export async function saveSettings(settings) {
       settings.admin_pwd || 'mouna2024',
       settings.phone || '55 756 629',
       settings.whatsapp_phone || '55756629',
+      settings.notification_email || '',
       Boolean(settings.company_discount_applied),
       settings.company_discount_percent != null ? Number(settings.company_discount_percent) : 20,
       settings.company_discount_applied_at ? new Date(settings.company_discount_applied_at) : null,

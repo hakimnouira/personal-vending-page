@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/scraper.js';
 import { scrapeFlipbookFromUrl, getOrRefreshFlipbookData, getFlipbookData } from './services/flipbook-scraper.js';
 import { sendOrderConfirmation } from './services/messenger.js';
+import { sendOrderNotificationEmail } from './services/email.js';
 import {
   getProducts, saveProducts,
   getOrders, saveOrders, deleteOrderById,
@@ -1051,6 +1052,47 @@ app.post('/api/settings', requireAdmin, async (req, res) => {
   }
 });
 
+// Admin POST test-email
+app.post('/api/admin/test-email', requireAdmin, async (req, res) => {
+  try {
+    const { email } = req.body;
+    const settings = await getSettings();
+    const targetEmail = (email || settings.notification_email || '').trim();
+
+    if (!targetEmail || !targetEmail.includes('@')) {
+      return res.status(400).json({ success: false, message: 'Veuillez fournir une adresse email valide.' });
+    }
+
+    const dummyOrder = {
+      order_id: `ORD-TEST-${Math.floor(1000 + Math.random() * 9000)}`,
+      customer_name: 'Client Test (Notification)',
+      customer_phone: '+216 55 756 629',
+      channel: 'whatsapp',
+      total_amount: 134.22,
+      currency: settings.currency || 'TND',
+      created_at: new Date().toISOString(),
+      items: [
+        { product_id: '40683', name: 'Parfum Giordani Gold Essenza Supreme', quantity: 1, price: 106.32 },
+        { product_id: '46980', name: 'Crème de Corps Parfumée Giordani Gold', quantity: 1, price: 27.90 }
+      ]
+    };
+
+    const result = await sendOrderNotificationEmail(dummyOrder, targetEmail);
+    if (result.success) {
+      res.json({ success: true, message: `Email de test envoyé avec succès à ${targetEmail} !` });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: result.reason === 'smtp_not_configured'
+          ? 'Identifiants Resend ou SMTP non encore renseignés dans le fichier .env.'
+          : (result.error || 'Échec d\'envoi de l\'email.')
+      });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ------------------- ADMIN ORDER INSPECTION & MANAGEMENT API ------------------- //
 
 // ---- Messenger Opt-In: client clicked "Send to Messenger" on site ----
@@ -1151,6 +1193,19 @@ app.post('/api/orders', async (req, res) => {
     const orders = await getOrders();
     orders.unshift(newOrder);
     await saveOrders(orders);
+
+    // Asynchronously send email notification to configured admin email address
+    try {
+      const settings = await getSettings();
+      const targetEmail = settings.notification_email || '';
+      if (targetEmail) {
+        sendOrderNotificationEmail(newOrder, targetEmail).catch(err => {
+          console.warn('[Email] Notification dispatch notice:', err?.message || err);
+        });
+      }
+    } catch (e) {
+      console.warn('[Email] Could not load settings for email notification:', e?.message || e);
+    }
 
     const protocol = req.headers['x-forwarded-proto'] || (req.connection && req.connection.encrypted ? 'https' : 'http') || req.protocol || 'http';
     const host = req.headers['x-forwarded-host'] || req.headers.host || `localhost:${PORT}`;
