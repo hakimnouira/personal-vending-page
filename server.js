@@ -155,6 +155,26 @@ app.get('/api/admin/session', async (req, res) => {
   res.json({ success: true, authenticated: valid });
 });
 
+// Database Environment Information for Admin Dashboard
+app.get('/api/admin/db-info', async (req, res) => {
+  try {
+    const dbUrl = process.env.DATABASE_URL || '';
+    const isDev = dbUrl.includes('neondb_dev');
+    const dbName = isDev ? 'neondb_dev' : 'neondb';
+    const dbLabel = isDev ? '🧪 Environnement de TEST (neondb_dev)' : '🟢 Base de PRODUCTION (neondb)';
+
+    res.json({
+      success: true,
+      is_dev: isDev,
+      is_prod: !isDev,
+      db_name: dbName,
+      db_label: dbLabel
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Dynamic root route for Open Graph / Facebook Crawler previews
 app.get(['/', '/index.html'], (req, res, next) => {
   try {

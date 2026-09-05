@@ -13,24 +13,89 @@ const ENRICHMENTS_FILE = path.join(DATA_DIR, 'all-official-enrichments.json');
 
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
+import { getProducts, saveProducts } from '../dataAccess.js';
+
 export async function scrapeAllOriflameCategories() {
   console.log("Starting comprehensive multi-category scrape from Oriflame Tunisia...");
 
   const allScrapedMap = new Map();
 
-  // Load current existing products from disk first to preserve existing custom stock & manual items
+  // 0. Load current existing products from database first (falling back to disk if needed)
   let currentProducts = [];
   try {
+    const dbProds = await getProducts();
+    if (Array.isArray(dbProds) && dbProds.length > 0) {
+      currentProducts = dbProds;
+    } else if (fs.existsSync(PRODUCTS_FILE)) {
+      currentProducts = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
+    }
+  } catch (e) {
     if (fs.existsSync(PRODUCTS_FILE)) {
       currentProducts = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
     }
-  } catch (e) {}
+  }
   const currentMap = new Map(currentProducts.map(p => [String(p.product_id), p]));
+  console.log(`Loaded ${currentProducts.length} baseline products from active database.`);
 
-  // 1. Extract from all official captured enrichments (445 official catalogue items with genuine codes and prices)
-  if (fs.existsSync(ENRICHMENTS_FILE)) {
+  // 1. Extract from official digital catalogue enrichments (Live dynamic fetch + disk cache fallback)
+  let enrichmentsData = null;
+  try {
+    // Dynamically resolve active catalogue code
+    let activeCatalogueCode = '2026009';
     try {
-      const enrichmentsData = JSON.parse(fs.readFileSync(ENRICHMENTS_FILE, 'utf8'));
+      const liveCheck = await axios.get('https://tn.oriflame.com/products/digital-catalogue-current', {
+        headers: { 'User-Agent': USER_AGENT },
+        timeout: 10000
+      });
+      const m = liveCheck.data.match(/cataloguecode=([0-9]{7})/i) || liveCheck.data.match(/\/([0-9]{7})-brp/i) || liveCheck.data.match(/202[0-9]{4}/);
+      if (m) activeCatalogueCode = m[1] || m[0];
+    } catch (e) {}
+
+    console.log(`Fetching live digital catalogue enrichments for active catalogue: ${activeCatalogueCode}...`);
+    const catalogueUrl = `https://tn-catalogue.oriflame.com/fr-TN/${activeCatalogueCode}-brp?HideStandardUI=true&Page=1`;
+    const catPageRes = await axios.get(catalogueUrl, {
+      headers: { 'User-Agent': USER_AGENT },
+      timeout: 12000
+    });
+
+    const settingsMatch = catPageRes.data.match(/window\.staticSettings\s*=\s*(\{[\s\S]*?\});\s*(?:window\.|$)/);
+    if (settingsMatch) {
+      const settings = JSON.parse(settingsMatch[1]);
+      const chunkUrls = settings.enrichments?.chunkUrls || {};
+      const chunkEntries = Object.entries(chunkUrls);
+      if (chunkEntries.length > 0) {
+        const fetchedChunks = await Promise.all(
+          chunkEntries.map(async ([key, url]) => {
+            try {
+              const cRes = await axios.get(url, { timeout: 10000 });
+              return { url, data: cRes.data };
+            } catch (err) {
+              return null;
+            }
+          })
+        );
+        const validChunks = fetchedChunks.filter(Boolean);
+        if (validChunks.length > 0) {
+          enrichmentsData = validChunks;
+          fs.writeFileSync(ENRICHMENTS_FILE, JSON.stringify(validChunks, null, 2), 'utf8');
+          console.log(`✅ Live digital catalogue enrichments successfully fetched and synchronized (${validChunks.length} chunks for ${activeCatalogueCode}).`);
+        }
+      }
+    }
+  } catch (liveErr) {
+    console.warn("Live digital catalogue enrichments fetch note:", liveErr.message);
+  }
+
+  // Fallback to local cache file if live fetch didn't succeed
+  if (!enrichmentsData && fs.existsSync(ENRICHMENTS_FILE)) {
+    try {
+      enrichmentsData = JSON.parse(fs.readFileSync(ENRICHMENTS_FILE, 'utf8'));
+      console.log("Loaded catalogue enrichments from local cached file.");
+    } catch (e) {}
+  }
+
+  if (Array.isArray(enrichmentsData)) {
+    try {
       enrichmentsData.forEach(chunk => {
         const list = chunk.data?.enrichments || [];
         list.forEach(e => {
@@ -50,8 +115,26 @@ export async function scrapeAllOriflameCategories() {
             if (prodId && cleanName) {
               const cat = classifyCategory(cleanName);
               const price = Number(e.price) || 39.90;
-              const originalPrice = Number(e.original_price) || Number(e.basicCataloguePrice) || Number(e.basicPrice) || calculateEstimatedOriginalPrice(price);
-              const discountPercent = originalPrice && originalPrice > price ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+
+              // Extract genuine original/regular price if available
+              let originalPrice = Number(e.original_price) || Number(e.basicCataloguePrice) || Number(e.basicPrice) || null;
+              const existing = currentMap.get(String(prodId));
+
+              // Only inherit existing original_price if existing was legitimately promo and current price matches existing promo price
+              if (!originalPrice && existing && existing.is_promo && Number(existing.original_price) > price) {
+                if (Math.abs(Number(existing.price) - price) < 0.05) {
+                  originalPrice = Number(existing.original_price);
+                }
+              }
+
+              // If current price is equal or higher than originalPrice, promotion has expired
+              if (originalPrice && originalPrice <= price) {
+                originalPrice = null;
+              }
+
+              const isPromo = Boolean(originalPrice && originalPrice > price);
+              const discountPercent = isPromo ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+
               const mainImg = `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
               const galleryImages = [
                 mainImg,
@@ -61,7 +144,6 @@ export async function scrapeAllOriflameCategories() {
               ];
 
               let inStock = isProductInStock(rawName + ' ' + (e.desc || '') + ' ' + (e.alttext || ''), e);
-              const existing = currentMap.get(String(prodId));
               if (existing && existing.in_stock === false) {
                 inStock = false;
               }
@@ -72,11 +154,11 @@ export async function scrapeAllOriflameCategories() {
                 name_fr: cleanName,
                 category: cat,
                 price: price,
-                original_price: (originalPrice && originalPrice > price) ? originalPrice : (existing?.original_price || originalPrice),
+                original_price: isPromo ? originalPrice : null,
                 original_catalog_price: price,
                 company_discount_applied: false,
                 company_discount_percent: 0,
-                is_promo: Boolean(originalPrice && originalPrice > price),
+                is_promo: isPromo,
                 discount_percent: discountPercent,
                 size: inferSizeFromName(cleanName),
                 suitable_for: "Tous types de peaux • Produit certifié Oriflame Suède",
@@ -96,7 +178,7 @@ export async function scrapeAllOriflameCategories() {
           }
         });
       });
-      console.log(`Loaded ${allScrapedMap.size} products from official catalogue enrichments.`);
+      console.log(`Loaded ${allScrapedMap.size} products from active official catalogue enrichments.`);
     } catch (e) {
       console.warn("Enrichment extraction note:", e.message);
     }
@@ -107,7 +189,7 @@ export async function scrapeAllOriflameCategories() {
   if (fs.existsSync(FLIPBOOK_FILE)) {
     try {
       const fbData = JSON.parse(fs.readFileSync(FLIPBOOK_FILE, 'utf8'));
-      const pages = Array.isArray(fbData) ? fbData : (fbData.pages || []);
+      const pages = Array.isArray(fbData) ? fbData : (fbData.spreads || fbData.pages || []);
       pages.forEach(pg => {
         (pg.hotspots || []).forEach(h => {
           const hid = String(h.id || '').trim();
@@ -121,9 +203,14 @@ export async function scrapeAllOriflameCategories() {
                 existing.original_catalog_price = hPrice;
                 existing.is_promo = true;
                 existing.discount_percent = Math.round(((existing.original_price - hPrice) / existing.original_price) * 100);
-              } else {
+              } else if (hPrice > existing.price) {
                 existing.price = hPrice;
                 existing.original_catalog_price = hPrice;
+                if (existing.original_price && existing.original_price <= hPrice) {
+                  existing.original_price = null;
+                  existing.is_promo = false;
+                  existing.discount_percent = 0;
+                }
               }
             }
           }
@@ -135,14 +222,15 @@ export async function scrapeAllOriflameCategories() {
     }
   }
 
-  // 2. Multi-Category Web Scrape Endpoints with deep stock & buy option parsing
+  // 2. Multi-Category Web Scrape Endpoints with deep stock & authentic live price parsing
   const targetCategories = [
     { url: 'https://tn.oriflame.com/bestsellers?store=TN-oriflame_1', cat: 'Skincare' },
     { url: 'https://tn.oriflame.com/fragrance?store=TN-oriflame_1', cat: 'Fragrance' },
     { url: 'https://tn.oriflame.com/skincare?store=TN-oriflame_1', cat: 'Skincare' },
     { url: 'https://tn.oriflame.com/makeup?store=TN-oriflame_1', cat: 'Makeup' },
     { url: 'https://tn.oriflame.com/hair?store=TN-oriflame_1', cat: 'Haircare' },
-    { url: 'https://tn.oriflame.com/men?store=TN-oriflame_1', cat: 'Fragrance' }
+    { url: 'https://tn.oriflame.com/men?store=TN-oriflame_1', cat: 'Fragrance' },
+    { url: 'https://tn.oriflame.com/bath-body?store=TN-oriflame_1', cat: 'Skincare' }
   ];
 
   for (const item of targetCategories) {
@@ -150,7 +238,7 @@ export async function scrapeAllOriflameCategories() {
       console.log(`Scraping category: ${item.url}...`);
       const res = await axios.get(item.url, {
         headers: { 'User-Agent': USER_AGENT, 'Accept-Language': 'fr-FR,fr;q=0.9,ar;q=0.8,en;q=0.7' },
-        timeout: 8000
+        timeout: 10000
       });
 
       const $ = cheerio.load(res.data);
@@ -160,7 +248,6 @@ export async function scrapeAllOriflameCategories() {
           const nextData = JSON.parse(nextDataStr);
           const pageProps = nextData.props?.pageProps;
           
-          // Check both editorialPage content items and direct content items
           const contentItems = (
             pageProps?.data?.application?.editorialPage?.contentItems ||
             pageProps?.content?.contentItems ||
@@ -178,10 +265,16 @@ export async function scrapeAllOriflameCategories() {
                   const currentPriceRaw = p.formattedPrice?.price?.currentPrice || p.price?.price?.currentPrice || p.price?.currentPrice || p.price;
                   const basicPriceRaw = p.formattedPrice?.price?.basicCataloguePrice || p.price?.price?.basicCataloguePrice || p.price?.basicCataloguePrice;
 
-                  const currentPrice = parsePrice(currentPriceRaw) || 39.90;
-                  const basicPrice = parsePrice(basicPriceRaw) || currentPrice;
-                  const isPromo = basicPrice > currentPrice;
-                  const discount = isPromo ? Math.round(((basicPrice - currentPrice) / basicPrice) * 100) : 0;
+                  const currentPrice = parsePrice(currentPriceRaw);
+                  const basicPrice = parsePrice(basicPriceRaw);
+
+                  const existingItem = allScrapedMap.get(prodId) || currentMap.get(prodId);
+
+                  // Live web price is authoritative — no Math.min locking in stale past discounts
+                  const finalSellingPrice = currentPrice > 0 ? currentPrice : (existingItem?.price || 39.90);
+                  const finalOriginalPrice = (basicPrice > finalSellingPrice) ? basicPrice : null;
+                  const finalIsPromo = Boolean(finalOriginalPrice && finalOriginalPrice > finalSellingPrice);
+                  const finalDiscount = finalIsPromo ? Math.round(((finalOriginalPrice - finalSellingPrice) / finalOriginalPrice) * 100) : 0;
 
                   const mainImg = p.mainImage?.url || p.imageUrl || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${prodId}%2f${prodId}_1.png&MediaId=20989035&Version=1`;
                   const galleryImgs = [
@@ -211,41 +304,21 @@ export async function scrapeAllOriflameCategories() {
                       const sName = cp.shadeName || '';
                       const hex = (Array.isArray(cp.hexColors) && cp.hexColors[0]) || cp.colorImageUrl || '#DE7B90';
                       const vImg = cp.mainImage?.url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${vCode}%2f${vCode}_1.png&MediaId=20989035&Version=1`;
+                      const vCurrPrice = parsePrice(cp.formattedPrice?.price?.currentPrice) || finalSellingPrice;
+                      const vBasicPrice = parsePrice(cp.formattedPrice?.price?.basicCataloguePrice) || (finalOriginalPrice || vCurrPrice);
+                      const vInStock = cp.backInStockAvailability?.showBackInStockNotification !== true && !cp.isOffStock;
                       return {
                         product_id: vCode,
                         name: `${name} - ${sName || vCode}`,
                         shade_name: sName,
                         hex_color: hex,
                         image_url: vImg,
-                        price: currentPrice,
-                        original_price: isPromo ? basicPrice : null,
-                        in_stock: inStock
+                        price: vCurrPrice,
+                        original_price: vBasicPrice > vCurrPrice ? vBasicPrice : null,
+                        in_stock: vInStock
                       };
                     }).filter(v => v.product_id);
                   }
-
-                  const existingItem = allScrapedMap.get(prodId) || currentMap.get(prodId);
-                  
-                  // Compute lowest selling price and highest un-discounted regular price
-                  const candidatePrices = [
-                    currentPrice,
-                    existingItem ? Number(existingItem.price) : null,
-                    existingItem ? Number(existingItem.original_catalog_price) : null
-                  ].filter(p => typeof p === 'number' && p > 0);
-
-                  const candidateOriginalPrices = [
-                    basicPrice,
-                    isPromo ? basicPrice : null,
-                    existingItem ? Number(existingItem.original_price) : null
-                  ].filter(p => typeof p === 'number' && p > 0);
-
-                  let finalSellingPrice = candidatePrices.length > 0 ? Math.min(...candidatePrices) : currentPrice;
-                  let finalOriginalPrice = candidateOriginalPrices.length > 0 ? Math.max(...candidateOriginalPrices) : (basicPrice > currentPrice ? basicPrice : null);
-                  if (finalOriginalPrice && finalOriginalPrice < finalSellingPrice) {
-                    finalOriginalPrice = finalSellingPrice;
-                  }
-                  const finalIsPromo = Boolean(finalOriginalPrice && finalOriginalPrice > finalSellingPrice);
-                  const finalDiscount = finalIsPromo ? Math.round(((finalOriginalPrice - finalSellingPrice) / finalOriginalPrice) * 100) : 0;
 
                   allScrapedMap.set(prodId, {
                     product_id: prodId,
@@ -285,146 +358,149 @@ export async function scrapeAllOriflameCategories() {
     }
   }
 
-  // 2.5 Permanent Multi-Shade Family Grouping & Sub-Shade Deduplication
+  // 2.5 Multi-Shade Family Grouping & Dynamic Live Price Synchronization (No Hardcoded Stale Prices)
   const knownShadeFamilies = [
     {
       parentId: '38883',
       baseName: 'Baume à Lèvres The ONE Lip Spa',
       category: 'Makeup',
-      shades: [
-        { code: '38883', name: 'Pink', hex: '#B2535B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38883%2f38883_1.png&MediaId=14359194&Version=1', in_stock: true, price: 36.9, origPrice: 46.9 },
-        { code: '38885', name: 'Raspberry', hex: '#8E294B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38885%2f38885_1.png&MediaId=14359350&Version=2', in_stock: true, price: 36.9, origPrice: 46.9 },
+      defaultShades: [
+        { code: '38883', name: 'Pink', hex: '#B2535B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38883%2f38883_1.png&MediaId=14359194&Version=1' },
+        { code: '38885', name: 'Raspberry', hex: '#8E294B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38885%2f38885_1.png&MediaId=14359350&Version=2' }
       ]
     },
     {
       parentId: '38690',
       baseName: 'Rouge à lèvres Cremeux OnColour',
       category: 'Makeup',
-      shades: [
-        { code: '38690', name: 'Coral Red', hex: '#D52B28', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38690%2f38690_1.png&MediaId=20989035&Version=1', in_stock: true, price: 19.9, origPrice: 29.9 },
-        { code: '38691', name: 'Orange Coral', hex: '#E74425', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38691%2f38691_1.png&MediaId=20989035&Version=1', in_stock: true, price: 19.9, origPrice: 29.9 },
-        { code: '38693', name: 'Bright Fuchsia', hex: '#E41A64', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38693%2f38693_1.png&MediaId=17991659&Version=1', in_stock: true, price: 19.9, origPrice: 29.9 },
-        { code: '38689', name: 'Cranberry Red', hex: '#921F36', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38689%2f38689_1.png&MediaId=17991652&Version=3', in_stock: false, price: 29.9, origPrice: 29.9 },
-        { code: '38692', name: 'Punch Pink', hex: '#D05476', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38692%2f38692_1.png&MediaId=17991658&Version=2', in_stock: false, price: 29.9, origPrice: 29.9 },
+      defaultShades: [
+        { code: '38690', name: 'Coral Red', hex: '#D52B28', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38690%2f38690_1.png&MediaId=20989035&Version=1' },
+        { code: '38691', name: 'Orange Coral', hex: '#E74425', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38691%2f38691_1.png&MediaId=20989035&Version=1' },
+        { code: '38693', name: 'Bright Fuchsia', hex: '#E41A64', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38693%2f38693_1.png&MediaId=17991659&Version=1' },
+        { code: '38689', name: 'Cranberry Red', hex: '#921F36', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38689%2f38689_1.png&MediaId=17991652&Version=3' },
+        { code: '38692', name: 'Punch Pink', hex: '#D05476', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38692%2f38692_1.png&MediaId=17991658&Version=2' }
       ]
     },
     {
       parentId: '41797',
       baseName: 'Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix',
       category: 'Makeup',
-      shades: [
-        { code: '41797', name: 'Ultra Nude', hex: '#A8574B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41797%2f41797_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
-        { code: '41800', name: 'Ultra Raspberry', hex: '#872D43', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41800%2f41800_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
-        { code: '41804', name: 'Ultra Red', hex: '#A21727', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41804%2f41804_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
-        { code: '41806', name: 'Ultra Burgundy', hex: '#631826', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41806%2f41806_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
+      defaultShades: [
+        { code: '41797', name: 'Ultra Nude', hex: '#A8574B', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41797%2f41797_1.png&MediaId=20989035&Version=1' },
+        { code: '41800', name: 'Ultra Raspberry', hex: '#872D43', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41800%2f41800_1.png&MediaId=20989035&Version=1' },
+        { code: '41804', name: 'Ultra Red', hex: '#A21727', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41804%2f41804_1.png&MediaId=20989035&Version=1' },
+        { code: '41806', name: 'Ultra Burgundy', hex: '#631826', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41806%2f41806_1.png&MediaId=20989035&Version=1' }
       ]
     },
     {
       parentId: '42106',
       baseName: 'Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold',
       category: 'Makeup',
-      shades: [
-        { code: '42106', name: 'Light Ivory Neutral', hex: '#E7BA9D', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42106%2f42106_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 },
-        { code: '42102', name: 'Porcelain Cool', hex: '#F0CBB6', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42102%2f42102_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 },
-        { code: '42103', name: 'Light Rose Warm', hex: '#EAC3A9', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42103%2f42103_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 },
-        { code: '42104', name: 'Beige Warm', hex: '#DFB091', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42104%2f42104_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 },
-        { code: '42105', name: 'Natural Beige Neutral', hex: '#D6A687', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42105%2f42105_1.png&MediaId=20989035&Version=1', in_stock: true, price: 75.9, origPrice: 89.9 }
+      defaultShades: [
+        { code: '42106', name: 'Light Ivory Neutral', hex: '#E7BA9D', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42106%2f42106_1.png&MediaId=20989035&Version=1' },
+        { code: '42102', name: 'Porcelain Cool', hex: '#F0CBB6', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42102%2f42102_1.png&MediaId=20989035&Version=1' },
+        { code: '42103', name: 'Light Rose Warm', hex: '#EAC3A9', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42103%2f42103_1.png&MediaId=20989035&Version=1' },
+        { code: '42104', name: 'Beige Warm', hex: '#DFB091', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42104%2f42104_1.png&MediaId=20989035&Version=1' },
+        { code: '42105', name: 'Natural Beige Neutral', hex: '#D6A687', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42105%2f42105_1.png&MediaId=20989035&Version=1' }
       ]
     },
     {
       parentId: '46888',
       baseName: 'Feutre à lèvres Stain & Stay THE ONE',
       category: 'Makeup',
-      shades: [
-        { code: '46888', name: 'Nude', hex: '#AC6358', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46888%2f46888_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 62.9 },
-        { code: '46893', name: 'Brick', hex: '#8B2C2F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46893%2f46893_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 62.9 }
+      defaultShades: [
+        { code: '46888', name: 'Nude', hex: '#AC6358', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46888%2f46888_1.png&MediaId=20989035&Version=1' },
+        { code: '46893', name: 'Brick', hex: '#8B2C2F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46893%2f46893_1.png&MediaId=20989035&Version=1' }
       ]
     },
     {
       parentId: '46907',
       baseName: 'Fond de Teint The ONE Everlasting Sync Stress-Free',
       category: 'Makeup',
-      shades: [
-        { code: '46907', name: 'Vanilla', hex: '#EED3BE', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46907%2f46907_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
-        { code: '46908', name: 'Porcelain', hex: '#E8C5AC', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46908%2f46908_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
-        { code: '46909', name: 'Marble', hex: '#E6BC9F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46909%2f46909_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
-        { code: '46910', name: 'Light Rose', hex: '#DFA78D', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46910%2f46910_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
-        { code: '46912', name: 'Soft Sand', hex: '#D29B7F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46912%2f46912_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 },
-        { code: '46913', name: 'Beige Warm', hex: '#C58C71', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46913%2f46913_1.png&MediaId=20989035&Version=1', in_stock: true, price: 44.9, origPrice: 64.9 }
+      defaultShades: [
+        { code: '46907', name: 'Vanilla', hex: '#EED3BE', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46907%2f46907_1.png&MediaId=20989035&Version=1' },
+        { code: '46908', name: 'Porcelain', hex: '#E8C5AC', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46908%2f46908_1.png&MediaId=20989035&Version=1' },
+        { code: '46909', name: 'Marble', hex: '#E6BC9F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46909%2f46909_1.png&MediaId=20989035&Version=1' },
+        { code: '46910', name: 'Light Rose', hex: '#DFA78D', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46910%2f46910_1.png&MediaId=20989035&Version=1' },
+        { code: '46912', name: 'Soft Sand', hex: '#D29B7F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46912%2f46912_1.png&MediaId=20989035&Version=1' },
+        { code: '46913', name: 'Beige Warm', hex: '#C58C71', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46913%2f46913_1.png&MediaId=20989035&Version=1' }
       ]
     },
     {
       parentId: '46938',
       baseName: 'Illuminateur Multi-Usages THE ONE',
       category: 'Makeup',
-      shades: [
-        { code: '46938', name: 'Nude Optimism', hex: '#D4A373', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46938%2f46938_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
-        { code: '46939', name: 'Coral Confidence', hex: '#E76F51', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46939%2f46939_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
-        { code: '46940', name: 'Pink Pride', hex: '#E56B6F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46940%2f46940_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 },
-        { code: '46941', name: 'Grape Attraction', hex: '#B56576', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46941%2f46941_1.png&MediaId=20989035&Version=1', in_stock: true, price: 34.9, origPrice: 49.9 }
+      defaultShades: [
+        { code: '46938', name: 'Nude Optimism', hex: '#D4A373', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46938%2f46938_1.png&MediaId=20989035&Version=1' },
+        { code: '46939', name: 'Coral Confidence', hex: '#E76F51', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46939%2f46939_1.png&MediaId=20989035&Version=1' },
+        { code: '46940', name: 'Pink Pride', hex: '#E56B6F', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46940%2f46940_1.png&MediaId=20989035&Version=1' },
+        { code: '46941', name: 'Grape Attraction', hex: '#B56576', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46941%2f46941_1.png&MediaId=20989035&Version=1' }
       ]
     },
     {
       parentId: '47704',
       baseName: 'Eyeliner High Impact THE ONE',
       category: 'Makeup',
-      shades: [
-        { code: '47704', name: 'Black', hex: '#1C1917', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47704%2f47704_1.png&MediaId=20989035&Version=1', in_stock: true, price: 29.9, origPrice: 42.9 },
-        { code: '47707', name: 'Brown', hex: '#573D30', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47707%2f47707_1.png&MediaId=20989035&Version=1', in_stock: true, price: 29.9, origPrice: 42.9 }
+      defaultShades: [
+        { code: '47704', name: 'Black', hex: '#1C1917', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47704%2f47704_1.png&MediaId=20989035&Version=1' },
+        { code: '47707', name: 'Brown', hex: '#573D30', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47707%2f47707_1.png&MediaId=20989035&Version=1' }
       ]
     },
     {
       parentId: '47739',
       baseName: 'Anti-Cernes Perfecteur Tout-en-Un THE ONE',
       category: 'Makeup',
-      shades: [
-        { code: '47739', name: 'Fair Light', hex: '#EED9C7', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 },
-        { code: '47740', name: 'Medium Light', hex: '#E6C4A7', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47740%2f47740_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 },
-        { code: '47741', name: 'Deep Light', hex: '#D8B091', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47741%2f47741_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 },
-        { code: '47742', name: 'Green Neutralizer', hex: '#C2D5C0', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47742%2f47742_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 },
-        { code: '47743', name: 'Peach Brightener', hex: '#F0C7A9', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47743%2f47743_1.png&MediaId=20989035&Version=1', in_stock: true, price: 31.9, origPrice: 44.9 }
+      defaultShades: [
+        { code: '47739', name: 'Fair Light', hex: '#EED9C7', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20989035&Version=1' },
+        { code: '47740', name: 'Medium Light', hex: '#E6C4A7', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47740%2f47740_1.png&MediaId=20989035&Version=1' },
+        { code: '47741', name: 'Deep Light', hex: '#D8B091', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47741%2f47741_1.png&MediaId=20989035&Version=1' },
+        { code: '47742', name: 'Green Neutralizer', hex: '#C2D5C0', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47742%2f47742_1.png&MediaId=20989035&Version=1' },
+        { code: '47743', name: 'Peach Brightener', hex: '#F0C7A9', img: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47743%2f47743_1.png&MediaId=20989035&Version=1' }
       ]
     }
   ];
 
-  // Apply shade family groupings and remove secondary standalone shade cards
-  knownShadeFamilies.forEach(fam => {
-    let parent = allScrapedMap.get(fam.parentId) || currentMap.get(fam.parentId);
-    if (!parent && fam.shades.length > 0) {
-      // Create parent if missing
-      parent = {
-        product_id: fam.parentId,
-        name: fam.baseName,
-        name_fr: fam.baseName,
-        category: fam.category,
-        price: fam.shades[0].price,
-        original_price: fam.shades[0].origPrice,
-        original_catalog_price: fam.shades[0].price,
-        company_discount_applied: false,
-        company_discount_percent: 0,
-        is_promo: fam.shades[0].origPrice > fam.shades[0].price,
-        discount_percent: Math.round(((fam.shades[0].origPrice - fam.shades[0].price) / fam.shades[0].origPrice) * 100),
-        size: 'Format Standard',
-        suitable_for: 'Tous types de peaux • Produit certifié Oriflame Suède',
-        image_url: fam.shades[0].img,
-        images: [fam.shades[0].img],
-        description: `Produit officiel Oriflame Tunisie (${fam.parentId}). Formule scandinave haute performance.`,
-        description_fr: `Produit officiel Oriflame Tunisie (${fam.parentId}). Formule scandinave haute performance.`,
-        benefits: ["100% Produit original certifié par Mouna Nouira", "Formule suédoise aux extraits naturels bienfaisants"],
-        how_to_use: "Appliquer délicatement selon les recommandations de la gamme.",
-        ingredients: "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-        in_stock: fam.shades.some(s => s.in_stock !== false)
-      };
-    }
+  // Fetch live shade prices directly from parent product page for 100% accuracy
+  for (const fam of knownShadeFamilies) {
+    try {
+      let liveShades = null;
+      try {
+        const liveFamRes = await axios.get(`https://tn.oriflame.com/products/product?code=${fam.parentId}&store=TN-oriflame_1`, {
+          headers: { 'User-Agent': USER_AGENT },
+          timeout: 7000
+        });
+        const $f = cheerio.load(liveFamRes.data);
+        const nd = JSON.parse($f('#__NEXT_DATA__').html() || '{}');
+        const pDetail = nd.props?.pageProps?.productDetailData?.product;
+        const conceptProds = pDetail?.concept?.products || [];
+        if (Array.isArray(conceptProds) && conceptProds.length > 0) {
+          liveShades = conceptProds.map(cp => {
+            const pCode = String(cp.productCode || cp.code || '');
+            const sName = cp.shadeName || '';
+            const hex = (Array.isArray(cp.hexColors) && cp.hexColors[0]) || cp.colorImageUrl || '#DE7B90';
+            const vImg = cp.mainImage?.url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${pCode}%2f${pCode}_1.png&MediaId=20989035&Version=1`;
+            const vCurrPrice = parsePrice(cp.formattedPrice?.price?.currentPrice);
+            const vBasicPrice = parsePrice(cp.formattedPrice?.price?.basicCataloguePrice);
+            const vInStock = cp.backInStockAvailability?.showBackInStockNotification !== true && !cp.isOffStock;
+            return {
+              product_id: pCode,
+              name: `${fam.baseName} - ${sName || pCode}`,
+              shade_name: sName,
+              hex_color: hex,
+              image_url: vImg,
+              price: vCurrPrice > 0 ? vCurrPrice : 29.90,
+              original_price: (vBasicPrice > vCurrPrice) ? vBasicPrice : null,
+              in_stock: vInStock
+            };
+          }).filter(v => v.product_id);
+        }
+      } catch (err) {}
 
-    if (parent) {
-      parent.name = fam.baseName;
-      parent.name_fr = fam.baseName;
-      parent.variants = fam.shades.map(s => {
+      let parent = allScrapedMap.get(fam.parentId) || currentMap.get(fam.parentId);
+      const shadeList = (liveShades && liveShades.length > 0) ? liveShades : fam.defaultShades.map(s => {
         const existingShade = allScrapedMap.get(s.code) || currentMap.get(s.code);
-        const sPrice = existingShade ? Number(existingShade.price) : s.price;
-        const sOrigPrice = existingShade ? (Number(existingShade.original_price) || s.origPrice) : s.origPrice;
-        const sInStock = existingShade ? existingShade.in_stock : s.in_stock;
+        const sPrice = existingShade ? Number(existingShade.price) : 29.90;
+        const sOrigPrice = existingShade?.is_promo ? Number(existingShade.original_price) : null;
         return {
           product_id: s.code,
           name: `${fam.baseName} - ${s.name}`,
@@ -433,21 +509,68 @@ export async function scrapeAllOriflameCategories() {
           image_url: existingShade?.image_url || s.img,
           price: sPrice,
           original_price: sOrigPrice,
-          in_stock: sInStock !== false
+          in_stock: existingShade ? existingShade.in_stock !== false : true
         };
       });
 
-      parent.in_stock = parent.variants.some(v => v.in_stock !== false);
+      const firstInStock = shadeList.find(s => s.in_stock !== false) || shadeList[0];
+      const parentSellingPrice = firstInStock?.price || 29.90;
+      const parentOriginalPrice = firstInStock?.original_price || null;
+      const parentIsPromo = Boolean(parentOriginalPrice && parentOriginalPrice > parentSellingPrice);
+      const parentDiscount = parentIsPromo ? Math.round(((parentOriginalPrice - parentSellingPrice) / parentOriginalPrice) * 100) : 0;
+
+      if (!parent) {
+        parent = {
+          product_id: fam.parentId,
+          name: fam.baseName,
+          name_fr: fam.baseName,
+          category: fam.category,
+          price: parentSellingPrice,
+          original_price: parentOriginalPrice,
+          original_catalog_price: parentSellingPrice,
+          company_discount_applied: false,
+          company_discount_percent: 0,
+          is_promo: parentIsPromo,
+          discount_percent: parentDiscount,
+          size: 'Format Standard',
+          suitable_for: 'Tous types de peaux • Produit certifié Oriflame Suède',
+          image_url: firstInStock?.image_url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${fam.parentId}%2f${fam.parentId}_1.png&MediaId=20989035&Version=1`,
+          images: [firstInStock?.image_url],
+          description: `Produit officiel Oriflame Tunisie (${fam.parentId}). Formule scandinave haute performance.`,
+          description_fr: `Produit officiel Oriflame Tunisie (${fam.parentId}). Formule scandinave haute performance.`,
+          benefits: ["100% Produit original certifié par Mouna Nouira", "Formule suédoise aux extraits naturels bienfaisants"],
+          how_to_use: "Appliquer délicatement selon les recommandations de la gamme.",
+          ingredients: "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+          in_stock: shadeList.some(s => s.in_stock !== false)
+        };
+      }
+
+      parent.name = fam.baseName;
+      parent.name_fr = fam.baseName;
+      parent.price = parentSellingPrice;
+      parent.original_price = parentOriginalPrice;
+      parent.original_catalog_price = parentSellingPrice;
+      parent.is_promo = parentIsPromo;
+      parent.discount_percent = parentDiscount;
+      parent.variants = shadeList;
+      parent.in_stock = shadeList.some(s => s.in_stock !== false);
       allScrapedMap.set(fam.parentId, parent);
 
-      // Remove secondary sub-shade codes from top-level map to prevent duplicate cards
-      fam.shades.forEach(s => {
+      // Remove secondary standalone shade cards from top-level map
+      shadeList.forEach(s => {
+        if (s.product_id !== fam.parentId) {
+          allScrapedMap.delete(s.product_id);
+        }
+      });
+      fam.defaultShades.forEach(s => {
         if (s.code !== fam.parentId) {
           allScrapedMap.delete(s.code);
         }
       });
+    } catch (e) {
+      console.warn(`Family sync error for ${fam.parentId}:`, e.message);
     }
-  });
+  }
 
   // Also deduplicate any dynamically scraped variants from concept.products
   allScrapedMap.forEach((prod, pId) => {
@@ -459,16 +582,6 @@ export async function scrapeAllOriflameCategories() {
       });
     }
   });
-
-  // Ensure special dual-price reference products (like 23378) keep authentic initial deal price
-  const p23378 = allScrapedMap.get('23378');
-  if (p23378) {
-    p23378.original_price = 89.9;
-    p23378.original_catalog_price = 54.9;
-    p23378.price = 54.9;
-    p23378.is_promo = true;
-    p23378.discount_percent = 39;
-  }
 
   const scrapedProducts = Array.from(allScrapedMap.values());
   console.log(`Total unique products after multi-shade grouping: ${scrapedProducts.length}`);
@@ -488,7 +601,6 @@ export async function scrapeAllOriflameCategories() {
       newCount++;
       newItems.push({ code: scraped.product_id, name: scraped.name, price: scraped.price, status: 'new' });
     } else {
-      // Check if price, promo or details changed
       const priceChanged = Math.abs(Number(existing.price) - Number(scraped.price)) > 0.05;
       const promoChanged = existing.is_promo !== scraped.is_promo;
       const nameChanged = existing.name !== scraped.name;
@@ -508,7 +620,7 @@ export async function scrapeAllOriflameCategories() {
     }
   });
 
-  // Save merged and updated products into data/products.json with reset discount
+  // Save merged and updated products into database and data/products.json with reset discount
   const mergedProducts = [...scrapedProducts];
   // Preserve any custom products added manually that were not in the scrape
   currentProducts.forEach(p => {
@@ -525,18 +637,18 @@ export async function scrapeAllOriflameCategories() {
     company_discount_percent: 0
   }));
 
-  fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(cleanMerged, null, 2), 'utf8');
-
-  // Also persist directly into Neon Postgres if database is active
+  // Save to active database (Neon Postgres) first
   try {
-    const dataAccess = await import('../dataAccess.js');
-    if (typeof dataAccess.saveProducts === 'function') {
-      await dataAccess.saveProducts(cleanMerged);
-      console.log(`Persisted ${cleanMerged.length} products to Neon Postgres.`);
-    }
+    await saveProducts(cleanMerged);
+    console.log(`Persisted ${cleanMerged.length} products to active Neon Postgres database.`);
   } catch (dbErr) {
     console.warn("Neon DB sync note during scrape:", dbErr.message);
   }
+
+  // Also write to local cache file
+  try {
+    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(cleanMerged, null, 2), 'utf8');
+  } catch (fsErr) {}
 
   // Reset global company discount flag so newly scraped products can receive discount cleanly
   const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');

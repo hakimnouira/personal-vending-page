@@ -229,12 +229,16 @@ export class CartManager {
   }
 
   addItem(product, quantity = 1) {
-    const existingIndex = this.cart.findIndex(item => item.product_id === product.product_id);
+    const existingIndex = this.cart.findIndex(item => String(item.product_id) === String(product.product_id));
     if (existingIndex > -1) {
       this.cart[existingIndex].quantity += quantity;
+      if (product.parent_id && !this.cart[existingIndex].parent_id) {
+        this.cart[existingIndex].parent_id = product.parent_id;
+      }
     } else {
       this.cart.push({
-        product_id: product.product_id,
+        product_id: String(product.product_id),
+        parent_id: product.parent_id ? String(product.parent_id) : null,
         name: product.name,
         price: Number(product.price),
         image_url: product.image_url,
@@ -242,10 +246,25 @@ export class CartManager {
       });
     }
     this.saveCart();
+
+    // ── Meta Pixel: AddToCart standard event ──
+    try {
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+        window.fbq('track', 'AddToCart', {
+          content_name: product.name || 'Produit Oriflame',
+          content_ids: [String(product.product_id)],
+          content_type: 'product',
+          value: Number(product.price) * quantity,
+          currency: 'TND'
+        });
+      }
+    } catch (e) {
+      console.warn('[Meta Pixel] AddToCart tracking note:', e);
+    }
   }
 
   updateQuantity(productId, delta) {
-    const item = this.cart.find(i => i.product_id === productId);
+    const item = this.cart.find(i => String(i.product_id) === String(productId));
     if (item) {
       item.quantity += delta;
       if (item.quantity <= 0) {
@@ -257,7 +276,7 @@ export class CartManager {
   }
 
   removeItem(productId) {
-    this.cart = this.cart.filter(item => item.product_id !== productId);
+    this.cart = this.cart.filter(item => String(item.product_id) !== String(productId));
     this.saveCart();
   }
 
@@ -278,34 +297,64 @@ export class CartManager {
     return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   }
 
+  _getBundleProductIds(bundle) {
+    if (!bundle) return [];
+    if (Array.isArray(bundle.product_ids)) {
+      return bundle.product_ids.map(String).filter(Boolean);
+    }
+    if (typeof bundle.product_ids === 'string') {
+      try {
+        const parsed = JSON.parse(bundle.product_ids);
+        if (Array.isArray(parsed)) return parsed.map(String).filter(Boolean);
+      } catch (e) {}
+    }
+    return [];
+  }
+
+  _getCartMatchForProdId(prodId) {
+    const pStr = String(prodId).trim();
+    const matchingItems = this.cart.filter(item => {
+      if (String(item.product_id) === pStr) return true;
+      if (item.parent_id && String(item.parent_id) === pStr) return true;
+      return false;
+    });
+
+    if (matchingItems.length === 0) {
+      return { qty: 0, avgPrice: 0, items: [] };
+    }
+
+    const totalQty = matchingItems.reduce((s, it) => s + (Number(it.quantity) || 0), 0);
+    const totalVal = matchingItems.reduce((s, it) => s + (Number(it.price || 0) * (Number(it.quantity) || 0)), 0);
+    const avgPrice = totalQty > 0 ? (totalVal / totalQty) : 0;
+
+    return { qty: totalQty, avgPrice, items: matchingItems };
+  }
+
   // Detect applied bundle deals based on items currently in cart
   getAppliedBundles() {
     if (!Array.isArray(this.bundles) || this.bundles.length === 0 || this.cart.length === 0) return [];
 
-    const activeBundles = this.bundles.filter(b => b.active !== false && Array.isArray(b.product_ids) && b.product_ids.length >= 2);
-    const cartQtyMap = new Map();
-    const cartPriceMap = new Map();
-    this.cart.forEach(item => {
-      cartQtyMap.set(String(item.product_id), item.quantity);
-      cartPriceMap.set(String(item.product_id), Number(item.price));
+    const activeBundles = this.bundles.filter(b => {
+      const pIds = this._getBundleProductIds(b);
+      return b.active !== false && pIds.length >= 2;
     });
 
     const applied = [];
 
     activeBundles.forEach(bundle => {
-      // Check if all product_ids for this bundle are in the cart
+      const pIds = this._getBundleProductIds(bundle);
       let maxSets = Infinity;
       let regularCombinedPrice = 0;
       let allFound = true;
 
-      for (const prodId of bundle.product_ids) {
-        const qty = cartQtyMap.get(String(prodId)) || 0;
-        if (qty <= 0) {
+      for (const prodId of pIds) {
+        const match = this._getCartMatchForProdId(prodId);
+        if (match.qty <= 0) {
           allFound = false;
           break;
         }
-        maxSets = Math.min(maxSets, qty);
-        regularCombinedPrice += (cartPriceMap.get(String(prodId)) || 0);
+        maxSets = Math.min(maxSets, match.qty);
+        regularCombinedPrice += match.avgPrice;
       }
 
       if (allFound && maxSets > 0 && maxSets !== Infinity) {
@@ -352,24 +401,47 @@ export class CartManager {
   getUpsellBundles(allProducts = []) {
     if (!Array.isArray(this.bundles) || this.bundles.length === 0 || this.cart.length === 0) return [];
 
-    const activeBundles = this.bundles.filter(b => b.active !== false && Array.isArray(b.product_ids) && b.product_ids.length >= 2);
-    const cartProdIds = new Set(this.cart.map(item => String(item.product_id)));
+    const activeBundles = this.bundles.filter(b => {
+      const pIds = this._getBundleProductIds(b);
+      return b.active !== false && pIds.length >= 2;
+    });
+
     const upsells = [];
 
     activeBundles.forEach(bundle => {
-      const presentCount = bundle.product_ids.filter(id => cartProdIds.has(String(id))).length;
-      const missingIds = bundle.product_ids.filter(id => !cartProdIds.has(String(id)));
+      const pIds = this._getBundleProductIds(bundle);
+      const presentCount = pIds.filter(id => this._getCartMatchForProdId(id).qty > 0).length;
+      const missingIds = pIds.filter(id => this._getCartMatchForProdId(id).qty === 0);
 
       // If customer has at least 1 item from the bundle but not all:
       if (presentCount > 0 && missingIds.length > 0) {
         const missingProducts = missingIds.map(mId => {
-          const foundInCatalog = (allProducts || []).find(p => String(p.product_id) === String(mId));
-          return foundInCatalog || { product_id: mId, name: `Produit #${mId}`, price: 0 };
+          let found = (allProducts || []).find(p => String(p.product_id) === String(mId));
+          if (!found) {
+            for (const p of (allProducts || [])) {
+              if (Array.isArray(p.variants)) {
+                const v = p.variants.find(vt => String(vt.product_id) === String(mId));
+                if (v) {
+                  found = {
+                    ...p,
+                    product_id: v.product_id,
+                    parent_id: p.product_id,
+                    name: `${p.name} - ${v.shade_name || v.product_id}`,
+                    price: v.price || p.price,
+                    image_url: v.image_url || p.image_url
+                  };
+                  break;
+                }
+              }
+            }
+          }
+          return found || { product_id: mId, name: `Produit #${mId}`, price: 0 };
         });
 
         upsells.push({
           bundle,
           present_count: presentCount,
+          missing_count: missingIds.length,
           missing_products: missingProducts
         });
       }

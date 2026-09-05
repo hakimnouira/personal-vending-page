@@ -57,12 +57,20 @@
       </div>
 
       <!-- Language Selector inside Sidebar -->
-      <div style="padding: 0 8px 16px 8px;">
+      <div style="padding: 0 8px 12px 8px;">
         <select id="admin-lang-select" class="admin-lang-select" style="width: 100%;" aria-label="Select Language">
           <option value="fr">🇫🇷 Français</option>
           <option value="ar">🇹🇳 العربية</option>
           <option value="en">🇬🇧 English</option>
         </select>
+      </div>
+
+      <!-- Database Connection Status Badge -->
+      <div id="admin-db-badge-container" style="padding: 0 8px 14px 8px;">
+        <div id="admin-db-badge" style="padding: 6px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; text-align: center; background: #27272A; color: #A1A1AA; border: 1px solid #3F3F46; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #EAB308;"></span>
+          <span id="admin-db-badge-text">Connexion DB...</span>
+        </div>
       </div>
 
       <nav class="sidebar-nav">
@@ -669,6 +677,26 @@
             </button>
           </div>
           <div id="csv-import-status" style="margin-top: 12px; font-size: 0.85rem; font-weight: 600; display: none;"></div>
+        </div>
+
+        <!-- DATABASE STATUS & MIGRATION HELPER -->
+        <div class="admin-form-box" style="background: #F8FAFC; border: 1px solid #CBD5E1; margin-bottom: 24px; padding: 20px;">
+          <h4 style="font-weight: 700; margin-bottom: 6px; color: #0F172A; display: flex; align-items: center; gap: 8px;">
+            🗄️ Environnement Base de Données Actif &amp; Migration
+          </h4>
+          <p style="font-size: 0.82rem; color: #475569; margin-bottom: 14px;">
+            Indique si votre portail administrateur est actuellement connecté à la base de <strong>TEST / DEV</strong> (pour tester sans risque) ou à la base de <strong>PRODUCTION</strong> (en direct avec les clients).
+          </p>
+          <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748B; font-weight: 700;">Base active actuelle</div>
+              <div id="admin-settings-db-name" style="font-size: 1.05rem; font-weight: 800; color: #0F172A; margin-top: 2px;">Chargement...</div>
+            </div>
+            <div id="admin-settings-db-pill" style="padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">...</div>
+          </div>
+          <p style="font-size: 0.78rem; color: #64748B; margin: 0; line-height: 1.5;">
+            💡 <em>Pour basculer d'environnement ou synchroniser les données (copier DEV ➔ PROD ou PROD ➔ DEV), lancez simplement <strong>start-admin.bat</strong> sur votre ordinateur.</em>
+          </p>
         </div>
 
         <!-- Full System JSON Backup & Restore -->

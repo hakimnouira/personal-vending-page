@@ -729,6 +729,22 @@ class App {
           this.cartManager.generateOrderTextMessage(name, phone, 'TND');
         await copyTextToClipboard(earlyOrderMsg);
 
+        // ── Meta Pixel: InitiateCheckout standard event (WhatsApp / Phone) ──
+        try {
+          if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+            window.fbq('track', 'InitiateCheckout', {
+              content_name: 'Commande WhatsApp / Téléphone',
+              content_ids: items.map(it => String(it.product_id)),
+              content_type: 'product',
+              num_items: this.cartManager.getTotalCount(),
+              value: this.cartManager.getSubtotal(),
+              currency: 'TND'
+            });
+          }
+        } catch (e) {
+          console.warn('[Meta Pixel] InitiateCheckout tracking note:', e);
+        }
+
         btnPhone.disabled = true;
         btnPhone.textContent = '⏳ Enregistrement de la commande...';
 
@@ -824,6 +840,22 @@ class App {
         // ── CRITICAL: Copy to clipboard IMMEDIATELY upon user click ──
         const earlyMsg = this.cartManager.generateOrderTextMessage(name, phone, 'TND');
         await copyTextToClipboard(earlyMsg);
+
+        // ── Meta Pixel: InitiateCheckout standard event (Facebook Messenger) ──
+        try {
+          if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+            window.fbq('track', 'InitiateCheckout', {
+              content_name: 'Commande Facebook Messenger',
+              content_ids: items.map(it => String(it.product_id)),
+              content_type: 'product',
+              num_items: count,
+              value: total,
+              currency: 'TND'
+            });
+          }
+        } catch (e) {
+          console.warn('[Meta Pixel] InitiateCheckout tracking note:', e);
+        }
 
         let orderUrl = '';
         let orderId = '';
@@ -1411,6 +1443,7 @@ class App {
             product = {
               ...p,
               product_id: v.product_id,
+              parent_id: p.product_id,
               name: `${p.name} - ${v.shade_name || v.product_id}`,
               name_fr: `${p.name_fr || p.name} - ${v.shade_name || v.product_id}`,
               shade_name: v.shade_name || '',
@@ -1431,6 +1464,7 @@ class App {
         product = {
           ...product,
           product_id: v.product_id,
+          parent_id: product.product_id,
           name: `${product.name} - ${v.shade_name || v.product_id}`,
           name_fr: `${product.name_fr || product.name} - ${v.shade_name || v.product_id}`,
           shade_name: v.shade_name || '',
@@ -1851,6 +1885,22 @@ class App {
     const prodDesc = this.getProductDescription(product);
 
     this.telemetry.trackEvent(`Opened Detailed Product Info: ${prodName}`, product.category, prodName);
+
+    // ── Meta Pixel: ViewContent standard event ──
+    try {
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+        window.fbq('track', 'ViewContent', {
+          content_name: prodName,
+          content_ids: [String(product.product_id)],
+          content_type: 'product',
+          content_category: product.category || 'Beauty',
+          value: Number(product.price) || 0,
+          currency: 'TND'
+        });
+      }
+    } catch (e) {
+      console.warn('[Meta Pixel] ViewContent tracking note:', e);
+    }
 
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';

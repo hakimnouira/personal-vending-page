@@ -6,3 +6,5 @@ node_modules/
 .DS_Store
 uploads/
 .claude/
+.node_runtime/
+.bin/

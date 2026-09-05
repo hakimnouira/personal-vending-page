@@ -77,6 +77,16 @@ class AdminDashboard {
     }, 3000);
   }
 
+  getAuthHeaders(extraHeaders = {}) {
+    const token = sessionStorage.getItem('oriflame_admin_token');
+    const headers = { ...extraHeaders };
+    if (token) {
+      headers['x-admin-token'] = token;
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+  }
+
   cacheDOM() {
     // Language
     this.langSelect = document.getElementById('admin-lang-select');
@@ -180,6 +190,7 @@ class AdminDashboard {
     try { await this.fetchCarousel(); } catch (e) { console.warn("fetchCarousel error", e); }
     try { if (typeof this.fetchBundles === 'function') await this.fetchBundles(); } catch (e) { console.warn("fetchBundles error", e); }
     try { if (typeof this.fetchDeals === 'function') await this.fetchDeals(); } catch (e) { console.warn("fetchDeals error", e); }
+    try { await this.fetchDbInfo(); } catch (e) { console.warn("fetchDbInfo error", e); }
 
     const urlParams = new URLSearchParams(window.location.search);
     const orderIdParam = urlParams.get('orderId');
@@ -1051,6 +1062,11 @@ class AdminDashboard {
       });
     }
 
+    // Bind Bundle Package Deals Management Events
+    if (typeof this.bindBundleEvents === 'function') {
+      this.bindBundleEvents();
+    }
+
     // Bind Threshold Deals Management Events
     if (typeof this.bindDealEvents === 'function') {
       this.bindDealEvents();
@@ -1125,6 +1141,15 @@ class AdminDashboard {
       const dealProductSelect = document.getElementById('deal-product-select');
       if (dealProductSelect && typeof this._populateDealProductSelect === 'function') {
         this._populateDealProductSelect(dealProductSelect);
+      }
+      if (typeof this.renderBundleProductPicker === 'function') {
+        this.renderBundleProductPicker('');
+      }
+      if (typeof this.renderBundlesAdmin === 'function') {
+        this.renderBundlesAdmin();
+      }
+      if (typeof this.updateBundleStats === 'function') {
+        this.updateBundleStats();
       }
     }
   }
@@ -2467,6 +2492,51 @@ class AdminDashboard {
     reader.readAsText(file);
   }
 
+  async fetchDbInfo() {
+    try {
+      const res = await fetch('/api/admin/db-info');
+      const data = await res.json();
+      if (data.success) {
+        const badgeEl = document.getElementById('admin-db-badge');
+        const badgeText = document.getElementById('admin-db-badge-text');
+        const settingsName = document.getElementById('admin-settings-db-name');
+        const settingsPill = document.getElementById('admin-settings-db-pill');
+
+        if (data.is_dev) {
+          if (badgeEl) {
+            badgeEl.style.background = '#1E3A8A';
+            badgeEl.style.color = '#93C5FD';
+            badgeEl.style.borderColor = '#3B82F6';
+            badgeEl.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#60A5FA;"></span> 🧪 TEST (DEV)';
+            badgeEl.title = 'Connecté à la base de données de test (neondb_dev)';
+          }
+          if (settingsName) settingsName.textContent = 'neondb_dev (Base de Test & Développement)';
+          if (settingsPill) {
+            settingsPill.style.background = '#DBEAFE';
+            settingsPill.style.color = '#1E40AF';
+            settingsPill.textContent = '🧪 ENVIRONNEMENT TEST';
+          }
+        } else {
+          if (badgeEl) {
+            badgeEl.style.background = '#064E3B';
+            badgeEl.style.color = '#A7F3D0';
+            badgeEl.style.borderColor = '#10B981';
+            badgeEl.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#34D399;"></span> 🟢 PRODUCTION (LIVE)';
+            badgeEl.title = 'Connecté à la base de production déployée (neondb)';
+          }
+          if (settingsName) settingsName.textContent = 'neondb (Base Principale de Production)';
+          if (settingsPill) {
+            settingsPill.style.background = '#D1FAE5';
+            settingsPill.style.color = '#065F46';
+            settingsPill.textContent = '🟢 PRODUCTION ACTIVE';
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("fetchDbInfo error", e);
+    }
+  }
+
   async importCarouselJson(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -2899,6 +2969,28 @@ class AdminDashboard {
     }
   }
 
+  findProductById(id) {
+    if (!id) return null;
+    const cleanId = String(id).trim();
+    for (const p of (this.products || [])) {
+      if (String(p.product_id) === cleanId) return p;
+      if (Array.isArray(p.variants)) {
+        const v = p.variants.find(item => String(item.product_id) === cleanId);
+        if (v) {
+          return {
+            ...p,
+            product_id: v.product_id,
+            parent_id: p.product_id,
+            name: `${p.name} - ${v.shade_name || v.product_id}`,
+            image_url: v.image_url || p.image_url,
+            price: v.price || p.price
+          };
+        }
+      }
+    }
+    return null;
+  }
+
   updateBundleStats() {
     const totalEl = document.getElementById('stat-total-bundles');
     const activeEl = document.getElementById('stat-active-bundles');
@@ -2915,7 +3007,7 @@ class AdminDashboard {
       list.forEach(b => {
         let regularSum = 0;
         (b.product_ids || []).forEach(pId => {
-          const p = (this.products || []).find(x => String(x.product_id) === String(pId));
+          const p = this.findProductById(pId);
           if (p) regularSum += Number(p.price || 0);
         });
         const save = Math.max(0, regularSum - Number(b.bundle_price || 0));
@@ -2939,7 +3031,7 @@ class AdminDashboard {
 
     grid.innerHTML = list.map(b => {
       const prods = (b.product_ids || []).map(pId => {
-        const found = (this.products || []).find(p => String(p.product_id) === String(pId));
+        const found = this.findProductById(pId);
         return found || { product_id: pId, name: `Produit #${pId}`, price: 0, image_url: '' };
       });
 
@@ -2972,7 +3064,7 @@ class AdminDashboard {
                 <div style="display: flex; align-items: center; gap: 8px;">
                   <div style="text-align: center; width: 70px;">
                     <img src="${p.image_url}" alt="${p.name}" style="width: 50px; height: 50px; object-fit: contain; background: white; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto 4px;" onerror="window.handleProductImgError(this)" />
-                    <div style="font-size: 0.68rem; font-weight: 700; color: #1E293B; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.name}</div>
+                    <div style="font-size: 0.68rem; font-weight: 700; color: #1E293B; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${p.name}">${p.name}</div>
                     <div style="font-size: 0.68rem; color: #64748B;">${Number(p.price || 0).toFixed(2)} DT</div>
                   </div>
                   ${idx < prods.length - 1 ? `<span style="font-weight: 800; font-size: 1.1rem; color: #94A3B8;">+</span>` : ''}
@@ -3070,7 +3162,14 @@ class AdminDashboard {
       if (!p) return false;
       const strId = String(p.product_id || '').toLowerCase();
       const name = (p.name || '').toLowerCase();
-      return strId.includes(search) || name.includes(search);
+      let match = strId.includes(search) || name.includes(search);
+      if (!match && Array.isArray(p.variants)) {
+        match = p.variants.some(v => 
+          String(v.product_id || '').toLowerCase().includes(search) || 
+          (v.shade_name || '').toLowerCase().includes(search)
+        );
+      }
+      return match;
     });
 
     if (filtered.length === 0) {
@@ -3078,7 +3177,16 @@ class AdminDashboard {
       return;
     }
 
-    picker.innerHTML = filtered.slice(0, 60).map(p => {
+    // Place selected items at top
+    const sorted = [...filtered].sort((a, b) => {
+      const aSel = this.bundleSelectedIds.includes(String(a.product_id));
+      const bSel = this.bundleSelectedIds.includes(String(b.product_id));
+      if (aSel && !bSel) return -1;
+      if (!aSel && bSel) return 1;
+      return 0;
+    });
+
+    picker.innerHTML = sorted.slice(0, 60).map(p => {
       const isSelected = this.bundleSelectedIds.includes(String(p.product_id));
       return `
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-bottom: 1px solid #F1F5F9; font-size: 0.82rem; cursor: pointer; background: ${isSelected ? '#F0FDF4' : 'transparent'};" onclick="window.adminDash.toggleBundleProductSelection('${p.product_id}')">
@@ -3127,7 +3235,7 @@ class AdminDashboard {
     }
 
     chipsContainer.innerHTML = this.bundleSelectedIds.map(pId => {
-      const p = (this.products || []).find(x => String(x.product_id) === String(pId)) || { product_id: pId, name: `Produit #${pId}`, price: 0 };
+      const p = this.findProductById(pId) || { product_id: pId, name: `Produit #${pId}`, price: 0 };
       return `
         <span style="display: inline-flex; align-items: center; gap: 6px; background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;">
           <span>${p.name} (${Number(p.price || 0).toFixed(2)} DT)</span>
@@ -3141,7 +3249,7 @@ class AdminDashboard {
     this.bundleSelectedIds = this.bundleSelectedIds || [];
     let normalSum = 0;
     this.bundleSelectedIds.forEach(pId => {
-      const p = (this.products || []).find(x => String(x.product_id) === String(pId));
+      const p = this.findProductById(pId);
       if (p) normalSum += Number(p.price || 0);
     });
 
@@ -3197,12 +3305,17 @@ class AdminDashboard {
     try {
       const res = await fetch('/api/bundles', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getAuthHeaders({ 'Content-Type': 'application/json' }),
+        credentials: 'same-origin',
         body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (data.success) {
-        alert('✅ Offre Pack enregistrée avec succès !');
+        if (this.showToast) {
+          this.showToast('✅ Offre Pack enregistrée avec succès !', 'success');
+        } else {
+          alert('✅ Offre Pack enregistrée avec succès !');
+        }
         this.resetBundleForm();
         await this.fetchBundles();
       } else {
@@ -3253,9 +3366,16 @@ class AdminDashboard {
 
   async toggleBundle(id) {
     try {
-      const res = await fetch(`/api/bundles/${id}/toggle`, { method: 'PATCH' });
+      const res = await fetch(`/api/bundles/${id}/toggle`, {
+        method: 'PATCH',
+        headers: this.getAuthHeaders(),
+        credentials: 'same-origin'
+      });
       const data = await res.json();
       if (data.success) {
+        if (this.showToast) {
+          this.showToast(data.message || 'Statut mis à jour', 'success');
+        }
         await this.fetchBundles();
       } else {
         alert('❌ Erreur: ' + data.message);
@@ -3269,10 +3389,18 @@ class AdminDashboard {
     if (!confirm('Voulez-vous vraiment supprimer cette offre pack ?')) return;
 
     try {
-      const res = await fetch(`/api/bundles/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/bundles/${id}`, {
+        method: 'DELETE',
+        headers: this.getAuthHeaders(),
+        credentials: 'same-origin'
+      });
       const data = await res.json();
       if (data.success) {
-        alert('✅ Offre Pack supprimée');
+        if (this.showToast) {
+          this.showToast('✅ Offre Pack supprimée', 'info');
+        } else {
+          alert('✅ Offre Pack supprimée');
+        }
         await this.fetchBundles();
       } else {
         alert('❌ Erreur: ' + data.message);
@@ -3561,13 +3689,16 @@ class AdminDashboard {
           document.getElementById('deal-product-name').value = `Réf. ${val}`;
           document.getElementById('deal-product-image').value = '';
           document.getElementById('deal-product-price').value = '';
+          
           const preview = document.getElementById('deal-product-preview');
+          console.log(  preview)
           if (preview) {
             preview.style.display = 'flex';
             const img = document.getElementById('deal-product-preview-img');
             const nameEl = document.getElementById('deal-product-preview-name');
             const priceEl = document.getElementById('deal-product-preview-price');
             const refEl = document.getElementById('deal-product-preview-ref');
+            console.log(refEl)
             const origEl = document.getElementById('deal-product-preview-orig');
             const badgeEl = document.getElementById('deal-product-preview-badge');
             if (img) img.src = getProductFallbackSvg(this.i18n.getLang());
@@ -3873,7 +4004,8 @@ class AdminDashboard {
       const url = dealId ? `/api/deals/${dealId}` : '/api/deals';
       const res = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getAuthHeaders({ 'Content-Type': 'application/json' }),
+        credentials: 'same-origin',
         body: JSON.stringify(payload)
       });
       const data = await res.json();
@@ -3991,7 +4123,11 @@ class AdminDashboard {
 
   async toggleDeal(id) {
     try {
-      const res = await fetch(`/api/deals/${id}/toggle`, { method: 'PATCH' });
+      const res = await fetch(`/api/deals/${id}/toggle`, {
+        method: 'PATCH',
+        headers: this.getAuthHeaders(),
+        credentials: 'same-origin'
+      });
       const data = await res.json();
       if (data.success) {
         await this.fetchDeals();
@@ -4006,7 +4142,11 @@ class AdminDashboard {
   async deleteDeal(id) {
     if (!confirm('Voulez-vous vraiment supprimer ce deal conditionnel ?')) return;
     try {
-      const res = await fetch(`/api/deals/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/deals/${id}`, {
+        method: 'DELETE',
+        headers: this.getAuthHeaders(),
+        credentials: 'same-origin'
+      });
       const data = await res.json();
       if (data.success) {
         this.showToast('✅ Deal supprimé.', 'info');
