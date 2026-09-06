@@ -8,7 +8,7 @@ import multer from 'multer';
 import axios from 'axios';
 import { fileURLToPath } from 'url';
 import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/scraper.js';
-import { scrapeFlipbookFromUrl, getOrRefreshFlipbookData, getFlipbookData } from './services/flipbook-scraper.js';
+import { scrapeFlipbookFromUrl, getOrRefreshFlipbookData, getFlipbookData, resolveLatestCatalogueCode } from './services/flipbook-scraper.js';
 import { sendOrderConfirmation } from './services/messenger.js';
 import { sendOrderNotificationEmail } from './services/email.js';
 import {
@@ -378,7 +378,8 @@ app.post('/api/analytics/reset', async (req, res) => {
 
 app.get('/api/flipbook', async (req, res) => {
   try {
-    const data = await getOrRefreshFlipbookData();
+    const forceRefresh = req.query.refresh === 'true';
+    const data = await getOrRefreshFlipbookData(forceRefresh);
     if (!data) {
       return res.status(404).json({ success: false, message: 'Catalogue introuvable' });
     }
@@ -402,18 +403,23 @@ app.get('/api/flipbook/image', async (req, res) => {
     });
 
     if (response.status === 403 && imageUrl.includes('token=')) {
-      const activeToken = 'cxo7UKgOtbgBrcybD-4SgWDpbJZSdzjtTxylna2_yes';
-      const activeExpires = '1787307633';
-      const healedUrl = imageUrl
-        .replace(/token=[^&]+/, `token=${activeToken}`)
-        .replace(/expires=[^&]+/, `expires=${activeExpires}`);
+      // Heal token dynamically using active flipbook tokens
+      const activeFlipbook = getFlipbookData();
+      const activeToken = activeFlipbook?.token;
+      const activeExpires = activeFlipbook?.expires;
 
-      response = await fetch(healedUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          'Referer': 'https://tn-catalogue.oriflame.com/'
-        }
-      });
+      if (activeToken && activeExpires) {
+        const healedUrl = imageUrl
+          .replace(/token=[^&]+/, `token=${activeToken}`)
+          .replace(/expires=[^&]+/, `expires=${activeExpires}`);
+
+        response = await fetch(healedUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Referer': 'https://tn-catalogue.oriflame.com/'
+          }
+        });
+      }
     }
 
     if (!response.ok) {
@@ -433,14 +439,32 @@ app.get('/api/flipbook/image', async (req, res) => {
 
 app.post('/api/scrape/flipbook', async (req, res) => {
   try {
-    const { url } = req.body;
-    console.log("Admin triggering flipbook scrape for:", url || 'default');
-    const flipbookData = await scrapeFlipbookFromUrl(url);
+    const { url, forceLatest } = req.body || {};
+    console.log("Admin triggering flipbook scrape for:", url || 'auto (latest live version)');
+    const flipbookData = await scrapeFlipbookFromUrl(url, { forceLatest });
 
     res.json({
       success: true,
-      message: `Digital Flipbook synchronisé avec succès (${flipbookData.totalPages} pages, ${flipbookData.totalSpreads} planches).`,
+      message: `Digital Flipbook synchronisé avec succès (Catalogue ${flipbookData.catalogueCode} : ${flipbookData.totalPages} pages, ${flipbookData.totalSpreads} planches).`,
       data: flipbookData
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/scrape/catalogue-status', async (req, res) => {
+  try {
+    const currentData = getFlipbookData();
+    const latestLiveCode = await resolveLatestCatalogueCode();
+    res.json({
+      success: true,
+      currentCode: currentData?.catalogueCode || null,
+      latestLiveCode,
+      isUpToDate: Boolean(currentData?.catalogueCode && currentData.catalogueCode === latestLiveCode),
+      totalPages: currentData?.totalPages || 0,
+      totalSpreads: currentData?.totalSpreads || 0,
+      scrapedAt: currentData?.scrapedAt || null
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -1928,11 +1952,29 @@ app.post('/api/import/backup', requireAdmin, uploadJson.single('backup'), async 
 });
 
 app.listen(PORT, () => {
+  const isProd = process.env.DATABASE_URL?.includes('/neondb?') || process.env.DATABASE_URL?.endsWith('/neondb');
+  const dbLabel = isProd ? 'PRODUCTION DIRECTE (neondb)' : 'TEST / DEV (neondb_dev)';
   console.log(`===================================================`);
   console.log(`  Oriflame Assistant Server running on http://localhost:${PORT}`);
   console.log(`  Admin Portal URL: http://localhost:${PORT}/admin`);
-  console.log(`  Database Backend: Neon Postgres`);
+  console.log(`  Database Backend: Neon Postgres [${dbLabel}]`);
   console.log(`===================================================`);
+
+  // Background check for latest live catalogue edition (runs 8s after start)
+  setTimeout(async () => {
+    try {
+      const current = getFlipbookData();
+      const latestLiveCode = await resolveLatestCatalogueCode();
+      if (!current || current.catalogueCode !== latestLiveCode) {
+        console.log(`[Auto-Scraper] Stored catalogue is ${current?.catalogueCode || 'none'}, latest live edition is ${latestLiveCode}. Auto-scraping latest edition in background...`);
+        await scrapeFlipbookFromUrl();
+      } else {
+        console.log(`[Auto-Scraper] Flipbook catalogue is already on latest live edition (${latestLiveCode}).`);
+      }
+    } catch (err) {
+      console.warn('[Auto-Scraper] Initial catalogue check note:', err.message);
+    }
+  }, 8000);
 });
 
 process.on('uncaughtException', (err) => {

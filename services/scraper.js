@@ -14,6 +14,7 @@ const ENRICHMENTS_FILE = path.join(DATA_DIR, 'all-official-enrichments.json');
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
 import { getProducts, saveProducts } from '../dataAccess.js';
+import { resolveLatestCatalogueCode } from './flipbook-scraper.js';
 
 export async function scrapeAllOriflameCategories() {
   console.log("Starting comprehensive multi-category scrape from Oriflame Tunisia...");
@@ -40,16 +41,8 @@ export async function scrapeAllOriflameCategories() {
   // 1. Extract from official digital catalogue enrichments (Live dynamic fetch + disk cache fallback)
   let enrichmentsData = null;
   try {
-    // Dynamically resolve active catalogue code
-    let activeCatalogueCode = '2026009';
-    try {
-      const liveCheck = await axios.get('https://tn.oriflame.com/products/digital-catalogue-current', {
-        headers: { 'User-Agent': USER_AGENT },
-        timeout: 10000
-      });
-      const m = liveCheck.data.match(/cataloguecode=([0-9]{7})/i) || liveCheck.data.match(/\/([0-9]{7})-brp/i) || liveCheck.data.match(/202[0-9]{4}/);
-      if (m) activeCatalogueCode = m[1] || m[0];
-    } catch (e) {}
+    // Dynamically resolve active catalogue code using centralized resolver
+    const activeCatalogueCode = await resolveLatestCatalogueCode();
 
     console.log(`Fetching live digital catalogue enrichments for active catalogue: ${activeCatalogueCode}...`);
     const catalogueUrl = `https://tn-catalogue.oriflame.com/fr-TN/${activeCatalogueCode}-brp?HideStandardUI=true&Page=1`;

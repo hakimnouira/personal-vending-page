@@ -124,6 +124,7 @@ class AdminDashboard {
     this.btnScraperFlipbook = document.getElementById('btn-scraper-flipbook');
     this.flipbookUrlInput = document.getElementById('admin-flipbook-url-input');
     this.flipbookScrapeStatus = document.getElementById('flipbook-scrape-status');
+    this.flipbookEditionBadge = document.getElementById('admin-flipbook-edition-badge');
     this.btnScraperSyncAll = document.getElementById('btn-scraper-sync-all');
     this.btnScraperSingleUrl = document.getElementById('btn-scraper-single-url');
     this.singleUrlInput = document.getElementById('admin-single-url-input');
@@ -193,6 +194,7 @@ class AdminDashboard {
     try { if (typeof this.fetchBundles === 'function') await this.fetchBundles(); } catch (e) { console.warn("fetchBundles error", e); }
     try { if (typeof this.fetchDeals === 'function') await this.fetchDeals(); } catch (e) { console.warn("fetchDeals error", e); }
     try { await this.fetchDbInfo(); } catch (e) { console.warn("fetchDbInfo error", e); }
+    try { await this.fetchCatalogueStatus(); } catch (e) { console.warn("fetchCatalogueStatus error", e); }
 
     const urlParams = new URLSearchParams(window.location.search);
     const orderIdParam = urlParams.get('orderId');
@@ -735,28 +737,29 @@ class AdminDashboard {
     // DIGITAL FLIPBOOK SCRAPER
     if (this.btnScraperFlipbook && this.flipbookUrlInput) {
       this.btnScraperFlipbook.addEventListener('click', async () => {
-        const url = this.flipbookUrlInput.value.trim();
-        if (!url) {
-          alert(this.i18n.getLang() === 'ar' ? 'يرجى إدخال رابط الكتالوج' : 'Please enter an Oriflame catalogue link');
-          return;
+        let url = (this.flipbookUrlInput ? this.flipbookUrlInput.value : '').trim();
+        // If the input is empty or has obsolete hardcoded code (e.g. 2026008), auto-detect latest!
+        if (url.includes('2026008')) {
+          url = '';
+          if (this.flipbookUrlInput) this.flipbookUrlInput.value = '';
         }
 
         const isArabic = this.i18n.getLang() === 'ar';
         this.btnScraperFlipbook.disabled = true;
-        this.btnScraperFlipbook.textContent = isArabic ? '⏳ جاري سحب جميع الصفحات...' : '⏳ Scraping all spreads & pages...';
+        this.btnScraperFlipbook.textContent = isArabic ? '⏳ جاري كشف وسحب أحدث كتالوج...' : '⏳ Détection & scraping du dernier catalogue...';
         if (this.flipbookScrapeStatus) {
           this.flipbookScrapeStatus.style.display = 'block';
           this.flipbookScrapeStatus.style.color = 'var(--admin-accent)';
           this.flipbookScrapeStatus.textContent = isArabic 
-            ? '🔄 جاري استخراج الصور فائقة الدقة وتوليد 150 صفحة...' 
-            : '🔄 Fetching catalogue manifest, tokens, and generating all 150 zoomable pages...';
+            ? '🔄 جاري استخراج أحدث كتالوج رسمي من أوريفلام تونس مع جميع الصفحات عالية الدقة...' 
+            : '🔄 Connexion à Oriflame Tunisie, détection du dernier catalogue officiel et extraction de toutes les pages HD...';
         }
 
         try {
           const res = await fetch('/api/scrape/flipbook', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url })
+            body: JSON.stringify({ url, forceLatest: !url })
           });
           const result = await res.json();
 
@@ -764,18 +767,19 @@ class AdminDashboard {
             const data = result.data;
             this.flipbookScrapeStatus.style.color = 'var(--admin-success)';
             this.flipbookScrapeStatus.innerHTML = `
-              ✨ <strong>${isArabic ? 'تم بنجاح!' : 'Success!'}</strong> ${result.message}<br/>
+              ✨ <strong>${isArabic ? 'تم بنجاح!' : 'Succès !'}</strong> ${result.message}<br/>
               📖 Catalogue Code: <code>${data.catalogueCode}</code> | Total Spreads: <code>${data.totalSpreads}</code> | Pages: <code>${data.totalPages}</code><br/>
-              🎥 Video Overlay: <code>${data.videoUrl ? 'Found & Linked' : 'None'}</code>
+              🎥 Video Overlay: <code>${data.videoUrl ? 'Actif' : 'Aucun'}</code>
             `;
-            alert(`✅ ${result.message}\nTotal: ${data.totalPages} pages generated with high-res tokens!`);
+            alert(`✅ ${result.message}\nTotal: ${data.totalPages} pages générées avec les jetons haute résolution !`);
+            await this.fetchCatalogueStatus();
           } else {
             this.flipbookScrapeStatus.style.color = 'var(--admin-danger)';
             this.flipbookScrapeStatus.textContent = `❌ ${result.message}`;
-            alert('❌ Error: ' + result.message);
+            alert('❌ Erreur : ' + result.message);
           }
         } catch (err) {
-          alert('❌ Network error: ' + err.message);
+          alert('❌ Erreur réseau : ' + err.message);
         } finally {
           this.btnScraperFlipbook.disabled = false;
           this.btnScraperFlipbook.textContent = this.i18n.t('btn_scrape_flipbook');
@@ -2622,6 +2626,33 @@ class AdminDashboard {
       }
     } catch (e) {
       console.warn("fetchDbInfo error", e);
+    }
+  }
+
+  async fetchCatalogueStatus() {
+    if (!this.flipbookEditionBadge) return;
+    try {
+      const res = await fetch('/api/scrape/catalogue-status');
+      const data = await res.json();
+      if (data.success) {
+        const isAr = this.i18n.getLang() === 'ar';
+        const isFr = this.i18n.getLang() === 'fr';
+        const current = data.currentCode || 'N/A';
+        const latest = data.latestLiveCode || current;
+        if (data.isUpToDate) {
+          this.flipbookEditionBadge.style.color = '#065F46';
+          this.flipbookEditionBadge.style.background = '#ECFDF5';
+          this.flipbookEditionBadge.style.borderColor = '#A7F3D0';
+          this.flipbookEditionBadge.innerHTML = `✅ ${isAr ? `الكتالوج محدث (${current} — ${data.totalPages} صفحة)` : isFr ? `Catalogue à jour (${current} — ${data.totalPages} pages)` : `Catalog up to date (${current} — ${data.totalPages} pages)`}`;
+        } else {
+          this.flipbookEditionBadge.style.color = '#92400E';
+          this.flipbookEditionBadge.style.background = '#FFFBEB';
+          this.flipbookEditionBadge.style.borderColor = '#FDE68A';
+          this.flipbookEditionBadge.innerHTML = `⚠️ ${isAr ? `نسخة سابقة (${current}) ➔ الأحدث متوفر: ${latest}` : isFr ? `Édition précédente (${current}) ➔ Plus récente dispo : ${latest}` : `Current: ${current} ➔ Newer live edition: ${latest}`}`;
+        }
+      }
+    } catch (e) {
+      console.warn("fetchCatalogueStatus error", e);
     }
   }
 

@@ -456,16 +456,21 @@
 
         <!-- 1. FULL DIGITAL FLIPBOOK SCRAPER -->
         <div class="admin-form-box" style="background: #FAF8F5; margin-bottom: 24px;">
-          <span class="badge badge-accent" style="margin-bottom: 8px; font-size: 0.76rem;" data-admin-i18n="badge_new">NOUVEAU</span>
-          <h4 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 6px; color: #18181B;" data-admin-i18n="flipbook_scraper_title">📖 Scraper le Digital Flipbook Complet (Toutes les Pages)</h4>
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+            <span class="badge badge-accent" style="font-size: 0.76rem;" data-admin-i18n="badge_new">NOUVEAU</span>
+            <div id="admin-flipbook-edition-badge" style="font-size: 0.8rem; font-weight: 600; color: #4B5563; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 20px; padding: 3px 12px;">
+              ⏳ Vérification du dernier catalogue...
+            </div>
+          </div>
+          <h4 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 6px; color: #18181B;" data-admin-i18n="flipbook_scraper_title">📖 Scraper le Digital Flipbook Complet (Dernière Version)</h4>
           <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 14px;" data-admin-i18n="flipbook_scraper_desc">
-            Collez n'importe quel lien du catalogue officiel Oriflame pour extraire automatiquement toutes les pages, photos haute résolution, vidéo et pastilles interactives.
+            Laissez le champ vide pour scraper automatiquement le tout dernier catalogue officiel Oriflame Tunisie en ligne, ou collez un lien spécifique si vous souhaitez cibler une édition précise.
           </p>
 
           <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <input type="url" id="admin-flipbook-url-input" class="form-control" style="margin-bottom: 0; flex: 1; min-width: 280px;" value="https://tn.oriflame.com/catalogue?cataloguecode=2026008&PageNumber=1&store=TN-oriflame_1" placeholder="https://tn.oriflame.com/catalogue?cataloguecode=2026008..." />
+            <input type="url" id="admin-flipbook-url-input" class="form-control" style="margin-bottom: 0; flex: 1; min-width: 280px;" value="" placeholder="Laisser vide pour auto-détecter le dernier catalogue officiel (recommandé)" />
             <button id="btn-scraper-flipbook" class="btn-primary" style="width: auto; white-space: nowrap; padding: 0 24px; background: #C1121F; border-color: #C1121F;" data-admin-i18n="btn_scrape_flipbook">
-              🚀 Scraper le Flipbook & Toutes ses Pages
+              🚀 Scraper le Dernier Flipbook (Auto)
             </button>
           </div>
 

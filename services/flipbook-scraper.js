@@ -33,16 +33,102 @@ function readLocalCache() {
   return null;
 }
 
-export async function scrapeFlipbookFromUrl(inputUrl = '') {
+/**
+ * Dynamically resolves the latest active Oriflame Tunisia catalogue code (e.g. "2026009").
+ * 1. Queries https://tn.oriflame.com/products/digital-catalogue-current (Next.js pageProps)
+ * 2. Probes active iPaper catalogue manifests for current year & month candidates
+ * 3. Fallback to current calendar campaign (YYYYMMM)
+ */
+export async function resolveLatestCatalogueCode() {
+  const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+
+  // 1. Check official current digital catalogue landing page
   try {
-    let catalogueCode = '2026008';
-    if (inputUrl) {
-      const codeMatch = inputUrl.match(/cataloguecode=([0-9]+)/i) || inputUrl.match(/\/([0-9]{7})-brp/i);
-      if (codeMatch) catalogueCode = codeMatch[1];
+    const res = await axios.get('https://tn.oriflame.com/products/digital-catalogue-current', {
+      headers: {
+        'User-Agent': USER_AGENT,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8'
+      },
+      timeout: 8000
+    });
+
+    const nextMatch = res.data.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    if (nextMatch) {
+      try {
+        const json = JSON.parse(nextMatch[1]);
+        const code = json.props?.pageProps?.catalogueCode;
+        if (code && /^[0-9]{7}$/.test(String(code).trim())) {
+          const resolved = String(code).trim();
+          console.log(`[Catalogue Resolver] Detected live catalogue code from __NEXT_DATA__: ${resolved}`);
+          return resolved;
+        }
+      } catch (err) {}
     }
 
-    const catalogueUrl = (inputUrl && inputUrl.includes('tn-catalogue.oriflame.com'))
-      ? inputUrl
+    const m = res.data.match(/["']catalogueCode["']\s*:\s*["']([0-9]{7})["']/i) ||
+              res.data.match(/\/([0-9]{7})-brp/i) ||
+              res.data.match(/cataloguecode=([0-9]{7})/i);
+    if (m && m[1]) {
+      console.log(`[Catalogue Resolver] Detected live catalogue code from regex: ${m[1]}`);
+      return m[1];
+    }
+  } catch (err) {
+    console.warn(`[Catalogue Resolver] digital-catalogue-current fetch note: ${err.message}`);
+  }
+
+  // 2. Probing tn-catalogue.oriflame.com with calendar campaign candidates
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth() + 1;
+  const candidates = [
+    `${y}${String(m).padStart(3, '0')}`,
+    `${y}${String(m + 1 > 12 ? 1 : m + 1).padStart(3, '0')}`,
+    `${y}${String(m - 1 < 1 ? 12 : m - 1).padStart(3, '0')}`
+  ];
+
+  for (const cand of candidates) {
+    try {
+      const testRes = await axios.get(`https://tn-catalogue.oriflame.com/fr-TN/${cand}-brp?HideStandardUI=true&Page=1`, {
+        headers: { 'User-Agent': USER_AGENT },
+        timeout: 5000
+      });
+      if (testRes.status === 200 && testRes.data.includes('window.staticSettings')) {
+        console.log(`[Catalogue Resolver] Verified active catalogue candidate on iPaper: ${cand}`);
+        return cand;
+      }
+    } catch (e) {}
+  }
+
+  // 3. Fallback to current calendar campaign
+  const fallbackCode = `${y}${String(m).padStart(3, '0')}`;
+  console.log(`[Catalogue Resolver] Defaulting to calendar campaign code: ${fallbackCode}`);
+  return fallbackCode;
+}
+
+export async function scrapeFlipbookFromUrl(inputUrl = '', options = {}) {
+  try {
+    let catalogueCode = '';
+    const cleanInput = (inputUrl || '').trim();
+
+    // Auto-resolve latest catalogue if input is empty, 'auto', 'latest', or an obsolete hardcoded code (e.g. 2026008)
+    const isAutoOrEmpty = !cleanInput || cleanInput.toLowerCase() === 'auto' || cleanInput.toLowerCase() === 'latest';
+    const isOldCode = cleanInput.includes('2026008');
+
+    if (isAutoOrEmpty || (isOldCode && !options.forceSpecificCode)) {
+      console.log('[Flipbook Scraper] Resolving latest active Oriflame catalogue edition...');
+      catalogueCode = await resolveLatestCatalogueCode();
+    } else {
+      const codeMatch = cleanInput.match(/cataloguecode=([0-9]+)/i) || cleanInput.match(/\/([0-9]{7})-brp/i);
+      if (codeMatch) {
+        catalogueCode = codeMatch[1];
+      } else {
+        catalogueCode = await resolveLatestCatalogueCode();
+      }
+    }
+
+    const catalogueUrl = (cleanInput && cleanInput.includes('tn-catalogue.oriflame.com') && !isOldCode)
+      ? cleanInput
       : `https://tn-catalogue.oriflame.com/fr-TN/${catalogueCode}-brp?HideStandardUI=true&Page=1`;
 
     console.log(`Fetching live Oriflame digital catalogue from: ${catalogueUrl}`);
@@ -57,13 +143,13 @@ export async function scrapeFlipbookFromUrl(inputUrl = '') {
     const html = pageRes.data;
     const settingsMatch = html.match(/window\.staticSettings\s*=\s*(\{[\s\S]*?\});\s*(?:window\.|$)/);
 
-    let awsUrl = 'https://cdn.ipaper.io/iPaper/Papers/6c400931-2ccc-40e7-b3f5-40f381af161e/';
+    let awsUrl = '';
     let policy = '';
     let totalPages = 148;
     let chunkUrls = {};
-    let paperId = '6c400931-2ccc-40e7-b3f5-40f381af161e';
+    let paperId = '';
     let videoUrl = 'https://files.cdn.ipaper.io/iPaper/Files/b836ce46-8c5b-4fd7-a3c2-20560b99328b.mp4';
-    let pageTitle = `Catalogue ${catalogueCode.slice(-3)} ${catalogueCode.slice(0, 4)} : Superposez vos fragrances`;
+    let pageTitle = `Catalogue Oriflame ${catalogueCode.slice(-3)}/${catalogueCode.slice(0, 4)}`;
 
     if (settingsMatch) {
       const settings = JSON.parse(settingsMatch[1]);
@@ -78,7 +164,7 @@ export async function scrapeFlipbookFromUrl(inputUrl = '') {
       const tokenMatch = html.match(/token=([a-zA-Z0-9_-]+)/);
       const expiresMatch = html.match(/expires=([0-9]+)/);
       if (tokenMatch && expiresMatch) {
-        policy = `token=${tokenMatch[1]}&token_path=%2fiPaper%2fPapers%2f6c400931-2ccc-40e7-b3f5-40f381af161e%2fPages%2f&expires=${expiresMatch[1]}`;
+        policy = `token=${tokenMatch[1]}&token_path=%2fiPaper%2fPapers%2f${paperId || 'pages'}%2fPages%2f&expires=${expiresMatch[1]}`;
       }
     }
 
@@ -268,11 +354,16 @@ export async function scrapeFlipbookFromUrl(inputUrl = '') {
 }
 
 /**
- * Get flipbook data, refreshing if the token is about to expire.
+ * Get flipbook data, refreshing if the token is about to expire or if a newer catalogue edition is released.
  * Priority: Neon DB → local file cache → live scrape.
  */
-export async function getOrRefreshFlipbookData() {
+export async function getOrRefreshFlipbookData(forceRefresh = false) {
   try {
+    if (forceRefresh) {
+      console.log('Force refresh requested: Scraping latest active catalogue...');
+      return await scrapeFlipbookFromUrl();
+    }
+
     // 1. Try Neon first
     let data = await getFlipbookFromDB();
 
@@ -282,14 +373,25 @@ export async function getOrRefreshFlipbookData() {
     }
 
     if (data) {
-      // If token expires within 30 minutes, trigger a background refresh
+      // Check if stored catalogue is an older edition than current calendar campaign
+      const now = new Date();
+      const currentCalendarCode = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(3, '0')}`;
+      const isOutdatedEdition = Boolean(data.catalogueCode && parseInt(data.catalogueCode, 10) < parseInt(currentCalendarCode, 10));
+
+      // Check if token expires within 30 minutes
+      let tokenExpiring = false;
       if (data.expires) {
         const expiresEpochSec = parseInt(data.expires, 10);
         const nowSec = Math.floor(Date.now() / 1000);
         if (expiresEpochSec - nowSec < 1800) {
-          console.log('Flipbook token is expiring soon, refreshing in background...');
-          scrapeFlipbookFromUrl().catch(e => console.warn('Background flipbook refresh note:', e.message));
+          tokenExpiring = true;
         }
+      }
+
+      // If outdated edition or expiring token, trigger automatic background scrape
+      if (isOutdatedEdition || tokenExpiring) {
+        console.log(`[Flipbook Auto-Refresh] Refreshing catalogue (outdated edition: ${isOutdatedEdition}, token expiring: ${tokenExpiring})...`);
+        scrapeFlipbookFromUrl().catch(e => console.warn('Background flipbook refresh note:', e.message));
       }
       return data;
     }
@@ -303,9 +405,10 @@ export async function getOrRefreshFlipbookData() {
 }
 
 /**
- * Synchronous-style getter used by legacy callers — reads local cache only.
+ * Synchronous-style getter used by callers — reads local cache only.
  * Async callers should use getOrRefreshFlipbookData() instead.
  */
 export function getFlipbookData() {
   return readLocalCache();
 }
+

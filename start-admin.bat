@@ -93,6 +93,16 @@ echo.
 :: -----------------------------------------------------------------
 :: STEP 3: Database Selection & Migration Menu
 :: -----------------------------------------------------------------
+:: Load environment variables from .env if present
+if exist "%~dp0.env" (
+    for /f "usebackq tokens=1* delims==" %%A in ("%~dp0.env") do (
+        set "ENV_KEY=%%A"
+        if not "!ENV_KEY:~0,1!"=="#" (
+            set "%%A=%%B"
+        )
+    )
+)
+
 :menu
 echo ================================================================
 echo           SELECTION DE L'ENVIRONNEMENT BASE DE DONNEES
@@ -177,17 +187,8 @@ echo.
 pause
 goto :menu
 
-:: Load environment variables from .env
-if exist "%~dp0.env" (
-    for /f "usebackq tokens=1* delims==" %%A in ("%~dp0.env") do (
-        set "ENV_KEY=%%A"
-        if not "!ENV_KEY:~0,1!"=="#" (
-            set "%%A=%%B"
-        )
-    )
-)
-
 :launch_dev
+set "DATABASE_URL=postgresql://neondb_owner:npg_mT2tafI7Hlzh@ep-spring-salad-axpj634w-pooler.c-4.us-east-2.aws.neon.tech/neondb_dev?sslmode=require"
 if defined DEV_DATABASE_URL (
     set "DATABASE_URL=!DEV_DATABASE_URL!"
 )
@@ -199,14 +200,15 @@ echo ================================================================
 goto :start_server
 
 :launch_prod
+set "DATABASE_URL=postgresql://neondb_owner:npg_mT2tafI7Hlzh@ep-spring-salad-axpj634w-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require"
+if defined PROD_DATABASE_URL (
+    set "DATABASE_URL=!PROD_DATABASE_URL!"
+)
 echo.
 echo ================================================================
 echo   ATTENTION : [BASE DE PRODUCTION EN DIRECT - neondb]
 echo   (Toute action modifiera la boutique publique reelle !)
 echo ================================================================
-if defined PROD_DATABASE_URL (
-    set "DATABASE_URL=!PROD_DATABASE_URL!"
-)
 goto :start_server
 
 :start_server

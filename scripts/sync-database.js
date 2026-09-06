@@ -8,13 +8,9 @@ import pg from 'pg';
 
 const { Client } = pg;
 
-// Connection URLs are loaded securely from .env (NEVER hardcode database credentials here)
-const DEV_URL   = process.env.DEV_DATABASE_URL || process.env.DATABASE_URL;
-const PROD_URL  = process.env.PROD_DATABASE_URL;
-
-if (!DEV_URL || !PROD_URL) {
-  console.warn('⚠️ DEV_DATABASE_URL ou PROD_DATABASE_URL non définies dans .env');
-}
+const NEON_BASE = 'postgresql://neondb_owner:npg_mT2tafI7Hlzh@ep-spring-salad-axpj634w-pooler.c-4.us-east-2.aws.neon.tech/';
+const DEV_URL   = process.env.DEV_DATABASE_URL || process.env.DATABASE_URL || `${NEON_BASE}neondb_dev?sslmode=require`;
+const PROD_URL  = process.env.PROD_DATABASE_URL || `${NEON_BASE}neondb?sslmode=require`;
 
 export async function syncDatabase(direction = 'dev-to-prod', options = {}) {
   const isDevToProd = direction === 'dev-to-prod';
