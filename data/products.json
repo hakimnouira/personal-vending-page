@@ -439,29 +439,29 @@
     "name_fr": "Crème Anti-âge Illuminatrice Diamond Cellular",
     "category": "Skincare",
     "price": 84.9,
-    "original_price": 106.9,
+    "original_price": null,
     "original_catalog_price": 84.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47686%2f47686_1.png&MediaId=21013198&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47686%2f47686_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47686%2f47686_1.png&MediaId=21013198&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47686%2f47686_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47686%2f47686_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47686%2f47686_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47686%2f47686_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47686). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -501,29 +501,29 @@
     "name_fr": "Concentré de Nuit Réparateur Diamond Cellular",
     "category": "Skincare",
     "price": 84.9,
-    "original_price": 106.9,
+    "original_price": null,
     "original_catalog_price": 84.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47687%2f47687_1.png&MediaId=21013207&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47687%2f47687_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47687%2f47687_1.png&MediaId=21013207&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47687%2f47687_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47687%2f47687_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47687%2f47687_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47687%2f47687_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47687). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -594,29 +594,29 @@
     "name_fr": "Déodorant Anti-transpirant à Bille Activelle Extreme",
     "category": "Fragrance",
     "price": 13.9,
-    "original_price": 19.9,
+    "original_price": null,
     "original_catalog_price": 13.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 30,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47689%2f47689_1.png&MediaId=21118455&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47689%2f47689_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47689%2f47689_1.png&MediaId=21118455&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47689%2f47689_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47689%2f47689_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47689%2f47689_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47689%2f47689_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47689). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -30% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -625,91 +625,91 @@
     "name_fr": "Déodorant Anti-transpirant Spray Activelle Extreme",
     "category": "Fragrance",
     "price": 29.9,
-    "original_price": 37.9,
+    "original_price": null,
     "original_catalog_price": 29.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47693%2f47693_1.png&MediaId=21118500&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47693%2f47693_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47693%2f47693_1.png&MediaId=21118500&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47693%2f47693_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47693%2f47693_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47693%2f47693_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47693%2f47693_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47693). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
     "product_id": "47692",
-    "name": "Déodorant Anti-transpirant Spray Invisible Fresh",
-    "name_fr": "Déodorant Anti-transpirant Spray Invisible Fresh",
+    "name": "Déodorant Anti-transpirant Spray Invisible Fresh ",
+    "name_fr": "Déodorant Anti-transpirant Spray Invisible Fresh ",
     "category": "Fragrance",
     "price": 29.9,
-    "original_price": 37.9,
+    "original_price": null,
     "original_catalog_price": 29.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47692%2f47692_1.png&MediaId=21118495&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47692%2f47692_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47692%2f47692_1.png&MediaId=21118495&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47692%2f47692_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47692%2f47692_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47692%2f47692_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47692%2f47692_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47692). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
     "product_id": "47691",
-    "name": "Déodorant Anti-transpirant à Bille Activelle Invisible Fresh",
-    "name_fr": "Déodorant Anti-transpirant à Bille Activelle Invisible Fresh",
+    "name": "Déodorant Anti-transpirant à Bille Activelle Invisible Fresh ",
+    "name_fr": "Déodorant Anti-transpirant à Bille Activelle Invisible Fresh ",
     "category": "Fragrance",
     "price": 13.9,
-    "original_price": 19.9,
+    "original_price": null,
     "original_catalog_price": 13.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 30,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47691%2f47691_1.png&MediaId=21118490&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47691%2f47691_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47691%2f47691_1.png&MediaId=21118490&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47691%2f47691_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47691%2f47691_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47691%2f47691_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47691%2f47691_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47691). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -30% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -748,9 +748,9 @@
     "name": "Eyeliner High Impact THE ONE",
     "name_fr": "Eyeliner High Impact THE ONE",
     "category": "Makeup",
-    "price": 29.9,
+    "price": 23.9,
     "original_price": null,
-    "original_catalog_price": 29.9,
+    "original_catalog_price": 23.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
     "is_promo": false,
@@ -775,51 +775,21 @@
     "in_stock": true,
     "variants": [
       {
-        "product_id": "47707",
-        "name": "Eyeliner High Impact THE ONE - Brown",
-        "shade_name": "Brown",
-        "hex_color": "#674b42",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47707%2f47707_1.png&MediaId=20324610&Version=2",
-        "price": 29.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "47705",
-        "name": "Eyeliner High Impact THE ONE - Grey",
-        "shade_name": "Grey",
-        "hex_color": "#5b6469",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47705%2f47705_1.png&MediaId=20324594&Version=2",
-        "price": 19.9,
-        "original_price": 29.9,
-        "in_stock": true
-      },
-      {
         "product_id": "47704",
         "name": "Eyeliner High Impact THE ONE - Black",
         "shade_name": "Black",
-        "hex_color": "#353535",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47704%2f47704_1.png&MediaId=20324587&Version=2",
+        "hex_color": "#1C1917",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47704%2f47704_1.png&MediaId=20989035&Version=1",
         "price": 23.9,
-        "original_price": 29.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "47706",
-        "name": "Eyeliner High Impact THE ONE - Blue",
-        "shade_name": "Blue",
-        "hex_color": "#185280",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47706%2f47706_1.png&MediaId=20324602&Version=2",
-        "price": 29.9,
         "original_price": null,
         "in_stock": true
       },
       {
-        "product_id": "47708",
-        "name": "Eyeliner High Impact THE ONE - Emerald Green",
-        "shade_name": "Emerald Green",
-        "hex_color": "#2f633f",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47708%2f47708_1.png&MediaId=20324618&Version=2",
+        "product_id": "47707",
+        "name": "Eyeliner High Impact THE ONE - Brown",
+        "shade_name": "Brown",
+        "hex_color": "#573D30",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47707%2f47707_1.png&MediaId=20989035&Version=1",
         "price": 29.9,
         "original_price": null,
         "in_stock": true
@@ -863,29 +833,29 @@
     "name_fr": "Recharge de shampoing Anti Chute DUOLOGI",
     "category": "Haircare",
     "price": 39.9,
-    "original_price": 62.9,
+    "original_price": null,
     "original_catalog_price": 39.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 37,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44958%2f44958_1.png&MediaId=17499683&Version=3",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44958%2f44958_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44958%2f44958_1.png&MediaId=17499683&Version=3",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44958%2f44958_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44958%2f44958_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44958%2f44958_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44958%2f44958_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (44958). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -37% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -894,29 +864,29 @@
     "name_fr": "Shampoing Anti Chute DUOLOGI",
     "category": "Haircare",
     "price": 26.9,
-    "original_price": 39.9,
+    "original_price": null,
     "original_catalog_price": 26.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 33,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44955%2fTN%2f44955_1.png&MediaId=17121198&Version=4",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44955%2f44955_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44955%2fTN%2f44955_1.png&MediaId=17121198&Version=4",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44955%2f44955_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44955%2f44955_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44955%2f44955_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44955%2f44955_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (44955). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -33% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -925,29 +895,29 @@
     "name_fr": "Tonique Anti-Chute pour Cuir Chevelu DUOLOGI",
     "category": "Haircare",
     "price": 37.9,
-    "original_price": 56.9,
+    "original_price": null,
     "original_catalog_price": 37.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 33,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44967%2fTN%2f44967_1.png&MediaId=17121233&Version=5",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44967%2f44967_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44967%2fTN%2f44967_1.png&MediaId=17121233&Version=5",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44967%2f44967_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44967%2f44967_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44967%2f44967_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44967%2f44967_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (44967). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -33% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -979,7 +949,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "41338",
@@ -1111,29 +1081,29 @@
     "name_fr": "Huile Nourrissante pour les Cheveux à l'Huile de Noix de Coco Love Nature",
     "category": "Haircare",
     "price": 26.9,
-    "original_price": 37.9,
+    "original_price": null,
     "original_catalog_price": 26.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 29,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41568%2f41568_1.png&MediaId=15877240&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41568%2f41568_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41568%2f41568_1.png&MediaId=15877240&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41568%2f41568_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41568%2f41568_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41568%2f41568_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41568%2f41568_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (41568). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -29% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -1421,29 +1391,29 @@
     "name_fr": "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
     "category": "Fragrance",
     "price": 49.9,
-    "original_price": 69.9,
+    "original_price": null,
     "original_catalog_price": 49.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 29,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47745%2f47745_1.png&MediaId=21055173&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47745%2f47745_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47745%2f47745_1.png&MediaId=21055173&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47745%2f47745_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47745%2f47745_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47745%2f47745_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47745%2f47745_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47745). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -29% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -1479,33 +1449,33 @@
   },
   {
     "product_id": "47729",
-    "name": "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
-    "name_fr": "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified",
+    "name": "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified ",
+    "name_fr": "Brume Parfumée pour le Corps et les Cheveux All Or Nothing Amplified ",
     "category": "Fragrance",
     "price": 49.9,
-    "original_price": 69.9,
+    "original_price": null,
     "original_catalog_price": 49.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 29,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47729%2f47729_1.png&MediaId=21055163&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47729%2f47729_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47729%2f47729_1.png&MediaId=21055163&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47729%2f47729_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47729%2f47729_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47729%2f47729_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47729%2f47729_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47729). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -29% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -1514,60 +1484,60 @@
     "name_fr": "Eau de Parfum Infinita",
     "category": "Fragrance",
     "price": 89.9,
-    "original_price": 119.9,
+    "original_price": null,
     "original_catalog_price": 89.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 25,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35653%2f35653_1.png&MediaId=13078485&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35653%2f35653_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35653%2f35653_1.png&MediaId=13078485&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35653%2f35653_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35653%2f35653_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35653%2f35653_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35653%2f35653_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (35653). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -25% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
     "product_id": "44315",
-    "name": "Eau de Parfum Infinita My Sunshine",
-    "name_fr": "Eau de Parfum Infinita My Sunshine",
+    "name": " Eau de Parfum Infinita My Sunshine",
+    "name_fr": " Eau de Parfum Infinita My Sunshine",
     "category": "Fragrance",
     "price": 89.9,
-    "original_price": 119.9,
+    "original_price": null,
     "original_catalog_price": 89.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 25,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44315%2f44315_1.png&MediaId=18861278&Version=4",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44315%2f44315_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44315%2f44315_1.png&MediaId=18861278&Version=4",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44315%2f44315_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44315%2f44315_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44315%2f44315_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44315%2f44315_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (44315). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -25% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -1599,7 +1569,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": false
+    "in_stock": true
   },
   {
     "product_id": "38526",
@@ -1696,33 +1666,33 @@
   },
   {
     "product_id": "46801",
-    "name": "Eau De Parfum Divine Dark Velvet",
-    "name_fr": "Eau De Parfum Divine Dark Velvet",
+    "name": "Eau De Parfum Divine Dark Velvet ",
+    "name_fr": "Eau De Parfum Divine Dark Velvet ",
     "category": "Fragrance",
     "price": 99.9,
-    "original_price": 119.9,
+    "original_price": null,
     "original_catalog_price": 99.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 17,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46801%2f46801_1.png&MediaId=20242671&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46801%2f46801_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46801%2f46801_1.png&MediaId=20242671&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46801%2f46801_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46801%2f46801_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46801%2f46801_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46801%2f46801_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (46801). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -17% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -1886,29 +1856,29 @@
     "name_fr": "Eau de Toilette Glacier Rock",
     "category": "Fragrance",
     "price": 62.9,
-    "original_price": 89.9,
+    "original_price": null,
     "original_catalog_price": 62.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 30,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42816%2f42816_1.png&MediaId=14508315&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42816%2f42816_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42816%2f42816_1.png&MediaId=14508315&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42816%2f42816_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42816%2f42816_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42816%2f42816_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42816%2f42816_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (42816). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -30% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -1948,29 +1918,29 @@
     "name_fr": "Eau de Toilette Dark Wood Men's Collection",
     "category": "Fragrance",
     "price": 62.9,
-    "original_price": 89.9,
+    "original_price": null,
     "original_catalog_price": 62.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 30,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42518%2f42518_1.png&MediaId=17116360&Version=7",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42518%2f42518_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42518%2f42518_1.png&MediaId=17116360&Version=7",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42518%2f42518_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42518%2f42518_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42518%2f42518_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42518%2f42518_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (42518). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -30% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -2006,64 +1976,64 @@
   },
   {
     "product_id": "47502",
-    "name": "Eau de Parfum Giordani Gold Mister Giordani Aqua",
-    "name_fr": "Eau de Parfum Giordani Gold Mister Giordani Aqua",
-    "category": "Fragrance",
+    "name": "GG Mister Giordani Aqua",
+    "name_fr": "GG Mister Giordani Aqua",
+    "category": "Skincare",
     "price": 89.9,
-    "original_price": 119.9,
+    "original_price": null,
     "original_catalog_price": 89.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 25,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47502%2f47502_1.png&MediaId=19717478&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47502%2f47502_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47502%2f47502_1.png&MediaId=19717478&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47502%2f47502_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47502%2f47502_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47502%2f47502_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47502%2f47502_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47502). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -25% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
     "product_id": "46795",
-    "name": "Eau de Toilette Eclat Homme Weekend Azur",
-    "name_fr": "Eau de Toilette Eclat Homme Weekend Azur",
+    "name": "Eau de Toilette Eclat Hamme Weekend Azur",
+    "name_fr": "Eau de Toilette Eclat Hamme Weekend Azur",
     "category": "Fragrance",
     "price": 89.9,
-    "original_price": 119.9,
+    "original_price": null,
     "original_catalog_price": 89.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 25,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46795%2f46795_1.png&MediaId=19936105&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46795%2f46795_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46795%2f46795_1.png&MediaId=19936105&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46795%2f46795_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46795%2f46795_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46795%2f46795_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46795%2f46795_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (46795). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -25% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -2103,29 +2073,29 @@
     "name_fr": "Mousse 2 en 1 pour le rasage et le nettoyage North for Men x Giordani Gold",
     "category": "Skincare",
     "price": 29.9,
-    "original_price": 37.9,
+    "original_price": null,
     "original_catalog_price": 29.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47270%2f47270_1.png&MediaId=20414635&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47270%2f47270_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47270%2f47270_1.png&MediaId=20414635&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47270%2f47270_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47270%2f47270_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47270%2f47270_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47270%2f47270_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47270). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -2134,29 +2104,29 @@
     "name_fr": "Gel après-rasage North for Men x Giordani Gold",
     "category": "Skincare",
     "price": 16.9,
-    "original_price": 24.9,
+    "original_price": null,
     "original_catalog_price": 16.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 32,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47271%2f47271_1.png&MediaId=20414642&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47271%2f47271_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47271%2f47271_1.png&MediaId=20414642&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47271%2f47271_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47271%2f47271_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47271%2f47271_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47271%2f47271_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47271). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -32% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -2312,7 +2282,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "38497",
@@ -2374,7 +2344,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": false
+    "in_stock": true
   },
   {
     "product_id": "42499",
@@ -2498,7 +2468,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": false
+    "in_stock": true
   },
   {
     "product_id": "46047",
@@ -2936,65 +2906,95 @@
   },
   {
     "product_id": "47842",
-    "name": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy",
-    "name_fr": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy",
+    "name": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy Fresh Pink",
+    "name_fr": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy Fresh Pink",
     "category": "Skincare",
     "price": 62.9,
-    "original_price": 79.9,
+    "original_price": null,
     "original_catalog_price": 62.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47842%2f47842_1.png&MediaId=21035451&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47842%2f47842_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47842%2f47842_1.png&MediaId=21035451&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47842%2f47842_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47842%2f47842_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47842%2f47842_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47842%2f47842_4.png&MediaId=20989035&Version=1"
     ],
-    "variants": [
-      {
-        "product_id": "47842",
-        "name": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy - Fresh Pink",
-        "shade_name": "Fresh Pink",
-        "hex_color": "#E0203A",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47842%2f47842_1.png&MediaId=20989035&Version=1",
-        "price": 62.9,
-        "original_price": 79.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "47844",
-        "name": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy - Berry Spritz",
-        "shade_name": "Berry Spritz",
-        "hex_color": "#6A0F4A",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47844%2f47844_1.png&MediaId=20989035&Version=1",
-        "price": 62.9,
-        "original_price": 79.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "47843",
-        "name": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy - Peach Splash",
-        "shade_name": "Peach Splash",
-        "hex_color": "#8E0F1F",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47843%2f47843_1.png&MediaId=20989035&Version=1",
-        "price": 62.9,
-        "original_price": 79.9,
-        "in_stock": true
-      }
-    ],
     "description": "Produit officiel Oriflame Tunisie (47842). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "47843",
+    "name": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy Peach Splash",
+    "name_fr": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy Peach Splash",
+    "category": "Skincare",
+    "price": 62.9,
+    "original_price": null,
+    "original_catalog_price": 62.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47843%2f47843_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47843%2f47843_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47843%2f47843_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47843%2f47843_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47843%2f47843_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (47843). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "47844",
+    "name": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy Berry Spritz",
+    "name_fr": "Gelée Lèvres & Joues en Stick WAUNT Blush Worthy Berry Spritz",
+    "category": "Skincare",
+    "price": 62.9,
+    "original_price": null,
+    "original_catalog_price": 62.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47844%2f47844_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47844%2f47844_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47844%2f47844_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47844%2f47844_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47844%2f47844_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (47844). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -3402,33 +3402,33 @@
   },
   {
     "product_id": "45243",
-    "name": "Crème Légère OPT Optimals Even Out",
-    "name_fr": "Crème Légère OPT Optimals Even Out",
+    "name": "Crème Légère OPT Optimals Even Out ",
+    "name_fr": "Crème Légère OPT Optimals Even Out ",
     "category": "Skincare",
     "price": 47.9,
-    "original_price": 69.9,
+    "original_price": null,
     "original_catalog_price": 47.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 31,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45243%2f45243_1.png&MediaId=20200741&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45243%2f45243_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45243%2f45243_1.png&MediaId=20200741&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45243%2f45243_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45243%2f45243_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45243%2f45243_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45243%2f45243_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (45243). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -31% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -3437,60 +3437,60 @@
     "name_fr": "Crème Riche Opt Optimals Even Out",
     "category": "Skincare",
     "price": 47.9,
-    "original_price": 69.9,
+    "original_price": null,
     "original_catalog_price": 47.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 31,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45245%2f45245_1.png&MediaId=20200747&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45245%2f45245_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45245%2f45245_1.png&MediaId=20200747&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45245%2f45245_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45245%2f45245_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45245%2f45245_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45245%2f45245_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (45245). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -31% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
     "product_id": "45248",
-    "name": "Sérum Opt Optimals Even Out",
-    "name_fr": "Sérum Opt Optimals Even Out",
+    "name": "Sérum Opt Optimals Even Out ",
+    "name_fr": "Sérum Opt Optimals Even Out ",
     "category": "Skincare",
     "price": 59.9,
-    "original_price": 75.9,
+    "original_price": null,
     "original_catalog_price": 59.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45248%2f45248_1.png&MediaId=20200753&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45248%2f45248_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45248%2f45248_1.png&MediaId=20200753&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45248%2f45248_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45248%2f45248_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45248%2f45248_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f45248%2f45248_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (45248). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -3592,29 +3592,29 @@
     "name_fr": "Crème Légère Opt Optimals Age Revive",
     "category": "Skincare",
     "price": 57.9,
-    "original_price": 72.9,
+    "original_price": null,
     "original_catalog_price": 57.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47682%2f47682_1.png&MediaId=20703008&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47682%2f47682_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47682%2f47682_1.png&MediaId=20703008&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47682%2f47682_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47682%2f47682_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47682%2f47682_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47682%2f47682_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47682). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -3623,29 +3623,29 @@
     "name_fr": "Crème Riche Opt Optimals Age Revive",
     "category": "Skincare",
     "price": 57.9,
-    "original_price": 72.9,
+    "original_price": null,
     "original_catalog_price": 57.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47683%2f47683_1.png&MediaId=20703016&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47683%2f47683_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47683%2f47683_1.png&MediaId=20703016&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47683%2f47683_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47683%2f47683_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47683%2f47683_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47683%2f47683_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47683). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -4925,12 +4925,12 @@
     "name_fr": "Écran Sun Zone IP 50 Élevé - Protection UV Spéciale pour le Visage et les Zones Exposées",
     "category": "Skincare",
     "price": 54.9,
-    "original_price": 89.9,
+    "original_price": null,
     "original_catalog_price": 54.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 39,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
     "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
     "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f23378%2f23378_1.png&MediaId=20989035&Version=1",
@@ -4943,7 +4943,7 @@
     "description": "Produit officiel Oriflame Tunisie (23378). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
       "100% Produit authentique certifié par Mouna Nouira",
-      "Offre promotionnelle exclusive du catalogue (-39%)",
+      "Formule concentrée haute performance",
       "Testé et approuvé sous contrôle dermatologique"
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
@@ -5727,33 +5727,33 @@
   },
   {
     "product_id": "46872",
-    "name": "Base pour Ongles – Tenue & Adhérence",
-    "name_fr": "Base pour Ongles – Tenue & Adhérence",
+    "name": "Base pour Ongles  Tenue & Adhérence",
+    "name_fr": "Base pour Ongles  Tenue & Adhérence",
     "category": "Skincare",
     "price": 23.9,
-    "original_price": 29.9,
+    "original_price": null,
     "original_catalog_price": 23.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 20,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46872%2f46872_1.png&MediaId=20989036&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46872%2f46872_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46872%2f46872_1.png&MediaId=20989036&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46872%2f46872_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46872%2f46872_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46872%2f46872_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46872%2f46872_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (46872). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -20% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -5762,29 +5762,29 @@
     "name_fr": "Sérum pour les Ongles - Protection et Soin",
     "category": "Skincare",
     "price": 21.9,
-    "original_price": 29.9,
+    "original_price": null,
     "original_catalog_price": 21.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 27,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47736%2f47736_1.png&MediaId=20989044&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47736%2f47736_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47736%2f47736_1.png&MediaId=20989044&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47736%2f47736_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47736%2f47736_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47736%2f47736_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47736%2f47736_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47736). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -27% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -5793,29 +5793,29 @@
     "name_fr": "Top coat - volume & brillance",
     "category": "Makeup",
     "price": 21.9,
-    "original_price": 29.9,
+    "original_price": null,
     "original_catalog_price": 21.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 27,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46873%2f46873_1.png&MediaId=20989035&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46873%2f46873_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46873%2f46873_1.png&MediaId=20989035&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46873%2f46873_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46873%2f46873_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46873%2f46873_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46873%2f46873_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (46873). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -27% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -6258,82 +6258,82 @@
     "name_fr": "Anti-Cernes Perfecteur Tout-en-Un THE ONE",
     "category": "Makeup",
     "price": 27.9,
-    "original_price": 34.9,
+    "original_price": null,
     "original_catalog_price": 27.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 20,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20700760&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20700760&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_4.png&MediaId=20989035&Version=1"
     ],
+    "description": "Produit officiel Oriflame Tunisie (47739). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true,
     "variants": [
       {
-        "product_id": "47742",
-        "name": "Anti-Cernes Perfecteur Tout-en-Un THE ONE - Green",
-        "shade_name": "Green",
-        "hex_color": "#E0E9CF",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47742%2f47742_1.png&MediaId=20870453&Version=1",
-        "price": 27.9,
-        "original_price": 34.9,
-        "in_stock": true
-      },
-      {
         "product_id": "47739",
-        "name": "Anti-Cernes Perfecteur Tout-en-Un THE ONE - Light Fair",
-        "shade_name": "Light Fair",
-        "hex_color": "#F6CBAE",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20700760&Version=1",
+        "name": "Anti-Cernes Perfecteur Tout-en-Un THE ONE - Fair Light",
+        "shade_name": "Fair Light",
+        "hex_color": "#EED9C7",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47739%2f47739_1.png&MediaId=20989035&Version=1",
         "price": 27.9,
-        "original_price": 34.9,
+        "original_price": null,
         "in_stock": true
       },
       {
         "product_id": "47740",
         "name": "Anti-Cernes Perfecteur Tout-en-Un THE ONE - Medium Light",
         "shade_name": "Medium Light",
-        "hex_color": "#EEC0A8",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47740%2f47740_1.png&MediaId=20702424&Version=1",
+        "hex_color": "#E6C4A7",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47740%2f47740_1.png&MediaId=20989035&Version=1",
         "price": 27.9,
-        "original_price": 34.9,
+        "original_price": null,
         "in_stock": true
       },
       {
         "product_id": "47741",
         "name": "Anti-Cernes Perfecteur Tout-en-Un THE ONE - Deep Light",
         "shade_name": "Deep Light",
-        "hex_color": "#DFA784",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47741%2f47741_1.png&MediaId=20702524&Version=1",
+        "hex_color": "#D8B091",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47741%2f47741_1.png&MediaId=20989035&Version=1",
         "price": 27.9,
-        "original_price": 34.9,
+        "original_price": null,
+        "in_stock": true
+      },
+      {
+        "product_id": "47742",
+        "name": "Anti-Cernes Perfecteur Tout-en-Un THE ONE - Green Neutralizer",
+        "shade_name": "Green Neutralizer",
+        "hex_color": "#C2D5C0",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47742%2f47742_1.png&MediaId=20989035&Version=1",
+        "price": 27.9,
+        "original_price": null,
         "in_stock": true
       },
       {
         "product_id": "47743",
-        "name": "Anti-Cernes Perfecteur Tout-en-Un THE ONE - Peach",
-        "shade_name": "Peach",
-        "hex_color": "#EAA38F",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47743%2f47743_1.png&MediaId=20702660&Version=1",
+        "name": "Anti-Cernes Perfecteur Tout-en-Un THE ONE - Peach Brightener",
+        "shade_name": "Peach Brightener",
+        "hex_color": "#F0C7A9",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47743%2f47743_1.png&MediaId=20989035&Version=1",
         "price": 27.9,
-        "original_price": 34.9,
+        "original_price": null,
         "in_stock": true
       }
-    ],
-    "description": "Produit officiel Oriflame Tunisie (47739). Formule haute qualité aux extraits scandinaves bienfaisants.",
-    "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -20% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
-    ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
-    "in_stock": true
+    ]
   },
   {
     "product_id": "36133",
@@ -6461,33 +6461,33 @@
   },
   {
     "product_id": "47168",
-    "name": "Mascara Wonder Lash XXL THE ONE",
-    "name_fr": "Mascara Wonder Lash XXL THE ONE",
+    "name": "Mascara Wonder Lash XXL THE ONE  Black",
+    "name_fr": "Mascara Wonder Lash XXL THE ONE  Black",
     "category": "Makeup",
     "price": 29.9,
-    "original_price": 47.9,
+    "original_price": null,
     "original_catalog_price": 29.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 38,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47168%2f47168_1.png&MediaId=20691662&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47168%2f47168_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47168%2f47168_1.png&MediaId=20691662&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47168%2f47168_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47168%2f47168_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47168%2f47168_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47168%2f47168_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (47168). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -38% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -6522,136 +6522,313 @@
     "in_stock": false
   },
   {
-    "product_id": "46929",
-    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited",
-    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited",
+    "product_id": "46918",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Bronze",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Bronze",
     "category": "Makeup",
     "price": 29.9,
-    "original_price": 37.9,
+    "original_price": null,
     "original_catalog_price": 29.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46929%2f46929_1.png&MediaId=20181760&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46918%2f46918_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46929%2f46929_1.png&MediaId=20181760&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46918%2f46918_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46918%2f46918_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46918%2f46918_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46918%2f46918_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46918). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46919",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Sand",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Sand",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46919%2f46919_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46919%2f46919_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46919%2f46919_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46919%2f46919_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46919%2f46919_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46919). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46922",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Rose",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Rose",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46922%2f46922_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46922%2f46922_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46922%2f46922_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46922%2f46922_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46922%2f46922_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46922). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46923",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Frosty Charcoal",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Frosty Charcoal",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46923%2f46923_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46923%2f46923_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46923%2f46923_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46923%2f46923_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46923%2f46923_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46923). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46924",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Lavender",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Lavender",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46924%2f46924_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46924%2f46924_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46924%2f46924_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46924%2f46924_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46924%2f46924_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46924). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46925",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Turquoise",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Turquoise",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46925%2f46925_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46925%2f46925_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46925%2f46925_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46925%2f46925_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46925%2f46925_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46925). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46927",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Nude Beige",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Nude Beige",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46927%2f46927_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46927%2f46927_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46927%2f46927_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46927%2f46927_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46927%2f46927_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46927). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46928",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Deep Brown",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Deep Brown",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46928%2f46928_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46928%2f46928_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46928%2f46928_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46928%2f46928_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46928%2f46928_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46928). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46929",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Burgundy",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Burgundy",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46929%2f46929_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46929%2f46929_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46929%2f46929_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46929%2f46929_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46929%2f46929_4.png&MediaId=20989035&Version=1"
     ],
-    "variants": [
-      {
-        "product_id": "46918",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Bronze",
-        "shade_name": "Bronze",
-        "hex_color": "#9F897A",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46918%2f46918_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46919",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Sand",
-        "shade_name": "Sand",
-        "hex_color": "#C8AC98",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46919%2f46919_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46924",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Lavender",
-        "shade_name": "Lavender",
-        "hex_color": "#34436E",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46924%2f46924_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46925",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Turquoise",
-        "shade_name": "Turquoise",
-        "hex_color": "#25798A",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46925%2f46925_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46928",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Matte Deep Brown",
-        "shade_name": "Matte Deep Brown",
-        "hex_color": "#7C513D",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46928%2f46928_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46929",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Matte Burgundy",
-        "shade_name": "Matte Burgundy",
-        "hex_color": "#5B232F",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46929%2f46929_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46922",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Rose",
-        "shade_name": "Rose",
-        "hex_color": "#B7856D",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46922%2f46922_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46923",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Frosty Charcoal",
-        "shade_name": "Frosty Charcoal",
-        "hex_color": "#2D3535",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46923%2f46923_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46927",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Matte Nude Beige",
-        "shade_name": "Matte Nude Beige",
-        "hex_color": "#CCA693",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46927%2f46927_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "46930",
-        "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited - Matte Cinnamon",
-        "shade_name": "Matte Cinnamon",
-        "hex_color": "#A97C5E",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46930%2f46930_1.png&MediaId=20989035&Version=1",
-        "price": 29.9,
-        "original_price": 37.9,
-        "in_stock": true
-      }
-    ],
     "description": "Produit officiel Oriflame Tunisie (46929). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46930",
+    "name": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Cinnamon",
+    "name_fr": "Ombre à Paupières Résistant à l'Eau THE ONE Colour Unlimited Matte Cinnamon",
+    "category": "Makeup",
+    "price": 29.9,
+    "original_price": null,
+    "original_catalog_price": 29.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46930%2f46930_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46930%2f46930_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46930%2f46930_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46930%2f46930_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46930%2f46930_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46930). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -8016,7 +8193,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "46935",
@@ -8456,8 +8633,8 @@
         "product_id": "46938",
         "name": "Illuminateur Multi-Usages THE ONE - Nude Optimism",
         "shade_name": "Nude Optimism",
-        "hex_color": "#e1a590",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46938%2f46938_1.png&MediaId=20026184&Version=1",
+        "hex_color": "#D4A373",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46938%2f46938_1.png&MediaId=20989035&Version=1",
         "price": 79.9,
         "original_price": null,
         "in_stock": true
@@ -8466,8 +8643,8 @@
         "product_id": "46939",
         "name": "Illuminateur Multi-Usages THE ONE - Coral Confidence",
         "shade_name": "Coral Confidence",
-        "hex_color": "#E27669",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46939%2f46939_1.png&MediaId=20026187&Version=1",
+        "hex_color": "#E76F51",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46939%2f46939_1.png&MediaId=20989035&Version=1",
         "price": 79.9,
         "original_price": null,
         "in_stock": true
@@ -8476,8 +8653,8 @@
         "product_id": "46940",
         "name": "Illuminateur Multi-Usages THE ONE - Pink Pride",
         "shade_name": "Pink Pride",
-        "hex_color": "#EA3C5A",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46940%2f46940_1.png&MediaId=20026191&Version=1",
+        "hex_color": "#E56B6F",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46940%2f46940_1.png&MediaId=20989035&Version=1",
         "price": 79.9,
         "original_price": null,
         "in_stock": true
@@ -8486,8 +8663,8 @@
         "product_id": "46941",
         "name": "Illuminateur Multi-Usages THE ONE - Grape Attraction",
         "shade_name": "Grape Attraction",
-        "hex_color": "#AB6454",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46941%2f46941_1.png&MediaId=20026195&Version=1",
+        "hex_color": "#B56576",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46941%2f46941_1.png&MediaId=20989035&Version=1",
         "price": 79.9,
         "original_price": null,
         "in_stock": true
@@ -8681,21 +8858,11 @@
     "in_stock": true,
     "variants": [
       {
-        "product_id": "46889",
-        "name": "Feutre à lèvres Stain & Stay THE ONE - Melon",
-        "shade_name": "Melon",
-        "hex_color": "#FE8988",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46889%2f46889_1.png&MediaId=20031064&Version=1",
-        "price": 62.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "46890",
-        "name": "Feutre à lèvres Stain & Stay THE ONE - Rose",
-        "shade_name": "Rose",
-        "hex_color": "#DE7B90",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46890%2f46890_1.png&MediaId=20031068&Version=1",
+        "product_id": "46888",
+        "name": "Feutre à lèvres Stain & Stay THE ONE - Nude",
+        "shade_name": "Nude",
+        "hex_color": "#AC6358",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46888%2f46888_1.png&MediaId=20989035&Version=1",
         "price": 62.9,
         "original_price": null,
         "in_stock": true
@@ -8704,43 +8871,137 @@
         "product_id": "46893",
         "name": "Feutre à lèvres Stain & Stay THE ONE - Brick",
         "shade_name": "Brick",
-        "hex_color": "#AB403A",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46893%2f46893_1.png&MediaId=20031083&Version=1",
-        "price": 62.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "46888",
-        "name": "Feutre à lèvres Stain & Stay THE ONE - Nude",
-        "shade_name": "Nude",
-        "hex_color": "#D89A93",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46888%2f46888_1.png&MediaId=20030909&Version=1",
-        "price": 62.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "46891",
-        "name": "Feutre à lèvres Stain & Stay THE ONE - Chili",
-        "shade_name": "Chili",
-        "hex_color": "#E75C6B",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46891%2f46891_1.png&MediaId=20031072&Version=1",
-        "price": 62.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "46892",
-        "name": "Feutre à lèvres Stain & Stay THE ONE - Cherry",
-        "shade_name": "Cherry",
-        "hex_color": "#B4385D",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46892%2f46892_1.png&MediaId=20031076&Version=1",
+        "hex_color": "#8B2C2F",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46893%2f46893_1.png&MediaId=20989035&Version=1",
         "price": 62.9,
         "original_price": null,
         "in_stock": true
       }
     ]
+  },
+  {
+    "product_id": "46889",
+    "name": "Feutre à lèvres Stain & Stay THE ONE Melon",
+    "name_fr": "Feutre à lèvres Stain & Stay THE ONE Melon",
+    "category": "Makeup",
+    "price": 62.9,
+    "original_price": null,
+    "original_catalog_price": 62.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46889%2f46889_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46889%2f46889_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46889%2f46889_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46889%2f46889_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46889%2f46889_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46889). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46890",
+    "name": "Feutre à lèvres Stain & Stay THE ONE Rose",
+    "name_fr": "Feutre à lèvres Stain & Stay THE ONE Rose",
+    "category": "Makeup",
+    "price": 62.9,
+    "original_price": null,
+    "original_catalog_price": 62.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46890%2f46890_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46890%2f46890_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46890%2f46890_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46890%2f46890_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46890%2f46890_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46890). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46891",
+    "name": "Feutre à lèvres Stain & Stay THE ONE Chili",
+    "name_fr": "Feutre à lèvres Stain & Stay THE ONE Chili",
+    "category": "Makeup",
+    "price": 62.9,
+    "original_price": null,
+    "original_catalog_price": 62.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46891%2f46891_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46891%2f46891_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46891%2f46891_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46891%2f46891_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46891%2f46891_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46891). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
+  },
+  {
+    "product_id": "46892",
+    "name": "Feutre à lèvres Stain & Stay THE ONE Cherry",
+    "name_fr": "Feutre à lèvres Stain & Stay THE ONE Cherry",
+    "category": "Makeup",
+    "price": 62.9,
+    "original_price": null,
+    "original_catalog_price": 62.9,
+    "company_discount_applied": false,
+    "company_discount_percent": 0,
+    "is_promo": false,
+    "discount_percent": 0,
+    "size": "Format Standard",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46892%2f46892_1.png&MediaId=20989035&Version=1",
+    "images": [
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46892%2f46892_1.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46892%2f46892_2.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46892%2f46892_3.png&MediaId=20989035&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46892%2f46892_4.png&MediaId=20989035&Version=1"
+    ],
+    "description": "Produit officiel Oriflame Tunisie (46892). Formule haute qualité aux extraits scandinaves bienfaisants.",
+    "benefits": [
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
+    ],
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+    "in_stock": true
   },
   {
     "product_id": "43347",
@@ -9053,51 +9314,21 @@
     "in_stock": true,
     "variants": [
       {
-        "product_id": "46908",
-        "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Porcelain",
-        "shade_name": "Porcelain",
-        "hex_color": "#EED2BC",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46908%2f46908_1.png&MediaId=19738370&Version=1",
-        "price": 67.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "46910",
-        "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Light Rose",
-        "shade_name": "Light Rose",
-        "hex_color": "#E7CAB8",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46910%2f46910_1.png&MediaId=19738415&Version=1",
-        "price": 67.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "46912",
-        "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Soft Sand",
-        "shade_name": "Soft Sand",
-        "hex_color": "#D4B397",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46912%2f46912_1.png&MediaId=19777333&Version=1",
-        "price": 67.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "46913",
-        "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Beige Warm",
-        "shade_name": "Beige Warm",
-        "hex_color": "#C9A689",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46913%2f46913_1.png&MediaId=19778718&Version=2",
-        "price": 67.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
         "product_id": "46907",
         "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Vanilla",
         "shade_name": "Vanilla",
-        "hex_color": "#F3DFCC",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46907%2f46907_1.png&MediaId=19738350&Version=1",
+        "hex_color": "#EED3BE",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46907%2f46907_1.png&MediaId=20989035&Version=1",
+        "price": 67.9,
+        "original_price": null,
+        "in_stock": true
+      },
+      {
+        "product_id": "46908",
+        "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Porcelain",
+        "shade_name": "Porcelain",
+        "hex_color": "#E8C5AC",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46908%2f46908_1.png&MediaId=20989035&Version=1",
         "price": 67.9,
         "original_price": null,
         "in_stock": true
@@ -9106,8 +9337,38 @@
         "product_id": "46909",
         "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Marble",
         "shade_name": "Marble",
-        "hex_color": "#E6CBB0",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46909%2f46909_1.png&MediaId=19738398&Version=1",
+        "hex_color": "#E6BC9F",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46909%2f46909_1.png&MediaId=20989035&Version=1",
+        "price": 67.9,
+        "original_price": null,
+        "in_stock": true
+      },
+      {
+        "product_id": "46910",
+        "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Light Rose",
+        "shade_name": "Light Rose",
+        "hex_color": "#DFA78D",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46910%2f46910_1.png&MediaId=20989035&Version=1",
+        "price": 67.9,
+        "original_price": null,
+        "in_stock": true
+      },
+      {
+        "product_id": "46912",
+        "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Soft Sand",
+        "shade_name": "Soft Sand",
+        "hex_color": "#D29B7F",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46912%2f46912_1.png&MediaId=20989035&Version=1",
+        "price": 67.9,
+        "original_price": null,
+        "in_stock": true
+      },
+      {
+        "product_id": "46913",
+        "name": "Fond de Teint The ONE Everlasting Sync Stress-Free - Beige Warm",
+        "shade_name": "Beige Warm",
+        "hex_color": "#C58C71",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46913%2f46913_1.png&MediaId=20989035&Version=1",
         "price": 67.9,
         "original_price": null,
         "in_stock": true
@@ -10073,7 +10334,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "43154",
@@ -10104,7 +10365,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "43253",
@@ -10135,7 +10396,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "41312",
@@ -10197,7 +10458,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "47890",
@@ -10290,7 +10551,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "47536",
@@ -10321,7 +10582,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "47537",
@@ -10352,7 +10613,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "47538",
@@ -10418,33 +10679,33 @@
   },
   {
     "product_id": "44951",
-    "name": "Shampooing Anti Pelliculaire Purifiant DUOLOGI",
-    "name_fr": "Shampooing Anti Pelliculaire Purifiant DUOLOGI",
+    "name": "Shampooing Anti Pelliculaire Purifiant DUOLOGI ",
+    "name_fr": "Shampooing Anti Pelliculaire Purifiant DUOLOGI ",
     "category": "Haircare",
     "price": 27.9,
-    "original_price": 39.9,
+    "original_price": null,
     "original_catalog_price": 27.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 30,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44951%2fTN%2f44951_1.png&MediaId=17121192&Version=5",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44951%2f44951_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44951%2fTN%2f44951_1.png&MediaId=17121192&Version=5",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44951%2f44951_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44951%2f44951_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44951%2f44951_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44951%2f44951_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (44951). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -30% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -10484,29 +10745,29 @@
     "name_fr": "Masque pour les Cheveux DUOLOGI Intense Repair",
     "category": "Haircare",
     "price": 29.9,
-    "original_price": 42.9,
+    "original_price": null,
     "original_catalog_price": 29.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 30,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44963%2fTN%2f44963_1.png&MediaId=17121221&Version=3",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44963%2f44963_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44963%2fTN%2f44963_1.png&MediaId=17121221&Version=3",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44963%2f44963_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44963%2f44963_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44963%2f44963_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44963%2f44963_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (44963). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -30% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -10538,7 +10799,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "44957",
@@ -10546,29 +10807,29 @@
     "name_fr": "Recharge de shampoing Intense Repair DUOLOGI",
     "category": "Haircare",
     "price": 42.9,
-    "original_price": 62.9,
+    "original_price": null,
     "original_catalog_price": 42.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 32,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44957%2f44957_1.png&MediaId=17499680&Version=3",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44957%2f44957_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44957%2f44957_1.png&MediaId=17499680&Version=3",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44957%2f44957_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44957%2f44957_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44957%2f44957_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f44957%2f44957_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (44957). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -32% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -10608,29 +10869,29 @@
     "name_fr": "Dentifrice pour enfants Optifresh Fraise Douce",
     "category": "Skincare",
     "price": 12.9,
-    "original_price": 17.9,
+    "original_price": null,
     "original_catalog_price": 12.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 28,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49130%2f49130_1.png&MediaId=20702743&Version=2",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49130%2f49130_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49130%2f49130_1.png&MediaId=20702743&Version=2",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49130%2f49130_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49130%2f49130_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49130%2f49130_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49130%2f49130_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (49130). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -28% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -10724,7 +10985,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "38601",
@@ -10755,7 +11016,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "38602",
@@ -10786,7 +11047,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "46964",
@@ -12026,7 +12287,7 @@
     ],
     "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
     "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
-    "in_stock": true
+    "in_stock": false
   },
   {
     "product_id": "49126",
@@ -12034,215 +12295,91 @@
     "name_fr": "Dentifrice Optifresh Sensitive",
     "category": "Skincare",
     "price": 12.9,
-    "original_price": 20.9,
+    "original_price": null,
     "original_catalog_price": 12.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 38,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49126%2f49126_1.png&MediaId=20702711&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49126%2f49126_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49126%2f49126_1.png&MediaId=20702711&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49126%2f49126_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49126%2f49126_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49126%2f49126_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49126%2f49126_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (49126). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -38% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
     "product_id": "49127",
-    "name": "Dentifrice Optifresh Pro white",
-    "name_fr": "Dentifrice Optifresh Pro white",
+    "name": "Dentifrice Optifresh Pro white  ",
+    "name_fr": "Dentifrice Optifresh Pro white  ",
     "category": "Skincare",
     "price": 12.9,
-    "original_price": 20.9,
+    "original_price": null,
     "original_catalog_price": 12.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 38,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49127%2f49127_1.png&MediaId=20702719&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49127%2f49127_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49127%2f49127_1.png&MediaId=20702719&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49127%2f49127_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49127%2f49127_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49127%2f49127_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49127%2f49127_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (49127). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -38% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
     "product_id": "49129",
-    "name": "Dentifrice Optifresh Natural Oils",
-    "name_fr": "Dentifrice Optifresh Natural Oils",
+    "name": "Dentifrice Optifresh Natural Oils ",
+    "name_fr": "Dentifrice Optifresh Natural Oils ",
     "category": "Skincare",
     "price": 12.9,
-    "original_price": 20.9,
+    "original_price": null,
     "original_catalog_price": 12.9,
     "company_discount_applied": false,
     "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 38,
+    "is_promo": false,
+    "discount_percent": 0,
     "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49129%2f49129_1.png&MediaId=20702735&Version=1",
+    "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
+    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49129%2f49129_1.png&MediaId=20989035&Version=1",
     "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49129%2f49129_1.png&MediaId=20702735&Version=1",
+      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49129%2f49129_1.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49129%2f49129_2.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49129%2f49129_3.png&MediaId=20989035&Version=1",
       "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f49129%2f49129_4.png&MediaId=20989035&Version=1"
     ],
     "description": "Produit officiel Oriflame Tunisie (49129). Formule haute qualité aux extraits scandinaves bienfaisants.",
     "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -38% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
+      "100% Produit authentique certifié par Mouna Nouira",
+      "Formule concentrée haute performance",
+      "Testé et approuvé sous contrôle dermatologique"
     ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
-    "in_stock": true
-  },
-  {
-    "product_id": "47760",
-    "name": "Déodorant Parfumé anti-transpirant à bille Giordani Gold Woman",
-    "name_fr": "Déodorant Parfumé anti-transpirant à bille Giordani Gold Woman",
-    "category": "Fragrance",
-    "price": 21.9,
-    "original_price": null,
-    "original_catalog_price": 21.9,
-    "company_discount_applied": false,
-    "company_discount_percent": 0,
-    "is_promo": false,
-    "discount_percent": 0,
-    "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47760%2f47760_1.png&MediaId=20378982&Version=4",
-    "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47760%2f47760_1.png&MediaId=20378982&Version=4",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47760%2f47760_2.png&MediaId=20989035&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47760%2f47760_3.png&MediaId=20989035&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47760%2f47760_4.png&MediaId=20989035&Version=1"
-    ],
-    "description": "Produit officiel Oriflame Tunisie (47760). Formule haute qualité aux extraits scandinaves bienfaisants.",
-    "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Formule haute concentration",
-      "Disponible pour livraison immédiate partout en Tunisie"
-    ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
-    "in_stock": true
-  },
-  {
-    "product_id": "47761",
-    "name": "Déodorant Parfumé anti-transpirant à bille Possess",
-    "name_fr": "Déodorant Parfumé anti-transpirant à bille Possess",
-    "category": "Fragrance",
-    "price": 21.9,
-    "original_price": null,
-    "original_catalog_price": 21.9,
-    "company_discount_applied": false,
-    "company_discount_percent": 0,
-    "is_promo": false,
-    "discount_percent": 0,
-    "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47761%2f47761_1.png&MediaId=20430649&Version=1",
-    "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47761%2f47761_1.png&MediaId=20430649&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47761%2f47761_2.png&MediaId=20989035&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47761%2f47761_3.png&MediaId=20989035&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47761%2f47761_4.png&MediaId=20989035&Version=1"
-    ],
-    "description": "Produit officiel Oriflame Tunisie (47761). Formule haute qualité aux extraits scandinaves bienfaisants.",
-    "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Formule haute concentration",
-      "Disponible pour livraison immédiate partout en Tunisie"
-    ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
-    "in_stock": true
-  },
-  {
-    "product_id": "46632",
-    "name": "Mousse de rasage et nettoyage 2-en-1 North For Men Subzero",
-    "name_fr": "Mousse de rasage et nettoyage 2-en-1 North For Men Subzero",
-    "category": "Skincare",
-    "price": 29.9,
-    "original_price": 37.9,
-    "original_catalog_price": 29.9,
-    "company_discount_applied": false,
-    "company_discount_percent": 0,
-    "is_promo": true,
-    "discount_percent": 21,
-    "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46632%2f46632_1.png&MediaId=19264596&Version=2",
-    "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46632%2f46632_1.png&MediaId=19264596&Version=2",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46632%2f46632_2.png&MediaId=20989035&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46632%2f46632_3.png&MediaId=20989035&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46632%2f46632_4.png&MediaId=20989035&Version=1"
-    ],
-    "description": "Produit officiel Oriflame Tunisie (46632). Formule haute qualité aux extraits scandinaves bienfaisants.",
-    "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Offre promotionnelle exclusive : -21% de réduction",
-      "Disponible pour livraison immédiate partout en Tunisie"
-    ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
-    "in_stock": true
-  },
-  {
-    "product_id": "47762",
-    "name": "Déodorant Parfumé anti-transpirant à bille Giordani Gold Mister Giordani",
-    "name_fr": "Déodorant Parfumé anti-transpirant à bille Giordani Gold Mister Giordani",
-    "category": "Fragrance",
-    "price": 21.9,
-    "original_price": null,
-    "original_catalog_price": 21.9,
-    "company_discount_applied": false,
-    "company_discount_percent": 0,
-    "is_promo": false,
-    "discount_percent": 0,
-    "size": "Format Standard",
-    "suitable_for": "Tous types de peaux • Testé sous contrôle dermatologique",
-    "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47762%2f47762_1.png&MediaId=20378995&Version=1",
-    "images": [
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47762%2f47762_1.png&MediaId=20378995&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47762%2f47762_2.png&MediaId=20989035&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47762%2f47762_3.png&MediaId=20989035&Version=1",
-      "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47762%2f47762_4.png&MediaId=20989035&Version=1"
-    ],
-    "description": "Produit officiel Oriflame Tunisie (47762). Formule haute qualité aux extraits scandinaves bienfaisants.",
-    "benefits": [
-      "100% Produit authentique Oriflame Suède",
-      "Formule haute concentration",
-      "Disponible pour livraison immédiate partout en Tunisie"
-    ],
-    "how_to_use": "Appliquer délicatement sur une peau propre selon la routine recommandée.",
-    "ingredients": "Formule enrichie en extraits botaniques suédois et principes actifs purs certifiés Oriflame.",
+    "how_to_use": "Appliquer délicatement selon les recommandations de la gamme.",
+    "ingredients": "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
     "in_stock": true
   },
   {
@@ -12252,13 +12389,13 @@
     "name_ar": "",
     "name_en": "",
     "category": "Makeup",
-    "price": 36.9,
+    "price": 29.52,
     "original_price": 46.9,
-    "original_catalog_price": 36.9,
+    "original_catalog_price": 29.52,
     "company_discount_applied": false,
     "company_discount_percent": 0,
     "is_promo": true,
-    "discount_percent": 21,
+    "discount_percent": 37,
     "size": "Format Standard",
     "suitable_for": "Tous types de peaux • Produit certifié Oriflame Suède",
     "in_stock": true,
@@ -12286,8 +12423,8 @@
         "name": "Baume à Lèvres The ONE Lip Spa - Pink",
         "shade_name": "Pink",
         "hex_color": "#B2535B",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38883%2f38883_1.png&MediaId=14359194&Version=1",
-        "price": 36.9,
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38883%2f38883_1.png&MediaId=20989035&Version=1",
+        "price": 29.52,
         "original_price": 46.9,
         "in_stock": true
       },
@@ -12297,8 +12434,8 @@
         "shade_name": "Raspberry",
         "hex_color": "#8E294B",
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38885%2f38885_1.png&MediaId=14359350&Version=2",
-        "price": 36.9,
-        "original_price": 46.9,
+        "price": 29.9,
+        "original_price": null,
         "in_stock": true
       }
     ]
@@ -12310,9 +12447,9 @@
     "name_ar": "",
     "name_en": "",
     "category": "Makeup",
-    "price": 29.9,
+    "price": 23.92,
     "original_price": null,
-    "original_catalog_price": 29.9,
+    "original_catalog_price": 23.92,
     "company_discount_applied": false,
     "company_discount_percent": 0,
     "is_promo": false,
@@ -12340,23 +12477,13 @@
     ],
     "variants": [
       {
-        "product_id": "38692",
-        "name": "Rouge à lèvres Cremeux OnColour - Punch Pink",
-        "shade_name": "Punch Pink",
-        "hex_color": "#D05476",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38692%2f38692_1.png&MediaId=17991658&Version=2",
-        "price": 29.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
         "product_id": "38690",
         "name": "Rouge à lèvres Cremeux OnColour - Coral Red",
         "shade_name": "Coral Red",
         "hex_color": "#D52B28",
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38690%2f38690_1.png&MediaId=20989035&Version=1",
-        "price": 19.9,
-        "original_price": 29.9,
+        "price": 23.92,
+        "original_price": null,
         "in_stock": true
       },
       {
@@ -12365,8 +12492,8 @@
         "shade_name": "Orange Coral",
         "hex_color": "#E74425",
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38691%2f38691_1.png&MediaId=20989035&Version=1",
-        "price": 19.9,
-        "original_price": 29.9,
+        "price": 29.9,
+        "original_price": null,
         "in_stock": true
       },
       {
@@ -12375,8 +12502,8 @@
         "shade_name": "Bright Fuchsia",
         "hex_color": "#E41A64",
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38693%2f38693_1.png&MediaId=17991659&Version=1",
-        "price": 19.9,
-        "original_price": 29.9,
+        "price": 29.9,
+        "original_price": null,
         "in_stock": true
       },
       {
@@ -12385,6 +12512,16 @@
         "shade_name": "Cranberry Red",
         "hex_color": "#921F36",
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38689%2f38689_1.png&MediaId=17991652&Version=3",
+        "price": 29.9,
+        "original_price": null,
+        "in_stock": true
+      },
+      {
+        "product_id": "38692",
+        "name": "Rouge à lèvres Cremeux OnColour - Punch Pink",
+        "shade_name": "Punch Pink",
+        "hex_color": "#D05476",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f38692%2f38692_1.png&MediaId=17991658&Version=2",
         "price": 29.9,
         "original_price": null,
         "in_stock": true
@@ -12398,9 +12535,9 @@
     "name_ar": "",
     "name_en": "",
     "category": "Makeup",
-    "price": 29.9,
+    "price": 23.92,
     "original_price": null,
-    "original_catalog_price": 29.9,
+    "original_catalog_price": 23.92,
     "company_discount_applied": false,
     "company_discount_percent": 0,
     "is_promo": false,
@@ -12428,12 +12565,12 @@
     ],
     "variants": [
       {
-        "product_id": "41796",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Taupe",
-        "shade_name": "Ultra Taupe",
-        "hex_color": "#926465",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41796%2f41796_1.png&MediaId=14134540&Version=2",
-        "price": 29.9,
+        "product_id": "41797",
+        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Nude",
+        "shade_name": "Ultra Nude",
+        "hex_color": "#A8574B",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41797%2f41797_1.png&MediaId=20989035&Version=1",
+        "price": 23.92,
         "original_price": null,
         "in_stock": true
       },
@@ -12441,98 +12578,8 @@
         "product_id": "41800",
         "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Raspberry",
         "shade_name": "Ultra Raspberry",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41800%2f41800_c.png&MediaId=14860837&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41800%2f41800_1.png&MediaId=14134556&Version=2",
-        "price": 59.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41801",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Pink",
-        "shade_name": "Ultra Pink",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41801%2f41801_c.png&MediaId=14860838&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41801%2f41801_1.png&MediaId=14134560&Version=2",
-        "price": 29.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41805",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Bordeaux",
-        "shade_name": "Ultra Bordeaux",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41805%2f41805_c.png&MediaId=14869792&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41805%2f41805_1.png&MediaId=14134576&Version=2",
-        "price": 59.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41807",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Mocha",
-        "shade_name": "Ultra Mocha",
-        "hex_color": "#814749",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41807%2f41807_1.png&MediaId=14134584&Version=2",
-        "price": 59.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41808",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Wine",
-        "shade_name": "Ultra Wine",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41808%2f41808_c.png&MediaId=14869794&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41808%2f41808_1.png&MediaId=14134588&Version=2",
-        "price": 29.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41797",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Nude",
-        "shade_name": "Ultra Nude",
-        "hex_color": "#AE6F6F",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41797%2f41797_1.png&MediaId=14134544&Version=2",
-        "price": 59.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41798",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Terracotta",
-        "shade_name": "Ultra Terracotta",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41798%2f41798_c.png&MediaId=14860836&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41798%2f41798_1.png&MediaId=14134548&Version=2",
-        "price": 59.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41799",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Rose",
-        "shade_name": "Ultra Rose",
-        "hex_color": "#C25372",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41799%2f41799_1.png&MediaId=14134552&Version=2",
-        "price": 59.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41802",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Fuchsia",
-        "shade_name": "Ultra Fuchsia",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41802%2f41802_c.png&MediaId=14860839&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41802%2f41802_1.png&MediaId=14134564&Version=2",
-        "price": 29.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41803",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Coral",
-        "shade_name": "Ultra Coral",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41803%2f41803_c.png&MediaId=14869790&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41803%2f41803_1.png&MediaId=14134568&Version=2",
+        "hex_color": "#872D43",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41800%2f41800_1.png&MediaId=20989035&Version=1",
         "price": 29.9,
         "original_price": null,
         "in_stock": true
@@ -12541,9 +12588,9 @@
         "product_id": "41804",
         "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Red",
         "shade_name": "Ultra Red",
-        "hex_color": "#CB153A",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41804%2f41804_1.png&MediaId=14134572&Version=2",
-        "price": 59.9,
+        "hex_color": "#A21727",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41804%2f41804_1.png&MediaId=20989035&Version=1",
+        "price": 29.9,
         "original_price": null,
         "in_stock": true
       },
@@ -12551,18 +12598,8 @@
         "product_id": "41806",
         "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Burgundy",
         "shade_name": "Ultra Burgundy",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41806%2f41806_c.png&MediaId=14869793&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41806%2f41806_1.png&MediaId=14134580&Version=2",
-        "price": 59.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "41809",
-        "name": "Rouge à Lèvres THE ONE Colour Unlimited Ultra Fix - Ultra Plum",
-        "shade_name": "Ultra Plum",
-        "hex_color": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41809%2f41809_c.png&MediaId=14869795&Version=1",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41809%2f41809_1.png&MediaId=14134592&Version=2",
+        "hex_color": "#631826",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f41806%2f41806_1.png&MediaId=20989035&Version=1",
         "price": 29.9,
         "original_price": null,
         "in_stock": true
@@ -12576,9 +12613,9 @@
     "name_ar": "",
     "name_en": "",
     "category": "Makeup",
-    "price": 89.9,
+    "price": 71.92,
     "original_price": null,
-    "original_catalog_price": 89.9,
+    "original_catalog_price": 71.92,
     "company_discount_applied": false,
     "company_discount_percent": 0,
     "is_promo": false,
@@ -12606,62 +12643,52 @@
     ],
     "variants": [
       {
-        "product_id": "42101",
-        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Vanilla Neutral",
-        "shade_name": "Vanilla Neutral",
-        "hex_color": "#F9DFBF",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42101%2f42101_1.png&MediaId=18431785&Version=3",
-        "price": 89.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "42105",
-        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Soft Sand",
-        "shade_name": "Soft Sand",
-        "hex_color": "#F2C6A9",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42105%2f42105_1.png&MediaId=18431826&Version=3",
-        "price": 89.9,
-        "original_price": null,
-        "in_stock": true
-      },
-      {
-        "product_id": "42104",
-        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Light Beige Neutral",
-        "shade_name": "Light Beige Neutral",
-        "hex_color": "#E6C095",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42104%2f42104_1.png&MediaId=18431797&Version=3",
-        "price": 26.9,
-        "original_price": 89.9,
-        "in_stock": true
-      },
-      {
-        "product_id": "42103",
-        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Marble Neutral",
-        "shade_name": "Marble Neutral",
-        "hex_color": "#E8C9A7",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42103%2f42103_1.png&MediaId=18431805&Version=3",
-        "price": 89.9,
+        "product_id": "42106",
+        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Light Ivory Neutral",
+        "shade_name": "Light Ivory Neutral",
+        "hex_color": "#E7BA9D",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42106%2f42106_1.png&MediaId=20989035&Version=1",
+        "price": 71.92,
         "original_price": null,
         "in_stock": true
       },
       {
         "product_id": "42102",
-        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Porcelain Warm",
-        "shade_name": "Porcelain Warm",
-        "hex_color": "#E6C59D",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42102%2f42102_1.png&MediaId=18431815&Version=3",
-        "price": 89.9,
+        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Porcelain Cool",
+        "shade_name": "Porcelain Cool",
+        "hex_color": "#F0CBB6",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42102%2f42102_1.png&MediaId=20989035&Version=1",
+        "price": 29.9,
         "original_price": null,
         "in_stock": true
       },
       {
-        "product_id": "42106",
-        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Light Ivory Neutral",
-        "shade_name": "Light Ivory Neutral",
-        "hex_color": "#D5AC96",
-        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42106%2f42106_1.png&MediaId=18431777&Version=3",
-        "price": 89.9,
+        "product_id": "42103",
+        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Light Rose Warm",
+        "shade_name": "Light Rose Warm",
+        "hex_color": "#EAC3A9",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42103%2f42103_1.png&MediaId=20989035&Version=1",
+        "price": 29.9,
+        "original_price": null,
+        "in_stock": true
+      },
+      {
+        "product_id": "42104",
+        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Beige Warm",
+        "shade_name": "Beige Warm",
+        "hex_color": "#DFB091",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42104%2f42104_1.png&MediaId=20989035&Version=1",
+        "price": 29.9,
+        "original_price": null,
+        "in_stock": true
+      },
+      {
+        "product_id": "42105",
+        "name": "Fond de Teint Minéral Longue Tenue IP 20 Giordani Gold - Natural Beige Neutral",
+        "shade_name": "Natural Beige Neutral",
+        "hex_color": "#D6A687",
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42105%2f42105_1.png&MediaId=20989035&Version=1",
+        "price": 29.9,
         "original_price": null,
         "in_stock": true
       }

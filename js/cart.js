@@ -392,6 +392,10 @@ export class CartManager {
     return Math.max(0, raw - bundleDiscount - thresholdDiscount);
   }
 
+  getTotalPrice() {
+    return this.getSubtotal();
+  }
+
   // Total of ALL discounts combined (bundles + threshold deals)
   getTotalDiscount() {
     return this.getBundleDiscount() + this.getThresholdDealDiscount();

@@ -6,6 +6,7 @@ import path from 'path';
 import crypto from 'crypto';
 import multer from 'multer';
 import axios from 'axios';
+import { Agent as UndiciAgent } from 'undici';
 import { fileURLToPath } from 'url';
 import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/scraper.js';
 import { scrapeFlipbookFromUrl, getOrRefreshFlipbookData, getFlipbookData, resolveLatestCatalogueCode } from './services/flipbook-scraper.js';
@@ -46,6 +47,10 @@ const FB_APP_ID = process.env.FB_APP_ID || '';
 if (!fs.existsSync(UPLOADS_DIR)) {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 }
+
+// Flipbook TLS Agent for iPaper CDN and in-memory cache
+const flipbookTlsAgent = new UndiciAgent({ connect: { rejectUnauthorized: false } });
+const flipbookImageCache = new Map();
 
 // Global Middlewares
 app.use(cors());
@@ -395,7 +400,15 @@ app.get('/api/flipbook/image', async (req, res) => {
     let imageUrl = req.query.url;
     if (!imageUrl) return res.status(400).send('Missing image url');
 
+    if (flipbookImageCache.has(imageUrl)) {
+      const cached = flipbookImageCache.get(imageUrl);
+      res.setHeader('Content-Type', cached.contentType);
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      return res.send(cached.buffer);
+    }
+
     let response = await fetch(imageUrl, {
+      dispatcher: flipbookTlsAgent,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         'Referer': 'https://tn-catalogue.oriflame.com/'
@@ -414,6 +427,7 @@ app.get('/api/flipbook/image', async (req, res) => {
           .replace(/expires=[^&]+/, `expires=${activeExpires}`);
 
         response = await fetch(healedUrl, {
+          dispatcher: flipbookTlsAgent,
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
             'Referer': 'https://tn-catalogue.oriflame.com/'
@@ -427,11 +441,14 @@ app.get('/api/flipbook/image', async (req, res) => {
     }
 
     const contentType = response.headers.get('content-type') || 'image/jpeg';
-    const buffer = await response.arrayBuffer();
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    flipbookImageCache.set(imageUrl, { contentType, buffer });
 
     res.setHeader('Content-Type', contentType);
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    res.send(Buffer.from(buffer));
+    res.send(buffer);
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -588,11 +605,28 @@ app.post('/api/carousel/bulk', async (req, res) => {
 
 // ------------------- PRODUCT & SETTINGS API ------------------- //
 
+let productsCache = null;
+let productsCacheTime = 0;
+
+export function invalidateProductsCache() {
+  productsCache = null;
+  productsCacheTime = 0;
+}
+
 app.get('/api/products', async (req, res) => {
   try {
+    const now = Date.now();
+    if (productsCache && (now - productsCacheTime < 30000)) {
+      return res.json({ success: true, data: productsCache });
+    }
     const products = await getProducts();
+    if (products && products.length > 0) {
+      productsCache = products;
+      productsCacheTime = now;
+    }
     res.json({ success: true, data: products });
   } catch (err) {
+    if (productsCache) return res.json({ success: true, data: productsCache });
     res.status(500).json({ success: false, message: err.message });
   }
 });
@@ -1046,14 +1080,29 @@ app.post('/api/scrape/oriflame-catalog', requireAdmin, async (req, res) => {
   }
 });
 
+let settingsCache = null;
+let settingsCacheTime = 0;
+
+export function invalidateSettingsCache() {
+  settingsCache = null;
+  settingsCacheTime = 0;
+}
+
 // Public GET settings (strips admin_pwd)
 app.get('/api/settings', async (req, res) => {
   try {
+    const now = Date.now();
+    if (settingsCache && (now - settingsCacheTime < 60000)) {
+      return res.json({ success: true, data: settingsCache });
+    }
     const settings = await getSettings();
     const safeSettings = { ...settings };
     delete safeSettings.admin_pwd;
+    settingsCache = safeSettings;
+    settingsCacheTime = now;
     res.json({ success: true, data: safeSettings });
   } catch (err) {
+    if (settingsCache) return res.json({ success: true, data: settingsCache });
     res.status(500).json({ success: false, message: err.message });
   }
 });
@@ -1061,6 +1110,7 @@ app.get('/api/settings', async (req, res) => {
 // Admin POST settings
 app.post('/api/settings', requireAdmin, async (req, res) => {
   try {
+    invalidateSettingsCache();
     const current = await getSettings();
     const updated = {
       ...current,
@@ -1070,6 +1120,8 @@ app.post('/api/settings', requireAdmin, async (req, res) => {
     await saveSettings(updated);
     const safeUpdated = { ...updated };
     delete safeUpdated.admin_pwd;
+    settingsCache = safeUpdated;
+    settingsCacheTime = Date.now();
     res.json({ success: true, message: 'Settings saved', data: safeUpdated });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

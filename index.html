@@ -2,7 +2,7 @@
 <html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Mouna Nouira — Oriflame Sweden Luxury Beauty & Shopping Assistant</title>
   <meta name="description" content="Official Oriflame Digital Catalog by Mouna Nouira. Explore skincare, fragrances, and wellness in Tunisia with direct Messenger ordering." />
   
@@ -62,37 +62,53 @@
   <!-- Navigation Header (Clean Client-Side Only - No Admin Button) -->
   <header class="navbar">
     <div class="container nav-container">
-      <div class="brand-logo">
+      <a href="#" class="brand-logo" aria-label="Mouna Nouira Accueil">
         <div class="brand-monogram">M</div>
         <div class="brand-text">
           <h1 data-i18n="brand_title">Mouna Nouira</h1>
           <p data-i18n="brand_subtitle">Membre fondateur Oriflame Tunisie</p>
         </div>
+      </a>
+
+      <!-- Quick Mobile Header Controls -->
+      <div class="mobile-header-quick-actions">
+        <button id="btn-header-search" class="header-icon-btn" aria-label="Rechercher un produit" title="Rechercher">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <button id="btn-header-cart" class="header-cart-btn" aria-label="Ouvrir le panier d'achat" title="Panier">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span id="header-cart-badge" class="header-cart-badge" style="display: none;">0</span>
+        </button>
+        <button id="btn-mobile-menu" class="header-icon-btn header-menu-toggle" aria-label="Ouvrir le menu de navigation" aria-expanded="false" title="Menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
       </div>
 
-      <div class="nav-actions">
+      <div id="nav-actions-menu" class="nav-actions">
         <!-- Language Switcher -->
-        <select id="language-select" class="lang-selector" aria-label="Select Language">
+        <select id="language-select" class="lang-selector" aria-label="Sélectionner la langue">
           <option value="fr">🇫🇷 Français</option>
           <option value="ar">🇹🇳 العربية</option>
           <option value="en">🇬🇧 English</option>
         </select>
 
-        <a href="#catalogue-section" class="nav-btn" style="background: var(--color-primary); color: white;">
+        <a id="btn-nav-catalogue" href="#catalogue-section" class="nav-btn" style="background: var(--color-primary); color: white;">
           📖 eCatalogue
         </a>
-        <a id="btn-nav-facebook" href="https://www.facebook.com/Mounanouira.Oriflame" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-facebook" style="background: #1877F2; color: #FFFFFF; border: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 8px; transition: all 0.2s ease;">
+        <a id="btn-nav-facebook" href="https://www.facebook.com/Mounanouira.Oriflame" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-facebook" style="background: #1877F2; color: #FFFFFF; border: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 8px; transition: all 0.2s ease;" aria-label="Page Facebook Officielle">
           <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           <span data-i18n="nav_facebook">Page Facebook</span>
         </a>
-        <button id="btn-nav-share-fb" class="nav-btn nav-btn-share" onclick="window.app.shareToFacebook()" title="Partager le catalogue sur Facebook" style="background: rgba(24,119,242,0.12); color: #1877F2; border: 1px solid rgba(24,119,242,0.3); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 7px 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+        <button id="btn-nav-share-fb" class="nav-btn nav-btn-share" onclick="window.app.shareToFacebook()" title="Partager le catalogue sur Facebook" aria-label="Partager le catalogue sur Facebook" style="background: rgba(24,119,242,0.12); color: #1877F2; border: 1px solid rgba(24,119,242,0.3); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 7px 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
           <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
           <span data-i18n="nav_share">Partager</span>
         </button>
-        <button id="btn-nav-about" class="nav-btn" data-i18n="nav_about">
+        <button id="btn-nav-about" class="nav-btn" data-i18n="nav_about" aria-label="À propos de Mouna Nouira">
           À propos
         </button>
-        <button id="btn-nav-privacy" class="nav-btn" data-i18n="nav_privacy">
+        <button id="btn-nav-privacy" class="nav-btn" data-i18n="nav_privacy" aria-label="Politique de confidentialité">
           Confidentialité
         </button>
       </div>
@@ -105,11 +121,43 @@
       <div id="carousel-slides-wrapper" class="carousel-slides-wrapper"></div>
 
       <!-- Navigation Arrows -->
-      <button id="carousel-prev-btn" class="carousel-arrow carousel-arrow-prev" aria-label="Previous Slide">‹</button>
-      <button id="carousel-next-btn" class="carousel-arrow carousel-arrow-next" aria-label="Next Slide">›</button>
+      <button id="carousel-prev-btn" class="carousel-arrow carousel-arrow-prev" aria-label="Offre précédente">‹</button>
+      <button id="carousel-next-btn" class="carousel-arrow carousel-arrow-next" aria-label="Offre suivante">›</button>
 
       <!-- Pagination Indicators -->
       <div id="carousel-dots-container" class="carousel-dots-container"></div>
+    </section>
+
+    <!-- Exclusive Promo Deals Carousel & Showcase -->
+    <section id="promo-showcase-section" class="deals-showcase-section">
+      <div class="deals-header">
+        <div>
+          <span class="deals-tag">CATALOGUE OFFERS • EN PROMO</span>
+          <h3 data-i18n="deals_banner_title">🔥 Offres Spéciales du Catalogue en cours</h3>
+          <p data-i18n="deals_banner_desc">Profitez des remises exclusives et des prix réduits sur les best-sellers d'Oriflame Tunisie.</p>
+        </div>
+        <div class="deals-count-badge-wrap">
+          <span id="deals-count-indicator" class="deals-count-pill" style="display: none;">...</span>
+        </div>
+      </div>
+      <div id="deals-carousel-grid" class="deals-carousel-grid">
+        <!-- Deals rendered here -->
+      </div>
+      <div id="deals-pagination-container" class="pagination-wrapper" style="display: none;"></div>
+    </section>
+
+    <!-- Exclusive Bundles & Combo Packs Showcase (Duo / Trio Deals) -->
+    <section id="bundles-showcase-section" class="bundles-showcase-section" style="display: none;">
+      <div class="bundles-header">
+        <div>
+          <span class="bundles-tag" data-i18n="bundles_tag">🎁 PACKS ÉCONOMIQUES • DUO & TRIO</span>
+          <h3 data-i18n="bundles_banner_title">🎁 Packs & Offres Combinées (Duo / Trio Deals)</h3>
+          <p data-i18n="bundles_banner_desc">Achetez ces soins complémentaires ensemble et profitez immédiatement d'un tarif pack avantageux !</p>
+        </div>
+      </div>
+      <div id="bundles-showcase-grid" class="bundles-showcase-grid">
+        <!-- Bundles rendered here -->
+      </div>
     </section>
 
     <!-- INTERACTIVE DIGITAL eCATALOGUE FLIPBOOK VIEWER -->
@@ -161,8 +209,8 @@
         <!-- Flipbook Control Bar -->
         <div class="ecat-toolbar">
           <div class="ecat-nav-buttons">
-            <button id="catalogue-nav-first" class="ecat-nav-btn" title="Première page">⏮</button>
-            <button id="catalogue-nav-prev" class="ecat-nav-btn" title="Page précédente" data-i18n="ecat_prev">◀ Précédente</button>
+            <button id="catalogue-nav-first" class="ecat-nav-btn" aria-label="Première page" title="Première page">⏮</button>
+            <button id="catalogue-nav-prev" class="ecat-nav-btn" aria-label="Page précédente" title="Page précédente" data-i18n="ecat_prev">◀ Précédente</button>
           </div>
 
           <div class="ecat-status">
@@ -171,8 +219,8 @@
           </div>
 
           <div class="ecat-nav-buttons">
-            <button id="catalogue-nav-next" class="ecat-nav-btn" title="Page suivante" data-i18n="ecat_next">Suivante ▶</button>
-            <button id="catalogue-nav-last" class="ecat-nav-btn" title="Dernière page">⏭</button>
+            <button id="catalogue-nav-next" class="ecat-nav-btn" aria-label="Page suivante" title="Page suivante" data-i18n="ecat_next">Suivante ▶</button>
+            <button id="catalogue-nav-last" class="ecat-nav-btn" aria-label="Dernière page" title="Dernière page">⏭</button>
           </div>
         </div>
 
@@ -201,34 +249,6 @@
       </div>
     </section>
 
-    <!-- Exclusive Promo Deals Carousel & Showcase -->
-    <section id="promo-showcase-section" class="deals-showcase-section">
-      <div class="deals-header">
-        <div>
-          <span class="deals-tag">CATALOGUE OFFERS • EN PROMO</span>
-          <h3 data-i18n="deals_banner_title">🔥 Offres Spéciales du Catalogue en cours</h3>
-          <p data-i18n="deals_banner_desc">Profitez des remises exclusives et des prix réduits sur les best-sellers d'Oriflame Tunisie.</p>
-        </div>
-      </div>
-      <div id="deals-carousel-grid" class="deals-carousel-grid">
-        <!-- Deals rendered here -->
-      </div>
-    </section>
-
-    <!-- Exclusive Bundles & Combo Packs Showcase (Duo / Trio Deals) -->
-    <section id="bundles-showcase-section" class="bundles-showcase-section" style="display: none;">
-      <div class="bundles-header">
-        <div>
-          <span class="bundles-tag" data-i18n="bundles_tag">🎁 PACKS ÉCONOMIQUES • DUO & TRIO</span>
-          <h3 data-i18n="bundles_banner_title">🎁 Packs & Offres Combinées (Duo / Trio Deals)</h3>
-          <p data-i18n="bundles_banner_desc">Achetez ces soins complémentaires ensemble et profitez immédiatement d'un tarif pack avantageux !</p>
-        </div>
-      </div>
-      <div id="bundles-showcase-grid" class="bundles-showcase-grid">
-        <!-- Bundles rendered here -->
-      </div>
-    </section>
-
     <!-- Search & Category Filters -->
     <section class="controls-section">
       <div class="search-box">
@@ -237,7 +257,7 @@
       </div>
 
       <div id="category-pills" class="category-pills">
-        <button class="category-pill active" data-category="All" data-i18n="category_all">Tous les Produits</button>
+        <button class="category-pill active" data-category="All" data-i18n="category_all">Tous les produits</button>
         <button class="category-pill deal-pill" data-category="Deals" data-i18n="category_deals">🔥 Offres & Promos</button>
         <button class="category-pill bundle-pill" data-category="Bundles" data-i18n="category_bundles">🎁 Packs & Duos</button>
         <button class="category-pill" data-category="Skincare" data-i18n="category_skincare">Soins de la peau</button>
@@ -258,12 +278,15 @@
       <div id="product-grid" class="product-grid">
         <!-- Products dynamically rendered here -->
       </div>
+
+      <div id="products-pagination-container" class="pagination-wrapper" style="display: none;"></div>
     </section>
   </main>
 
-  <!-- Floating Luxury Cart Button -->
-  <button id="floating-cart-btn" class="floating-cart-btn">
-    <span data-i18n="view_cart">🛒 Voir le Panier</span>
+  <!-- Floating Luxury Cart Button (Optimisé Smartphone & Pouce) -->
+  <button id="floating-cart-btn" class="floating-cart-btn" aria-label="Ouvrir le panier d'achat">
+    <span class="floating-cart-icon">🛒</span>
+    <span id="floating-cart-text" class="floating-cart-text" data-i18n="view_cart">Voir le Panier</span>
     <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
   </button>
 
@@ -274,7 +297,7 @@
         <div class="drawer-title">
           <span data-i18n="shopping_cart">Panier d'Achat</span>
         </div>
-        <button id="btn-close-drawer" class="btn-close-drawer">✕</button>
+        <button id="btn-close-drawer" class="btn-close-drawer" aria-label="Fermer le panier">✕</button>
       </div>
 
       <div class="drawer-body">
@@ -284,15 +307,15 @@
       </div>
 
       <div class="drawer-footer">
-        <div class="customer-info-box" style="margin-bottom: 12px; background: #FAF8F5; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border);">
-          <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary); margin-bottom: 8px;">
+        <div class="customer-info-box">
+          <h4 style="font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 10px;">
             👤 Vos Coordonnées (Nom &amp; Téléphone)
           </h4>
-          <div class="form-group" style="margin-bottom: 8px;">
-            <input type="text" id="customer-name" class="form-control" placeholder="Votre Nom Complet" style="font-size: 0.85rem;" />
+          <div class="form-group" style="margin-bottom: 10px;">
+            <input type="text" id="customer-name" class="form-control" autocomplete="name" inputmode="text" placeholder="Votre Nom Complet" />
           </div>
           <div class="form-group" style="margin-bottom: 0;">
-            <input type="tel" id="customer-phone" class="form-control" placeholder="Votre N° Téléphone / WhatsApp (ex: 98 123 456)" style="font-size: 0.85rem;" />
+            <input type="tel" id="customer-phone" class="form-control" autocomplete="tel" inputmode="tel" placeholder="Votre N° Téléphone / WhatsApp (ex: 98 123 456)" />
           </div>
         </div>
 
@@ -332,7 +355,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" data-i18n="about_title">À propos de Mouna Nouira</h3>
-        <button id="btn-close-about" class="btn-close-drawer">✕</button>
+        <button id="btn-close-about" class="btn-close-drawer" aria-label="Fermer la fenêtre à propos">✕</button>
       </div>
       <div class="modal-body" style="text-align: center;">
         <div style="width: 86px; height: 86px; border-radius: 50%; background: var(--color-primary-dark); color: var(--color-accent); display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; margin: 0 auto 16px auto; border: 2px solid var(--color-accent);">MN</div>
@@ -365,7 +388,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" data-i18n="privacy_title">Politique de Confidentialité</h3>
-        <button id="btn-close-privacy" class="btn-close-drawer">✕</button>
+        <button id="btn-close-privacy" class="btn-close-drawer" aria-label="Fermer la politique de confidentialité">✕</button>
       </div>
       <div class="modal-body" style="font-size: 0.92rem; color: var(--color-text-secondary); line-height: 1.7;">
         <h4 style="color: var(--color-primary); margin-bottom: 6px;" data-i18n="privacy_p1_title">1. Collecte des Données</h4>
@@ -385,7 +408,7 @@
     <div class="modal-card" style="max-width: 620px;">
       <div class="modal-header">
         <h3 class="modal-title" data-i18n="quickview_title">Détails du Produit</h3>
-        <button id="btn-close-quickview" class="btn-close-drawer">✕</button>
+        <button id="btn-close-quickview" class="btn-close-drawer" aria-label="Fermer les détails du produit">✕</button>
       </div>
       <div id="quickview-content" class="modal-body">
         <!-- Dynamically rendered -->
@@ -406,7 +429,7 @@
             <div style="font-size: 0.78rem; opacity: 0.9;">Messenger est ouvert dans un nouvel onglet</div>
           </div>
         </div>
-        <button id="btn-close-paste-modal" style="background: rgba(255,255,255,0.2); border: none; color: #FFF; width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+        <button id="btn-close-paste-modal" aria-label="Fermer la fenêtre" style="background: rgba(255,255,255,0.2); border: none; color: #FFF; width: 44px; height: 44px; border-radius: 50%; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
       </div>
 
       <!-- Steps -->

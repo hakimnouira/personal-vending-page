@@ -2,43 +2,72 @@
 // Keeps exact function signatures and response shapes as original JSON helpers
 
 import { pool, query } from './db.js';
+import fs from 'fs';
+import path from 'path';
+
+let productsCache = null;
+let productsCacheTime = 0;
 
 // ── PRODUCTS ─────────────────────────────────────────────────────────────
-export async function getProducts() {
+export async function getProducts(bypassCache = false) {
+  if (!bypassCache && productsCache && (Date.now() - productsCacheTime < 120000)) {
+    return productsCache;
+  }
+
+  // 1. Fast path: load local file cache immediately (0.5ms)
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'products.json');
+    if (fs.existsSync(localFile)) {
+      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+      if (Array.isArray(data) && data.length > 0) {
+        productsCache = data;
+        productsCacheTime = Date.now();
+        return data;
+      }
+    }
+  } catch (e) {}
+
+  // 2. Fallback: Query remote Postgres
   try {
     const res = await query('SELECT * FROM products ORDER BY product_id ASC');
-    return res.rows.map(row => ({
-      product_id: String(row.product_id),
-      name: row.name || '',
-      name_fr: row.name_fr || row.name || '',
-      name_ar: row.name_ar || '',
-      name_en: row.name_en || '',
-      category: row.category || 'Général',
-      price: row.price != null ? Number(row.price) : 0,
-      original_price: row.original_price != null ? Number(row.original_price) : null,
-      original_catalog_price: row.original_catalog_price != null ? Number(row.original_catalog_price) : null,
-      company_discount_applied: Boolean(row.company_discount_applied),
-      company_discount_percent: row.company_discount_percent != null ? Number(row.company_discount_percent) : 0,
-      is_promo: Boolean(row.is_promo),
-      discount_percent: row.discount_percent != null ? Number(row.discount_percent) : 0,
-      size: row.size || '',
-      suitable_for: row.suitable_for || '',
-      in_stock: row.in_stock !== false,
-      description: row.description || '',
-      description_fr: row.description_fr || row.description || '',
-      description_ar: row.description_ar || '',
-      description_en: row.description_en || '',
-      benefits: Array.isArray(row.benefits) ? row.benefits : [],
-      ingredients: row.ingredients || '',
-      how_to_use: row.how_to_use || '',
-      image_url: row.image_url || '',
-      images: Array.isArray(row.images) ? row.images : (row.image_url ? [row.image_url] : []),
-      variants: Array.isArray(row.variants) ? row.variants : []
-    }));
+    if (res && Array.isArray(res.rows) && res.rows.length > 0) {
+      const mapped = res.rows.map(row => ({
+        product_id: String(row.product_id),
+        name: row.name || '',
+        name_fr: row.name_fr || row.name || '',
+        name_ar: row.name_ar || '',
+        name_en: row.name_en || '',
+        category: row.category || 'Général',
+        price: row.price != null ? Number(row.price) : 0,
+        original_price: row.original_price != null ? Number(row.original_price) : null,
+        original_catalog_price: row.original_catalog_price != null ? Number(row.original_catalog_price) : null,
+        company_discount_applied: Boolean(row.company_discount_applied),
+        company_discount_percent: row.company_discount_percent != null ? Number(row.company_discount_percent) : 0,
+        is_promo: Boolean(row.is_promo),
+        discount_percent: row.discount_percent != null ? Number(row.discount_percent) : 0,
+        size: row.size || '',
+        suitable_for: row.suitable_for || '',
+        in_stock: row.in_stock !== false,
+        description: row.description || '',
+        description_fr: row.description_fr || row.description || '',
+        description_ar: row.description_ar || '',
+        description_en: row.description_en || '',
+        benefits: Array.isArray(row.benefits) ? row.benefits : [],
+        ingredients: row.ingredients || '',
+        how_to_use: row.how_to_use || '',
+        image_url: row.image_url || '',
+        images: Array.isArray(row.images) ? row.images : (row.image_url ? [row.image_url] : []),
+        variants: Array.isArray(row.variants) ? row.variants : []
+      }));
+      productsCache = mapped;
+      productsCacheTime = Date.now();
+      return mapped;
+    }
   } catch (err) {
-    console.error('getProducts error:', err);
-    return [];
+    console.error('getProducts DB query error:', err.message);
   }
+
+  return [];
 }
 
 export async function saveProducts(products) {
@@ -268,6 +297,13 @@ async function ensureDealsColumns() {
 }
 
 export async function getDeals() {
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'deals.json');
+    if (fs.existsSync(localFile)) {
+      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+      if (Array.isArray(data)) return data;
+    }
+  } catch (e) {}
   await ensureDealsColumns();
   try {
     const res = await query('SELECT * FROM deals ORDER BY created_at DESC');
@@ -368,6 +404,16 @@ export async function saveDeals(deals) {
 // ── BUNDLES ──────────────────────────────────────────────────────────────
 export async function getBundles() {
   try {
+    const localFile = path.join(process.cwd(), 'data', 'bundles.json');
+    if (fs.existsSync(localFile)) {
+      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+    }
+  } catch (e) {}
+
+  try {
     const res = await query('SELECT * FROM bundles ORDER BY created_at DESC');
     return res.rows.map(row => ({
       id: String(row.id),
@@ -457,6 +503,16 @@ export async function saveBundles(bundles) {
 
 // ── CAROUSEL ─────────────────────────────────────────────────────────────
 export async function getCarousel() {
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'carousel.json');
+    if (fs.existsSync(localFile)) {
+      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+    }
+  } catch (e) {}
+
   try {
     const res = await query('SELECT * FROM carousel');
     return res.rows.map(row => ({
@@ -548,6 +604,16 @@ export async function saveCarousel(slides) {
 
 // ── SETTINGS ─────────────────────────────────────────────────────────────
 export async function getSettings() {
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'settings.json');
+    if (fs.existsSync(localFile)) {
+      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+      if (data && typeof data === 'object') {
+        return data;
+      }
+    }
+  } catch (e) {}
+
   try {
     const res = await query('SELECT * FROM settings WHERE id = 1');
     if (res.rows.length > 0) {

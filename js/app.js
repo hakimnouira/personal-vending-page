@@ -49,6 +49,8 @@ class App {
 
     this.activeCategory = 'All';
     this.searchQuery = '';
+    this.productsCurrentPage = 1;
+    this.dealsCurrentPage = 1;
     this.products = [];
     this.facebookUsername = 'Mounanouira.Oriflame';
     this.whatsappPhone = '55756629';
@@ -59,27 +61,40 @@ class App {
   }
 
   async init() {
+    console.log('[APP] init start');
     this.cacheDOM();
     this.i18n.applyTranslations();
     this.bindEvents();
     this.initMessengerWidget();
     this.initFacebookCheckout();
+    console.log('[APP] events bound');
 
-    await this.fetchSettings();
-    await this.fetchProducts();
-    if (this.cartManager && typeof this.cartManager.fetchBundles === 'function') {
-      try { await this.cartManager.fetchBundles(); } catch (e) {}
+    try {
+      console.log('[APP] fetching data...');
+      await Promise.allSettled([
+        this.fetchSettings(),
+        this.fetchProducts(),
+        (this.cartManager && typeof this.cartManager.fetchBundles === 'function') ? this.cartManager.fetchBundles() : Promise.resolve(),
+        this.initCarousel()
+      ]);
+      console.log('[APP] data fetched, prods:', this.products?.length);
+    } catch (e) {
+      console.warn('[APP] fetch error:', e);
     }
-    await this.initCarousel();
     
     // Initialize Interactive Digital eCatalogue Flipbook
-    window.ecatViewer = new ECatalogueViewer(this);
+    try {
+      window.ecatViewer = new ECatalogueViewer(this);
+    } catch (e) {
+      console.warn('[APP] ECatalogueViewer error:', e);
+    }
 
     this.renderDealsShowcase();
     this.renderBundlesShowcase();
     this.renderProducts();
     this.renderCart();
     this.updateCartBadge();
+    console.log('[APP] init complete');
   }
 
 
@@ -535,14 +550,23 @@ class App {
     this.categoryPillsContainer = document.getElementById('category-pills');
     this.productGrid = document.getElementById('product-grid');
     this.productsCount = document.getElementById('products-count');
+    this.productsPaginationContainer = document.getElementById('products-pagination-container');
     this.dealsCarouselGrid = document.getElementById('deals-carousel-grid');
+    this.dealsPaginationContainer = document.getElementById('deals-pagination-container');
+    this.dealsCountIndicator = document.getElementById('deals-count-indicator');
     this.promoShowcaseSection = document.getElementById('promo-showcase-section');
     this.bundlesShowcaseSection = document.getElementById('bundles-showcase-section');
     this.bundlesShowcaseGrid = document.getElementById('bundles-showcase-grid');
 
     // Cart Elements
     this.floatingCartBtn = document.getElementById('floating-cart-btn');
+    this.floatingCartText = document.getElementById('floating-cart-text');
     this.cartBadge = document.getElementById('cart-badge');
+    this.btnHeaderCart = document.getElementById('btn-header-cart');
+    this.headerCartBadge = document.getElementById('header-cart-badge');
+    this.btnHeaderSearch = document.getElementById('btn-header-search');
+    this.btnMobileMenu = document.getElementById('btn-mobile-menu');
+    this.navActionsMenu = document.getElementById('nav-actions-menu');
     this.cartDrawerOverlay = document.getElementById('cart-drawer-overlay');
     this.btnCloseDrawer = document.getElementById('btn-close-drawer');
     this.cartItemsList = document.getElementById('cart-items-list');
@@ -592,6 +616,7 @@ class App {
       let searchTimeout;
       this.searchInput.addEventListener('input', (e) => {
         this.searchQuery = e.target.value.toLowerCase().trim();
+        this.productsCurrentPage = 1;
         this.renderProducts();
 
         clearTimeout(searchTimeout);
@@ -611,6 +636,7 @@ class App {
           document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
           pill.classList.add('active');
           this.activeCategory = pill.dataset.category || 'All';
+          this.productsCurrentPage = 1;
           this.telemetry.trackEvent(`Filtered by Category: ${this.activeCategory}`, this.activeCategory);
           if (this.activeCategory === 'Bundles' && this.bundlesShowcaseSection) {
             this.bundlesShowcaseSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -620,11 +646,48 @@ class App {
       });
     }
 
+    // Window Resize Handler for Responsive Pagination
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        this.renderProducts();
+        this.renderDealsShowcase();
+      }, 150);
+    }, { passive: true });
+
     // Cart Drawer Toggle
     if (this.floatingCartBtn) {
       this.floatingCartBtn.addEventListener('click', () => {
         this.openCartDrawer();
         this.telemetry.trackEvent('Opened Shopping Cart Drawer');
+      });
+    }
+    if (this.btnHeaderCart) {
+      this.btnHeaderCart.addEventListener('click', () => {
+        this.openCartDrawer();
+        this.telemetry.trackEvent('Opened Shopping Cart from Header');
+      });
+    }
+    if (this.btnHeaderSearch) {
+      this.btnHeaderSearch.addEventListener('click', () => {
+        if (this.searchInput) {
+          this.searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => this.searchInput.focus(), 300);
+        }
+      });
+    }
+    if (this.btnMobileMenu && this.navActionsMenu) {
+      this.btnMobileMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = this.navActionsMenu.classList.toggle('mobile-open');
+        this.btnMobileMenu.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (this.navActionsMenu.classList.contains('mobile-open') && !this.navActionsMenu.contains(e.target) && e.target !== this.btnMobileMenu) {
+          this.navActionsMenu.classList.remove('mobile-open');
+          this.btnMobileMenu.setAttribute('aria-expanded', 'false');
+        }
       });
     }
     if (this.btnCloseDrawer) {
@@ -791,7 +854,7 @@ class App {
               const rawOrderMsg = `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
                 this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl);
               const orderMsg = encodeURIComponent(rawOrderMsg);
-              const waUrl = `https://api.whatsapp.com/send?phone=216${cleanTargetPhone}&text=${orderMsg}`;
+              const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
               successWhatsappBtn.href = waUrl;
 
               // Re-copy with full order ID
@@ -820,7 +883,47 @@ class App {
             alert('Erreur: ' + data.message);
           }
         } catch (err) {
-          alert('Erreur de connexion: ' + err.message);
+          console.warn('Backend order submission offline, using local fallback:', err);
+          const fallbackOrderId = `ORD-${Date.now().toString().slice(-6)}`;
+          if (this.cartDrawerOverlay) this.cartDrawerOverlay.classList.remove('open');
+
+          const successModal = document.getElementById('order-success-modal');
+          const successOrderId = document.getElementById('success-order-id');
+          const successCustomerName = document.getElementById('success-customer-name');
+          const successCustomerPhone = document.getElementById('success-customer-phone');
+          const successWhatsappBtn = document.getElementById('btn-success-whatsapp');
+          const closeSuccessBtn = document.getElementById('btn-close-success-modal');
+
+          if (successOrderId) successOrderId.textContent = fallbackOrderId;
+          if (successCustomerName) successCustomerName.textContent = name || 'Cher Client';
+          if (successCustomerPhone) successCustomerPhone.textContent = phone;
+
+          if (successWhatsappBtn) {
+            const cleanTargetPhone = this.cleanPhoneNumber(this.whatsappPhone || '55756629');
+            const rawOrderMsg = `Bonjour Mouna ! J'ai passé la commande ${fallbackOrderId} sur votre boutique Oriflame :\n` +
+              this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+            const orderMsg = encodeURIComponent(rawOrderMsg);
+            const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
+            successWhatsappBtn.href = waUrl;
+            await copyTextToClipboard(rawOrderMsg);
+
+            successWhatsappBtn.onclick = async () => {
+              await copyTextToClipboard(rawOrderMsg);
+              this.showToast('📋 ✅ Message copié !');
+            };
+          }
+
+          if (closeSuccessBtn) {
+            closeSuccessBtn.onclick = () => {
+              if (successModal) successModal.classList.remove('open');
+            };
+          }
+
+          if (successModal) successModal.classList.add('open');
+
+          this.cartManager.clearCart();
+          this.renderCart();
+          this.updateCartBadge();
         } finally {
           btnPhone.disabled = false;
           btnPhone.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><span>📞 Commander par Téléphone / WhatsApp</span>`;
@@ -1199,6 +1302,177 @@ class App {
     };
   }
 
+  getProductDiscountSortMetrics(p) {
+    if (!p) return { discount: 0, savings: 0, inStock: false };
+
+    const validVariants = Array.isArray(p.variants) ? p.variants.filter(v => v.in_stock !== false) : [];
+    let initialVariant = null;
+    if (validVariants.length > 0) {
+      if (this.searchQuery) {
+        initialVariant = validVariants.find(v => 
+          String(v.product_id).toLowerCase().includes(this.searchQuery) ||
+          String(v.shade_name || '').toLowerCase().includes(this.searchQuery)
+        ) || validVariants[0];
+      } else {
+        initialVariant = validVariants[0];
+      }
+    }
+
+    const isCardInStock = (Array.isArray(p.variants) && p.variants.length > 0) 
+      ? (validVariants.length > 0 && p.in_stock !== false) 
+      : (p.in_stock !== false);
+
+    const activePrice = initialVariant ? (initialVariant.price || p.price) : p.price;
+    const activeOrigPrice = initialVariant ? (initialVariant.original_price || null) : p.original_price;
+    const { totalDiscount, displayOrigPrice } = this.calculateDiscountMetrics(activePrice, activeOrigPrice, p);
+
+    const savings = (displayOrigPrice && activePrice && Number(displayOrigPrice) > Number(activePrice))
+      ? (Number(displayOrigPrice) - Number(activePrice))
+      : 0;
+
+    return {
+      discount: totalDiscount || 0,
+      savings: savings,
+      inStock: isCardInStock
+    };
+  }
+
+  getProductPageSize() {
+    if (window.innerWidth < 768) return 8; // Mobile: 8 products (2 columns x 4 rows)
+    if (window.innerWidth < 1024) return 8; // Tablet: 8 products
+    return 12; // Desktop: 12 products (4 columns x 3 rows)
+  }
+
+  getDealsPageSize() {
+    if (window.innerWidth < 480) return 4; // Very narrow mobile: 4 deals (2x2)
+    if (window.innerWidth < 768) return 6; // Standard mobile: 6 deals (2x3)
+    if (window.innerWidth < 1024) return 6; // Tablet: 6 deals (3x2)
+    return 8; // Desktop: 8 deals (4x2)
+  }
+
+  scrollToSection(targetEl, offset = -75) {
+    if (!targetEl) return;
+    const y = targetEl.getBoundingClientRect().top + window.pageYOffset + offset;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }
+
+  renderPaginationControls({ container, currentPage, totalPages, totalItems, onPageChange, ariaLabel }) {
+    if (!container) return;
+
+    if (totalPages <= 1) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+      return;
+    }
+
+    container.style.display = 'flex';
+
+    // Calculate pages with smart ellipsis (adaptive for narrow mobile screens)
+    const isMobileNarrow = typeof window !== 'undefined' && window.innerWidth < 500;
+    const pages = [];
+
+    if (isMobileNarrow) {
+      // Compact pagination for mobile (<500px): max 5 page elements so 44px touch targets fit 360px screens
+      if (totalPages <= 5) {
+        for (let i = 1; i <= totalPages; i++) pages.push(i);
+      } else {
+        if (currentPage <= 2) {
+          pages.push(1, 2, '...', totalPages);
+        } else if (currentPage >= totalPages - 1) {
+          pages.push(1, '...', totalPages - 1, totalPages);
+        } else {
+          pages.push(1, '...', currentPage, '...', totalPages);
+        }
+      }
+    } else {
+      // Desktop / Tablet pagination
+      if (totalPages <= 7) {
+        for (let i = 1; i <= totalPages; i++) pages.push(i);
+      } else {
+        if (currentPage <= 4) {
+          for (let i = 1; i <= 5; i++) pages.push(i);
+          pages.push('...');
+          pages.push(totalPages);
+        } else if (currentPage >= totalPages - 3) {
+          pages.push(1);
+          pages.push('...');
+          for (let i = totalPages - 4; i <= totalPages; i++) pages.push(i);
+        } else {
+          pages.push(1);
+          pages.push('...');
+          pages.push(currentPage - 1);
+          pages.push(currentPage);
+          pages.push(currentPage + 1);
+          pages.push('...');
+          pages.push(totalPages);
+        }
+      }
+    }
+
+    const prevLabel = this.i18n.t('pagination_prev') || 'Précédent';
+    const nextLabel = this.i18n.t('pagination_next') || 'Suivant';
+    const isFirst = currentPage <= 1;
+    const isLast = currentPage >= totalPages;
+
+    container.innerHTML = `
+      <nav class="pagination-nav" aria-label="${ariaLabel || 'Pagination'}">
+        <button type="button" class="pagination-btn pagination-prev" ${isFirst ? 'disabled aria-disabled="true"' : ''} aria-label="${prevLabel}">
+          <span class="pagination-arrow">‹</span>
+          <span class="btn-text">${prevLabel}</span>
+        </button>
+        <div class="pagination-pages">
+          ${pages.map(p => {
+            if (p === '...') {
+              return `<span class="pagination-ellipsis" aria-hidden="true">…</span>`;
+            }
+            const isActive = p === currentPage;
+            return `
+              <button type="button" class="pagination-page ${isActive ? 'active' : ''}" 
+                ${isActive ? 'aria-current="page"' : ''} 
+                data-page="${p}" 
+                aria-label="Page ${p}">
+                ${p}
+              </button>
+            `;
+          }).join('')}
+        </div>
+        <button type="button" class="pagination-btn pagination-next" ${isLast ? 'disabled aria-disabled="true"' : ''} aria-label="${nextLabel}">
+          <span class="btn-text">${nextLabel}</span>
+          <span class="pagination-arrow">›</span>
+        </button>
+      </nav>
+    `;
+
+    // Event listeners
+    const prevBtn = container.querySelector('.pagination-prev');
+    const nextBtn = container.querySelector('.pagination-next');
+    const pageButtons = container.querySelectorAll('.pagination-page');
+
+    if (prevBtn && !isFirst) {
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        onPageChange(currentPage - 1);
+      });
+    }
+
+    if (nextBtn && !isLast) {
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        onPageChange(currentPage + 1);
+      });
+    }
+
+    pageButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const pageNum = parseInt(btn.dataset.page, 10);
+        if (!isNaN(pageNum) && pageNum !== currentPage) {
+          onPageChange(pageNum);
+        }
+      });
+    });
+  }
+
   renderDealsShowcase() {
     if (!this.dealsCarouselGrid) return;
     const isArabic = this.i18n.getLang() === 'ar';
@@ -1211,18 +1485,48 @@ class App {
         .filter(Boolean);
     }
 
-    if (promoProducts.length === 0) {
-      promoProducts = this.products.filter(p => p.is_featured_deal || p.is_promo).slice(0, 6);
-    }
+    // Also include other promo / discounted products from the catalogue
+    const otherPromos = this.products.filter(p => 
+      (p.is_promo || p.is_featured_deal || (p.original_price && Number(p.original_price) > Number(p.price))) &&
+      !promoProducts.some(existing => String(existing.product_id) === String(p.product_id))
+    );
+    promoProducts = [...promoProducts, ...otherPromos];
 
     if (promoProducts.length === 0) {
       if (this.promoShowcaseSection) this.promoShowcaseSection.style.display = 'none';
+      if (this.dealsPaginationContainer) this.dealsPaginationContainer.style.display = 'none';
+      if (this.dealsCountIndicator) this.dealsCountIndicator.style.display = 'none';
       return;
     }
 
     if (this.promoShowcaseSection) this.promoShowcaseSection.style.display = 'block';
 
-    this.dealsCarouselGrid.innerHTML = promoProducts.map(p => {
+    // Deals Pagination Calculation
+    const totalDeals = promoProducts.length;
+    const pageSize = this.getDealsPageSize();
+    const totalPages = Math.ceil(totalDeals / pageSize) || 1;
+    if (this.dealsCurrentPage > totalPages) this.dealsCurrentPage = 1;
+    if (this.dealsCurrentPage < 1) this.dealsCurrentPage = 1;
+
+    const startIdx = (this.dealsCurrentPage - 1) * pageSize;
+    const endIdx = Math.min(startIdx + pageSize, totalDeals);
+    const pageDeals = promoProducts.slice(startIdx, endIdx);
+
+    // Update position indicator in deals header
+    if (this.dealsCountIndicator) {
+      if (totalDeals > 0) {
+        this.dealsCountIndicator.textContent = this.i18n.t('position_deals', {
+          start: startIdx + 1,
+          end: endIdx,
+          total: totalDeals
+        });
+        this.dealsCountIndicator.style.display = 'inline-flex';
+      } else {
+        this.dealsCountIndicator.style.display = 'none';
+      }
+    }
+
+    this.dealsCarouselGrid.innerHTML = pageDeals.map(p => {
       const prodName = this.getProductName(p);
       const { totalDiscount, displayOrigPrice } = this.calculateDiscountMetrics(p.price, p.original_price, p);
 
@@ -1242,12 +1546,27 @@ class App {
             <span class="current-deal-price">${Number(p.price).toFixed(2)} ${currencyLabel}</span>
             ${displayOrigPrice ? `<span class="original-price-strike">${Number(displayOrigPrice).toFixed(2)} ${currencyLabel}</span>` : ''}
           </div>
-          <button class="btn-add-cart" style="width:100%; min-height:36px; font-size:0.8rem; justify-content:center;" onclick="event.stopPropagation(); window.app.addToCart('${p.product_id}')">
+          <button class="btn-add-cart" style="width:100%; min-height:44px; font-size:0.8rem; justify-content:center;" onclick="event.stopPropagation(); window.app.addToCart('${p.product_id}')">
             ${this.i18n.t('add_to_cart')}
           </button>
         </div>
       `;
     }).join('');
+
+    // Render Deals Pagination
+    this.renderPaginationControls({
+      container: this.dealsPaginationContainer,
+      currentPage: this.dealsCurrentPage,
+      totalPages,
+      totalItems: totalDeals,
+      onPageChange: (newPage) => {
+        this.dealsCurrentPage = newPage;
+        this.renderDealsShowcase();
+        const target = document.getElementById('promo-showcase-section');
+        this.scrollToSection(target, -75);
+      },
+      ariaLabel: this.i18n.t('deals_banner_title')
+    });
   }
 
   renderBundlesShowcase() {
@@ -1375,19 +1694,62 @@ class App {
       return matchesCategory && matchesSearch;
     });
 
+    // TÂCHE 4 : Trier les produits par remise la plus élevée (ordre décroissant)
+    filtered.sort((a, b) => {
+      const aMetrics = this.getProductDiscountSortMetrics(a);
+      const bMetrics = this.getProductDiscountSortMetrics(b);
+
+      // 1. Remise en pourcentage la plus forte en premier (-55%, -50%, -40%...)
+      if (bMetrics.discount !== aMetrics.discount) {
+        return bMetrics.discount - aMetrics.discount;
+      }
+      // 2. Économie monétaire en DT la plus importante
+      if (bMetrics.savings !== aMetrics.savings) {
+        return bMetrics.savings - aMetrics.savings;
+      }
+      // 3. Produits en stock en priorité
+      if (bMetrics.inStock !== aMetrics.inStock) {
+        return bMetrics.inStock ? 1 : -1;
+      }
+      // 4. Tri stable par référence
+      return String(a.product_id).localeCompare(String(b.product_id));
+    });
+
+    const totalItems = filtered.length;
+    const pageSize = this.getProductPageSize();
+    const totalPages = Math.ceil(totalItems / pageSize) || 1;
+    if (this.productsCurrentPage > totalPages) this.productsCurrentPage = 1;
+    if (this.productsCurrentPage < 1) this.productsCurrentPage = 1;
+
+    const startIndex = (this.productsCurrentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, totalItems);
+    const pageItems = filtered.slice(startIndex, endIndex);
+
     if (this.productsCount) {
-      this.productsCount.textContent = this.i18n.t('showing_products', { count: filtered.length });
+      if (totalItems === 0) {
+        this.productsCount.textContent = this.i18n.t('showing_products', { count: 0 });
+      } else {
+        this.productsCount.textContent = this.i18n.t('position_products', {
+          start: startIndex + 1,
+          end: endIndex,
+          total: totalItems
+        });
+      }
     }
 
     if (!this.productGrid) return;
 
-    if (filtered.length === 0) {
+    if (totalItems === 0) {
       this.productGrid.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: #8E8D8A;">
           <p style="font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; color: #18181B; margin-bottom: 8px;">No products found</p>
           <p style="font-size: 0.9rem;">Try adjusting your search query or selecting another category.</p>
         </div>
       `;
+      if (this.productsPaginationContainer) {
+        this.productsPaginationContainer.style.display = 'none';
+        this.productsPaginationContainer.innerHTML = '';
+      }
       return;
     }
 
@@ -1395,7 +1757,7 @@ class App {
     const outStockText = this.i18n.t('out_stock');
     const addBtnText = this.i18n.t('add_to_cart');
 
-    this.productGrid.innerHTML = filtered.map(p => {
+    this.productGrid.innerHTML = pageItems.map(p => {
       const prodName = this.getProductName(p);
       const prodDesc = this.getProductDescription(p);
       
@@ -1490,6 +1852,21 @@ class App {
         </div>
       `;
     }).join('');
+
+    // Render Products Pagination
+    this.renderPaginationControls({
+      container: this.productsPaginationContainer,
+      currentPage: this.productsCurrentPage,
+      totalPages,
+      totalItems,
+      onPageChange: (newPage) => {
+        this.productsCurrentPage = newPage;
+        this.renderProducts();
+        const target = document.querySelector('.controls-section') || document.querySelector('.products-header');
+        this.scrollToSection(target, -75);
+      },
+      ariaLabel: this.i18n.t('featured_catalog')
+    });
   }
 
   selectCardVariant(parentId, variantId, btnEl) {
@@ -1737,10 +2114,10 @@ class App {
           <div class="cart-item-price">${Number(item.price).toFixed(2)} ${currencyLabel}</div>
         </div>
         <div class="cart-item-controls">
-          <button class="btn-qty" onclick="window.app.updateCartQty('${item.product_id}', -1)">-</button>
+          <button class="btn-qty" onclick="window.app.updateCartQty('${item.product_id}', -1)" aria-label="Diminuer la quantité">-</button>
           <span class="qty-val">${item.quantity}</span>
-          <button class="btn-qty" onclick="window.app.updateCartQty('${item.product_id}', 1)">+</button>
-          <button class="btn-remove-item" onclick="window.app.removeCartItem('${item.product_id}')">✕</button>
+          <button class="btn-qty" onclick="window.app.updateCartQty('${item.product_id}', 1)" aria-label="Augmenter la quantité">+</button>
+          <button class="btn-remove-item" onclick="window.app.removeCartItem('${item.product_id}')" aria-label="Supprimer l'article">✕</button>
         </div>
       </div>
     `).join('');
@@ -1931,9 +2308,29 @@ class App {
 
   updateCartBadge() {
     const count = this.cartManager.getTotalCount();
+    const total = typeof this.cartManager.getSubtotal === 'function' ? this.cartManager.getSubtotal() : 0;
+
     if (this.cartBadge) {
       this.cartBadge.textContent = count;
       this.cartBadge.style.display = count > 0 ? 'flex' : 'none';
+    }
+
+    if (this.headerCartBadge) {
+      this.headerCartBadge.textContent = count;
+      this.headerCartBadge.style.display = count > 0 ? 'flex' : 'none';
+    }
+
+    if (this.floatingCartText) {
+      if (count > 0) {
+        const isArabic = this.i18n ? this.i18n.getLang() === 'ar' : false;
+        const countText = isArabic 
+          ? `${count} ${count > 1 ? 'منتجات' : 'منتج'}` 
+          : `${count} ${count > 1 ? 'articles' : 'article'}`;
+        const currencyText = isArabic ? 'د.ت' : 'DT';
+        this.floatingCartText.textContent = `${countText} · ${total.toFixed(2)} ${currencyText}`;
+      } else {
+        this.floatingCartText.textContent = this.i18n ? this.i18n.t('view_cart') : 'Voir le Panier';
+      }
     }
   }
 

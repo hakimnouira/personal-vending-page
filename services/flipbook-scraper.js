@@ -1,10 +1,17 @@
 // Oriflame Digital Flipbook Scraper Service with Dynamic Token Refresh & 100% Authentic Live Enrichments
 // Storage: Neon Postgres (primary) + local data/flipbook.json (fast read cache)
 import axios from 'axios';
+import https from 'https';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getFlipbookFromDB, saveFlipbookToDB } from '../dataAccess.js';
+
+const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+const http = axios.create({ httpsAgent });
+
+let isScrapingInProgress = false;
+let lastScrapeTime = 0;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,7 +51,7 @@ export async function resolveLatestCatalogueCode() {
 
   // 1. Check official current digital catalogue landing page
   try {
-    const res = await axios.get('https://tn.oriflame.com/products/digital-catalogue-current', {
+    const res = await http.get('https://tn.oriflame.com/products/digital-catalogue-current', {
       headers: {
         'User-Agent': USER_AGENT,
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -89,7 +96,7 @@ export async function resolveLatestCatalogueCode() {
 
   for (const cand of candidates) {
     try {
-      const testRes = await axios.get(`https://tn-catalogue.oriflame.com/fr-TN/${cand}-brp?HideStandardUI=true&Page=1`, {
+      const testRes = await http.get(`https://tn-catalogue.oriflame.com/fr-TN/${cand}-brp?HideStandardUI=true&Page=1`, {
         headers: { 'User-Agent': USER_AGENT },
         timeout: 5000
       });
@@ -107,6 +114,15 @@ export async function resolveLatestCatalogueCode() {
 }
 
 export async function scrapeFlipbookFromUrl(inputUrl = '', options = {}) {
+  if (isScrapingInProgress) {
+    return readLocalCache();
+  }
+  const now = Date.now();
+  if (!options.force && now - lastScrapeTime < 180000) {
+    return readLocalCache();
+  }
+  isScrapingInProgress = true;
+  lastScrapeTime = now;
   try {
     let catalogueCode = '';
     const cleanInput = (inputUrl || '').trim();
@@ -133,7 +149,7 @@ export async function scrapeFlipbookFromUrl(inputUrl = '', options = {}) {
 
     console.log(`Fetching live Oriflame digital catalogue from: ${catalogueUrl}`);
 
-    const pageRes = await axios.get(catalogueUrl, {
+    const pageRes = await http.get(catalogueUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       },
@@ -148,17 +164,17 @@ export async function scrapeFlipbookFromUrl(inputUrl = '', options = {}) {
     let totalPages = 148;
     let chunkUrls = {};
     let paperId = '';
-    let videoUrl = 'https://files.cdn.ipaper.io/iPaper/Files/b836ce46-8c5b-4fd7-a3c2-20560b99328b.mp4';
     let pageTitle = `Catalogue Oriflame ${catalogueCode.slice(-3)}/${catalogueCode.slice(0, 4)}`;
+    let parsedSettings = null;
 
     if (settingsMatch) {
-      const settings = JSON.parse(settingsMatch[1]);
-      if (settings.aws?.url) awsUrl = settings.aws.url;
-      if (settings.aws?.policy) policy = settings.aws.policy;
-      if (settings.pages?.length) totalPages = settings.pages.length;
-      if (settings.enrichments?.chunkUrls) chunkUrls = settings.enrichments.chunkUrls;
-      if (settings.paperId) paperId = String(settings.paperId);
-      if (settings.pageTitle) pageTitle = settings.pageTitle;
+      parsedSettings = JSON.parse(settingsMatch[1]);
+      if (parsedSettings.aws?.url) awsUrl = parsedSettings.aws.url;
+      if (parsedSettings.aws?.policy) policy = parsedSettings.aws.policy;
+      if (parsedSettings.pages?.length) totalPages = parsedSettings.pages.length;
+      if (parsedSettings.enrichments?.chunkUrls) chunkUrls = parsedSettings.enrichments.chunkUrls;
+      if (parsedSettings.paperId) paperId = String(parsedSettings.paperId);
+      if (parsedSettings.pageTitle) pageTitle = parsedSettings.pageTitle;
     } else {
       // Fallback policy extraction
       const tokenMatch = html.match(/token=([a-zA-Z0-9_-]+)/);
@@ -182,7 +198,7 @@ export async function scrapeFlipbookFromUrl(inputUrl = '', options = {}) {
 
     for (const [key, chunkUrl] of Object.entries(chunkUrls)) {
       try {
-        const cRes = await axios.get(chunkUrl, { timeout: 8000 });
+        const cRes = await http.get(chunkUrl, { timeout: 8000 });
         const list = cRes.data?.enrichments || [];
         list.forEach(e => {
           if (!seenIds.has(e.id)) {
@@ -240,6 +256,66 @@ export async function scrapeFlipbookFromUrl(inputUrl = '', options = {}) {
       return `${awsUrl}Pages/${pageNumber}/Zoom.jpg?${policy}`;
     };
 
+    // ── DYNAMIC LIVE VIDEO EXTRACTION FROM LIVE ENRICHMENTS ──
+    let videoUrl = null;
+    let videoOverlay = null;
+
+    const fileBaseUrl = (parsedSettings?.aws?.fileUrl || 'https://files.cdn.ipaper.io/iPaper/Files/').replace(/\/+$/, '') + '/';
+
+    // 1. Priority 1: Search for animated cover video on Page 0 (Type 17, MP4 extension or aws ending with .mp4)
+    const coverVideoEnr = allEnrichments.find(e => 
+      (e.pageIndex === 0 || e.pageIndex === 1) && 
+      (e.type === 17 || (e.extension && String(e.extension).toLowerCase() === 'mp4') || (e.aws && String(e.aws).toLowerCase().endsWith('.mp4')))
+    );
+
+    if (coverVideoEnr) {
+      if (coverVideoEnr.aws) {
+        videoUrl = `${fileBaseUrl}${coverVideoEnr.aws}`;
+      } else if (coverVideoEnr.url && coverVideoEnr.url.startsWith('http')) {
+        videoUrl = coverVideoEnr.url;
+      } else if (coverVideoEnr.popupMediaGallery?.media?.[0]?.url) {
+        videoUrl = coverVideoEnr.popupMediaGallery.media[0].url;
+      }
+
+      if (coverVideoEnr.y != null && coverVideoEnr.height != null) {
+        videoOverlay = {
+          top: `${(coverVideoEnr.y * 100).toFixed(2)}%`,
+          left: `${((coverVideoEnr.x || 0) * 100).toFixed(2)}%`,
+          width: `${((coverVideoEnr.width || 1) * 100).toFixed(2)}%`,
+          height: `${(coverVideoEnr.height * 100).toFixed(2)}%`
+        };
+      }
+      console.log(`[Flipbook Scraper] ✅ Dynamically extracted live cover video: ${videoUrl}`);
+    } else {
+      // 2. Priority 2: Check any video enrichment across the entire catalogue
+      const anyVideoEnr = allEnrichments.find(e => 
+        e.type === 17 || 
+        (e.aws && String(e.aws).toLowerCase().endsWith('.mp4')) ||
+        (e.popupMediaGallery?.media?.[0]?.url && String(e.popupMediaGallery.media[0].url).toLowerCase().endsWith('.mp4'))
+      );
+      if (anyVideoEnr) {
+        if (anyVideoEnr.aws) {
+          videoUrl = `${fileBaseUrl}${anyVideoEnr.aws}`;
+        } else if (anyVideoEnr.url && anyVideoEnr.url.startsWith('http')) {
+          videoUrl = anyVideoEnr.url;
+        } else if (anyVideoEnr.popupMediaGallery?.media?.[0]?.url) {
+          videoUrl = anyVideoEnr.popupMediaGallery.media[0].url;
+        }
+        console.log(`[Flipbook Scraper] ✅ Extracted live video from enrichment (Page ${anyVideoEnr.pageIndex}): ${videoUrl}`);
+      } else {
+        // 3. Priority 3: Scan raw catalogue HTML for any ipaper mp4 URL
+        const mp4Match = html.match(/https?:\/\/files\.cdn\.ipaper\.io\/iPaper\/Files\/[a-zA-Z0-9_-]+\.mp4/i);
+        if (mp4Match) {
+          videoUrl = mp4Match[0];
+          console.log(`[Flipbook Scraper] ✅ Extracted live video from HTML regex match: ${videoUrl}`);
+        }
+      }
+    }
+
+    if (!videoUrl) {
+      console.log(`[Flipbook Scraper] Notice: No video found in live edition ${catalogueCode}.`);
+    }
+
     const spreads = [];
 
     // Spread 0: Cover (Page 1)
@@ -258,6 +334,7 @@ export async function scrapeFlipbookFromUrl(inputUrl = '', options = {}) {
       title: `Page 1 — ${pageTitle}`,
       images: [getPageImageUrl(1)],
       video: videoUrl,
+      videoOverlay: videoOverlay || (videoUrl ? { top: '14.80%', left: '0.00%', width: '100.00%', height: '70.20%' } : null),
       hotspots: coverHotspots
     });
 
@@ -350,6 +427,8 @@ export async function scrapeFlipbookFromUrl(inputUrl = '', options = {}) {
   } catch (err) {
     console.error(`Flipbook scrape error: ${err.message}`);
     throw new Error(`Flipbook scrape error: ${err.message}`);
+  } finally {
+    isScrapingInProgress = false;
   }
 }
 
@@ -361,15 +440,15 @@ export async function getOrRefreshFlipbookData(forceRefresh = false) {
   try {
     if (forceRefresh) {
       console.log('Force refresh requested: Scraping latest active catalogue...');
-      return await scrapeFlipbookFromUrl();
+      return await scrapeFlipbookFromUrl('', { force: true });
     }
 
-    // 1. Try Neon first
-    let data = await getFlipbookFromDB();
+    // 1. Try local file cache first for instant sub-millisecond response
+    let data = readLocalCache();
 
-    // 2. Fall back to local file if Neon unavailable/empty
+    // 2. Fall back to Neon DB if local cache empty
     if (!data) {
-      data = readLocalCache();
+      data = await getFlipbookFromDB();
     }
 
     if (data) {
@@ -388,8 +467,8 @@ export async function getOrRefreshFlipbookData(forceRefresh = false) {
         }
       }
 
-      // If outdated edition or expiring token, trigger automatic background scrape
-      if (isOutdatedEdition || tokenExpiring) {
+      // If outdated edition or expiring token, trigger automatic background scrape with cooldown & concurrency guard
+      if ((isOutdatedEdition || tokenExpiring) && !isScrapingInProgress && (Date.now() - lastScrapeTime >= 180000)) {
         console.log(`[Flipbook Auto-Refresh] Refreshing catalogue (outdated edition: ${isOutdatedEdition}, token expiring: ${tokenExpiring})...`);
         scrapeFlipbookFromUrl().catch(e => console.warn('Background flipbook refresh note:', e.message));
       }

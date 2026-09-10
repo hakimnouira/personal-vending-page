@@ -341,7 +341,7 @@ export class ECatalogueViewer {
     // Update Indicators
     if (this.pageIndicator) {
       const pageText = spread.pages.length === 1 ? `Page ${spread.pages[0]}` : `Pages ${spread.pages[0]} - ${spread.pages[1]}`;
-      this.pageIndicator.textContent = `${pageText} / ${this.totalPages}`;
+      this.pageIndicator.textContent = `${pageText} / ${this.totalPages || 150}`;
     }
     if (this.spreadTitle) {
       this.spreadTitle.textContent = spread.title;
@@ -369,24 +369,25 @@ export class ECatalogueViewer {
       return `${val}%`;
     };
 
-    if (spread.spreadIndex === 0) {
-      // Cover Page with Video
+    if (spread.pages.length === 1) {
+      // Single Page (Cover or Back Cover)
+      const isCover = spread.spreadIndex === 0;
       contentHtml = `
         <div class="ecat-single-page-wrap">
-          <img src="${getImgSrc(spread.images[0])}" alt="Catalogue Oriflame Couverture" class="ecat-page-img loaded" referrerpolicy="no-referrer" />
+          <img src="${getImgSrc(spread.images[0])}" alt="Page ${spread.pages[0]}" class="ecat-page-img loaded" referrerpolicy="no-referrer" />
           
           <!-- Embedded Video Player Overlay -->
-          ${spread.video ? `
-            <div class="ecat-video-overlay">
+          ${(isCover && spread.video) ? `
+            <div class="ecat-video-overlay" style="${spread.videoOverlay ? `top: ${spread.videoOverlay.top}; left: ${spread.videoOverlay.left}; width: ${spread.videoOverlay.width}; height: ${spread.videoOverlay.height};` : ''}">
               <video autoplay muted loop playsinline src="${spread.video}" class="ecat-video-element"></video>
             </div>
           ` : ''}
 
           <div class="ecat-cover-badge">
-            <span>✨ CATALOGUE OFFICIEL EN COURS</span>
+            <span>${isCover ? '✨ CATALOGUE OFFICIEL EN COURS' : '🌟 DERNIÈRE PAGE DU CATALOGUE'}</span>
           </div>
 
-          <!-- Cover Hotspots -->
+          <!-- Cover / Back Cover Hotspots -->
           ${(spread.hotspots || []).map((h, idx) => `
             <div class="ecat-hotspot-pin" style="left: ${formatPos(h.left)}; top: ${formatPos(h.top)};" onclick="window.ecatViewer && window.ecatViewer.openHotspotModal(${this.currentSpread}, ${idx})" title="${h.name}">
               <span class="hotspot-pulse"></span>
@@ -407,10 +408,10 @@ export class ECatalogueViewer {
       contentHtml = `
         <div class="ecat-dual-spread-wrap">
           <div class="ecat-page-half left-page">
-            <img src="${leftImg}" alt="Page ${spread.pages[0]}" class="ecat-page-img" loading="lazy" referrerpolicy="no-referrer" />
+            <img src="${leftImg}" alt="Page ${spread.pages[0]}" class="ecat-page-img" referrerpolicy="no-referrer" />
           </div>
           <div class="ecat-page-half right-page">
-            <img src="${rightImg}" alt="Page ${spread.pages[1] || spread.pages[0]}" class="ecat-page-img" loading="lazy" referrerpolicy="no-referrer" />
+            <img src="${rightImg}" alt="Page ${spread.pages[1] || spread.pages[0]}" class="ecat-page-img" referrerpolicy="no-referrer" />
           </div>
 
           <!-- Clickable Interactive Product Hotspots with Exact Index -->
@@ -429,6 +430,19 @@ export class ECatalogueViewer {
     }
 
     this.bookSpreadWrap.innerHTML = contentHtml;
+    this.preloadAdjacentSpreads();
+  }
+
+  preloadAdjacentSpreads() {
+    const nextSpread = this.spreads[this.currentSpread + 1];
+    if (nextSpread && Array.isArray(nextSpread.images)) {
+      nextSpread.images.forEach(img => {
+        if (img) {
+          const preImg = new Image();
+          preImg.src = img.includes('ipaper.io') ? `/api/flipbook/image?url=${encodeURIComponent(img)}` : img;
+        }
+      });
+    }
   }
 
   openHotspotModal(spreadIdx, hotspotIdx) {

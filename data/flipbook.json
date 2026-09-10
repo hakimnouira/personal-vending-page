@@ -4,11 +4,11 @@
   "paperId": "3049674",
   "totalPages": 148,
   "totalSpreads": 75,
-  "videoUrl": "https://files.cdn.ipaper.io/iPaper/Files/b836ce46-8c5b-4fd7-a3c2-20560b99328b.mp4",
-  "token": "T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8",
-  "expires": "1788791846",
-  "policy": "token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-  "scrapedAt": "2026-09-06T16:09:15.654Z",
+  "videoUrl": "https://files.cdn.ipaper.io/iPaper/Files/495e8f79-693e-4334-9253-e69101d0eed2.mp4",
+  "token": "XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc",
+  "expires": "1789144546",
+  "policy": "token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+  "scrapedAt": "2026-09-10T21:52:20.390Z",
   "spreads": [
     {
       "spreadIndex": 0,
@@ -17,9 +17,15 @@
       ],
       "title": "Page 1 — 2026009-brp",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/1/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/1/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
-      "video": "https://files.cdn.ipaper.io/iPaper/Files/b836ce46-8c5b-4fd7-a3c2-20560b99328b.mp4",
+      "video": "https://files.cdn.ipaper.io/iPaper/Files/495e8f79-693e-4334-9253-e69101d0eed2.mp4",
+      "videoOverlay": {
+        "top": "14.80%",
+        "left": "0.00%",
+        "width": "100.00%",
+        "height": "70.20%"
+      },
       "hotspots": []
     },
     {
@@ -30,8 +36,8 @@
       ],
       "title": "Pages 2 - 3 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/2/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/3/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/2/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/3/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": []
     },
@@ -43,8 +49,8 @@
       ],
       "title": "Pages 4 - 5 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/4/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/5/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/4/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/5/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -161,8 +167,8 @@
       ],
       "title": "Pages 6 - 7 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/6/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/7/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/6/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/7/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -279,8 +285,8 @@
       ],
       "title": "Pages 8 - 9 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/8/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/9/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/8/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/9/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -301,8 +307,8 @@
       ],
       "title": "Pages 10 - 11 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/10/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/11/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/10/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/11/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -331,8 +337,8 @@
       ],
       "title": "Pages 12 - 13 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/12/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/13/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/12/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/13/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -353,8 +359,8 @@
       ],
       "title": "Pages 14 - 15 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/14/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/15/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/14/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/15/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -375,8 +381,8 @@
       ],
       "title": "Pages 16 - 17 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/16/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/17/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/16/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/17/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -421,8 +427,8 @@
       ],
       "title": "Pages 18 - 19 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/18/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/19/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/18/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/19/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -467,8 +473,8 @@
       ],
       "title": "Pages 20 - 21 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/20/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/21/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/20/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/21/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -505,8 +511,8 @@
       ],
       "title": "Pages 22 - 23 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/22/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/23/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/22/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/23/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -543,8 +549,8 @@
       ],
       "title": "Pages 24 - 25 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/24/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/25/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/24/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/25/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -573,8 +579,8 @@
       ],
       "title": "Pages 26 - 27 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/26/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/27/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/26/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/27/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -603,8 +609,8 @@
       ],
       "title": "Pages 28 - 29 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/28/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/29/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/28/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/29/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -625,8 +631,8 @@
       ],
       "title": "Pages 30 - 31 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/30/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/31/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/30/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/31/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -663,8 +669,8 @@
       ],
       "title": "Pages 32 - 33 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/32/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/33/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/32/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/33/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -709,8 +715,8 @@
       ],
       "title": "Pages 34 - 35 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/34/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/35/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/34/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/35/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -747,8 +753,8 @@
       ],
       "title": "Pages 36 - 37 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/36/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/37/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/36/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/37/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -785,8 +791,8 @@
       ],
       "title": "Pages 38 - 39 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/38/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/39/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/38/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/39/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -823,8 +829,8 @@
       ],
       "title": "Pages 40 - 41 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/40/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/41/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/40/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/41/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -853,8 +859,8 @@
       ],
       "title": "Pages 42 - 43 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/42/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/43/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/42/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/43/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -883,8 +889,8 @@
       ],
       "title": "Pages 44 - 45 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/44/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/45/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/44/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/45/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -905,8 +911,8 @@
       ],
       "title": "Pages 46 - 47 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/46/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/47/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/46/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/47/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -935,8 +941,8 @@
       ],
       "title": "Pages 48 - 49 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/48/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/49/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/48/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/49/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -973,8 +979,8 @@
       ],
       "title": "Pages 50 - 51 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/50/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/51/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/50/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/51/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1011,8 +1017,8 @@
       ],
       "title": "Pages 52 - 53 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/52/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/53/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/52/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/53/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1065,8 +1071,8 @@
       ],
       "title": "Pages 54 - 55 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/54/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/55/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/54/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/55/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1095,8 +1101,8 @@
       ],
       "title": "Pages 56 - 57 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/56/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/57/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/56/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/57/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1237,8 +1243,8 @@
       ],
       "title": "Pages 58 - 59 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/58/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/59/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/58/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/59/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1259,8 +1265,8 @@
       ],
       "title": "Pages 60 - 61 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/60/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/61/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/60/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/61/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1321,8 +1327,8 @@
       ],
       "title": "Pages 62 - 63 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/62/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/63/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/62/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/63/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1351,8 +1357,8 @@
       ],
       "title": "Pages 64 - 65 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/64/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/65/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/64/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/65/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1389,8 +1395,8 @@
       ],
       "title": "Pages 66 - 67 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/66/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/67/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/66/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/67/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1411,8 +1417,8 @@
       ],
       "title": "Pages 68 - 69 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/68/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/69/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/68/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/69/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1473,8 +1479,8 @@
       ],
       "title": "Pages 70 - 71 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/70/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/71/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/70/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/71/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1495,8 +1501,8 @@
       ],
       "title": "Pages 72 - 73 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/72/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/73/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/72/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/73/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1533,8 +1539,8 @@
       ],
       "title": "Pages 74 - 75 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/74/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/75/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/74/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/75/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1571,8 +1577,8 @@
       ],
       "title": "Pages 76 - 77 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/76/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/77/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/76/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/77/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1609,8 +1615,8 @@
       ],
       "title": "Pages 78 - 79 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/78/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/79/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/78/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/79/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1655,8 +1661,8 @@
       ],
       "title": "Pages 80 - 81 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/80/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/81/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/80/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/81/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1693,8 +1699,8 @@
       ],
       "title": "Pages 82 - 83 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/82/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/83/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/82/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/83/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1739,8 +1745,8 @@
       ],
       "title": "Pages 84 - 85 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/84/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/85/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/84/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/85/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1769,8 +1775,8 @@
       ],
       "title": "Pages 86 - 87 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/86/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/87/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/86/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/87/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1807,8 +1813,8 @@
       ],
       "title": "Pages 88 - 89 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/88/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/89/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/88/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/89/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1861,8 +1867,8 @@
       ],
       "title": "Pages 90 - 91 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/90/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/91/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/90/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/91/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -1971,8 +1977,8 @@
       ],
       "title": "Pages 92 - 93 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/92/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/93/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/92/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/93/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2089,8 +2095,8 @@
       ],
       "title": "Pages 94 - 95 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/94/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/95/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/94/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/95/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2151,8 +2157,8 @@
       ],
       "title": "Pages 96 - 97 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/96/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/97/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/96/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/97/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2197,8 +2203,8 @@
       ],
       "title": "Pages 98 - 99 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/98/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/99/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/98/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/99/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2363,8 +2369,8 @@
       ],
       "title": "Pages 100 - 101 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/100/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/101/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/100/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/101/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2385,8 +2391,8 @@
       ],
       "title": "Pages 102 - 103 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/102/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/103/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/102/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/103/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2439,8 +2445,8 @@
       ],
       "title": "Pages 104 - 105 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/104/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/105/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/104/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/105/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2581,8 +2587,8 @@
       ],
       "title": "Pages 106 - 107 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/106/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/107/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/106/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/107/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2651,8 +2657,8 @@
       ],
       "title": "Pages 108 - 109 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/108/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/109/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/108/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/109/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2697,8 +2703,8 @@
       ],
       "title": "Pages 110 - 111 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/110/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/111/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/110/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/111/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -2823,8 +2829,8 @@
       ],
       "title": "Pages 112 - 113 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/112/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/113/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/112/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/113/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -3045,8 +3051,8 @@
       ],
       "title": "Pages 114 - 115 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/114/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/115/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/114/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/115/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -3115,8 +3121,8 @@
       ],
       "title": "Pages 116 - 117 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/116/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/117/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/116/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/117/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -3265,8 +3271,8 @@
       ],
       "title": "Pages 118 - 119 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/118/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/119/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/118/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/119/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -3343,8 +3349,8 @@
       ],
       "title": "Pages 120 - 121 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/120/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/121/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/120/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/121/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -3429,8 +3435,8 @@
       ],
       "title": "Pages 122 - 123 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/122/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/123/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/122/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/123/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -3915,8 +3921,8 @@
       ],
       "title": "Pages 124 - 125 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/124/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/125/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/124/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/125/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -3937,8 +3943,8 @@
       ],
       "title": "Pages 126 - 127 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/126/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/127/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/126/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/127/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -3983,8 +3989,8 @@
       ],
       "title": "Pages 128 - 129 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/128/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/129/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/128/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/129/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4029,8 +4035,8 @@
       ],
       "title": "Pages 130 - 131 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/130/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/131/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/130/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/131/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4067,8 +4073,8 @@
       ],
       "title": "Pages 132 - 133 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/132/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/133/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/132/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/133/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4129,8 +4135,8 @@
       ],
       "title": "Pages 134 - 135 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/134/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/135/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/134/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/135/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4175,8 +4181,8 @@
       ],
       "title": "Pages 136 - 137 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/136/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/137/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/136/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/137/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4213,8 +4219,8 @@
       ],
       "title": "Pages 138 - 139 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/138/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/139/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/138/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/139/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4267,8 +4273,8 @@
       ],
       "title": "Pages 140 - 141 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/140/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/141/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/140/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/141/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4321,8 +4327,8 @@
       ],
       "title": "Pages 142 - 143 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/142/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/143/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/142/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/143/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4495,8 +4501,8 @@
       ],
       "title": "Pages 144 - 145 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/144/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/145/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/144/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/145/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4549,8 +4555,8 @@
       ],
       "title": "Pages 146 - 147 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/146/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846",
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/147/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/146/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546",
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/147/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
@@ -4594,7 +4600,7 @@
       ],
       "title": "Page 148 — Catalogue Oriflame 2026009",
       "images": [
-        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/148/Zoom.jpg?token=T3Rp-nH1XOTW8KyytO-MHEaiX9qPgSKbYfqoNr7hDv8&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1788791846"
+        "https://cdn.ipaper.io/iPaper/Papers/0ba60646-0409-4234-b426-d22a98828562/Pages/148/Zoom.jpg?token=XBtpDta0JQeweOe6LDcSLj4WBo0JWr9rBgcqkz7gkUc&token_path=%2fiPaper%2fPapers%2f0ba60646-0409-4234-b426-d22a98828562%2fPages%2f&expires=1789144546"
       ],
       "hotspots": [
         {
