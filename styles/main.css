@@ -192,6 +192,23 @@ input, select, textarea {
   display: flex;
   align-items: center;
   gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.brand-logo:hover,
+.brand-logo:focus-visible {
+  transform: scale(1.05);
+  outline: none;
+}
+
+.brand-logo:active {
+  transform: scale(0.98);
 }
 
 .brand-monogram {
@@ -269,6 +286,24 @@ input, select, textarea {
   color: var(--color-primary);
   border-color: var(--color-primary);
   background: var(--color-surface-hover);
+}
+
+.nav-btn-share {
+  background: rgba(212, 175, 55, 0.12) !important;
+  color: var(--color-primary, #0D1B2A) !important;
+  border: 1px solid rgba(212, 175, 55, 0.35) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn-share:hover {
+  background: rgba(212, 175, 55, 0.22) !important;
+  border-color: rgba(212, 175, 55, 0.6) !important;
+  transform: translateY(-1px);
 }
 
 /* Mobile Quick Actions hidden on Desktop */
@@ -4762,6 +4797,1645 @@ footer p {
   }
 }
 
+/* ==========================================================================
+   Fragrance Filters & Guide Banner Component (Luxury Oriflame Theme)
+   ========================================================================== */
+.fragrance-filters-container {
+  background: #FAF8F5;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: var(--radius-md, 16px);
+  padding: 20px 24px;
+  margin: 18px 0 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  animation: fadeInDown 0.25s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Guide Banner inside filters */
+.fragrance-guide-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.16) 0%, rgba(13, 27, 42, 0.05) 100%), #FFFFFF;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08);
+}
+
+.fragrance-guide-text {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fragrance-guide-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.fragrance-guide-text strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--color-primary, #0D1B2A);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.fragrance-guide-text p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #4A5568;
+}
+
+.btn-guide-banner {
+  background: var(--color-primary, #0D1B2A);
+  color: #FFFFFF !important;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.btn-guide-banner:hover {
+  background: #B8860B;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(184, 134, 11, 0.25);
+}
+
+/* Filter Groups and Rows */
+.fragrance-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.fragrance-filter-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fragrance-filter-legend {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-primary, #0D1B2A);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fragrance-pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Fragrance Filter Pills */
+.fragrance-filter-pill {
+  appearance: none;
+  border: 1px solid #D1D5DB;
+  background: #FFFFFF;
+  color: #374151;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  user-select: none;
+}
+
+.fragrance-filter-pill:hover:not(:disabled):not(.active) {
+  border-color: #B8860B;
+  background: #FFFDF8;
+  color: #0D1B2A;
+}
+
+.fragrance-filter-pill:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 2px;
+}
+
+.fragrance-filter-pill.active {
+  background: var(--color-primary, #0D1B2A);
+  color: #FFFFFF;
+  border-color: var(--color-primary, #0D1B2A);
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(13, 27, 42, 0.2);
+}
+
+.fragrance-filter-pill.active .filter-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+}
+
+.fragrance-filter-pill:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-style: dashed;
+  border-color: #E5E7EB;
+  background: #F3F4F6;
+  color: #9CA3AF;
+}
+
+.fragrance-filter-pill .filter-count {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 12px;
+  background: #E5E7EB;
+  color: #4B5563;
+  transition: background 0.18s, color 0.18s;
+}
+
+/* Footer & Reset Button */
+.fragrance-filters-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn-reset-fragrance-filters {
+  appearance: none;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #4A5568;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-reset-fragrance-filters:hover {
+  background: #F7FAFC;
+  color: #E53E3E;
+  border-color: #CBD5E0;
+}
+
+.btn-reset-fragrance-filters:focus-visible {
+  outline: 2px solid #E53E3E;
+  outline-offset: 2px;
+}
+
+.fragrance-active-summary {
+  font-size: 0.85rem;
+  color: #718096;
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .fragrance-filters-container {
+    padding: 16px 14px;
+    margin: 14px 0 20px;
+  }
+  .fragrance-guide-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .btn-guide-banner {
+    width: 100%;
+    text-align: center;
+  }
+  .fragrance-filter-pill {
+    padding: 6px 11px;
+    font-size: 0.82rem;
+    min-height: 36px;
+  }
+  .fragrance-filters-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-reset-fragrance-filters {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Haircare Specialized Filters & Breadcrumbs
+   ========================================================================== */
+.category-breadcrumb {
+  margin-bottom: 14px;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  color: #64748B;
+}
+
+.breadcrumb-item.active {
+  color: var(--color-primary, #0D1B2A);
+  font-weight: 600;
+}
+
+.breadcrumb-link {
+  color: #64748B;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb-link:hover {
+  color: var(--color-primary, #0D1B2A);
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  color: #94A3B8;
+  font-size: 0.85rem;
+}
+
+.haircare-filters-container {
+  background: #F6FAF7;
+  border: 1px solid rgba(46, 125, 50, 0.3);
+  border-radius: var(--radius-md, 16px);
+  padding: 20px 24px;
+  margin: 18px 0 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  animation: fadeInDown 0.25s ease-out;
+}
+
+.haircare-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.haircare-filter-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.haircare-filter-legend {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-primary, #0D1B2A);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.haircare-pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.haircare-filter-pill {
+  appearance: none;
+  border: 1px solid #D1D5DB;
+  background: #FFFFFF;
+  color: #374151;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  user-select: none;
+}
+
+.haircare-filter-pill:hover:not(:disabled):not(.active) {
+  border-color: #2E7D32;
+  background: #F1F8F3;
+  color: #1B4332;
+}
+
+.haircare-filter-pill:focus-visible {
+  outline: 2px solid #2E7D32;
+  outline-offset: 2px;
+}
+
+.haircare-filter-pill.active {
+  background: #1B4332;
+  color: #FFFFFF;
+  border-color: #1B4332;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(27, 67, 50, 0.25);
+}
+
+.haircare-filter-pill.active .filter-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.haircare-filter-pill:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-style: dashed;
+  border-color: #E5E7EB;
+  background: #F3F4F6;
+  color: #9CA3AF;
+}
+
+.haircare-filter-pill .filter-count {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 12px;
+  background: #E5E7EB;
+  color: #4B5563;
+  transition: background 0.18s, color 0.18s;
+}
+
+.haircare-filters-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn-reset-haircare-filters {
+  appearance: none;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #4A5568;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-reset-haircare-filters:hover {
+  background: #F7FAFC;
+  color: #E53E3E;
+  border-color: #CBD5E0;
+}
+
+.btn-reset-haircare-filters:focus-visible {
+  outline: 2px solid #E53E3E;
+  outline-offset: 2px;
+}
+
+.haircare-active-summary {
+  font-size: 0.85rem;
+  color: #52796F;
+  font-style: italic;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .haircare-filters-container {
+    padding: 16px 14px;
+    margin: 14px 0 20px;
+  }
+  .haircare-guide-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .haircare-filter-pill {
+    padding: 6px 11px;
+    font-size: 0.82rem;
+    min-height: 36px;
+  }
+  .haircare-filters-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-reset-haircare-filters {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   SKINCARE SPECIALIZED FILTERS STYLING (Accessible WCAG AA Compliant)
+   ========================================================================== */
+.skincare-filters-container {
+  background: #FDF8F9;
+  border: 1px solid rgba(157, 23, 77, 0.25);
+  border-radius: var(--radius-md, 16px);
+  padding: 20px 24px;
+  margin: 18px 0 24px;
+  box-shadow: 0 4px 20px rgba(157, 23, 77, 0.04);
+  transition: all 0.3s ease;
+  animation: fadeInDown 0.25s ease-out;
+}
+
+.skincare-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.skincare-filter-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skincare-filter-legend {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-primary, #0D1B2A);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.skincare-pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skincare-filter-pill {
+  appearance: none;
+  border: 1px solid #D1D5DB;
+  background: #FFFFFF;
+  color: #374151;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  user-select: none;
+}
+
+.skincare-filter-pill:hover:not(:disabled):not(.active) {
+  border-color: #BE185D;
+  background: #FDF2F8;
+  color: #831843;
+}
+
+.skincare-filter-pill:focus-visible {
+  outline: 2px solid #BE185D;
+  outline-offset: 2px;
+}
+
+.skincare-filter-pill.active {
+  background: #831843;
+  color: #FFFFFF;
+  border-color: #831843;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(131, 24, 67, 0.28);
+}
+
+.skincare-filter-pill.active .filter-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.skincare-filter-pill:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-style: dashed;
+  border-color: #E5E7EB;
+  background: #F3F4F6;
+  color: #9CA3AF;
+}
+
+.skincare-filter-pill .filter-count {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 12px;
+  background: #E5E7EB;
+  color: #4B5563;
+  transition: background 0.18s, color 0.18s;
+}
+
+.skincare-filters-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn-reset-skincare-filters {
+  appearance: none;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #4A5568;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-reset-skincare-filters:hover {
+  background: #F7FAFC;
+  color: #E53E3E;
+  border-color: #CBD5E0;
+}
+
+.btn-reset-skincare-filters:focus-visible {
+  outline: 2px solid #E53E3E;
+  outline-offset: 2px;
+}
+
+.skincare-active-summary {
+  font-size: 0.85rem;
+  color: #831843;
+  font-style: italic;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .skincare-filters-container {
+    padding: 16px 14px;
+    margin: 14px 0 20px;
+  }
+  .skincare-filter-pill {
+    padding: 6px 11px;
+    font-size: 0.82rem;
+    min-height: 36px;
+  }
+  .skincare-filters-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-reset-skincare-filters {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Body & Bath / Soins du corps et du bain Filters Panel
+   ========================================================================== */
+.bodycare-filters-container {
+  background: #FDFBF7;
+  border: 1px solid #E5DEC9;
+  border-radius: var(--radius-md, 12px);
+  padding: 20px 22px;
+  margin: 18px 0 28px;
+  box-shadow: 0 4px 16px rgba(180, 83, 9, 0.05);
+}
+
+.bodycare-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bodycare-filter-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bodycare-filter-legend {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-primary, #0D1B2A);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bodycare-pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bodycare-filter-pill {
+  appearance: none;
+  border: 1px solid #D1D5DB;
+  background: #FFFFFF;
+  color: #374151;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.bodycare-filter-pill:hover:not(:disabled):not(.active) {
+  border-color: #B45309;
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.bodycare-filter-pill:focus-visible {
+  outline: 2px solid #D97706;
+  outline-offset: 2px;
+}
+
+.bodycare-filter-pill.active {
+  background: #B45309;
+  color: #FFFFFF;
+  border-color: #B45309;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(180, 83, 9, 0.28);
+}
+
+.bodycare-filter-pill.active .filter-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.bodycare-filter-pill:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-style: dashed;
+  border-color: #E5E7EB;
+  background: #F3F4F6;
+  color: #9CA3AF;
+}
+
+.bodycare-filter-pill .filter-count {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 12px;
+  background: #E5E7EB;
+  color: #4B5563;
+  transition: background 0.18s, color 0.18s;
+}
+
+.bodycare-filters-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn-reset-bodycare-filters {
+  appearance: none;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #4A5568;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-reset-bodycare-filters:hover {
+  background: #F7FAFC;
+  color: #E53E3E;
+  border-color: #CBD5E0;
+}
+
+.btn-reset-bodycare-filters:focus-visible {
+  outline: 2px solid #E53E3E;
+  outline-offset: 2px;
+}
+
+.bodycare-active-summary {
+  font-size: 0.85rem;
+  color: #92400E;
+  font-style: italic;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .bodycare-filters-container {
+    padding: 16px 14px;
+    margin: 14px 0 20px;
+  }
+  .bodycare-filter-pill {
+    padding: 6px 11px;
+    font-size: 0.82rem;
+    min-height: 36px;
+  }
+  .bodycare-filters-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-reset-bodycare-filters {
+    width: 100%;
+    justify-content: center;
+  }
+  .category-pill {
+    white-space: nowrap !important;
+    padding: 7px 13px;
+    font-size: 0.82rem;
+  }
+}
+
+/* ==========================================================================
+   Global Navigation Bar, Dynamic Breadcrumb & Back Button
+   ========================================================================== */
+.global-navigation-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 14px 0 18px 0;
+  padding: 8px 14px;
+  background: #FAF8F5;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: var(--radius-md, 12px);
+  font-size: 0.88rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  animation: navFadeIn 0.2s ease-out;
+}
+
+@keyframes navFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-page-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 16px;
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 8px);
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.btn-page-back:hover,
+.btn-page-back:focus-visible {
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border-color: var(--color-primary);
+  transform: translateX(-2px);
+  outline: none;
+}
+
+.btn-page-back:active {
+  transform: scale(0.96);
+}
+
+.global-breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.global-breadcrumb-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.global-breadcrumb-nav .breadcrumb-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 8px;
+  font-size: 0.86rem;
+}
+
+.global-breadcrumb-nav .breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.global-breadcrumb-nav .breadcrumb-item a {
+  color: #718096;
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  padding: 0 2px;
+}
+
+.global-breadcrumb-nav .breadcrumb-item a:hover,
+.global-breadcrumb-nav .breadcrumb-item a:focus-visible {
+  color: var(--color-primary);
+  text-decoration: underline;
+  outline: none;
+}
+
+.global-breadcrumb-nav .breadcrumb-separator {
+  color: #CBD5E0;
+  user-select: none;
+}
+
+.global-breadcrumb-nav .breadcrumb-item.active {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.global-breadcrumb-nav .breadcrumb-ellipsis-mobile {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .global-navigation-bar {
+    padding: 6px 10px;
+    margin: 10px 0 14px 0;
+    gap: 10px;
+  }
+  .btn-page-back {
+    padding: 0 12px;
+    font-size: 0.84rem;
+  }
+  .global-breadcrumb-nav .breadcrumb-ellipsis-mobile {
+    display: inline-block;
+    color: #A0AEC0;
+    margin-right: 4px;
+  }
+  .global-breadcrumb-nav .breadcrumb-item.breadcrumb-item-collapsed {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Floating Back to Top Button
+   ========================================================================== */
+.btn-back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 990;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(12px);
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.btn-back-to-top.visible {
+  display: flex !important;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-back-to-top:hover,
+.btn-back-to-top:focus-visible {
+  background: #1B263B;
+  color: var(--color-accent, #D4AF37);
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+  outline: none;
+}
+
+.btn-back-to-top:active {
+  transform: scale(0.94);
+}
+
+/* ==========================================================================
+   Enhanced Mobile Navigation Drawer & Backdrop
+   ========================================================================== */
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  animation: navFadeIn 0.2s ease-out;
+}
+
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(85vw, 360px);
+  background: #FFFFFF;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.25);
+  animation: drawerSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+}
+
+[dir="rtl"] .mobile-nav-drawer {
+  left: auto;
+  right: 0;
+  animation: drawerSlideInRtl 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes drawerSlideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes drawerSlideInRtl {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+  background: #FAF8F5;
+}
+
+.drawer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-drawer-links {
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.drawer-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #A0AEC0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 10px;
+}
+
+.drawer-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  min-height: 44px;
+  border-radius: var(--radius-sm, 8px);
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.94rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  width: 100%;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+[dir="rtl"] .drawer-nav-item {
+  text-align: right;
+}
+
+.drawer-nav-item:hover,
+.drawer-nav-item:focus-visible {
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--color-primary);
+  font-weight: 600;
+  outline: none;
+}
+
+.drawer-nav-item.active {
+  background: var(--color-primary);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.drawer-nav-icon {
+  font-size: 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.mobile-drawer-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-border);
+  background: #FAF8F5;
+}
+
+/* ==========================================================================
+   Pagination Count / Info Summary Display
+   ========================================================================== */
+.pagination-info {
+  font-size: 0.88rem;
+  color: #718096;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.pagination-info-desktop {
+  display: inline-block;
+}
+
+.pagination-info-mobile {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .pagination-info-desktop {
+    display: none;
+  }
+  .pagination-info-mobile {
+    display: inline-block;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+}
+
+/* ==========================================================================
+   Tâche 15 & 16: Social Profiles & Social Sharing Features
+   ========================================================================== */
+
+/* Header Social Links (Desktop Only) */
+.header-social-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 4px;
+}
+
+.header-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #E2E8F0);
+  color: #4A5568;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.header-social-link:hover,
+.header-social-link:focus-visible {
+  transform: translateY(-2px) scale(1.08);
+  outline: none;
+}
+
+.header-social-link.header-social-fb:hover {
+  color: #FFFFFF;
+  background: #1877F2;
+  border-color: #1877F2;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+}
+
+.header-social-link.header-social-ig:hover {
+  color: #FFFFFF;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  border-color: #d6249f;
+  box-shadow: 0 4px 12px rgba(214, 36, 159, 0.35);
+}
+
+.header-social-link.header-social-tt:hover {
+  color: #FFFFFF;
+  background: #010101;
+  border-color: #010101;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 768px) {
+  .header-social-links {
+    display: none !important;
+  }
+}
+
+/* Footer Social Section */
+.footer-social-section {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-social-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #F1F5F9;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.footer-social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Footer Social Buttons — High Contrast Luxury White Pills on Dark Footer */
+footer .social-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  touch-action: manipulation;
+  user-select: none;
+}
+
+footer .social-link-btn:hover,
+footer .social-link-btn:focus-visible {
+  transform: translateY(-2px) scale(1.05);
+  outline: none;
+}
+
+/* Facebook Footer Button */
+footer .social-link-fb {
+  background: #FFFFFF !important;
+  color: #1877F2 !important;
+  border-color: rgba(24, 119, 242, 0.35) !important;
+}
+footer .social-link-fb svg {
+  color: #1877F2 !important;
+  fill: #1877F2 !important;
+}
+footer .social-link-fb:hover,
+footer .social-link-fb:focus-visible {
+  background: #1877F2 !important;
+  color: #FFFFFF !important;
+  border-color: #1877F2 !important;
+  box-shadow: 0 6px 20px rgba(24, 119, 242, 0.45);
+}
+footer .social-link-fb:hover svg,
+footer .social-link-fb:focus-visible svg {
+  color: #FFFFFF !important;
+  fill: #FFFFFF !important;
+}
+
+/* Instagram Footer Button */
+footer .social-link-ig {
+  background: #FFFFFF !important;
+  color: #E1306C !important;
+  border-color: rgba(225, 48, 108, 0.35) !important;
+}
+footer .social-link-ig svg {
+  color: #E1306C !important;
+  fill: #E1306C !important;
+}
+footer .social-link-ig:hover,
+footer .social-link-ig:focus-visible {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+  color: #FFFFFF !important;
+  border-color: transparent !important;
+  box-shadow: 0 6px 20px rgba(225, 48, 108, 0.45);
+}
+footer .social-link-ig:hover svg,
+footer .social-link-ig:focus-visible svg {
+  color: #FFFFFF !important;
+  fill: #FFFFFF !important;
+}
+
+/* TikTok Footer Button — Ultra Visible, Never Black on Black */
+footer .social-link-tt {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border: 1px solid rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+footer .social-link-tt svg {
+  color: #000000 !important;
+  fill: #000000 !important;
+  filter: drop-shadow(-1.5px -1.5px 0px #00F2FE) drop-shadow(1.5px 1.5px 0px #FE2C55);
+}
+footer .social-link-tt span {
+  color: #000000 !important;
+  font-weight: 700;
+}
+footer .social-link-tt:hover,
+footer .social-link-tt:focus-visible {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border-color: #000000 !important;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6), -2px -2px 12px rgba(0, 242, 254, 0.7), 2px 2px 12px rgba(254, 44, 85, 0.7);
+}
+footer .social-link-tt:hover svg,
+footer .social-link-tt:focus-visible svg {
+  color: #FFFFFF !important;
+  fill: #FFFFFF !important;
+  filter: drop-shadow(-1.5px -1.5px 0px #00F2FE) drop-shadow(1.5px 1.5px 0px #FE2C55);
+}
+footer .social-link-tt:hover span,
+footer .social-link-tt:focus-visible span {
+  color: #FFFFFF !important;
+}
+
+/* Modal Social Badges (About Modal on light background) */
+.social-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 18px;
+  border-radius: 30px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: #FFFFFF;
+  border: 1px solid var(--color-border, #E2E8F0);
+  color: #2D3748;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  touch-action: manipulation;
+  user-select: none;
+}
+.social-badge-btn:hover,
+.social-badge-btn:focus-visible {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  outline: none;
+}
+.social-badge-fb {
+  color: #1877F2;
+  border-color: rgba(24, 119, 242, 0.25);
+  background: rgba(24, 119, 242, 0.06);
+}
+.social-badge-fb:hover {
+  background: #1877F2;
+  color: #FFFFFF;
+  border-color: #1877F2;
+}
+.social-badge-ig {
+  color: #E1306C;
+  border-color: rgba(225, 48, 108, 0.25);
+  background: rgba(225, 48, 108, 0.06);
+}
+.social-badge-ig:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: #FFFFFF;
+  border-color: transparent;
+}
+.social-badge-tt {
+  color: #010101;
+  border-color: rgba(1, 1, 1, 0.25);
+  background: rgba(1, 1, 1, 0.05);
+}
+.social-badge-tt svg {
+  filter: drop-shadow(-1px -1px 0px #00F2FE) drop-shadow(1px 1px 0px #FE2C55);
+}
+.social-badge-tt:hover {
+  background: #010101;
+  color: #FFFFFF;
+  border-color: #010101;
+}
+
+/* Footer regular links styling */
+footer a:not(.social-link-btn) {
+  color: #CBD5E1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+footer a:not(.social-link-btn):hover {
+  color: #FFFFFF;
+}
+
+/* Category Share Button in Global Navigation Bar */
+.btn-share-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 14px;
+  background: #FFFFFF;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: var(--radius-sm, 8px);
+  color: var(--color-primary, #0D1B2A);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.btn-share-category:hover,
+.btn-share-category:focus-visible {
+  background: var(--color-primary, #0D1B2A);
+  color: #FFFFFF;
+  border-color: var(--color-primary, #0D1B2A);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.btn-share-category:active {
+  transform: scale(0.96);
+}
+
+/* Product QuickView Share Section */
+.product-share-section {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed #E2E8F0;
+}
+
+.product-share-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.product-share-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #4A5568;
+  letter-spacing: 0.02em;
+}
+
+.product-share-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: #F8FAFC;
+  color: #334155;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.share-btn:hover,
+.share-btn:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.share-btn:active {
+  transform: scale(0.96);
+}
+
+.share-btn-whatsapp {
+  background: #F0FDF4;
+  color: #15803D;
+  border-color: rgba(37, 211, 102, 0.3);
+}
+.share-btn-whatsapp:hover {
+  background: #25D366;
+  color: #FFFFFF;
+  border-color: #25D366;
+}
+
+.share-btn-facebook {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border-color: rgba(24, 119, 242, 0.3);
+}
+.share-btn-facebook:hover {
+  background: #1877F2;
+  color: #FFFFFF;
+  border-color: #1877F2;
+}
+
+.share-btn-pinterest {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border-color: rgba(230, 0, 35, 0.3);
+}
+.share-btn-pinterest:hover {
+  background: #E60023;
+  color: #FFFFFF;
+  border-color: #E60023;
+}
+
+.share-btn-x {
+  background: #F1F5F9;
+  color: #0F172A;
+  border-color: rgba(15, 23, 42, 0.25);
+}
+.share-btn-x:hover {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
+}
+
+.share-btn-email {
+  background: #F8FAFC;
+  color: #475569;
+  border-color: #CBD5E1;
+}
+.share-btn-email:hover {
+  background: #475569;
+  color: #FFFFFF;
+  border-color: #475569;
+}
+
+.share-btn-instagram {
+  background: #FDF2F8;
+  color: #BE185D;
+  border-color: rgba(225, 48, 108, 0.3);
+}
+.share-btn-instagram:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: #FFFFFF;
+  border-color: transparent;
+}
+
+.share-btn-tiktok {
+  background: #F1F5F9;
+  color: #0F172A;
+  border-color: rgba(1, 1, 1, 0.25);
+}
+.share-btn-tiktok:hover {
+  background: #010101;
+  color: #FFFFFF;
+  border-color: #010101;
+}
+
+.share-btn-copy {
+  background: #F1F5F9;
+  color: var(--color-primary, #0D1B2A);
+  border-color: #CBD5E1;
+}
+.share-btn-copy:hover {
+  background: var(--color-primary, #0D1B2A);
+  color: #FFFFFF;
+  border-color: var(--color-primary, #0D1B2A);
+}
+.share-btn-copy.copied {
+  background: #F0FDF4;
+  color: #15803D;
+  border-color: #86EFAC;
+}
+
+/* Category Share Modal styling */
+.category-share-grid .share-btn {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .footer-social-links {
+    gap: 10px;
+    width: 100%;
+    padding: 0 10px;
+  }
+  footer .social-link-btn {
+    min-height: 44px;
+    padding: 10px 14px !important;
+    font-size: 0.84rem;
+    flex: 1 1 calc(33.333% - 10px);
+    max-width: 145px;
+  }
+  .product-share-buttons {
+    gap: 6px;
+  }
+  .product-share-buttons .share-btn {
+    padding: 8px 10px;
+    font-size: 0.78rem;
+  }
+  .category-share-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
 
 
 

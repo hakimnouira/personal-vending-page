@@ -57,6 +57,45 @@ export class TelemetryTracker {
     }
   }
 
+  trackAnalytics(eventName, params = {}) {
+    try {
+      // 1. RGPD Sanity Check: strictly exclude PII
+      const sanitized = {};
+      const forbiddenKeys = ['name', 'customer_name', 'phone', 'customer_phone', 'email', 'address', 'password'];
+      for (const [k, v] of Object.entries(params)) {
+        if (!forbiddenKeys.includes(k.toLowerCase())) {
+          sanitized[k] = v;
+        }
+      }
+
+      // 2. Google Tag Manager (GTM) dataLayer
+      if (typeof window !== 'undefined') {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: eventName,
+          ...sanitized
+        });
+
+        // 3. Google Analytics 4 (GA4) gtag
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', eventName, sanitized);
+        }
+
+        // 4. Custom DOM Event for tests/debugging
+        window.dispatchEvent(new CustomEvent('analytics_event', {
+          detail: { event: eventName, params: sanitized }
+        }));
+      }
+
+      // 5. Internal Telemetry Ping
+      const pingCategory = sanitized.category || null;
+      const pingProd = sanitized.product_name || sanitized.product_reference || null;
+      this.trackEvent(eventName, pingCategory, pingProd);
+    } catch (e) {
+      console.warn('[Telemetry] Tracking note:', e);
+    }
+  }
+
   initHeartbeat() {
     // Initial ping
     this.trackEvent('Visited Storefront');

@@ -48,6 +48,25 @@ class App {
     this.telemetry = new TelemetryTracker();
 
     this.activeCategory = 'All';
+    this.fragranceFilters = {
+      gender: 'All',
+      formulation: 'All',
+      family: 'All'
+    };
+    this.haircareFilters = {
+      productType: 'All',
+      hairType: 'All',
+      concern: 'All'
+    };
+    this.skincareFilters = {
+      'product-type': 'All',
+      'skin-type': 'All',
+      'benefits': 'All'
+    };
+    this.bodycareFilters = {
+      'product-type': 'All',
+      'need': 'All'
+    };
     this.searchQuery = '';
     this.productsCurrentPage = 1;
     this.dealsCurrentPage = 1;
@@ -91,7 +110,28 @@ class App {
 
     this.renderDealsShowcase();
     this.renderBundlesShowcase();
+    this.handleUrlNavigationParams();
     this.renderProducts();
+    if (this.activeCategory === 'Fragrance' && this.fragranceFiltersContainer) {
+      this.fragranceFiltersContainer.style.display = 'block';
+      this.updateFragranceFilterCounts();
+    }
+    if (this.activeCategory === 'Haircare' && this.haircareFiltersContainer) {
+      this.haircareFiltersContainer.style.display = 'block';
+      if (this.haircareBreadcrumb) this.haircareBreadcrumb.style.display = 'flex';
+      this.updateHaircareFilterCounts();
+    }
+    if (this.activeCategory === 'Skincare' && this.skincareFiltersContainer) {
+      this.skincareFiltersContainer.style.display = 'block';
+      if (this.skincareBreadcrumb) this.skincareBreadcrumb.style.display = 'flex';
+      this.updateSkincareFilterCounts();
+    }
+    if (this.activeCategory === 'BodyCare' && this.bodycareFiltersContainer) {
+      this.bodycareFiltersContainer.style.display = 'block';
+      if (this.bodycareBreadcrumb) this.bodycareBreadcrumb.style.display = 'flex';
+      this.updateBodyCareFilterCounts();
+    }
+    this.updateGlobalNavigationUI();
     this.renderCart();
     this.updateCartBadge();
     console.log('[APP] init complete');
@@ -565,6 +605,33 @@ class App {
     this.bundlesShowcaseSection = document.getElementById('bundles-showcase-section');
     this.bundlesShowcaseGrid = document.getElementById('bundles-showcase-grid');
 
+    // Fragrance Filter Elements
+    this.fragranceFiltersContainer = document.getElementById('fragrance-filters-container');
+    this.btnResetFragranceFilters = document.getElementById('btn-reset-fragrance-filters');
+    this.fragranceActiveSummary = document.getElementById('fragrance-active-summary');
+    this.fragranceResultsAnnouncer = document.getElementById('fragrance-results-announcer');
+
+    // Haircare Filter Elements
+    this.haircareFiltersContainer = document.getElementById('haircare-filters-container');
+    this.btnResetHaircareFilters = document.getElementById('btn-reset-haircare-filters');
+    this.haircareActiveSummary = document.getElementById('haircare-active-summary');
+    this.haircareResultsAnnouncer = document.getElementById('haircare-results-announcer');
+    this.haircareBreadcrumb = document.getElementById('haircare-breadcrumb');
+
+    // Skincare Filter Elements
+    this.skincareFiltersContainer = document.getElementById('skincare-filters-container');
+    this.btnResetSkincareFilters = document.getElementById('btn-reset-skincare-filters');
+    this.skincareActiveSummary = document.getElementById('skincare-active-summary');
+    this.skincareResultsAnnouncer = document.getElementById('skincare-results-announcer');
+    this.skincareBreadcrumb = document.getElementById('skincare-breadcrumb');
+
+    // BodyCare Filter Elements
+    this.bodycareFiltersContainer = document.getElementById('bodycare-filters-container');
+    this.btnResetBodycareFilters = document.getElementById('btn-reset-bodycare-filters');
+    this.bodycareActiveSummary = document.getElementById('bodycare-active-summary');
+    this.bodycareResultsAnnouncer = document.getElementById('bodycare-results-announcer');
+    this.bodycareBreadcrumb = document.getElementById('bodycare-breadcrumb');
+
     // Cart Elements
     this.floatingCartBtn = document.getElementById('floating-cart-btn');
     this.floatingCartText = document.getElementById('floating-cart-text');
@@ -602,6 +669,26 @@ class App {
     this.fbOptinStep = document.getElementById('fb-optin-step');
     this.btnFbLogin = document.getElementById('btn-fb-login');
     this.fbUserName = document.getElementById('fb-user-name');
+
+    // Global Navigation, Breadcrumbs & Back to top
+    this.brandLogoLink = document.getElementById('brand-logo-link') || document.querySelector('.brand-logo');
+    this.globalNavigationBar = document.getElementById('global-navigation-bar');
+    this.btnPageBack = document.getElementById('btn-page-back');
+    this.globalBreadcrumbNav = document.getElementById('global-breadcrumb-nav');
+    this.globalBreadcrumbList = document.getElementById('global-breadcrumb-list');
+    this.btnBackToTop = document.getElementById('btn-back-to-top');
+
+    // Mobile Navigation Drawer
+    this.mobileNavBackdrop = document.getElementById('mobile-nav-backdrop');
+    this.mobileNavDrawer = document.getElementById('mobile-nav-drawer');
+    this.btnCloseMobileMenu = document.getElementById('btn-close-mobile-menu');
+    this.mobileLanguageSelect = document.getElementById('mobile-language-select');
+
+    // Category Share Modal
+    this.btnShareCategory = document.getElementById('btn-share-category');
+    this.categoryShareModal = document.getElementById('category-share-modal');
+    this.btnCloseCatShare = document.getElementById('btn-close-cat-share');
+    this.categoryShareOptions = document.getElementById('category-share-options');
   }
 
 
@@ -630,6 +717,17 @@ class App {
         searchTimeout = setTimeout(() => {
           if (this.searchQuery) {
             this.telemetry.trackEvent(`Searched for "${this.searchQuery}"`);
+            if (typeof this.telemetry.trackAnalytics === 'function') {
+              const matchedCount = (this.products || []).filter(p => 
+                (p.name || '').toLowerCase().includes(this.searchQuery) ||
+                (p.description || '').toLowerCase().includes(this.searchQuery) ||
+                String(p.product_id).includes(this.searchQuery)
+              ).length;
+              this.telemetry.trackAnalytics('search_performed', {
+                search_term: this.searchQuery,
+                results_count: matchedCount
+              });
+            }
           }
         }, 1200);
       });
@@ -645,6 +743,47 @@ class App {
           this.activeCategory = pill.dataset.category || 'All';
           this.productsCurrentPage = 1;
           this.telemetry.trackEvent(`Filtered by Category: ${this.activeCategory}`, this.activeCategory);
+
+          // Toggle Fragrance filters visibility
+          if (this.fragranceFiltersContainer) {
+            if (this.activeCategory === 'Fragrance') {
+              this.fragranceFiltersContainer.style.display = 'block';
+              this.updateFragranceFilterCounts();
+            } else {
+              this.fragranceFiltersContainer.style.display = 'none';
+            }
+          }
+
+          // Toggle Haircare filters visibility
+          if (this.haircareFiltersContainer) {
+            const isHair = (this.activeCategory === 'Haircare');
+            this.haircareFiltersContainer.style.display = isHair ? 'block' : 'none';
+            if (this.haircareBreadcrumb) this.haircareBreadcrumb.style.display = isHair ? 'flex' : 'none';
+            if (isHair) {
+              this.updateHaircareFilterCounts();
+            }
+          }
+
+          // Toggle Skincare filters visibility
+          if (this.skincareFiltersContainer) {
+            const isSkin = (this.activeCategory === 'Skincare');
+            this.skincareFiltersContainer.style.display = isSkin ? 'block' : 'none';
+            if (this.skincareBreadcrumb) this.skincareBreadcrumb.style.display = isSkin ? 'flex' : 'none';
+            if (isSkin) {
+              this.updateSkincareFilterCounts();
+            }
+          }
+
+          // Toggle BodyCare filters visibility
+          if (this.bodycareFiltersContainer) {
+            const isBody = (this.activeCategory === 'BodyCare');
+            this.bodycareFiltersContainer.style.display = isBody ? 'block' : 'none';
+            if (this.bodycareBreadcrumb) this.bodycareBreadcrumb.style.display = isBody ? 'flex' : 'none';
+            if (isBody) {
+              this.updateBodyCareFilterCounts();
+            }
+          }
+
           if (this.activeCategory === 'Bundles' && this.bundlesShowcaseSection) {
             this.bundlesShowcaseSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
@@ -652,6 +791,18 @@ class App {
         }
       });
     }
+
+    // Bind Fragrance specialized filter events
+    this.bindFragranceFilterEvents();
+
+    // Bind Haircare specialized filter events
+    this.bindHaircareFilterEvents();
+
+    // Bind Skincare specialized filter events
+    this.bindSkincareFilterEvents();
+
+    // Bind BodyCare specialized filter events
+    this.bindBodyCareFilterEvents();
 
     // Window Resize Handler for Responsive Pagination
     let resizeTimer;
@@ -684,19 +835,140 @@ class App {
         }
       });
     }
-    if (this.btnMobileMenu && this.navActionsMenu) {
-      this.btnMobileMenu.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = this.navActionsMenu.classList.toggle('mobile-open');
-        this.btnMobileMenu.setAttribute('aria-expanded', String(isOpen));
+    // Brand Logo Click -> Navigate to Home
+    if (this.brandLogoLink) {
+      this.brandLogoLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.navigateToHome();
       });
-      document.addEventListener('click', (e) => {
-        if (this.navActionsMenu.classList.contains('mobile-open') && !this.navActionsMenu.contains(e.target) && e.target !== this.btnMobileMenu) {
-          this.navActionsMenu.classList.remove('mobile-open');
-          this.btnMobileMenu.setAttribute('aria-expanded', 'false');
+    }
+
+    // Page Back Button
+    if (this.btnPageBack) {
+      this.btnPageBack.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          this.navigateToHome();
         }
       });
     }
+
+    // Dynamic Global Breadcrumb item click delegation
+    if (this.globalBreadcrumbList) {
+      this.globalBreadcrumbList.addEventListener('click', (e) => {
+        const link = e.target.closest('.breadcrumb-link');
+        if (!link) return;
+        e.preventDefault();
+        const action = link.dataset.action;
+        if (action === 'nav-home') {
+          this.navigateToHome();
+        } else if (action === 'nav-cat') {
+          const cat = link.dataset.category || 'All';
+          this.selectCategory(cat);
+          const target = document.querySelector('.controls-section') || document.querySelector('.products-header');
+          this.scrollToSection(target, -75);
+        }
+      });
+    }
+
+    // Floating Back to Top Button
+    if (this.btnBackToTop) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          this.btnBackToTop.style.display = 'flex';
+          this.btnBackToTop.classList.add('visible');
+        } else {
+          this.btnBackToTop.classList.remove('visible');
+          this.btnBackToTop.style.display = 'none';
+        }
+      }, { passive: true });
+
+      this.btnBackToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // Category Share Modal trigger & close
+    if (this.btnShareCategory) {
+      this.btnShareCategory.addEventListener('click', () => {
+        this.openCategoryShareModal();
+      });
+    }
+    if (this.btnCloseCatShare) {
+      this.btnCloseCatShare.addEventListener('click', () => {
+        this.closeModal(this.categoryShareModal);
+      });
+    }
+
+    // Mobile Navigation Drawer Toggle & Events
+    if (this.btnMobileMenu) {
+      this.btnMobileMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (this.mobileNavDrawer && this.mobileNavDrawer.style.display !== 'none') {
+          this.closeMobileDrawer();
+        } else {
+          this.openMobileDrawer();
+        }
+      });
+    }
+
+    if (this.btnCloseMobileMenu) {
+      this.btnCloseMobileMenu.addEventListener('click', () => this.closeMobileDrawer());
+    }
+
+    if (this.mobileNavBackdrop) {
+      this.mobileNavBackdrop.addEventListener('click', () => this.closeMobileDrawer());
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (this.mobileNavDrawer && this.mobileNavDrawer.style.display !== 'none') {
+          this.closeMobileDrawer();
+        }
+      }
+    });
+
+    // Mobile drawer items click handling
+    if (this.mobileNavDrawer) {
+      this.mobileNavDrawer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.drawer-nav-item');
+        if (!btn) return;
+        const cat = btn.dataset.category;
+        if (cat) {
+          e.preventDefault();
+          this.closeMobileDrawer();
+          this.selectCategory(cat);
+          const target = document.querySelector('.controls-section') || document.querySelector('.products-header');
+          this.scrollToSection(target, -75);
+        } else if (btn.id === 'btn-drawer-about') {
+          this.closeMobileDrawer();
+          if (this.btnNavAbout) this.btnNavAbout.click();
+        } else if (btn.id === 'btn-drawer-privacy') {
+          this.closeMobileDrawer();
+          if (this.btnNavPrivacy) this.btnNavPrivacy.click();
+        } else if (btn.classList.contains('drawer-nav-link')) {
+          this.closeMobileDrawer();
+        }
+      });
+    }
+
+    // Sync mobile language selector with main selector
+    if (this.mobileLanguageSelect) {
+      this.mobileLanguageSelect.addEventListener('change', (e) => {
+        if (this.languageSelect) {
+          this.languageSelect.value = e.target.value;
+          this.languageSelect.dispatchEvent(new Event('change'));
+        }
+      });
+    }
+
+    // Browser History popstate (Back/Forward navigation)
+    window.addEventListener('popstate', (e) => {
+      this.handlePopState(e);
+    });
     if (this.btnCloseDrawer) {
       this.btnCloseDrawer.addEventListener('click', () => this.closeCartDrawer());
     }
@@ -1373,6 +1645,28 @@ class App {
     }
 
     container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.alignItems = 'center';
+
+    const isArabic = this.i18n.getLang() === 'ar';
+    const isEnglish = this.i18n.getLang() === 'en';
+    const pageSize = this.getProductPageSize ? this.getProductPageSize() : 12;
+    const startItem = totalItems > 0 ? (currentPage - 1) * pageSize + 1 : 0;
+    const endItem = Math.min(currentPage * pageSize, totalItems);
+
+    const infoDesktop = isArabic 
+      ? `عرض ${startItem}–${endItem} من إجمالي ${totalItems} منتج`
+      : (isEnglish ? `Showing ${startItem}–${endItem} of ${totalItems} products` : `Affichage ${startItem}–${endItem} sur ${totalItems} produits`);
+    const infoMobile = isArabic
+      ? `${endItem} من أصل ${totalItems} منتج`
+      : (isEnglish ? `${endItem} of ${totalItems} products` : `${endItem} produits sur ${totalItems}`);
+
+    const infoHtml = totalItems > 0 ? `
+      <div class="pagination-info" aria-live="polite">
+        <span class="pagination-info-desktop">${infoDesktop}</span>
+        <span class="pagination-info-mobile">${infoMobile}</span>
+      </div>
+    ` : '';
 
     // Calculate pages with smart ellipsis (adaptive for narrow mobile screens)
     const isMobileNarrow = typeof window !== 'undefined' && window.innerWidth < 500;
@@ -1422,6 +1716,7 @@ class App {
     const isLast = currentPage >= totalPages;
 
     container.innerHTML = `
+      ${infoHtml}
       <nav class="pagination-nav" aria-label="${ariaLabel || 'Pagination'}">
         <button type="button" class="pagination-btn pagination-prev" ${isFirst ? 'disabled aria-disabled="true"' : ''} aria-label="${prevLabel}">
           <span class="pagination-arrow">‹</span>
@@ -1668,6 +1963,1930 @@ class App {
     this.openCartDrawer();
   }
 
+  // =========================================================================
+  // Fragrance Classification & Specialized Filtering System
+  // =========================================================================
+  classifyFragrance(product) {
+    if (product._fragranceClassification) {
+      return product._fragranceClassification;
+    }
+    const text = [
+      product.name || '',
+      product.description || '',
+      product.description_fr || '',
+      product.benefits || '',
+      product.how_to_use || ''
+    ].join(' ').toLowerCase();
+
+    // 1. Gender Classification
+    let gender = 'Femmes';
+    const isMen = /\b(pour lui|homme|man|men|masculin|mister|legend|ascendant|glacier|venture|greater pour lui|nordic waters pour lui|eclat toujours|possess the secret man|giordani gold man|dark wood|north for men)\b/i.test(text);
+    const isUnisex = /\b(unisexe|unisex|pour tous|pour homme et femme|top scents|earth wonder)\b/i.test(text);
+
+    if (isUnisex) {
+      gender = 'Unisexe';
+    } else if (isMen) {
+      gender = 'Hommes';
+    } else {
+      gender = 'Femmes';
+    }
+
+    const unisexIds = ['47724', '47726', '46057'];
+    const menIds = ['30468', '33650', '35651', '38527', '38538', '38550', '38552', '40667', '42490', '42518', '42816', '42864', '44308', '45357', '45967', '46044', '46045', '46064', '46795', '47502', '48671'];
+
+    if (unisexIds.includes(String(product.product_id))) gender = 'Unisexe';
+    if (menIds.includes(String(product.product_id))) gender = 'Hommes';
+
+    // 2. Formulation Classification
+    let formulation = 'Eau de toilette';
+    if (/\b(brume|mist|body mist|brume parfumée|brume corporelle)\b/i.test(text)) {
+      formulation = 'Brume corporelle';
+    } else if (/\b(eau de parfum|edp)\b/i.test(text)) {
+      formulation = 'Eau de parfum';
+    } else if (/\b(extrait de parfum|elixir|parfum floral|concentré de parfum)\b/i.test(text) || (text.includes('parfum') && !text.includes('eau de'))) {
+      formulation = 'Parfum';
+    } else {
+      formulation = 'Eau de toilette';
+    }
+
+    // 3. Olfactory Families (multi-family support e.g. "boisée florale" matches both)
+    const families = [];
+
+    if (/\b(florale?|fleur|rose|jasmin|ylang|néroli|neroli|tubéreuse|tubereuse|magnolia|orchidée|orchidee|muguet|pivoine|violette|gardénia|gardenia|lys|fleur d'oranger|fleurs blanches)\b/i.test(text)) {
+      families.push('Florale');
+    }
+
+    if (/\b(bois[ée]?e?s?|cèdre|cedre|santal|patchouli|vétiver|vetiver|oud|gaïac|gaiac|bois de santal|bois de cèdre)\b/i.test(text)) {
+      families.push('Boisée');
+    }
+
+    if (/\b(ambr[ée]e?s?|oriental[e]?|vanille|tonka|fève tonka|feve tonka|benjoin|résine|resine|épicé[e]?|epice[e]?)\b/i.test(text)) {
+      families.push('Ambrée');
+    }
+
+    if (/\b(fruit[ée]e?s?|gourmand[e]?|framboise|mûre|mure|pêche|peche|pomme|poire|cassis|fraise|baie|grenade|ananas|passion)\b/i.test(text)) {
+      families.push('Fruitée');
+    }
+
+    if (/\b(aromatique|lavande|sauge|romarin|thym|menthe|herbacé|cardamome)\b/i.test(text)) {
+      families.push('Aromatique');
+    }
+
+    if (/\b(agrume|agrumes|hespérid[ée]|hesperid[ée]|bergamote|citron|mandarine|pamplemousse|orange|lime|zeste)\b/i.test(text)) {
+      families.push('Agrumes');
+    }
+
+    if (/\b(chypr[ée]e?s?|mousse de chêne|mousse de chene)\b/i.test(text)) {
+      families.push('Chyprée');
+    }
+
+    const classification = { gender, formulation, families };
+    product._fragranceClassification = classification;
+    return classification;
+  }
+
+  bindFragranceFilterEvents() {
+    if (!this.fragranceFiltersContainer) return;
+
+    // Filter pill clicks
+    this.fragranceFiltersContainer.addEventListener('click', (e) => {
+      const pill = e.target.closest('.fragrance-filter-pill');
+      if (!pill || pill.disabled) return;
+
+      const filterType = pill.dataset.filterType;
+      const filterVal = pill.dataset.filterVal;
+      if (!filterType || !filterVal) return;
+
+      this.setFragranceFilter(filterType, filterVal);
+    });
+
+    // Reset button
+    if (this.btnResetFragranceFilters) {
+      this.btnResetFragranceFilters.addEventListener('click', () => {
+        this.resetFragranceFilters();
+      });
+    }
+  }
+
+  setFragranceFilter(filterType, filterVal) {
+    if (!this.fragranceFilters) {
+      this.fragranceFilters = { gender: 'All', formulation: 'All', family: 'All' };
+    }
+    this.fragranceFilters[filterType] = filterVal;
+
+    // Update pill UI in that group
+    const groupPills = this.fragranceFiltersContainer?.querySelectorAll(`.fragrance-filter-pill[data-filter-type="${filterType}"]`);
+    groupPills?.forEach(p => {
+      const isSelected = p.dataset.filterVal === filterVal;
+      p.classList.toggle('active', isSelected);
+      p.setAttribute('aria-pressed', String(isSelected));
+    });
+
+    this.productsCurrentPage = 1;
+    this.renderProducts();
+    this.updateFragranceFilterCounts();
+  }
+
+  resetFragranceFilters() {
+    this.fragranceFilters = { gender: 'All', formulation: 'All', family: 'All' };
+    this.syncFragranceFilterPillsUI();
+    this.productsCurrentPage = 1;
+    this.renderProducts();
+    this.updateFragranceFilterCounts();
+  }
+
+  syncFragranceFilterPillsUI() {
+    if (!this.fragranceFiltersContainer) return;
+    ['gender', 'formulation', 'family'].forEach(type => {
+      const currentVal = (this.fragranceFilters && this.fragranceFilters[type]) ? this.fragranceFilters[type] : 'All';
+      const groupPills = this.fragranceFiltersContainer.querySelectorAll(`.fragrance-filter-pill[data-filter-type="${type}"]`);
+      groupPills.forEach(p => {
+        const isSelected = p.dataset.filterVal === currentVal;
+        p.classList.toggle('active', isSelected);
+        p.setAttribute('aria-pressed', String(isSelected));
+      });
+    });
+  }
+
+  updateFragranceFilterCounts() {
+    if (!this.fragranceFiltersContainer) return;
+    const fragranceProducts = this.products.filter(p => p.category === 'Fragrance');
+
+    const pills = this.fragranceFiltersContainer.querySelectorAll('.fragrance-filter-pill');
+
+    pills.forEach(pill => {
+      const type = pill.dataset.filterType;
+      const val = pill.dataset.filterVal;
+      const countEl = pill.querySelector('.filter-count');
+
+      // Calculate count for this option considering active filters in the other dimensions
+      const count = fragranceProducts.filter(p => {
+        const c = this.classifyFragrance(p);
+
+        // Gender condition
+        let matchGender = true;
+        if (type === 'gender') {
+          matchGender = (val === 'All') ? true : (c.gender === val);
+        } else if (this.fragranceFilters.gender !== 'All') {
+          matchGender = (c.gender === this.fragranceFilters.gender);
+        }
+
+        // Formulation condition
+        let matchFormulation = true;
+        if (type === 'formulation') {
+          matchFormulation = (val === 'All') ? true : (c.formulation === val);
+        } else if (this.fragranceFilters.formulation !== 'All') {
+          matchFormulation = (c.formulation === this.fragranceFilters.formulation);
+        }
+
+        // Family condition
+        let matchFamily = true;
+        if (type === 'family') {
+          matchFamily = (val === 'All') ? true : c.families.includes(val);
+        } else if (this.fragranceFilters.family !== 'All') {
+          matchFamily = c.families.includes(this.fragranceFilters.family);
+        }
+
+        return matchGender && matchFormulation && matchFamily;
+      }).length;
+
+      if (countEl) {
+        countEl.textContent = `(${count})`;
+      }
+
+      // If count is 0 and it is not 'All' and not currently active, disable it
+      const isActive = pill.classList.contains('active');
+      if (val !== 'All' && count === 0 && !isActive) {
+        pill.disabled = true;
+        pill.setAttribute('aria-disabled', 'true');
+      } else {
+        pill.disabled = false;
+        pill.removeAttribute('aria-disabled');
+      }
+    });
+
+    // Summary update
+    const activeFiltersList = [];
+    if (this.fragranceFilters.gender !== 'All') activeFiltersList.push(this.fragranceFilters.gender);
+    if (this.fragranceFilters.formulation !== 'All') activeFiltersList.push(this.fragranceFilters.formulation);
+    if (this.fragranceFilters.family !== 'All') activeFiltersList.push(this.fragranceFilters.family);
+
+    if (this.fragranceActiveSummary) {
+      if (activeFiltersList.length > 0) {
+        this.fragranceActiveSummary.textContent = `Filtres actifs : ${activeFiltersList.join(' • ')}`;
+      } else {
+        this.fragranceActiveSummary.textContent = 'Tous les parfums affichés';
+      }
+    }
+  }
+
+  // =========================================================================
+  // Haircare Classification & Specialized Filtering System
+  // =========================================================================
+  classifyHaircare(product) {
+    if (product._haircareClassification) {
+      return product._haircareClassification;
+    }
+    const name = (product.name || '').toLowerCase();
+    const text = [
+      product.name || '',
+      product.description || '',
+      product.description_fr || '',
+      product.benefits || '',
+      product.how_to_use || ''
+    ].join(' ').toLowerCase();
+
+    // 1. PRODUCT TYPE (Type de produit)
+    const productTypes = [];
+
+    // Conditionneur (après-shampooing, démêlant, conditionneur)
+    if (/\b(conditionneur|après-shampooing|apres-shampooing|démêlant|demelant)\b/i.test(name) || 
+        /\b(conditionneur|après-shampooing|apres-shampooing)\b/i.test(text)) {
+      productTypes.push('Conditionneur');
+    }
+
+    // Masque capillaire (masques à rincer, masques profonds, soins pré-shampooing)
+    if (/\b(masque|smoothie|pré-shampooing|pre-shampooing)\b/i.test(name) || 
+        /\b(masque capillaire|masque smoothie)\b/i.test(text)) {
+      productTypes.push('Masque capillaire');
+    }
+
+    // Huile capillaire (huiles de soin, sérums huileux)
+    if ((/\bhuile\b/i.test(name) || /\bhuile capillaire\b/i.test(text)) && 
+        !/\b(shampoing|shampooing|masque)\b/i.test(name)) {
+      productTypes.push('Huile capillaire');
+    }
+
+    // Soins sans rinçage (crèmes coiffantes, gels coiffants, sérums protecteurs, sprays sans rinçage)
+    if (/\b(sans rinçage|sans rincage|sérum|serum|gel coiffant|crème coiffante|leave-in|cc spray)\b/i.test(name) || 
+        /\b(sans rinçage|sans rincage|traitement de nuit|sérum réparateur nuit|gel à tenue|contrôle du style)\b/i.test(text)) {
+      if (!productTypes.includes('Huile capillaire')) {
+        productTypes.push('Soins sans rinçage');
+      }
+    }
+
+    // Soins du cuir chevelu (exfoliants, gommages, toniques, lotions, shampoing sec)
+    if (/\b(cuir chevelu|exfoliant|gommage|tonique|shampoing sec)\b/i.test(name) || 
+        /\b(cuir chevelu|exfolier le cuir chevelu|tonique topique)\b/i.test(text)) {
+      productTypes.push('Soins du cuir chevelu');
+    }
+
+    // Shampooing (tous types de shampooings, recharges, nettoyants lavants)
+    if ((/\b(shampoing|shampooing|nettoyant pour les cheveux)\b/i.test(name) || /\b(shampoing|shampooing)\b/i.test(text)) && 
+        !/\b(pré-shampooing|pre-shampooing)\b/i.test(name)) {
+      productTypes.push('Shampooing');
+    }
+
+    // Outils et accessoires
+    if (/\b(brosse|peigne|bonnet|serviette|élastique|accessoire)\b/i.test(name)) {
+      productTypes.push('Outils et accessoires');
+    }
+
+    // Fallback
+    if (productTypes.length === 0) {
+      if (name.includes('shamp')) productTypes.push('Shampooing');
+      else productTypes.push('Soins sans rinçage');
+    }
+
+    // 2. HAIR TYPE (Type de cheveu)
+    const hairTypes = [];
+
+    // Cheveux secs
+    if (/\b(secs?|sèche|seches?|dry hair)\b/i.test(text) && !/\bshampoing sec\b/i.test(name)) {
+      hairTypes.push('Cheveux secs');
+    }
+
+    // Cheveux gras
+    if (/\b(gras|grasse|sébum|sebum|oil control)\b/i.test(text)) {
+      hairTypes.push('Cheveux gras');
+    }
+
+    // Cheveux colorés
+    if (/\b(colorés?|colores?|couleur|décoloration)\b/i.test(text)) {
+      hairTypes.push('Cheveux colorés');
+    }
+
+    // Cheveux fins
+    if (/\b(fins?|clairsemés?|clairsemes?|fragiles? et clairsemés?)\b/i.test(text)) {
+      hairTypes.push('Cheveux fins');
+    }
+
+    // Cheveux bouclés / frisés
+    if (/\b(bouclés?|boucles?|frisés?|frises?|ondulés?|ondules?|curly)\b/i.test(text)) {
+      hairTypes.push('Cheveux bouclés / frisés');
+    }
+
+    // Cheveux abîmés / cassants
+    if (/\b(abîmés?|abimes?|cassants?|fourchus?|pointes fourchues|intense repair|réparateur|cassent|fragiles?)\b/i.test(text)) {
+      hairTypes.push('Cheveux abîmés / cassants');
+    }
+
+    // Pellicules / cuir chevelu sensible
+    if (/\b(pellicules?|antipelliculaire|cuir chevelu sensible|apaiser le cuir chevelu)\b/i.test(text)) {
+      hairTypes.push('Pellicules / cuir chevelu sensible');
+    }
+
+    // Cheveux normaux (tous types de cheveux, enfants, usage quotidien)
+    if (/\b(tous les types|tous types|normaux?|enfants?|quotidien)\b/i.test(text) || hairTypes.length === 0) {
+      hairTypes.push('Cheveux normaux');
+    }
+
+    // 3. BENEFIT / CONCERN (Besoin / Problématique)
+    const concerns = [];
+
+    if (/\b(hydratant|hydrate|hydratation|nourrissant|nourrit|nutrition|nourris)\b/i.test(text)) {
+      concerns.push('Hydratation / nutrition');
+    }
+
+    if (/\b(réparateur|répare|réparation|repair|reconstruction|renforce|renforçant|kératine|liaisons|pointes fourchues)\b/i.test(text)) {
+      concerns.push('Réparation / reconstruction');
+    }
+
+    if (/\b(volume|densité|densite|clairsemés?|augmente le volume)\b/i.test(text)) {
+      concerns.push('Volume / densité');
+    }
+
+    if (/\b(brillance|brillants?|lumineux|éclat)\b/i.test(text)) {
+      concerns.push('Brillance');
+    }
+
+    if (/\b(anti[- ]?chute|réduire leur chute|favoriser une croissance)\b/i.test(text)) {
+      concerns.push('Anti-chute');
+    }
+
+    if (/\b(protecteur de couleur|protège la couleur|couleur|décoloration)\b/i.test(text)) {
+      concerns.push('Protection couleur');
+    }
+
+    if (/\b(lisse|lissage|discipline|contrôle du style|coiffant|anti-frisottis|soyeux)\b/i.test(text)) {
+      concerns.push('Lissage / discipline');
+    }
+
+    if (/\b(purifiant|antipelliculaire|pellicules?|détox|detox|exfoliant|exfolie|acide salicylique|clarifie)\b/i.test(text)) {
+      concerns.push('Purification / anti-pelliculaire');
+    }
+
+    const classification = { productTypes, hairTypes, concerns };
+    product._haircareClassification = classification;
+    return classification;
+  }
+
+  bindHaircareFilterEvents() {
+    if (!this.haircareFiltersContainer) return;
+
+    // Filter pill clicks
+    this.haircareFiltersContainer.addEventListener('click', (e) => {
+      const pill = e.target.closest('.haircare-filter-pill');
+      if (!pill || pill.disabled) return;
+
+      const filterType = pill.dataset.filterType;
+      const filterVal = pill.dataset.filterVal;
+      if (!filterType || !filterVal) return;
+
+      this.setHaircareFilter(filterType, filterVal);
+    });
+
+    // Reset button
+    if (this.btnResetHaircareFilters) {
+      this.btnResetHaircareFilters.addEventListener('click', () => {
+        this.resetHaircareFilters();
+      });
+    }
+  }
+
+  setHaircareFilter(filterType, filterVal) {
+    if (!this.haircareFilters) {
+      this.haircareFilters = { productType: 'All', hairType: 'All', concern: 'All' };
+    }
+    const previousVal = this.haircareFilters[filterType] || 'All';
+    this.haircareFilters[filterType] = filterVal;
+
+    // Track filter_apply / filter_remove analytics
+    if (this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      if (filterVal !== 'All') {
+        this.telemetry.trackAnalytics('filter_apply', {
+          filter_name: filterType,
+          filter_value: filterVal,
+          category: 'soins_capillaires'
+        });
+      } else if (previousVal !== 'All') {
+        this.telemetry.trackAnalytics('filter_remove', {
+          filter_name: filterType,
+          filter_value: previousVal
+        });
+      }
+    }
+
+    // Update pill UI in that group
+    const groupPills = this.haircareFiltersContainer?.querySelectorAll(`.haircare-filter-pill[data-filter-type="${filterType}"]`);
+    groupPills?.forEach(p => {
+      const isSelected = p.dataset.filterVal === filterVal;
+      p.classList.toggle('active', isSelected);
+      p.setAttribute('aria-pressed', String(isSelected));
+    });
+
+    this.productsCurrentPage = 1;
+    this.renderProducts();
+    this.updateHaircareFilterCounts();
+  }
+
+  resetHaircareFilters() {
+    this.haircareFilters = { productType: 'All', hairType: 'All', concern: 'All' };
+
+    // Track filter_reset analytics
+    if (this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      this.telemetry.trackAnalytics('filter_reset', {
+        category: 'soins_capillaires'
+      });
+    }
+
+    this.syncHaircareFilterPillsUI();
+    this.productsCurrentPage = 1;
+    this.renderProducts();
+    this.updateHaircareFilterCounts();
+
+    if (this.haircareResultsAnnouncer) {
+      this.haircareResultsAnnouncer.textContent = 'Tous les filtres de soins capillaires ont été réinitialisés.';
+    }
+  }
+
+  syncHaircareFilterPillsUI() {
+    if (!this.haircareFiltersContainer) return;
+    ['productType', 'hairType', 'concern'].forEach(type => {
+      const currentVal = (this.haircareFilters && this.haircareFilters[type]) ? this.haircareFilters[type] : 'All';
+      const groupPills = this.haircareFiltersContainer.querySelectorAll(`.haircare-filter-pill[data-filter-type="${type}"]`);
+      groupPills.forEach(p => {
+        const isSelected = p.dataset.filterVal === currentVal;
+        p.classList.toggle('active', isSelected);
+        p.setAttribute('aria-pressed', String(isSelected));
+      });
+    });
+  }
+
+  updateHaircareFilterCounts() {
+    if (!this.haircareFiltersContainer) return;
+    const haircareProducts = this.products.filter(p => p.category === 'Haircare');
+
+    const pills = this.haircareFiltersContainer.querySelectorAll('.haircare-filter-pill');
+
+    pills.forEach(pill => {
+      const type = pill.dataset.filterType;
+      const val = pill.dataset.filterVal;
+      const countEl = pill.querySelector('.filter-count');
+
+      // Calculate count for this option considering active filters in the other dimensions
+      const count = haircareProducts.filter(p => {
+        const c = this.classifyHaircare(p);
+
+        // Product Type condition
+        let matchType = true;
+        if (type === 'productType') {
+          matchType = (val === 'All') ? true : c.productTypes.includes(val);
+        } else if (this.haircareFilters.productType !== 'All') {
+          matchType = c.productTypes.includes(this.haircareFilters.productType);
+        }
+
+        // Hair Type condition
+        let matchHairType = true;
+        if (type === 'hairType') {
+          matchHairType = (val === 'All') ? true : c.hairTypes.includes(val);
+        } else if (this.haircareFilters.hairType !== 'All') {
+          matchHairType = c.hairTypes.includes(this.haircareFilters.hairType);
+        }
+
+        // Concern condition
+        let matchConcern = true;
+        if (type === 'concern') {
+          matchConcern = (val === 'All') ? true : c.concerns.includes(val);
+        } else if (this.haircareFilters.concern !== 'All') {
+          matchConcern = c.concerns.includes(this.haircareFilters.concern);
+        }
+
+        return matchType && matchHairType && matchConcern;
+      }).length;
+
+      if (countEl) {
+        countEl.textContent = `(${count})`;
+      }
+
+      // If count is 0 and it is not 'All' and not currently active, disable it
+      const isActive = pill.classList.contains('active');
+      if (val !== 'All' && count === 0 && !isActive) {
+        pill.disabled = true;
+        pill.setAttribute('aria-disabled', 'true');
+      } else {
+        pill.disabled = false;
+        pill.removeAttribute('aria-disabled');
+      }
+    });
+
+    // Summary update
+    const activeFiltersList = [];
+    if (this.haircareFilters.productType !== 'All') activeFiltersList.push(this.haircareFilters.productType);
+    if (this.haircareFilters.hairType !== 'All') activeFiltersList.push(this.haircareFilters.hairType);
+    if (this.haircareFilters.concern !== 'All') activeFiltersList.push(this.haircareFilters.concern);
+
+    // Calculate current visible count
+    const activeTotal = haircareProducts.filter(p => {
+      const c = this.classifyHaircare(p);
+      const matchType = (this.haircareFilters.productType === 'All') || c.productTypes.includes(this.haircareFilters.productType);
+      const matchHairType = (this.haircareFilters.hairType === 'All') || c.hairTypes.includes(this.haircareFilters.hairType);
+      const matchConcern = (this.haircareFilters.concern === 'All') || c.concerns.includes(this.haircareFilters.concern);
+      return matchType && matchHairType && matchConcern;
+    }).length;
+
+    // Track filter_combination analytics if more than 1 filter is combined
+    if (activeFiltersList.length > 1 && this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      this.telemetry.trackAnalytics('filter_combination', {
+        filters_list: activeFiltersList.join(', '),
+        results_count: activeTotal
+      });
+    }
+
+    if (this.haircareActiveSummary) {
+      if (activeFiltersList.length > 0) {
+        this.haircareActiveSummary.textContent = `Filtres actifs (${activeTotal} résultat${activeTotal > 1 ? 's' : ''}) : ${activeFiltersList.join(' • ')}`;
+      } else {
+        this.haircareActiveSummary.textContent = `Tous les soins capillaires affichés (${haircareProducts.length} produits)`;
+      }
+    }
+
+    if (this.haircareResultsAnnouncer) {
+      this.haircareResultsAnnouncer.textContent = `${activeTotal} produit${activeTotal > 1 ? 's' : ''} trouvé${activeTotal > 1 ? 's' : ''} dans les soins capillaires.`;
+    }
+  }
+
+  // =========================================================================
+  // Skincare Classification & Specialized Filtering System (Option A: Official)
+  // =========================================================================
+  classifySkincare(product) {
+    if (product._skincareClassification) {
+      return product._skincareClassification;
+    }
+    const name = (product.name || '').toLowerCase();
+    const desc = (product.description || product.description_fr || '').toLowerCase();
+    const suitableFor = (product.suitable_for || '').toLowerCase();
+    const benefits = (Array.isArray(product.benefits) ? product.benefits.join(' ') : (product.benefits || '')).toLowerCase();
+    const text = [name, desc, benefits, suitableFor].join(' ').toLowerCase();
+
+    // 1. PRODUCT TYPES (shop-by-product)
+    const productTypes = [];
+
+    // Soin des yeux / eye-care
+    if (/\b(yeux|contour des yeux|paupières|paupieres|regard|eye|cernes|poches)\b/i.test(name) ||
+        (/\b(spécifiquement pour le contour des yeux|soin contour des yeux|crème contour des yeux)\b/i.test(desc) && !/\b(éviter|eviter)\b/i.test(desc))) {
+      productTypes.push('eye-care');
+    }
+
+    // Soin des lèvres / lip-care
+    if (/\b(lèvres|levres|tender care|lip|baume à lèvres|baume a levres|soin des lèvres)\b/i.test(name) ||
+        (/\b(baume à lèvres|soin des lèvres|nourrir les lèvres)\b/i.test(desc) && !/\bvisage\b/i.test(name))) {
+      productTypes.push('lip-care');
+    }
+
+    // Protection solaire / sun-care
+    if (/\b(ip\s*\d+|spf\s*\d+|sun zone|protection uv|écran solaire|ecran solaire|solaire|protection solaire)\b/i.test(name) ||
+        /\b(haute protection uv|filtres uva\/uvb spf)\b/i.test(desc)) {
+      productTypes.push('sun-care');
+    }
+
+    // Masque / mask
+    if (/\b(masque|mask)\b/i.test(name)) {
+      productTypes.push('mask');
+    }
+
+    // Gommage / Exfoliant / scrub
+    if (/\b(gommage|exfoliant|peeling|scrub)\b/i.test(name) || /\b(exfoliant doux|gommage visage)\b/i.test(desc)) {
+      productTypes.push('scrub');
+    }
+
+    // Nettoyant / cleanser
+    if ((/\b(nettoyant|démaquillant|demaquillant|eau micellaire|mousse nettoyante|gel nettoyant|lait nettoyant|huile nettoyante|cleanser|purifiant lavant)\b/i.test(name) ||
+         /\b(nettoie en douceur|démaquille|nettoyant moussant)\b/i.test(desc)) &&
+        !productTypes.includes('scrub')) {
+      productTypes.push('cleanser');
+    }
+
+    // Tonique / toner
+    if ((/\b(tonique|lotion tonique|brume|essence tonique|mist)\b/i.test(name) ||
+         /\b(lotion apaisante|brume pour le visage)\b/i.test(desc)) &&
+        !/\b(lotion corps|lotion pour les mains)\b/i.test(name)) {
+      productTypes.push('toner');
+    }
+
+    // Sérum / serum
+    if (/\b(sérum|serum|ampoule|ampoules|capsule|capsules)\b/i.test(name) ||
+        (/\b(sérum concentré|sérum activateur)\b/i.test(desc) && !productTypes.includes('eye-care'))) {
+      productTypes.push('serum');
+    }
+
+    // Crème anti-âge / anti-aging-cream
+    if ((/\b(anti-âge|anti-age|anti-rides|antirides|lift|firm|wrinkle|time restore|diamond cellular|royal velvet|e-collagen|ultimate lift|age revive|proceuticals)\b/i.test(name) ||
+         /\b(anti-rides|multi-active anti-age|réduit les rides|action anti-âge|stimule le collagène)\b/i.test(desc)) &&
+        (/\b(crème|creme|soin de jour|soin de nuit|fluide)\b/i.test(name) || /\b(crème de jour|crème de nuit)\b/i.test(desc)) &&
+        !productTypes.includes('eye-care') &&
+        !productTypes.includes('serum') &&
+        !productTypes.includes('cleanser') &&
+        !productTypes.includes('mask')) {
+      productTypes.push('anti-aging-cream');
+    }
+
+    // Crème hydratante / moisturiser
+    if ((/\b(crème|creme|gelée|gelee|fluide|hydratant|nourrissante|soin de jour|soin de nuit|optima|essentials|pure skin|love nature|waunt)\b/i.test(name) ||
+         /\b(crème hydratante|hydrate la peau|nourrit intensément)\b/i.test(desc)) &&
+        !productTypes.includes('anti-aging-cream') &&
+        !productTypes.includes('eye-care') &&
+        !productTypes.includes('cleanser') &&
+        !productTypes.includes('mask') &&
+        !productTypes.includes('scrub') &&
+        !productTypes.includes('serum') &&
+        !productTypes.includes('lip-care') &&
+        !productTypes.includes('sun-care') &&
+        !productTypes.includes('toner')) {
+      productTypes.push('moisturiser');
+    }
+
+    // Fallback
+    if (productTypes.length === 0) {
+      if (/\b(crème|creme)\b/i.test(name)) productTypes.push('moisturiser');
+      else if (/\b(huile)\b/i.test(name)) productTypes.push('serum');
+      else productTypes.push('moisturiser');
+    }
+
+    // 2. SKIN TYPES (Official skin-type facet)
+    const skinTypes = [];
+
+    // dry (Sèche)
+    if (/\b(sèche\w*|seche\w*|sèches|seches|très sèche|tiraillement|dessèchement|dry skin)\b/i.test(text) ||
+        /\bpeau sèche\b/i.test(suitableFor)) {
+      skinTypes.push('dry');
+    }
+
+    // oily (Grasse)
+    if (/\b(grasse\w*|sébum\w*|sebum\w*|brillance|matifi\w*|purifi\w*|anti-brillance|oily skin)\b/i.test(text) ||
+        /\bpeau grasse\b/i.test(suitableFor)) {
+      skinTypes.push('oily');
+    }
+
+    // combination (Mixte)
+    if (/\b(mixte\w*|zone t|combination skin)\b/i.test(text) ||
+        /\bpeau mixte\b/i.test(suitableFor)) {
+      skinTypes.push('combination');
+    }
+
+    // normal (Normale)
+    if (/\b(normale\w*|tous types de peaux|tout type de peau|tous types|all skin)\b/i.test(text) ||
+        /\b(tous types|normale)\b/i.test(suitableFor)) {
+      skinTypes.push('normal');
+    }
+
+    // sensitive (Sensible)
+    if (/\b(sensible\w*|apais\w*|anti-rougeurs|hypoallergénique|sans parfum|réactive|sensitive skin)\b/i.test(text) ||
+        /\bpeau sensible\b/i.test(suitableFor)) {
+      skinTypes.push('sensitive');
+    }
+
+    // mature (Mature)
+    if (/\b(mature\w*|ménopause|perte de densité|relâchement|rides profondes|mature skin)\b/i.test(text) ||
+        /\b(time restore|royal velvet|diamond cellular|lift \+ firm)\b/i.test(name)) {
+      skinTypes.push('mature');
+    }
+
+    // breakout-prone (Peau à imperfections)
+    if (/\b(imperfection\w*|acné|bouton\w*|points noirs|purifi\w*|salicylique|clarifi\w*|blemish|pure skin|breakout)\b/i.test(text)) {
+      skinTypes.push('breakout-prone');
+    }
+
+    if (skinTypes.length === 0) {
+      skinTypes.push('normal');
+    }
+
+    // 3. BENEFITS (Official benefits facet)
+    const benefitsList = [];
+
+    // hydrating (Hydratant)
+    if (/\b(hydrat\w*|nourri\w*|dessèchement|soif|plump|repulp\w*|acide hyaluronique|karité|canola|vitamine e)\b/i.test(text)) {
+      benefitsList.push('hydrating');
+    }
+
+    // smoothing-lines-and-wrinkles (Lisser rides & ridules)
+    if (/\b(ride\w*|ridule\w*|lisser les rides|lignes et rides|rides profondes)\b/i.test(text)) {
+      benefitsList.push('smoothing-lines-and-wrinkles');
+    }
+
+    // anti-aging (Anti-âge)
+    if (/\b(anti-âge|anti-age|anti-rides|antirides|vieillissement|jeunesse|collagène|pro-collagène)\b/i.test(text)) {
+      benefitsList.push('anti-aging');
+    }
+
+    // radiant (Rayonnant / Éclat)
+    if (/\b(éclat\w*|eclat\w*|luminosité|terne|radiance|illumin\w*|vitamine c|bonne mine|rayonnant)\b/i.test(text)) {
+      benefitsList.push('radiant');
+    }
+
+    // even-skin-tone (Teint uniforme / Taches)
+    if (/\b(tache\w*|hyperpigmentation|uniformité du teint|teint uniforme|anti-taches|bright intense|brightening)\b/i.test(text)) {
+      benefitsList.push('even-skin-tone');
+    }
+
+    // firming-lifting (Raffermissement / Lift)
+    if (/\b(fermeté|fermete|lift\w*|relâchement|élasticité|elasticite|redessine|raffermiss\w*)\b/i.test(text)) {
+      benefitsList.push('firming-lifting');
+    }
+
+    // purifying-pore-minimizing (Pores & Purification)
+    if (/\b(pore\w*|resserrer les pores|grain de peau|purifi\w*|clarifi\w*)\b/i.test(text)) {
+      benefitsList.push('purifying-pore-minimizing');
+    }
+
+    // calming-redness-reduction (Calme & Anti-rougeurs)
+    if (/\b(apais\w*|rougeur\w*|calm\w*|irritation\w*|réconfort|confort|camomille|aloe vera)\b/i.test(text)) {
+      benefitsList.push('calming-redness-reduction');
+    }
+
+    // oil-control-mattifying (Contrôle sébum & Matité)
+    if (/\b(sébum\w*|sebum\w*|brillance|matifi\w*|anti-brillance|oil-control)\b/i.test(text)) {
+      benefitsList.push('oil-control-mattifying');
+    }
+
+    // exfoliating (Exfoliant)
+    if (/\b(exfoli\w*|gommage|peeling|scrub|acide salicylique|aha)\b/i.test(text)) {
+      benefitsList.push('exfoliating');
+    }
+
+    const classification = { productTypes, skinTypes, benefits: benefitsList };
+    product._skincareClassification = classification;
+    return classification;
+  }
+
+  bindSkincareFilterEvents() {
+    if (!this.skincareFiltersContainer) return;
+
+    // Filter pill clicks
+    this.skincareFiltersContainer.addEventListener('click', (e) => {
+      const pill = e.target.closest('.skincare-filter-pill');
+      if (!pill || pill.disabled) return;
+
+      const filterType = pill.dataset.filterType;
+      const filterVal = pill.dataset.filterVal;
+      if (!filterType || !filterVal) return;
+
+      this.setSkincareFilter(filterType, filterVal);
+    });
+
+    // Reset button
+    if (this.btnResetSkincareFilters) {
+      this.btnResetSkincareFilters.addEventListener('click', () => {
+        this.resetSkincareFilters();
+      });
+    }
+  }
+
+  setSkincareFilter(filterType, filterVal) {
+    if (!this.skincareFilters) {
+      this.skincareFilters = { 'product-type': 'All', 'skin-type': 'All', 'benefits': 'All' };
+    }
+    const previousVal = this.skincareFilters[filterType] || 'All';
+    this.skincareFilters[filterType] = filterVal;
+
+    // Track filter_apply / filter_remove analytics
+    if (this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      if (filterVal !== 'All') {
+        this.telemetry.trackAnalytics('filter_apply', {
+          filter_name: filterType,
+          filter_value: filterVal,
+          category: 'soins_de_la_peau'
+        });
+      } else if (previousVal !== 'All') {
+        this.telemetry.trackAnalytics('filter_remove', {
+          filter_name: filterType,
+          filter_value: previousVal
+        });
+      }
+    }
+
+    // Update URL query with official Oriflame ?filters= format
+    try {
+      const activePairs = [];
+      ['product-type', 'skin-type', 'benefits'].forEach(k => {
+        if (this.skincareFilters[k] && this.skincareFilters[k] !== 'All') {
+          activePairs.push(`${k}:${this.skincareFilters[k]}`);
+        }
+      });
+      if (typeof window !== 'undefined' && window.history && window.history.replaceState) {
+        const newSearch = activePairs.length > 0 ? `?filters=${activePairs.join(';')}` : '';
+        const newUrl = `${window.location.pathname}${newSearch}`;
+        window.history.replaceState(null, '', newUrl);
+      }
+    } catch (e) {}
+
+    // Update pill UI in that group
+    const groupPills = this.skincareFiltersContainer?.querySelectorAll(`.skincare-filter-pill[data-filter-type="${filterType}"]`);
+    groupPills?.forEach(p => {
+      const isSelected = p.dataset.filterVal === filterVal;
+      p.classList.toggle('active', isSelected);
+      p.setAttribute('aria-pressed', String(isSelected));
+    });
+
+    this.productsCurrentPage = 1;
+    this.renderProducts();
+    this.updateSkincareFilterCounts();
+  }
+
+  resetSkincareFilters() {
+    this.skincareFilters = { 'product-type': 'All', 'skin-type': 'All', 'benefits': 'All' };
+
+    // Track filter_reset analytics
+    if (this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      this.telemetry.trackAnalytics('filter_reset', {
+        category: 'soins_de_la_peau'
+      });
+    }
+
+    try {
+      if (typeof window !== 'undefined' && window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    } catch (e) {}
+
+    this.syncSkincareFilterPillsUI();
+    this.productsCurrentPage = 1;
+    this.renderProducts();
+    this.updateSkincareFilterCounts();
+
+    if (this.skincareResultsAnnouncer) {
+      this.skincareResultsAnnouncer.textContent = 'Tous les filtres de soins de la peau ont été réinitialisés.';
+    }
+  }
+
+  syncSkincareFilterPillsUI() {
+    if (!this.skincareFiltersContainer) return;
+    ['product-type', 'skin-type', 'benefits'].forEach(type => {
+      const currentVal = (this.skincareFilters && this.skincareFilters[type]) ? this.skincareFilters[type] : 'All';
+      const groupPills = this.skincareFiltersContainer.querySelectorAll(`.skincare-filter-pill[data-filter-type="${type}"]`);
+      groupPills.forEach(p => {
+        const isSelected = p.dataset.filterVal === currentVal;
+        p.classList.toggle('active', isSelected);
+        p.setAttribute('aria-pressed', String(isSelected));
+      });
+    });
+  }
+
+  updateSkincareFilterCounts() {
+    if (!this.skincareFiltersContainer) return;
+    const skincareProducts = this.products.filter(p => p.category === 'Skincare');
+
+    const pills = this.skincareFiltersContainer.querySelectorAll('.skincare-filter-pill');
+
+    pills.forEach(pill => {
+      const type = pill.dataset.filterType;
+      const val = pill.dataset.filterVal;
+      const countEl = pill.querySelector('.filter-count');
+
+      // Calculate count for this option considering active filters in the other dimensions
+      const count = skincareProducts.filter(p => {
+        const c = this.classifySkincare(p);
+
+        // Product Type condition
+        let matchType = true;
+        if (type === 'product-type') {
+          matchType = (val === 'All') ? true : c.productTypes.includes(val);
+        } else if (this.skincareFilters['product-type'] !== 'All') {
+          matchType = c.productTypes.includes(this.skincareFilters['product-type']);
+        }
+
+        // Skin Type condition
+        let matchSkinType = true;
+        if (type === 'skin-type') {
+          matchSkinType = (val === 'All') ? true : c.skinTypes.includes(val);
+        } else if (this.skincareFilters['skin-type'] !== 'All') {
+          matchSkinType = c.skinTypes.includes(this.skincareFilters['skin-type']);
+        }
+
+        // Benefits condition
+        let matchBenefits = true;
+        if (type === 'benefits') {
+          matchBenefits = (val === 'All') ? true : c.benefits.includes(val);
+        } else if (this.skincareFilters['benefits'] !== 'All') {
+          matchBenefits = c.benefits.includes(this.skincareFilters['benefits']);
+        }
+
+        return matchType && matchSkinType && matchBenefits;
+      }).length;
+
+      if (countEl) {
+        countEl.textContent = `(${count})`;
+      }
+
+      // If count is 0 and it is not 'All' and not currently active, disable it
+      const isActive = pill.classList.contains('active');
+      if (val !== 'All' && count === 0 && !isActive) {
+        pill.disabled = true;
+        pill.setAttribute('aria-disabled', 'true');
+      } else {
+        pill.disabled = false;
+        pill.removeAttribute('aria-disabled');
+      }
+    });
+
+    // Summary update with friendly French labels
+    const slugLabels = {
+      'cleanser': 'Nettoyant', 'toner': 'Tonique', 'serum': 'Sérum', 'moisturiser': 'Crème hydratante',
+      'anti-aging-cream': 'Crème anti-âge', 'mask': 'Masque', 'scrub': 'Exfoliant', 'eye-care': 'Soin des yeux',
+      'sun-care': 'Protection solaire', 'lip-care': 'Soin des lèvres',
+      'dry': 'Peau sèche', 'normal': 'Peau normale', 'oily': 'Peau grasse', 'combination': 'Peau mixte',
+      'sensitive': 'Peau sensible', 'mature': 'Peau mature', 'breakout-prone': 'Peau à imperfections',
+      'hydrating': 'Hydratant', 'anti-aging': 'Anti-âge', 'smoothing-lines-and-wrinkles': 'Lisser rides',
+      'radiant': 'Rayonnant', 'even-skin-tone': 'Teint uniforme', 'firming-lifting': 'Fermeté/Lift',
+      'purifying-pore-minimizing': 'Pores', 'calming-redness-reduction': 'Anti-rougeurs',
+      'oil-control-mattifying': 'Matité', 'exfoliating': 'Exfoliant'
+    };
+
+    const activeFiltersList = [];
+    ['product-type', 'skin-type', 'benefits'].forEach(k => {
+      const v = this.skincareFilters[k];
+      if (v && v !== 'All') {
+        activeFiltersList.push(slugLabels[v] || v);
+      }
+    });
+
+    // Calculate current visible count
+    const activeTotal = skincareProducts.filter(p => {
+      const c = this.classifySkincare(p);
+      const matchType = (this.skincareFilters['product-type'] === 'All') || c.productTypes.includes(this.skincareFilters['product-type']);
+      const matchSkinType = (this.skincareFilters['skin-type'] === 'All') || c.skinTypes.includes(this.skincareFilters['skin-type']);
+      const matchBenefits = (this.skincareFilters['benefits'] === 'All') || c.benefits.includes(this.skincareFilters['benefits']);
+      return matchType && matchSkinType && matchBenefits;
+    }).length;
+
+    // Track filter_combination analytics if more than 1 filter is combined
+    if (activeFiltersList.length > 1 && this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      this.telemetry.trackAnalytics('filter_combination', {
+        filters_list: activeFiltersList.join(', '),
+        results_count: activeTotal
+      });
+    }
+
+    if (this.skincareActiveSummary) {
+      if (activeFiltersList.length > 0) {
+        this.skincareActiveSummary.textContent = `Filtres actifs (${activeTotal} résultat${activeTotal > 1 ? 's' : ''}) : ${activeFiltersList.join(' • ')}`;
+      } else {
+        this.skincareActiveSummary.textContent = `Tous les soins de la peau affichés (${skincareProducts.length} produits)`;
+      }
+    }
+
+    if (this.skincareResultsAnnouncer) {
+      this.skincareResultsAnnouncer.textContent = `${activeTotal} produit${activeTotal > 1 ? 's' : ''} trouvé${activeTotal > 1 ? 's' : ''} dans les soins de la peau.`;
+    }
+  }
+
+  isMultiUseProductFor(product, category) {
+    if (!product) return false;
+    const pId = String(product.product_id);
+    const cat = (category || '').toLowerCase();
+
+    // Check explicit categories array if set
+    if (Array.isArray(product.categories)) {
+      if (product.categories.some(c => c.toLowerCase() === cat)) return true;
+    }
+
+    // Known multi-usage products across categories
+    if (cat === 'bodycare' || cat === 'corps-et-bain' || cat === 'corps') {
+      return pId === '40844' || pId === '30568' || pId === '35767' || pId === '46632' || pId === '47270' ||
+             ['12760', '36151', '36152', '36153', '46989', '47688', '49133'].includes(pId);
+    }
+    if (cat === 'skincare' || cat === 'soins-de-la-peau') {
+      return pId === '30568' || pId === '35767' || pId === '46632' || pId === '47270' ||
+             ['12760', '36151', '36152', '36153', '46989', '47688', '49133'].includes(pId);
+    }
+    if (cat === 'haircare' || cat === 'soins-capillaires' || cat === 'cheveux') {
+      return pId === '40844';
+    }
+    return false;
+  }
+
+  classifyBodyCare(product) {
+    if (product._bodycareClassification) {
+      return product._bodycareClassification;
+    }
+
+    const name = (this.getProductName(product) || product.name || '').toLowerCase();
+    const desc = (this.getProductDescription(product) || product.description || '').toLowerCase();
+    const text = `${name} ${desc}`;
+
+    // 1. PRODUCT TYPES
+    const productTypes = [];
+
+    // Gels douche
+    if (/\b(gel douche|crème de douche|creme de douche|gel lavant|nettoyant intime|recharge de gel nettoyant)\b/i.test(text) ||
+        (/\b(douche|shower)\b/i.test(name) && !/\bhuile\b/i.test(name))) {
+      productTypes.push('shower-gel');
+    }
+
+    // Savons
+    if (/\b(savon|soap)\b/i.test(name)) {
+      productTypes.push('soap');
+    }
+
+    // Gommages corps
+    if (/\b(gommage|exfoliant au sucre|exfoliant corps|body scrub|exfoliant énergisant|exfoliant energisant)\b/i.test(name) ||
+        /\b(gommage pour le corps|exfoliant corporel|sucre lissant)\b/i.test(desc)) {
+      productTypes.push('body-scrub');
+    }
+
+    // Beurres corporels
+    if (/\b(beurre corporel|beurre pour le corps|body butter)\b/i.test(name) ||
+        (/\b(beurre)\b/i.test(name) && !/\bsavon\b/i.test(name)) ||
+        /\btender care\b/i.test(name)) {
+      productTypes.push('body-butter');
+    }
+
+    // Lotions corporelles
+    if (/\b(lotion.*corps|lotion corporelle|lotion visage et corps|lotion adoucissante pour le corps|body lotion)\b/i.test(text)) {
+      productTypes.push('body-lotion');
+    }
+
+    // Crèmes corporelles (includes body creams, hand creams, foot creams, body gels)
+    if (/\b(crème.*corps|creme.*corps|crème parfumée pour le corps|crème pour les mains|creme.*mains|crème.*pieds|creme.*pieds|talons crevassés|the body edition|anti cellulite|anti-cellulite|anti-vergetures|dream cream|crème multi usages)\b/i.test(text) ||
+        (/\b(crème|creme|baume)\b/i.test(name) && !productTypes.includes('shower-gel') && !productTypes.includes('body-butter'))) {
+      productTypes.push('body-cream');
+    }
+
+    // Huiles de douche / bain
+    if (/\b(huile de douche|huile de bain|huile corps|shower oil|bath oil|sérum adoucissant pour les pieds)\b/i.test(text)) {
+      productTypes.push('bath-shower-oil');
+    }
+
+    // Accessoires de bain
+    if (/\b(rasoir|lames de rasoir|brosse de massage|lime à pieds|lime a pieds|pince à cuticules|lime à ongles|spatule|loofah|éponge|gant de gommage|brosse à dents|dentifrice|brosse|duo soin)\b/i.test(name)) {
+      productTypes.push('bath-accessories');
+    }
+
+    // Mousses
+    if (/\b(mousse|mousse de rasage|mousse à raser|shaving foam)\b/i.test(name)) {
+      productTypes.push('mousse');
+    }
+
+    // 2 en 1 (multi-usage, 2-en-1, 3-en-1, mains et corps, cheveux et corps, visage et corps)
+    if (/\b(2 en 1|2-en-1|3 en 1|3-en-1|multi usage|multi-usage|multi usages|multi-usages|mains et le corps|mains et corps|visage et corps|cheveux et le corps|cheveux et corps)\b/i.test(text)) {
+      productTypes.push('two-in-one');
+    }
+
+    // Fallback if none matched
+    if (productTypes.length === 0) {
+      if (/\b(déodorant|deodorant|anti-transpirant|spray)\b/i.test(text)) {
+        productTypes.push('body-lotion');
+      } else {
+        productTypes.push('body-cream');
+      }
+    }
+
+    // 2. NEEDS (FILTRE 2 - Par besoin)
+    const needs = [];
+
+    // Hydratation
+    if (/\b(hydrat\w*|dessèchement|soif|aloe vera|melon|eau de coco|confort|moistur\w*)\b/i.test(text)) {
+      needs.push('hydrating');
+    }
+
+    // Nutrition
+    if (/\b(nourri\w*|beurre de cacao|huile de noix de coco|avocat|macadamia|miel|milk & honey|beurre|riche|baume)\b/i.test(text)) {
+      needs.push('nourishing');
+    }
+
+    // Exfoliation
+    if (/\b(exfoli\w*|gommage|peeling|sucre|lime|cellules mortes|lissant|scrub)\b/i.test(text)) {
+      needs.push('exfoliating');
+    }
+
+    // Apaisant
+    if (/\b(apais\w*|calm\w*|adouciss\w*|intime|sensitive|aloe vera|coton|subzero|réparatrice)\b/i.test(text)) {
+      needs.push('calming');
+    }
+
+    // Raffermissant
+    if (/\b(raffermiss\w*|fermeté|fermete|anti cellulite|anti-cellulite|vergetures|tonifi\w*|lift)\b/i.test(text)) {
+      needs.push('firming');
+    }
+
+    // Parfum / Plaisir
+    if (/\b(parfum\w*|fragrance|senteur|arôme|arome|cassis|framboise|passion|pamplemousse|mangue|fraise|cerise|cherry|spring song|magnolia|essenza|possess|eclat|activelle|giordani)\b/i.test(text)) {
+      needs.push('fragrance');
+    }
+
+    if (needs.length === 0) {
+      needs.push('hydrating');
+    }
+
+    const classification = { productTypes, needs };
+    product._bodycareClassification = classification;
+    return classification;
+  }
+
+  bindBodyCareFilterEvents() {
+    if (!this.bodycareFiltersContainer) return;
+
+    // Filter pill clicks
+    this.bodycareFiltersContainer.addEventListener('click', (e) => {
+      const pill = e.target.closest('.bodycare-filter-pill');
+      if (!pill || pill.disabled) return;
+
+      const filterType = pill.dataset.filterType;
+      const filterVal = pill.dataset.filterVal;
+      if (!filterType || !filterVal) return;
+
+      this.setBodyCareFilter(filterType, filterVal);
+    });
+
+    // Reset button
+    if (this.btnResetBodycareFilters) {
+      this.btnResetBodycareFilters.addEventListener('click', () => {
+        this.resetBodyCareFilters();
+      });
+    }
+  }
+
+  setBodyCareFilter(filterType, filterVal) {
+    if (!this.bodycareFilters) {
+      this.bodycareFilters = { 'product-type': 'All', 'need': 'All' };
+    }
+    const previousVal = this.bodycareFilters[filterType] || 'All';
+    this.bodycareFilters[filterType] = filterVal;
+
+    // Track filter_apply / filter_remove analytics
+    if (this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      if (filterVal !== 'All') {
+        this.telemetry.trackAnalytics('filter_apply', {
+          filter_name: filterType,
+          filter_value: filterVal,
+          category: 'corps_et_bain'
+        });
+      } else if (previousVal !== 'All') {
+        this.telemetry.trackAnalytics('filter_remove', {
+          filter_name: filterType,
+          filter_value: previousVal
+        });
+      }
+    }
+
+    // Update URL query with format ?filters=product-type:val;need:val
+    try {
+      const activePairs = [];
+      ['product-type', 'need'].forEach(k => {
+        if (this.bodycareFilters[k] && this.bodycareFilters[k] !== 'All') {
+          activePairs.push(`${k}:${this.bodycareFilters[k]}`);
+        }
+      });
+      if (typeof window !== 'undefined' && window.history && window.history.replaceState) {
+        const newSearch = activePairs.length > 0 ? `?filters=${activePairs.join(';')}` : '';
+        const newUrl = `${window.location.pathname}${newSearch}`;
+        window.history.replaceState(null, '', newUrl);
+      }
+    } catch (e) {}
+
+    // Update pill UI in that group
+    const groupPills = this.bodycareFiltersContainer?.querySelectorAll(`.bodycare-filter-pill[data-filter-type="${filterType}"]`);
+    groupPills?.forEach(p => {
+      const isSelected = p.dataset.filterVal === filterVal;
+      p.classList.toggle('active', isSelected);
+      p.setAttribute('aria-pressed', String(isSelected));
+    });
+
+    this.productsCurrentPage = 1;
+    this.renderProducts();
+    this.updateBodyCareFilterCounts();
+  }
+
+  resetBodyCareFilters() {
+    this.bodycareFilters = { 'product-type': 'All', 'need': 'All' };
+
+    // Track filter_reset analytics
+    if (this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      this.telemetry.trackAnalytics('filter_reset', {
+        category: 'corps_et_bain'
+      });
+    }
+
+    try {
+      if (typeof window !== 'undefined' && window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    } catch (e) {}
+
+    this.syncBodyCareFilterPillsUI();
+    this.productsCurrentPage = 1;
+    this.renderProducts();
+    this.updateBodyCareFilterCounts();
+
+    if (this.bodycareResultsAnnouncer) {
+      this.bodycareResultsAnnouncer.textContent = 'Tous les filtres de soins du corps et du bain ont été réinitialisés.';
+    }
+  }
+
+  syncBodyCareFilterPillsUI() {
+    if (!this.bodycareFiltersContainer) return;
+    ['product-type', 'need'].forEach(type => {
+      const currentVal = (this.bodycareFilters && this.bodycareFilters[type]) ? this.bodycareFilters[type] : 'All';
+      const groupPills = this.bodycareFiltersContainer.querySelectorAll(`.bodycare-filter-pill[data-filter-type="${type}"]`);
+      groupPills.forEach(p => {
+        const isSelected = p.dataset.filterVal === currentVal;
+        p.classList.toggle('active', isSelected);
+        p.setAttribute('aria-pressed', String(isSelected));
+      });
+    });
+  }
+
+  updateBodyCareFilterCounts() {
+    if (!this.bodycareFiltersContainer) return;
+    const bodyProducts = this.products.filter(p => p.category === 'BodyCare' || this.isMultiUseProductFor(p, 'BodyCare'));
+
+    const pills = this.bodycareFiltersContainer.querySelectorAll('.bodycare-filter-pill');
+
+    pills.forEach(pill => {
+      const type = pill.dataset.filterType;
+      const val = pill.dataset.filterVal;
+      const countEl = pill.querySelector('.filter-count');
+
+      // Calculate count for this option considering active filters in the other dimensions
+      const count = bodyProducts.filter(p => {
+        const c = this.classifyBodyCare(p);
+
+        // Product Type condition
+        let matchType = true;
+        if (type === 'product-type') {
+          matchType = (val === 'All') ? true : c.productTypes.includes(val);
+        } else if (this.bodycareFilters['product-type'] !== 'All') {
+          matchType = c.productTypes.includes(this.bodycareFilters['product-type']);
+        }
+
+        // Need condition
+        let matchNeed = true;
+        if (type === 'need') {
+          matchNeed = (val === 'All') ? true : c.needs.includes(val);
+        } else if (this.bodycareFilters['need'] !== 'All') {
+          matchNeed = c.needs.includes(this.bodycareFilters['need']);
+        }
+
+        return matchType && matchNeed;
+      }).length;
+
+      if (countEl) {
+        countEl.textContent = `(${count})`;
+      }
+
+      // If count is 0 and it is not 'All' and not currently active, disable it
+      const isActive = pill.classList.contains('active');
+      if (val !== 'All' && count === 0 && !isActive) {
+        pill.disabled = true;
+        pill.setAttribute('aria-disabled', 'true');
+      } else {
+        pill.disabled = false;
+        pill.removeAttribute('aria-disabled');
+      }
+    });
+
+    const slugLabels = {
+      'body-cream': 'Crèmes corporelles', 'body-lotion': 'Lotions corporelles',
+      'shower-gel': 'Gels douche', 'soap': 'Savons', 'body-scrub': 'Gommages corps',
+      'body-butter': 'Beurres corporels', 'bath-shower-oil': 'Huiles de douche / bain',
+      'bath-accessories': 'Accessoires de bain', 'mousse': 'Mousses', 'two-in-one': '2 en 1',
+      'hydrating': 'Hydratation', 'nourishing': 'Nutrition', 'exfoliating': 'Exfoliation',
+      'calming': 'Apaisant', 'firming': 'Raffermissant', 'fragrance': 'Parfum / Plaisir'
+    };
+
+    const activeFiltersList = [];
+    ['product-type', 'need'].forEach(k => {
+      const v = this.bodycareFilters[k];
+      if (v && v !== 'All') {
+        activeFiltersList.push(slugLabels[v] || v);
+      }
+    });
+
+    // Calculate current visible count
+    const activeTotal = bodyProducts.filter(p => {
+      const c = this.classifyBodyCare(p);
+      const matchType = (this.bodycareFilters['product-type'] === 'All') || c.productTypes.includes(this.bodycareFilters['product-type']);
+      const matchNeed = (this.bodycareFilters['need'] === 'All') || c.needs.includes(this.bodycareFilters['need']);
+      return matchType && matchNeed;
+    }).length;
+
+    // Track filter_combination analytics if more than 1 filter is combined
+    if (activeFiltersList.length > 1 && this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      this.telemetry.trackAnalytics('filter_combination', {
+        filters_list: activeFiltersList.join(', '),
+        results_count: activeTotal,
+        category: 'corps_et_bain'
+      });
+    }
+
+    if (this.bodycareActiveSummary) {
+      if (activeFiltersList.length > 0) {
+        this.bodycareActiveSummary.textContent = `Filtres actifs (${activeTotal} résultat${activeTotal > 1 ? 's' : ''}) : ${activeFiltersList.join(' • ')}`;
+      } else {
+        this.bodycareActiveSummary.textContent = `Tous les soins du corps et du bain affichés (${bodyProducts.length} produits)`;
+      }
+    }
+
+    if (this.bodycareResultsAnnouncer) {
+      this.bodycareResultsAnnouncer.textContent = `${activeTotal} produit${activeTotal > 1 ? 's' : ''} trouvé${activeTotal > 1 ? 's' : ''} dans les soins du corps et du bain.`;
+    }
+  }
+
+  getCategoryDisplayName(category) {
+    const isArabic = this.i18n.getLang() === 'ar';
+    const isEnglish = this.i18n.getLang() === 'en';
+    switch (category) {
+      case 'BodyCare':
+        return isArabic ? '🧴 الجسم والاستحمام' : (isEnglish ? '🧴 Bath & Body' : '🧴 Corps & Bain');
+      case 'Skincare':
+        return isArabic ? '✨ العناية بالبشرة' : (isEnglish ? '✨ Skin Care' : '✨ Soins de la peau');
+      case 'Haircare':
+        return isArabic ? '💇‍♀️ العناية بالشعر' : (isEnglish ? '💇‍♀️ Hair Care' : '💇‍♀️ Soins capillaires');
+      case 'Fragrance':
+        return isArabic ? '🌸 العطور' : (isEnglish ? '🌸 Fragrances' : '🌸 Parfums');
+      case 'Makeup':
+        return isArabic ? '💄 المكياج' : (isEnglish ? '💄 Makeup' : '💄 Maquillage');
+      case 'Deals':
+        return isArabic ? '🔥 العروض الخاصة' : (isEnglish ? '🔥 Special Deals' : '🔥 Offres Spéciales');
+      case 'Bundles':
+        return isArabic ? '🎁 المجموعات' : (isEnglish ? '🎁 Bundles' : '🎁 Coffrets & Packs');
+      default:
+        return category || 'Tous les produits';
+    }
+  }
+
+  updateGlobalNavigationUI() {
+    if (!this.globalNavigationBar || !this.globalBreadcrumbList) return;
+
+    const isHome = (this.activeCategory === 'All' && !this.searchQuery);
+    if (isHome) {
+      this.globalNavigationBar.style.display = 'none';
+      return;
+    }
+
+    this.globalNavigationBar.style.display = 'flex';
+
+    const isArabic = this.i18n.getLang() === 'ar';
+    const homeLabel = isArabic ? 'الرئيسية' : 'Accueil';
+    const catDisplayName = this.getCategoryDisplayName(this.activeCategory);
+
+    // Collect active sub-filter label if any
+    let activeSubFilterLabel = null;
+    if (this.searchQuery) {
+      activeSubFilterLabel = `Recherche : "${this.searchQuery}"`;
+    } else if (this.activeCategory === 'BodyCare' && this.bodycareFilters) {
+      const type = this.bodycareFilters['product-type'];
+      const need = this.bodycareFilters['need'];
+      const parts = [];
+      if (type && type !== 'All') {
+        const typeLabels = {
+          'body-cream': 'Crèmes corporelles', 'body-lotion': 'Lotions corporelles',
+          'shower-gel': 'Gels douche', 'soap': 'Savons', 'body-scrub': 'Gommages corps',
+          'body-butter': 'Beurres corporels', 'bath-shower-oil': 'Huiles de douche',
+          'bath-accessories': 'Accessoires', 'mousse': 'Mousses', 'two-in-one': '2 en 1'
+        };
+        parts.push(typeLabels[type] || type);
+      }
+      if (need && need !== 'All') {
+        const needLabels = {
+          'hydrating': 'Hydratation', 'nourishing': 'Nutrition',
+          'exfoliating': 'Exfoliation', 'calming': 'Apaisant',
+          'firming': 'Raffermissant', 'fragrance': 'Parfum / Plaisir'
+        };
+        parts.push(needLabels[need] || need);
+      }
+      if (parts.length > 0) activeSubFilterLabel = parts.join(' • ');
+    } else if (this.activeCategory === 'Haircare' && this.haircareFilters) {
+      const p = this.haircareFilters.productType;
+      const h = this.haircareFilters.hairType;
+      const c = this.haircareFilters.concern;
+      const parts = [];
+      if (p && p !== 'All') parts.push(p);
+      if (h && h !== 'All') parts.push(h);
+      if (c && c !== 'All') parts.push(c);
+      if (parts.length > 0) activeSubFilterLabel = parts.join(' • ');
+    } else if (this.activeCategory === 'Skincare' && this.skincareFilters) {
+      const t = this.skincareFilters['product-type'];
+      const s = this.skincareFilters['skin-type'];
+      const b = this.skincareFilters['benefits'];
+      const parts = [];
+      if (t && t !== 'All') parts.push(t);
+      if (s && s !== 'All') parts.push(s);
+      if (b && b !== 'All') parts.push(b);
+      if (parts.length > 0) activeSubFilterLabel = parts.join(' • ');
+    } else if (this.activeCategory === 'Fragrance' && this.fragranceFilters) {
+      const g = this.fragranceFilters.gender;
+      const f = this.fragranceFilters.family;
+      const parts = [];
+      if (g && g !== 'All') parts.push(g);
+      if (f && f !== 'All') parts.push(f);
+      if (parts.length > 0) activeSubFilterLabel = parts.join(' • ');
+    }
+
+    let itemsHtml = `
+      <li class="breadcrumb-item ${activeSubFilterLabel ? 'breadcrumb-item-collapsed' : ''}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/" class="breadcrumb-link" data-action="nav-home" itemprop="item"><span itemprop="name">${homeLabel}</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li class="breadcrumb-separator ${activeSubFilterLabel ? 'breadcrumb-item-collapsed' : ''}" aria-hidden="true">›</li>
+    `;
+
+    if (activeSubFilterLabel) {
+      itemsHtml += `
+        <span class="breadcrumb-ellipsis-mobile" aria-hidden="true">… ›</span>
+        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="#" class="breadcrumb-link" data-action="nav-cat" data-category="${this.activeCategory}" itemprop="item"><span itemprop="name">${catDisplayName}</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <li class="breadcrumb-separator" aria-hidden="true">›</li>
+        <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+          <span itemprop="name">${activeSubFilterLabel}</span>
+          <meta itemprop="position" content="3" />
+        </li>
+      `;
+    } else {
+      itemsHtml += `
+        <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+          <span itemprop="name">${catDisplayName}</span>
+          <meta itemprop="position" content="2" />
+        </li>
+      `;
+    }
+
+    this.globalBreadcrumbList.innerHTML = itemsHtml;
+  }
+
+  navigateToHome() {
+    this.activeCategory = 'All';
+    this.searchQuery = '';
+    if (this.searchInput) this.searchInput.value = '';
+    this.productsCurrentPage = 1;
+
+    // Reset filter states
+    if (this.fragranceFilters) this.fragranceFilters = { gender: 'All', formulation: 'All', family: 'All' };
+    if (this.haircareFilters) this.haircareFilters = { productType: 'All', hairType: 'All', concern: 'All' };
+    if (this.skincareFilters) this.skincareFilters = { 'product-type': 'All', 'skin-type': 'All', 'benefits': 'All' };
+    if (this.bodycareFilters) this.bodycareFilters = { 'product-type': 'All', 'need': 'All' };
+
+    // Hide specialized filter containers
+    if (this.fragranceFiltersContainer) this.fragranceFiltersContainer.style.display = 'none';
+    if (this.haircareFiltersContainer) this.haircareFiltersContainer.style.display = 'none';
+    if (this.skincareFiltersContainer) this.skincareFiltersContainer.style.display = 'none';
+    if (this.bodycareFiltersContainer) this.bodycareFiltersContainer.style.display = 'none';
+
+    // Update category pills UI
+    if (this.categoryPillsContainer) {
+      this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.category === 'All');
+      });
+    }
+
+    // Sync mobile drawer active class
+    if (this.mobileNavDrawer) {
+      this.mobileNavDrawer.querySelectorAll('.drawer-nav-item[data-category]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === 'All');
+      });
+    }
+
+    // Sync sub-filter UI
+    this.syncFragranceFilterPillsUI?.();
+    this.syncHaircareFilterPillsUI?.();
+    this.syncSkincareFilterPillsUI?.();
+    this.syncBodyCareFilterPillsUI?.();
+
+    // Close any open drawers or modals
+    this.closeCartDrawer();
+    this.closeQuickView();
+    this.closeMobileDrawer();
+
+    document.title = "Mouna Nouira — Consultante & Membre Fondateur Oriflame Tunisie | Boutique & Catalogue";
+
+    this.updateUrlHistory({ push: true });
+    this.renderProducts();
+    this.updateGlobalNavigationUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  openMobileDrawer() {
+    if (!this.mobileNavDrawer) return;
+    this.mobileNavDrawer.style.display = 'flex';
+    if (this.mobileNavBackdrop) this.mobileNavBackdrop.style.display = 'block';
+    if (this.btnMobileMenu) this.btnMobileMenu.setAttribute('aria-expanded', 'true');
+    this.mobileNavDrawer.querySelectorAll('.drawer-nav-item[data-category]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.category === this.activeCategory);
+    });
+    setTimeout(() => {
+      if (this.btnCloseMobileMenu) this.btnCloseMobileMenu.focus();
+    }, 50);
+  }
+
+  closeMobileDrawer() {
+    if (!this.mobileNavDrawer) return;
+    this.mobileNavDrawer.style.display = 'none';
+    if (this.mobileNavBackdrop) this.mobileNavBackdrop.style.display = 'none';
+    if (this.btnMobileMenu) {
+      this.btnMobileMenu.setAttribute('aria-expanded', 'false');
+      this.btnMobileMenu.focus();
+    }
+  }
+
+  updateUrlHistory({ push = true } = {}) {
+    if (typeof window === 'undefined' || !window.history) return;
+
+    let targetPath = '/';
+    const params = new URLSearchParams();
+
+    if (this.activeCategory === 'BodyCare') {
+      targetPath = '/corps-et-bain';
+      if (this.bodycareFilters) {
+        if (this.bodycareFilters['product-type'] && this.bodycareFilters['product-type'] !== 'All') {
+          params.set('type', this.bodycareFilters['product-type']);
+        }
+        if (this.bodycareFilters['need'] && this.bodycareFilters['need'] !== 'All') {
+          params.set('need', this.bodycareFilters['need']);
+        }
+      }
+    } else if (this.activeCategory === 'Skincare') {
+      targetPath = '/soins-de-la-peau';
+      if (this.skincareFilters) {
+        if (this.skincareFilters['product-type'] && this.skincareFilters['product-type'] !== 'All') {
+          params.set('type', this.skincareFilters['product-type']);
+        }
+        if (this.skincareFilters['skin-type'] && this.skincareFilters['skin-type'] !== 'All') {
+          params.set('skin', this.skincareFilters['skin-type']);
+        }
+        if (this.skincareFilters['benefits'] && this.skincareFilters['benefits'] !== 'All') {
+          params.set('benefit', this.skincareFilters['benefits']);
+        }
+      }
+    } else if (this.activeCategory === 'Haircare') {
+      targetPath = '/soins-capillaires';
+      if (this.haircareFilters) {
+        if (this.haircareFilters.productType && this.haircareFilters.productType !== 'All') {
+          params.set('type', this.haircareFilters.productType);
+        }
+        if (this.haircareFilters.hairType && this.haircareFilters.hairType !== 'All') {
+          params.set('hair', this.haircareFilters.hairType);
+        }
+        if (this.haircareFilters.concern && this.haircareFilters.concern !== 'All') {
+          params.set('concern', this.haircareFilters.concern);
+        }
+      }
+    } else if (this.activeCategory === 'Fragrance') {
+      targetPath = '/parfums';
+      if (this.fragranceFilters) {
+        if (this.fragranceFilters.gender && this.fragranceFilters.gender !== 'All') {
+          params.set('gender', this.fragranceFilters.gender);
+        }
+        if (this.fragranceFilters.formulation && this.fragranceFilters.formulation !== 'All') {
+          params.set('formulation', this.fragranceFilters.formulation);
+        }
+        if (this.fragranceFilters.family && this.fragranceFilters.family !== 'All') {
+          params.set('family', this.fragranceFilters.family);
+        }
+      }
+    } else if (this.activeCategory === 'Makeup') {
+      targetPath = '/maquillage';
+    } else if (this.activeCategory === 'Deals') {
+      targetPath = '/';
+      params.set('category', 'Deals');
+    } else if (this.activeCategory === 'Bundles') {
+      targetPath = '/';
+      params.set('category', 'Bundles');
+    }
+
+    if (this.productsCurrentPage > 1) {
+      params.set('page', String(this.productsCurrentPage));
+    }
+    if (this.searchQuery) {
+      params.set('search', this.searchQuery);
+    }
+
+    const paramStr = params.toString();
+    const newUrl = targetPath + (paramStr ? '?' + paramStr : '');
+
+    const state = {
+      category: this.activeCategory,
+      page: this.productsCurrentPage,
+      search: this.searchQuery,
+      scrollY: window.scrollY
+    };
+
+    if (window.location.pathname + window.location.search === newUrl) {
+      window.history.replaceState(state, '', newUrl);
+    } else if (push) {
+      window.history.pushState(state, '', newUrl);
+    } else {
+      window.history.replaceState(state, '', newUrl);
+    }
+  }
+
+  handlePopState(event) {
+    this.handleUrlNavigationParams();
+    this.renderProducts();
+    this.updateGlobalNavigationUI();
+    if (event.state && typeof event.state.scrollY === 'number') {
+      window.scrollTo({ top: event.state.scrollY, behavior: 'smooth' });
+    }
+  }
+
+  selectCategory(categoryName) {
+    this.activeCategory = categoryName;
+    this.productsCurrentPage = 1;
+
+    if (this.categoryPillsContainer) {
+      this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+        const isSelected = p.dataset.category?.toLowerCase() === categoryName.toLowerCase();
+        p.classList.toggle('active', isSelected);
+      });
+    }
+
+    // Sync mobile drawer active class
+    if (this.mobileNavDrawer) {
+      this.mobileNavDrawer.querySelectorAll('.drawer-nav-item[data-category]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category?.toLowerCase() === categoryName.toLowerCase());
+      });
+    }
+
+    if (this.fragranceFiltersContainer) {
+      this.fragranceFiltersContainer.style.display = (categoryName === 'Fragrance') ? 'block' : 'none';
+      if (categoryName === 'Fragrance') this.updateFragranceFilterCounts();
+    }
+
+    if (this.haircareFiltersContainer) {
+      const isHair = (categoryName === 'Haircare');
+      this.haircareFiltersContainer.style.display = isHair ? 'block' : 'none';
+      if (this.haircareBreadcrumb) this.haircareBreadcrumb.style.display = isHair ? 'flex' : 'none';
+      if (isHair) this.updateHaircareFilterCounts();
+    }
+
+    if (this.skincareFiltersContainer) {
+      const isSkin = (categoryName === 'Skincare');
+      this.skincareFiltersContainer.style.display = isSkin ? 'block' : 'none';
+      if (this.skincareBreadcrumb) this.skincareBreadcrumb.style.display = isSkin ? 'flex' : 'none';
+      if (isSkin) this.updateSkincareFilterCounts();
+    }
+
+    if (this.bodycareFiltersContainer) {
+      const isBody = (categoryName === 'BodyCare');
+      this.bodycareFiltersContainer.style.display = isBody ? 'block' : 'none';
+      if (this.bodycareBreadcrumb) this.bodycareBreadcrumb.style.display = isBody ? 'flex' : 'none';
+      if (isBody) this.updateBodyCareFilterCounts();
+    }
+
+    this.updateGlobalNavigationUI();
+    this.updateUrlHistory({ push: true });
+    this.renderProducts();
+  }
+
+  handleUrlNavigationParams() {
+    try {
+      const pathname = window.location.pathname.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      const catParam = params.get('category');
+      const filtersParam = params.get('filters');
+      const genderParam = params.get('gender');
+      const formulationParam = params.get('formulation');
+      const familyParam = params.get('family');
+
+      // 0. BodyCare URL params & clean path
+      const isBodyCareBasePath = pathname === '/corps-et-bain' || pathname === '/bodycare' || pathname === '/bath-and-body' || pathname === '/soins-du-corps';
+      const isBodyCareCat = catParam && (catParam.toLowerCase() === 'bodycare' || catParam.toLowerCase() === 'corps-et-bain' || catParam.toLowerCase() === 'corps' || catParam.toLowerCase() === 'bain');
+      const hasBodyCareFilterSlug = Boolean(filtersParam && (filtersParam.includes('shower-gel') || filtersParam.includes('body-cream') || filtersParam.includes('body-lotion') || filtersParam.includes('soap') || filtersParam.includes('body-butter') || filtersParam.includes('bath-accessories') || filtersParam.includes('two-in-one') || filtersParam.includes('need:')));
+      const hasBodyCareDirectParams = params.has('need') || (isBodyCareCat && (params.has('product-type') || params.has('type')));
+
+      if (isBodyCareBasePath || isBodyCareCat || hasBodyCareFilterSlug || hasBodyCareDirectParams) {
+        this.activeCategory = 'BodyCare';
+
+        // Update category pills UI
+        if (this.categoryPillsContainer) {
+          this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+            const isBody = p.dataset.category === 'BodyCare';
+            p.classList.toggle('active', isBody);
+          });
+        }
+        if (this.bodycareFiltersContainer) {
+          this.bodycareFiltersContainer.style.display = 'block';
+        }
+        if (this.bodycareBreadcrumb) {
+          this.bodycareBreadcrumb.style.display = 'flex';
+        }
+
+        // Parse official Oriflame ?filters= format
+        if (filtersParam) {
+          const facets = filtersParam.split(';');
+          facets.forEach(facet => {
+            const [name, rawKeys] = facet.split(':');
+            if (name && rawKeys) {
+              const firstKey = rawKeys.split(',')[0].trim();
+              if (name.trim() === 'product-type') this.bodycareFilters['product-type'] = firstKey;
+              if (name.trim() === 'need') this.bodycareFilters['need'] = firstKey;
+            }
+          });
+        }
+
+        // Direct query params fallback
+        const bodyProductTypeParam = params.get('product-type') || params.get('type') || params.get('productType');
+        const bodyNeedParam = params.get('need') || params.get('besoin');
+
+        if (bodyProductTypeParam) this.bodycareFilters['product-type'] = bodyProductTypeParam;
+        if (bodyNeedParam) this.bodycareFilters['need'] = bodyNeedParam;
+
+        if (isBodyCareBasePath) {
+          document.title = "Soins du corps et du bain — Crèmes, gels douche, gommages | Mouna Nouira — Oriflame Tunisie";
+        }
+
+        this.syncBodyCareFilterPillsUI();
+        this.updateBodyCareFilterCounts();
+      } else if (isSkincareBasePath || isSkincareCat || hasSkincareFilterSlug || hasSkincareDirectParams) {
+        this.activeCategory = 'Skincare';
+
+          // Update category pills UI
+          if (this.categoryPillsContainer) {
+            this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+              const isSkin = p.dataset.category === 'Skincare';
+              p.classList.toggle('active', isSkin);
+            });
+          }
+          if (this.skincareFiltersContainer) {
+            this.skincareFiltersContainer.style.display = 'block';
+          }
+          if (this.skincareBreadcrumb) {
+            this.skincareBreadcrumb.style.display = 'flex';
+          }
+
+        // Parse official Oriflame ?filters= format (e.g. skin-type:dry;benefits:anti-aging)
+        if (filtersParam) {
+          const facets = filtersParam.split(';');
+          facets.forEach(facet => {
+            const [name, rawKeys] = facet.split(':');
+            if (name && rawKeys) {
+              const firstKey = rawKeys.split(',')[0].trim();
+              if (name.trim() === 'product-type') this.skincareFilters['product-type'] = firstKey;
+              if (name.trim() === 'skin-type') this.skincareFilters['skin-type'] = firstKey;
+              if (name.trim() === 'benefits') this.skincareFilters['benefits'] = firstKey;
+            }
+          });
+        }
+
+        // Fallback to direct query parameters
+        const skinProductTypeParam = params.get('product-type') || params.get('type') || params.get('productType');
+        const skinTypeParam = params.get('skin-type') || params.get('skinType');
+        const skinBenefitsParam = params.get('benefits') || params.get('concern');
+
+        if (skinProductTypeParam) this.skincareFilters['product-type'] = skinProductTypeParam;
+        if (skinTypeParam) this.skincareFilters['skin-type'] = skinTypeParam;
+        if (skinBenefitsParam) this.skincareFilters['benefits'] = skinBenefitsParam;
+
+        if (isSkincareBasePath) {
+          document.title = "Soins de la peau — Sérums, crèmes, nettoyants | Mouna Nouira — Oriflame Tunisie";
+        }
+
+        this.syncSkincareFilterPillsUI();
+        this.updateSkincareFilterCounts();
+      } else {
+        // 2. Haircare URL params & clean path
+        const isHaircareBasePath = pathname === '/soins-capillaires' || pathname === '/cheveux';
+        const productTypeParam = params.get('type') || params.get('productType');
+        const hairTypeParam = params.get('hairType');
+        const concernParam = params.get('concern');
+
+        if (isHaircareBasePath || (catParam && (catParam.toLowerCase() === 'haircare' || catParam.toLowerCase() === 'cheveux' || catParam.toLowerCase() === 'soins-capillaires')) || productTypeParam || hairTypeParam || concernParam) {
+          this.activeCategory = 'Haircare';
+
+          // Update category pills UI
+          if (this.categoryPillsContainer) {
+            this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+              const isHair = p.dataset.category === 'Haircare';
+              p.classList.toggle('active', isHair);
+            });
+          }
+          if (this.haircareFiltersContainer) {
+            this.haircareFiltersContainer.style.display = 'block';
+          }
+          if (this.haircareBreadcrumb) {
+            this.haircareBreadcrumb.style.display = 'flex';
+            const ol = this.haircareBreadcrumb.querySelector('.breadcrumb-list');
+            if (ol) {
+              ol.innerHTML = `
+                <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/BreadcrumbList">
+                  <a href="/" class="breadcrumb-link" itemprop="item"><span itemprop="name">Accueil</span></a>
+                  <meta itemprop="position" content="1" />
+                </li>
+                <li class="breadcrumb-separator" aria-hidden="true">›</li>
+                <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/BreadcrumbList" aria-current="page">
+                  <span itemprop="name">Soins capillaires</span>
+                  <meta itemprop="position" content="2" />
+                </li>
+              `;
+            }
+          }
+
+          if (productTypeParam) this.haircareFilters.productType = productTypeParam;
+          if (hairTypeParam) this.haircareFilters.hairType = hairTypeParam;
+          if (concernParam) this.haircareFilters.concern = concernParam;
+
+          if (isHaircareBasePath) {
+            document.title = "Soins capillaires — Shampooings, masques, huiles | Mouna Nouira — Oriflame Tunisie";
+          }
+
+          this.syncHaircareFilterPillsUI();
+          this.updateHaircareFilterCounts();
+        } else if (pathname === '/parfums' || (catParam && (catParam.toLowerCase() === 'fragrance' || catParam.toLowerCase() === 'parfums')) || genderParam || formulationParam || familyParam) {
+          this.activeCategory = 'Fragrance';
+
+          // Update category pills UI
+          if (this.categoryPillsContainer) {
+            this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+              const isFrag = p.dataset.category === 'Fragrance';
+              p.classList.toggle('active', isFrag);
+            });
+          }
+          if (this.fragranceFiltersContainer) {
+            this.fragranceFiltersContainer.style.display = 'block';
+          }
+
+          if (genderParam) this.fragranceFilters.gender = genderParam;
+          if (formulationParam) this.fragranceFilters.formulation = formulationParam;
+          if (familyParam) this.fragranceFilters.family = familyParam;
+
+          if (pathname === '/parfums') {
+            document.title = "Parfums — Eaux de parfum, eaux de toilette | Mouna Nouira — Oriflame Tunisie";
+          }
+
+          this.syncFragranceFilterPillsUI();
+          this.updateFragranceFilterCounts();
+        } else if (pathname === '/maquillage' || (catParam && (catParam.toLowerCase() === 'makeup' || catParam.toLowerCase() === 'maquillage'))) {
+          this.activeCategory = 'Makeup';
+
+          if (this.categoryPillsContainer) {
+            this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+              p.classList.toggle('active', p.dataset.category === 'Makeup');
+            });
+          }
+
+          if (pathname === '/maquillage') {
+            document.title = "Maquillage — Teint, yeux, lèvres, ongles | Mouna Nouira — Oriflame Tunisie";
+          }
+        } else if (catParam && catParam.toLowerCase() === 'deals') {
+          this.activeCategory = 'Deals';
+          if (this.categoryPillsContainer) {
+            this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+              p.classList.toggle('active', p.dataset.category === 'Deals');
+            });
+          }
+        } else if (catParam && catParam.toLowerCase() === 'bundles') {
+          this.activeCategory = 'Bundles';
+          if (this.categoryPillsContainer) {
+            this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+              p.classList.toggle('active', p.dataset.category === 'Bundles');
+            });
+          }
+        } else if (pathname === '/' && !catParam) {
+          this.activeCategory = 'All';
+          if (this.categoryPillsContainer) {
+            this.categoryPillsContainer.querySelectorAll('.category-pill').forEach(p => {
+              p.classList.toggle('active', p.dataset.category === 'All');
+            });
+          }
+        }
+      }
+
+      // Parse pagination page param
+      if (params.has('page')) {
+        const pNum = parseInt(params.get('page'), 10);
+        if (!isNaN(pNum) && pNum > 0) this.productsCurrentPage = pNum;
+      }
+
+      // Parse search param
+      if (params.has('search')) {
+        this.searchQuery = params.get('search').toLowerCase().trim();
+        if (this.searchInput) this.searchInput.value = params.get('search');
+      }
+
+      // Sync active state on mobile drawer
+      if (this.mobileNavDrawer) {
+        this.mobileNavDrawer.querySelectorAll('.drawer-nav-item[data-category]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.category === this.activeCategory);
+        });
+      }
+
+      // Direct Product Modal Opening (e.g. from Social Media Share Link ?prod=12760 or /produit/12760)
+      const directProdId = params.get('prod') || params.get('productId') || (pathname.startsWith('/produit/') ? pathname.replace('/produit/', '').split('/')[0] : null);
+      if (directProdId) {
+        setTimeout(() => {
+          if (typeof this.openQuickView === 'function') {
+            this.openQuickView(directProdId);
+          }
+        }, 300);
+      }
+
+      this.updateGlobalNavigationUI();
+    } catch (e) {
+      console.warn('[APP] Error handling URL params:', e);
+    }
+  }
+
   renderProducts() {
     const isArabic = this.i18n.getLang() === 'ar';
     const currencyLabel = isArabic ? 'د.ت' : 'TND';
@@ -1684,7 +3903,73 @@ class App {
         );
         matchesCategory = activeBundlePids.has(String(product.product_id));
       }
-      else matchesCategory = product.category.toLowerCase() === this.activeCategory.toLowerCase();
+      else {
+        matchesCategory = (product.category && product.category.toLowerCase() === this.activeCategory.toLowerCase()) ||
+          (Array.isArray(product.categories) && product.categories.some(c => c.toLowerCase() === this.activeCategory.toLowerCase())) ||
+          this.isMultiUseProductFor(product, this.activeCategory);
+      }
+
+      if (!matchesCategory) return false;
+
+      // Special Fragrance sub-filtering when activeCategory is Fragrance
+      if (this.activeCategory === 'Fragrance' && this.fragranceFilters) {
+        const c = this.classifyFragrance(product);
+        if (this.fragranceFilters.gender && this.fragranceFilters.gender !== 'All' && c.gender !== this.fragranceFilters.gender) {
+          return false;
+        }
+        if (this.fragranceFilters.formulation && this.fragranceFilters.formulation !== 'All' && c.formulation !== this.fragranceFilters.formulation) {
+          return false;
+        }
+        if (this.fragranceFilters.family && this.fragranceFilters.family !== 'All' && !c.families.includes(this.fragranceFilters.family)) {
+          return false;
+        }
+      }
+
+      // Special Haircare sub-filtering when activeCategory is Haircare
+      if (this.activeCategory === 'Haircare' && this.haircareFilters) {
+        const c = this.classifyHaircare(product);
+        if (this.haircareFilters.productType && this.haircareFilters.productType !== 'All' && !c.productTypes.includes(this.haircareFilters.productType)) {
+          return false;
+        }
+        if (this.haircareFilters.hairType && this.haircareFilters.hairType !== 'All' && !c.hairTypes.includes(this.haircareFilters.hairType)) {
+          return false;
+        }
+        if (this.haircareFilters.concern && this.haircareFilters.concern !== 'All' && !c.concerns.includes(this.haircareFilters.concern)) {
+          return false;
+        }
+      }
+
+      // Special Skincare sub-filtering when activeCategory is Skincare
+      if (this.activeCategory === 'Skincare' && this.skincareFilters) {
+        const c = this.classifySkincare(product);
+        const pType = this.skincareFilters['product-type'] || this.skincareFilters.productType;
+        const sType = this.skincareFilters['skin-type'] || this.skincareFilters.skinType;
+        const bFit = this.skincareFilters['benefits'] || this.skincareFilters.concern;
+
+        if (pType && pType !== 'All' && !c.productTypes.includes(pType)) {
+          return false;
+        }
+        if (sType && sType !== 'All' && !c.skinTypes.includes(sType)) {
+          return false;
+        }
+        if (bFit && bFit !== 'All' && !c.benefits.includes(bFit)) {
+          return false;
+        }
+      }
+
+      // Special BodyCare sub-filtering when activeCategory is BodyCare
+      if (this.activeCategory === 'BodyCare' && this.bodycareFilters) {
+        const c = this.classifyBodyCare(product);
+        const pType = this.bodycareFilters['product-type'] || this.bodycareFilters.productType;
+        const pNeed = this.bodycareFilters['need'] || this.bodycareFilters.concern;
+
+        if (pType && pType !== 'All' && !c.productTypes.includes(pType)) {
+          return false;
+        }
+        if (pNeed && pNeed !== 'All' && !c.needs.includes(pNeed)) {
+          return false;
+        }
+      }
 
       const pName = (this.getProductName(product) || product.name || '').toLowerCase();
       const pDesc = (this.getProductDescription(product) || product.description || '').toLowerCase();
@@ -1698,7 +3983,7 @@ class App {
           String(v.product_id).toLowerCase().includes(this.searchQuery) ||
           String(v.shade_name || '').toLowerCase().includes(this.searchQuery)
         ));
-      return matchesCategory && matchesSearch;
+      return matchesSearch;
     });
 
     // TÂCHE 4 : Trier les produits par remise la plus élevée (ordre décroissant)
@@ -1741,6 +4026,24 @@ class App {
           end: endIndex,
           total: totalItems
         });
+      }
+    }
+
+    if (this.fragranceResultsAnnouncer && this.activeCategory === 'Fragrance') {
+      const isArabic = this.i18n.getLang() === 'ar';
+      if (isArabic) {
+        this.fragranceResultsAnnouncer.textContent = `تم العثور على ${totalItems} عطر.`;
+      } else {
+        this.fragranceResultsAnnouncer.textContent = `${totalItems} parfum${totalItems > 1 ? 's' : ''} trouvé${totalItems > 1 ? 's' : ''} pour les filtres sélectionnés.`;
+      }
+    }
+
+    if (this.skincareResultsAnnouncer && this.activeCategory === 'Skincare') {
+      const isArabic = this.i18n.getLang() === 'ar';
+      if (isArabic) {
+        this.skincareResultsAnnouncer.textContent = `تم العثور على ${totalItems} منتج للعناية بالبشرة.`;
+      } else {
+        this.skincareResultsAnnouncer.textContent = `${totalItems} soin${totalItems > 1 ? 's' : ''} de la peau trouvé${totalItems > 1 ? 's' : ''} pour les filtres sélectionnés.`;
       }
     }
 
@@ -1868,6 +4171,7 @@ class App {
       totalItems,
       onPageChange: (newPage) => {
         this.productsCurrentPage = newPage;
+        this.updateUrlHistory({ push: true });
         this.renderProducts();
         const target = document.querySelector('.controls-section') || document.querySelector('.products-header');
         this.scrollToSection(target, -75);
@@ -2415,6 +4719,26 @@ class App {
 
     this.telemetry.trackEvent(`Opened Detailed Product Info: ${prodName}`, product.category, prodName);
 
+    // Analytics Tracking: product_click & product_view
+    if (this.telemetry && typeof this.telemetry.trackAnalytics === 'function') {
+      const positionIdx = Array.isArray(this.products) ? this.products.findIndex(p => String(p.product_id) === String(product.product_id)) : -1;
+      const isSkin = product.category === 'Skincare' || this.activeCategory === 'Skincare';
+      const isHair = product.category === 'Haircare' || this.activeCategory === 'Haircare';
+      const isBody = product.category === 'BodyCare' || this.activeCategory === 'BodyCare';
+
+      this.telemetry.trackAnalytics('product_click', {
+        product_reference: String(product.product_id),
+        product_name: prodName,
+        category: isBody ? 'corps_et_bain' : (isSkin ? 'soins_de_la_peau' : (isHair ? 'soins_capillaires' : (product.category || 'Beauty'))),
+        position: positionIdx >= 0 ? positionIdx + 1 : 1
+      });
+
+      this.telemetry.trackAnalytics('product_view', {
+        product_reference: String(product.product_id),
+        source: isBody ? 'bodycare_category' : (isSkin ? 'skincare_category' : (isHair ? 'haircare_category' : 'quickview'))
+      });
+    }
+
     // ── Meta Pixel: ViewContent standard event ──
     try {
       if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
@@ -2490,6 +4814,12 @@ class App {
 
     const { totalDiscount, isPromo, displayOrigPrice } = this.calculateDiscountMetrics(activePrice, activeOrigPrice, product);
 
+    const prodShareUrl = `${window.location.origin}/?prod=${encodeURIComponent(product.product_id)}`;
+    const prodShareImg = product.image_url ? (product.image_url.startsWith('http') ? product.image_url : window.location.origin + '/' + product.image_url) : `${window.location.origin}/assets/og-facebook-preview.jpg`;
+    const prodShareText = `✨ Découvrez "${prodName}" (${Number(activePrice).toFixed(2)} ${currencyLabel}) sur la boutique Oriflame Tunisie de Mouna Nouira !`;
+    const prodEmailSubject = `Recommandation beauté Oriflame : ${prodName}`;
+    const prodEmailBody = `Bonjour,\n\nJe te recommande ce produit Oriflame Tunisie chez Mouna Nouira :\n${prodName} (${Number(activePrice).toFixed(2)} ${currencyLabel})\n\nVoir la fiche complète ici :\n${prodShareUrl}`;
+
     this.quickViewContent.innerHTML = `
         <div class="quickview-gallery-wrapper">
           <div class="quickview-main-image-frame">
@@ -2504,6 +4834,14 @@ class App {
         </div>
 
         <div>
+          <!-- Product Modal Breadcrumb -->
+          <nav class="product-modal-breadcrumb" aria-label="Fil d'Ariane" style="margin-bottom: 8px; font-size: 0.84rem; color: #718096; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <a href="/" style="color: #718096; text-decoration: none;" onclick="window.app.closeQuickView(); window.app.navigateToHome(); return false;">Accueil</a>
+            <span style="color: #CBD5E0;" aria-hidden="true">›</span>
+            <a href="#" style="color: #718096; text-decoration: none;" onclick="window.app.closeQuickView(); window.app.selectCategory('${product.category || 'All'}'); return false;">${this.getCategoryDisplayName(product.category)}</a>
+            <span style="color: #CBD5E0;" aria-hidden="true">›</span>
+            <span style="font-weight: 700; color: var(--color-primary);" aria-current="page">${prodName}</span>
+          </nav>
           <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: #18181B; margin-bottom: 8px; line-height:1.3;">${prodName}</h3>
           
           ${hasVariants ? `
@@ -2629,14 +4967,70 @@ class App {
               <span style="font-size: 1.6rem; font-weight: 800; color: ${isPromo ? 'var(--color-promo)' : '#18181B'}; letter-spacing:-0.02em;">${Number(activePrice).toFixed(2)} <span style="font-size:0.95rem; font-weight:600; color:#52525B;">${currencyLabel}</span></span>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <button type="button" class="btn-share-qv" onclick="window.app.shareToFacebook('${product.product_id}')" title="Partager ce produit sur Facebook" style="background: rgba(24,119,242,0.08); color: #1877F2; border: 1px solid rgba(24,119,242,0.25); min-height: 44px; padding: 0 14px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease;">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                <span data-i18n="nav_share">Partager</span>
-              </button>
               <button class="btn-add-cart" id="qv-btn-add-cart" style="padding: 0 24px; min-height: 44px;" ${!product.in_stock ? 'disabled' : ''} onclick="window.app.addToCart('${activeRef}'); window.app.closeModal(document.getElementById('quickview-modal-overlay'));">
                 ${this.i18n.t('quickview_add')}
               </button>
             </div>
+          </div>
+
+          <!-- Dedicated Social Share Section -->
+          <div class="product-share-section" role="region" aria-label="Partager ce produit">
+            <div class="product-share-header">
+              <span class="product-share-label">
+                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                Partager ce produit :
+              </span>
+            </div>
+            <div class="product-share-buttons">
+              <!-- WhatsApp Direct -->
+              <a href="https://wa.me/?text=${encodeURIComponent(prodShareText + '\n' + prodShareUrl)}" target="_blank" rel="nofollow noopener" class="share-btn share-btn-whatsapp" onclick="window.app.trackShare('WhatsApp', '${product.product_id}')" aria-label="Partager sur WhatsApp" title="Partager sur WhatsApp">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>
+                <span>WhatsApp</span>
+              </a>
+
+              <!-- Facebook Direct -->
+              <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(prodShareUrl)}" target="_blank" rel="nofollow noopener" class="share-btn share-btn-facebook" onclick="window.app.trackShare('Facebook', '${product.product_id}')" aria-label="Partager sur Facebook" title="Partager sur Facebook">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <span>Facebook</span>
+              </a>
+
+              <!-- Pinterest Direct -->
+              <a href="https://pinterest.com/pin/create/button/?url=${encodeURIComponent(prodShareUrl)}&media=${encodeURIComponent(prodShareImg)}&description=${encodeURIComponent(prodShareText)}" target="_blank" rel="nofollow noopener" class="share-btn share-btn-pinterest" onclick="window.app.trackShare('Pinterest', '${product.product_id}')" aria-label="Partager sur Pinterest" title="Partager sur Pinterest">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345-.09.375-.291 1.199-.332 1.357-.053.224-.174.271-.403.164-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>
+                <span>Pinterest</span>
+              </a>
+
+              <!-- Twitter/X Direct -->
+              <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(prodShareUrl)}&text=${encodeURIComponent(prodShareText)}" target="_blank" rel="nofollow noopener" class="share-btn share-btn-x" onclick="window.app.trackShare('Twitter/X', '${product.product_id}')" aria-label="Partager sur X (Twitter)" title="Partager sur X">
+                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <span>X</span>
+              </a>
+
+              <!-- Email Direct -->
+              <a href="mailto:?subject=${encodeURIComponent(prodEmailSubject)}&body=${encodeURIComponent(prodEmailBody)}" class="share-btn share-btn-email" onclick="window.app.trackShare('Email', '${product.product_id}')" aria-label="Partager par Email" title="Partager par Email">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <span>Email</span>
+              </a>
+
+              <!-- Instagram Indirect (Copy + Toast instructions) -->
+              <button type="button" class="share-btn share-btn-instagram" onclick="window.app.shareIndirect('instagram', '${prodShareUrl}', '${product.product_id}')" aria-label="Partager sur Instagram" title="Partager sur Instagram">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <span>Instagram</span>
+              </button>
+
+              <!-- TikTok Indirect (Copy + Toast instructions) -->
+              <button type="button" class="share-btn share-btn-tiktok" onclick="window.app.shareIndirect('tiktok', '${prodShareUrl}', '${product.product_id}')" aria-label="Partager sur TikTok" title="Partager sur TikTok">
+                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                <span>TikTok</span>
+              </button>
+
+              <!-- Universal Copy Link -->
+              <button type="button" class="share-btn share-btn-copy" onclick="window.app.copyShareLink('${prodShareUrl}', this, '${product.product_id}')" aria-label="Copier le lien du produit" title="Copier le lien">
+                <svg class="icon-copy" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                <span class="share-copy-text">Copier le lien</span>
+              </button>
+            </div>
+            <div class="sr-only" aria-live="polite" id="product-share-live-announcer"></div>
           </div>
         </div>
       </div>
@@ -2847,19 +5241,20 @@ class App {
   }
 
   shareToFacebook(productId = null) {
+    if (!productId) {
+      this.openSiteShareModal();
+      return;
+    }
     const isArabic = this.i18n.getLang() === 'ar';
-    let shareUrl = window.location.origin + window.location.pathname;
-    let shareTitle = "Mouna Nouira — Catalogue Officiel Oriflame Tunisie";
-    let shareText = "Découvrez le catalogue officiel Oriflame Tunisie de Mouna Nouira avec des remises exceptionnelles et commande directe !";
+    let shareUrl = `${window.location.origin}/?prod=${encodeURIComponent(productId)}`;
+    let shareTitle = "Mouna Nouira — Oriflame Tunisie";
+    let shareText = "Découvrez ce produit sur la boutique officielle de Mouna Nouira !";
 
-    if (productId) {
-      const p = this.products.find(item => String(item.product_id) === String(productId));
-      if (p) {
-        const pName = this.getProductName(p);
-        shareUrl += `?prod=${encodeURIComponent(p.product_id)}`;
-        shareTitle = `${pName} | Oriflame Tunisie`;
-        shareText = `✨ Découvrez "${pName}" (${p.price.toFixed(2)} TND) sur la boutique officielle de Mouna Nouira !`;
-      }
+    const p = this.products.find(item => String(item.product_id) === String(productId));
+    if (p) {
+      const pName = this.getProductName(p);
+      shareTitle = `${pName} | Oriflame Tunisie`;
+      shareText = `✨ Découvrez "${pName}" (${p.price.toFixed(2)} TND) sur la boutique officielle de Mouna Nouira !`;
     }
 
     if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
@@ -2885,6 +5280,231 @@ class App {
     const left = (window.innerWidth - width) / 2 + (window.screenX || 0);
     const top = (window.innerHeight - height) / 2 + (window.screenY || 0);
     window.open(fbUrl, 'fbShareWindow', `toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=${width},height=${height},top=${top},left=${left}`);
+  }
+
+  trackShare(network, targetId, type = 'product') {
+    if (this.telemetry) {
+      this.telemetry.trackEvent(`Shared ${type} via ${network}`, {
+        network,
+        targetId,
+        type
+      });
+      if (typeof this.telemetry.trackAnalytics === 'function') {
+        this.telemetry.trackAnalytics('share', {
+          method: network,
+          content_type: type,
+          item_id: String(targetId)
+        });
+      }
+    }
+    try {
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'Share', {
+          network,
+          target_id: String(targetId),
+          type
+        });
+      }
+    } catch (e) {}
+  }
+
+  async copyShareLink(url, btnElement = null, targetId = null) {
+    let copied = false;
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(url);
+        copied = true;
+      } catch (err) {
+        copied = this._fallbackCopyText(url);
+      }
+    } else {
+      copied = this._fallbackCopyText(url);
+    }
+
+    if (copied) {
+      if (btnElement) {
+        btnElement.classList.add('copied');
+        const textSpan = btnElement.querySelector('.share-copy-text') || btnElement.querySelector('span');
+        const originalText = textSpan ? textSpan.textContent : '';
+        if (textSpan) textSpan.textContent = '✓ Copié !';
+        setTimeout(() => {
+          btnElement.classList.remove('copied');
+          if (textSpan) textSpan.textContent = originalText || 'Copier le lien';
+        }, 2000);
+      }
+      const announcer = document.getElementById('product-share-live-announcer');
+      if (announcer) announcer.textContent = 'Lien copié dans le presse-papier !';
+
+      this.showToast('Lien copié dans le presse-papier !');
+      this.trackShare('Copy Link', targetId || url);
+    } else {
+      this.showToast('Impossible de copier automatiquement le lien.');
+    }
+    return copied;
+  }
+
+  _fallbackCopyText(text) {
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.top = '0';
+      textarea.style.left = '0';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const res = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return res;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async shareIndirect(platform, url, productId) {
+    await this.copyShareLink(url, null, productId);
+    if (platform === 'instagram') {
+      this.showToast('Lien copié ! Collez le lien dans votre story ou bio Instagram');
+      this.trackShare('Instagram (Indirect)', productId);
+    } else if (platform === 'tiktok') {
+      this.showToast('Lien copié ! Collez le lien dans votre bio TikTok');
+      this.trackShare('TikTok (Indirect)', productId);
+    }
+  }
+
+  openSiteShareModal(category = null) {
+    const isArabic = this.i18n.getLang() === 'ar';
+    const activeCat = category || this.activeCategory || 'All';
+    const isHome = (activeCat === 'All');
+
+    const catDisplayName = isHome 
+      ? (isArabic ? 'الكتالوج الرسمي أوريفليم تونس' : 'Catalogue Officiel Oriflame Tunisie')
+      : this.getCategoryDisplayName(activeCat);
+
+    let shareUrl = window.location.origin + '/';
+    let shareImg = `${window.location.origin}/assets/og-facebook-preview.jpg`;
+
+    if (!isHome) {
+      const catSlug = (activeCat === 'BodyCare') ? 'corps-et-bain' :
+                      (activeCat === 'Skincare') ? 'soins-de-la-peau' :
+                      (activeCat === 'Fragrance') ? 'parfums' :
+                      (activeCat === 'Haircare') ? 'soins-capillaires' :
+                      (activeCat === 'Makeup') ? 'maquillage' : encodeURIComponent(activeCat);
+      shareUrl = `${window.location.origin}/${catSlug}`;
+      shareImg = `${window.location.origin}/assets/og-${catSlug}.jpg`;
+    }
+
+    const modalTitle = isHome
+      ? (isArabic ? 'مشاركة كتالوج أوريفليم تونس' : 'Partager le catalogue Oriflame Tunisie')
+      : (isArabic ? `مشاركة : ${catDisplayName}` : `Partager la sélection : ${catDisplayName}`);
+
+    const modalDesc = isHome
+      ? (isArabic ? 'شاركي الكتالوج الرسمي لأوريفليم السويد مع صديقاتكِ وعائلتكِ عبر وسائلكِ المفضلة :' : 'Partagez la boutique officielle Oriflame Suède Tunisie avec vos proches sur vos réseaux sociaux préférés :')
+      : (isArabic ? `شاركي تشكيلة "${catDisplayName}" مع صديقاتكِ عبر وسائل التواصل :` : `Partagez la sélection "${catDisplayName}" avec vos proches sur vos réseaux sociaux préférés :`);
+
+    const shareTitle = isHome 
+      ? (isArabic ? 'منى نويرة — الكتالوج الرسمي أوريفليم تونس' : 'Mouna Nouira — Catalogue Officiel Oriflame Tunisie')
+      : `${catDisplayName} | Mouna Nouira — Oriflame Tunisie`;
+
+    const shareText = isHome
+      ? (isArabic ? '✨ اكتشفي الكتالوج الرسمي لأوريفليم السويد في تونس مع منى نويرة مع تخفيضات حصرية وطلب مباشر !' : '✨ Découvrez le catalogue officiel Oriflame Suède Tunisie avec Mouna Nouira : remises exclusives et commande directe !')
+      : (isArabic ? `✨ اكتشفي تشكيلتنا المميزة "${catDisplayName}" على متجر أوريفليم تونس لمنى نويرة !` : `✨ Découvrez notre sélection "${catDisplayName}" sur la boutique Oriflame Tunisie de Mouna Nouira !`);
+
+    this._showCategoryShareModalDOM(catDisplayName, shareUrl, shareText, shareImg, modalTitle, modalDesc);
+  }
+
+  openCategoryShareModal() {
+    this.openSiteShareModal();
+  }
+
+  _showCategoryShareModalDOM(catName, url, text, img = null, customTitle = null, customDesc = null) {
+    if (!this.categoryShareModal) return;
+    const isArabic = this.i18n.getLang() === 'ar';
+    const container = document.getElementById('category-share-options');
+    const titleEl = document.getElementById('cat-share-modal-title');
+    const descEl = document.getElementById('cat-share-modal-desc');
+
+    if (titleEl) titleEl.textContent = customTitle || (isArabic ? `مشاركة : ${catName}` : `Partager : ${catName}`);
+    if (descEl) descEl.textContent = customDesc || (isArabic ? 'شاركي هذه التشكيلة مع صديقاتكِ عبر وسائل التواصل :' : 'Partagez cette sélection avec vos proches sur vos réseaux sociaux préférés :');
+
+    const shareImg = img || `${window.location.origin}/assets/og-facebook-preview.jpg`;
+    const catKey = this.activeCategory || 'All';
+
+    // Populate Visual Share Preview Box (Image + Title + URL)
+    const previewImgEl = document.getElementById('cat-share-preview-img');
+    const previewTitleEl = document.getElementById('cat-share-preview-title');
+    const previewUrlEl = document.getElementById('cat-share-preview-url');
+    if (previewImgEl) {
+      previewImgEl.src = shareImg;
+      previewImgEl.alt = customTitle || catName;
+    }
+    if (previewTitleEl) {
+      previewTitleEl.textContent = customTitle || catName;
+    }
+    if (previewUrlEl) {
+      previewUrlEl.textContent = url.replace(/^https?:\/\//, '');
+    }
+
+    if (container) {
+      const emailSubject = isArabic ? `اكتشفي منتجات أوريفليم : ${catName}` : `Découvrez les produits Oriflame : ${catName}`;
+      const emailBody = isArabic
+        ? `مرحباً،\n\nأرشح لكِ متجر أوريفليم تونس لمنى نويرة (${catName}) :\n${url}`
+        : `Bonjour,\n\nDécouvre la gamme ${catName} sur la boutique Oriflame de Mouna Nouira :\n${url}`;
+
+      container.innerHTML = `
+        <!-- WhatsApp -->
+        <a href="https://wa.me/?text=${encodeURIComponent(text + '\n' + url)}" target="_blank" rel="nofollow noopener" class="share-btn share-btn-whatsapp" onclick="window.app.trackShare('WhatsApp', '${catKey}', 'site')" aria-label="Partager sur WhatsApp" title="Partager sur WhatsApp">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="nofollow noopener" class="share-btn share-btn-facebook" onclick="window.app.trackShare('Facebook', '${catKey}', 'site')" aria-label="Partager sur Facebook" title="Partager sur Facebook">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span>Facebook</span>
+        </a>
+
+        <!-- Pinterest -->
+        <a href="https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&media=${encodeURIComponent(shareImg)}&description=${encodeURIComponent(text)}" target="_blank" rel="nofollow noopener" class="share-btn share-btn-pinterest" onclick="window.app.trackShare('Pinterest', '${catKey}', 'site')" aria-label="Partager sur Pinterest" title="Partager sur Pinterest">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0a12 12 0 0 0-4.37 23.18c-.07-.95-.13-2.42.03-3.46l1.24-5.26s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.57 2.26-.87 3.51-.25 1.05.53 1.91 1.56 1.91 1.88 0 3.32-1.98 3.32-4.84 0-2.53-1.82-4.3-4.42-4.3-3.01 0-4.78 2.26-4.78 4.59 0 .91.35 1.88.79 2.41a.33.33 0 0 1 .08.31c-.09.36-.28 1.15-.32 1.31-.05.21-.17.26-.39.16-1.44-.67-2.34-2.77-2.34-4.46 0-3.63 2.64-6.97 7.61-6.97 3.99 0 7.1 2.85 7.1 6.66 0 3.97-2.5 7.16-5.97 7.16-1.17 0-2.26-.61-2.64-1.33l-.72 2.74c-.26 1-.96 2.26-1.43 3.02A12 12 0 1 0 12 0z"/></svg>
+          <span>Pinterest</span>
+        </a>
+
+        <!-- X / Twitter -->
+        <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}" target="_blank" rel="nofollow noopener" class="share-btn share-btn-x" onclick="window.app.trackShare('Twitter/X', '${catKey}', 'site')" aria-label="Partager sur X" title="Partager sur X (Twitter)">
+          <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <span>X / Twitter</span>
+        </a>
+
+        <!-- Instagram -->
+        <button type="button" class="share-btn share-btn-instagram" onclick="window.app.shareIndirect('instagram', '${url}', '${catKey}')" aria-label="Partager sur Instagram" title="Partager sur Instagram">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <span>Instagram</span>
+        </button>
+
+        <!-- TikTok -->
+        <button type="button" class="share-btn share-btn-tiktok" onclick="window.app.shareIndirect('tiktok', '${url}', '${catKey}')" aria-label="Partager sur TikTok" title="Partager sur TikTok">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          <span>TikTok</span>
+        </button>
+
+        <!-- Email -->
+        <a href="mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}" class="share-btn share-btn-email" onclick="window.app.trackShare('Email', '${catKey}', 'site')" aria-label="Partager par Email" title="Partager par Email">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <span>Email</span>
+        </a>
+
+        <!-- Copy Link -->
+        <button type="button" class="share-btn share-btn-copy" style="grid-column: 1 / -1;" onclick="window.app.copyShareLink('${url}', this, '${catKey}');" aria-label="Copier le lien" title="Copier le lien">
+          <svg class="icon-copy" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span class="share-copy-text">${isArabic ? 'نسخ الرابط' : 'Copier le lien'}</span>
+        </button>
+      `;
+    }
+
+    this.openModal(this.categoryShareModal);
   }
 
   showToast(message) {

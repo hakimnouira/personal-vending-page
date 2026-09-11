@@ -1,0 +1,41 @@
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /uploads/
+Allow: /guide-parfum
+Allow: /soins-de-la-peau
+Allow: /corps-et-bain
+Allow: /parfums
+Allow: /soins-capillaires
+Allow: /maquillage
+
+# Social Media Crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Facebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Pinterestbot
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# Private Administration Routes
+Disallow: /admin
+Disallow: /api/admin/
+
+Sitemap: https://mouna-nouira.wasmer.app/sitemap.xml

@@ -1,4 +1,4 @@
-﻿import https from 'https';
+import https from 'https';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
@@ -6,18 +6,96 @@ const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
 function classifyCategory(name = '') {
   const lower = name.toLowerCase();
-  if (lower.includes('parfum') || lower.includes('eau de') || lower.includes('toilette') || lower.includes('brume') || lower.includes('déodorant') || lower.includes('deodorant') || lower.includes('roll-on') || lower.includes('glacier') || lower.includes('eclat') || lower.includes('possess') || lower.includes('amber') || lower.includes('giordani gold essenza') || lower.includes('signature') || lower.includes('lucia') || lower.includes('volare') || lower.includes('venture') || lower.includes('joyce') || lower.includes('scents')) {
-    return 'Fragrance';
+
+  // 1. NON-FRAGRANCE OVERRIDES FIRST
+  if (lower.includes('déodorant') || lower.includes('deodorant') || lower.includes('anti-transpirant') || lower.includes('roll-on')) {
+    return 'Skincare';
   }
-  if (lower.includes('mascara') || lower.includes('lèvres') || lower.includes('levres') || lower.includes('blush') || lower.includes('fond de teint') || lower.includes('poudre') || lower.includes('fard') || lower.includes('vernis') || lower.includes('top coat') || lower.includes('eyeliner') || lower.includes('sourcils') || lower.includes('the one') || lower.includes('oncolour') || lower.includes('perles bronzantes') || lower.includes('crayon') || lower.includes('gloss')) {
+
+  if (lower.includes('crème parfumée') || lower.includes('creme parfumee') || lower.includes('crème pour le corps') || 
+      lower.includes('lait pour le corps') || lower.includes('gel douche') || lower.includes('savon') || 
+      lower.includes('body cream') || lower.includes('body lotion') || lower.includes('shower gel')) {
+    return 'Skincare';
+  }
+
+  if ((lower.includes('contour des yeux') || lower.includes('contour yeux')) && !lower.includes('waunt 8 hour sleep')) {
+    return 'Skincare';
+  }
+
+  if (lower.includes('micro essence') || lower.includes('brume visage') || lower.includes('brume multi usages') || lower.includes('proceuticals')) {
+    return 'Skincare';
+  }
+
+  if (lower.includes('pinceau') || lower.includes('recourbe-cils') || lower.includes('taille-crayon') || lower.includes('éponge')) {
     return 'Makeup';
   }
-  if (lower.includes('shampooing') || lower.includes('après-shampooing') || lower.includes('capillaire') || lower.includes('cheveux') || lower.includes('eleo') || lower.includes('hairx') || lower.includes('duologi')) {
+
+  if (lower.includes('poudre') || lower.includes('palette') || lower.includes('teinte bronzante') || 
+      lower.includes('perles') || lower.includes('bronzer') || lower.includes('cc crème') || 
+      lower.includes('cc creme') || lower.includes('bb crème') || lower.includes('bb creme') || 
+      lower.includes('fond de teint') || lower.includes('anti-cernes') || lower.includes('anticernes') ||
+      lower.includes('correcteur') || lower.includes('cache-cernes') || lower.includes('waunt 8 hour sleep') ||
+      lower.includes('mascara') || lower.includes('rouge à lèvres') || lower.includes('rouge a levres') || 
+      lower.includes('super pout') || lower.includes('fard') || lower.includes('ombre à paupières') || 
+      lower.includes('ombre a paupieres') || lower.includes('highlighter') || lower.includes('illuminateur') ||
+      lower.includes('blush') || lower.includes('vernis') || lower.includes('top coat') || 
+      lower.includes('eyeliner') || lower.includes('eye-liner') || lower.includes('sourcils') || 
+      lower.includes('gloss') || lower.includes('crayon') || lower.includes('oncolour') || 
+      lower.includes('the one colour') || lower.includes('the one') || lower.includes('lip spa') || 
+      lower.includes('illuminate') || lower.includes('lèvres') || lower.includes('levres')) {
+    return 'Makeup';
+  }
+
+  // 2. HAIRCARE
+  if (lower.includes('shampooing') || lower.includes('après-shampooing') || lower.includes('apres-shampooing') || 
+      lower.includes('capillaire') || (lower.includes('cheveux') && !lower.includes('brume')) || 
+      lower.includes('coiffant') || lower.includes('eleo') || lower.includes('hairx') || 
+      lower.includes('duolog')) {
     return 'Haircare';
   }
-  if (lower.includes('wellness') || lower.includes('astaxanthine') || lower.includes('oméga') || lower.includes('omega') || lower.includes('vitamines') || lower.includes('shake') || lower.includes('soupe') || lower.includes('calcium') || lower.includes('fibres')) {
+
+  // 3. WELLNESS
+  if (lower.includes('astaxanthine') || lower.includes('oméga 3') || lower.includes('omega 3') || 
+      lower.includes('complément alimentaire') || lower.includes('shake wellness') || lower.includes('soupe wellness') ||
+      lower.includes('calcium marin')) {
     return 'Wellness';
   }
+
+  // 4. FRAGRANCE
+  const isFragranceFormulation = 
+    lower.includes('eau de toilette') || 
+    lower.includes('eau de parfum') || 
+    lower.includes('extrait de parfum') || 
+    lower.includes('brume parfumée') || 
+    lower.includes('brume parfumee') || 
+    lower.includes('parfum brume') || 
+    lower.includes('body mist') || 
+    lower.includes('cologne');
+
+  if (isFragranceFormulation) {
+    return 'Fragrance';
+  }
+
+  if (/\bparfum\b/i.test(lower) && !lower.includes('crème') && !lower.includes('savon') && !lower.includes('déodorant')) {
+    return 'Fragrance';
+  }
+
+  if (lower.includes('all or nothing') || lower.includes('be the legend') || lower.includes('joyce rose') ||
+      lower.includes('ascendant') || lower.includes('glacier') || lower.includes('elvie') || 
+      lower.includes('lucia') || lower.includes('whispers of me') || lower.includes('top scents') ||
+      lower.includes('so fever') || lower.includes('venture power') || lower.includes('agave power') ||
+      lower.includes('scope earth') || lower.includes('sweetheart rose') || lower.includes('drama queen')) {
+    return 'Fragrance';
+  }
+
+  // 5. MAKEUP FALLBACKS
+  if (lower.includes('the one') || lower.includes('giordani gold')) {
+    if (lower.includes('lèvres') || lower.includes('levres') || lower.includes('yeux') || lower.includes('teint')) {
+      return 'Makeup';
+    }
+  }
+
+  // 6. DEFAULT FALLBACK
   return 'Skincare';
 }
 

@@ -11,6 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://mouna-nouira.wasmer.app/" />
+
   <!-- Open Graph / Facebook Meta Tags (for High-Quality Thumbnail Sharing) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Mouna Nouira — Oriflame Tunisie" />
@@ -30,6 +33,22 @@
   <meta name="twitter:description" content="Découvrez le catalogue officiel Oriflame Suède Tunisie avec Mouna Nouira. Parfums de luxe, soins et maquillage avec remises exclusives." />
   <meta name="twitter:image" content="https://mouna-nouira.wasmer.app/assets/og-facebook-preview.jpg" />
   
+  <!-- Schema.org Organization with Social Profiles -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Mouna Nouira — Oriflame Tunisie",
+    "url": "https://mouna-nouira.wasmer.app/",
+    "logo": "https://mouna-nouira.wasmer.app/assets/og-facebook-preview.jpg",
+    "sameAs": [
+      "https://www.facebook.com/Mounanouira.Oriflame",
+      "https://www.instagram.com/mounanouira",
+      "https://www.tiktok.com/@mounanouira"
+    ]
+  }
+  </script>
+
   <!-- CSS Styles -->
   <link rel="stylesheet" href="styles/main.css" />
 
@@ -62,7 +81,7 @@
   <!-- Navigation Header (Clean Client-Side Only - No Admin Button) -->
   <header class="navbar">
     <div class="container nav-container">
-      <a href="#" class="brand-logo" aria-label="Mouna Nouira Accueil">
+      <a href="/" class="brand-logo" id="brand-logo-link" aria-label="Retour à l'accueil — Mouna Nouira" title="Retour à l'accueil">
         <div class="brand-monogram">M</div>
         <div class="brand-text">
           <h1 data-i18n="brand_title">Mouna Nouira</h1>
@@ -74,6 +93,9 @@
       <div class="mobile-header-quick-actions">
         <button id="btn-header-search" class="header-icon-btn" aria-label="Rechercher un produit" title="Rechercher">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <button id="btn-header-share" class="header-icon-btn" onclick="window.app.openSiteShareModal()" aria-label="Partager le catalogue sur les réseaux sociaux" title="Partager">
+          <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
         </button>
         <button id="btn-header-cart" class="header-cart-btn" aria-label="Ouvrir le panier d'achat" title="Panier">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -97,12 +119,20 @@
         <a id="btn-nav-catalogue" href="#catalogue-section" class="nav-btn" style="background: var(--color-primary); color: white;">
           📖 eCatalogue
         </a>
-        <a id="btn-nav-facebook" href="https://www.facebook.com/Mounanouira.Oriflame" target="_blank" rel="noopener noreferrer" class="nav-btn nav-btn-facebook" style="background: #1877F2; color: #FFFFFF; border: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 8px; transition: all 0.2s ease;" aria-label="Page Facebook Officielle">
-          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          <span data-i18n="nav_facebook">Page Facebook</span>
-        </a>
-        <button id="btn-nav-share-fb" class="nav-btn nav-btn-share" onclick="window.app.shareToFacebook()" title="Partager le catalogue sur Facebook" aria-label="Partager le catalogue sur Facebook" style="background: rgba(24,119,242,0.12); color: #1877F2; border: 1px solid rgba(24,119,242,0.3); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 7px 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
-          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+        <!-- Header Social Links (Desktop Only) -->
+        <div class="header-social-links" aria-label="Réseaux sociaux Mouna Nouira">
+          <a id="btn-nav-facebook" href="https://www.facebook.com/Mounanouira.Oriflame" target="_blank" rel="noopener noreferrer" class="header-social-link header-social-fb" aria-label="Suivez-nous sur Facebook" title="Suivez-nous sur Facebook">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a id="btn-nav-instagram" href="https://www.instagram.com/mounanouira" target="_blank" rel="noopener noreferrer" class="header-social-link header-social-ig" aria-label="Suivez-nous sur Instagram" title="Suivez-nous sur Instagram">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a id="btn-nav-tiktok" href="https://www.tiktok.com/@mounanouira" target="_blank" rel="noopener noreferrer" class="header-social-link header-social-tt" aria-label="Suivez-nous sur TikTok" title="Suivez-nous sur TikTok">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+        </div>
+        <button id="btn-nav-share" class="nav-btn nav-btn-share" onclick="window.app.openSiteShareModal()" title="Partager le catalogue sur les réseaux sociaux" aria-label="Partager le catalogue sur les réseaux sociaux" style="background: rgba(212, 175, 55, 0.12); color: var(--color-primary); border: 1px solid rgba(212, 175, 55, 0.35); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 7px 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
           <span data-i18n="nav_share">Partager</span>
         </button>
         <button id="btn-nav-about" class="nav-btn" data-i18n="nav_about" aria-label="À propos de Mouna Nouira">
@@ -115,7 +145,105 @@
     </div>
   </header>
 
+  <!-- Mobile Navigation Drawer Overlay & Panel -->
+  <div id="mobile-nav-backdrop" class="mobile-nav-backdrop" style="display: none;" aria-hidden="true"></div>
+  <div id="mobile-nav-drawer" class="mobile-nav-drawer" role="dialog" aria-modal="true" aria-label="Menu de navigation" style="display: none;">
+    <div class="mobile-drawer-header">
+      <div class="drawer-brand">
+        <div class="brand-monogram" style="width: 34px; height: 34px; font-size: 1rem;">M</div>
+        <div>
+          <strong style="font-family: var(--font-serif); font-size: 1.05rem; color: var(--color-primary); display: block; line-height: 1.1;">Mouna Nouira</strong>
+          <span style="font-size: 0.7rem; color: #718096; text-transform: uppercase;">Oriflame Tunisie</span>
+        </div>
+      </div>
+      <button id="btn-close-mobile-menu" class="btn-close-drawer" aria-label="Fermer le menu" title="Fermer">✕</button>
+    </div>
+
+    <nav class="mobile-drawer-links" aria-label="Navigation principale mobile">
+      <div class="drawer-section-title">Navigation Principale</div>
+      <button type="button" class="drawer-nav-item active" data-category="All">
+        <span class="drawer-nav-icon">🏠</span> <span>Accueil (Tous les produits)</span>
+      </button>
+      <button type="button" class="drawer-nav-item" data-category="BodyCare">
+        <span class="drawer-nav-icon">🧴</span> <span>Corps & Bain</span>
+      </button>
+      <button type="button" class="drawer-nav-item" data-category="Skincare">
+        <span class="drawer-nav-icon">✨</span> <span>Soins de la peau</span>
+      </button>
+      <button type="button" class="drawer-nav-item" data-category="Haircare">
+        <span class="drawer-nav-icon">💇‍♀️</span> <span>Soins capillaires</span>
+      </button>
+      <button type="button" class="drawer-nav-item" data-category="Fragrance">
+        <span class="drawer-nav-icon">🌸</span> <span>Parfums</span>
+      </button>
+      <button type="button" class="drawer-nav-item" data-category="Makeup">
+        <span class="drawer-nav-icon">💄</span> <span>Maquillage</span>
+      </button>
+      <button type="button" class="drawer-nav-item" data-category="Deals">
+        <span class="drawer-nav-icon">🔥</span> <span>Offres Spéciales & Promos</span>
+      </button>
+      <button type="button" class="drawer-nav-item" data-category="Bundles">
+        <span class="drawer-nav-icon">🎁</span> <span>Coffrets & Packs</span>
+      </button>
+
+      <div class="drawer-section-title" style="margin-top: 14px;">Guides & Catalogue</div>
+      <a href="/guide-parfum" class="drawer-nav-item drawer-nav-link" id="btn-drawer-guide-parfum">
+        <span class="drawer-nav-icon">📖</span> <span>Guide Parfums</span>
+      </a>
+      <a href="#catalogue-section" class="drawer-nav-item drawer-nav-link" id="btn-drawer-catalogue">
+        <span class="drawer-nav-icon">📑</span> <span>eCatalogue interactif</span>
+      </a>
+
+      <div class="drawer-section-title" style="margin-top: 14px;">À propos & Contact</div>
+      <button type="button" class="drawer-nav-item" id="btn-drawer-about">
+        <span class="drawer-nav-icon">ℹ️</span> <span>À propos de Mouna Nouira</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="btn-drawer-privacy">
+        <span class="drawer-nav-icon">🔒</span> <span>Confidentialité</span>
+      </button>
+      <div class="drawer-section-title" style="margin-top: 14px;">Partage & Réseaux Sociaux</div>
+      <button type="button" class="drawer-nav-item drawer-nav-link" onclick="window.app.openSiteShareModal(); window.app.closeMobileDrawer();" style="color: var(--color-primary); font-weight: 600;" aria-label="Partager le catalogue sur les réseaux sociaux">
+        <span class="drawer-nav-icon">📢</span> <span>Partager le catalogue</span>
+      </button>
+      <a href="https://www.facebook.com/Mounanouira.Oriflame" target="_blank" rel="noopener noreferrer" class="drawer-nav-item drawer-nav-link" style="color: #1877F2;" aria-label="Suivez-nous sur Facebook">
+        <span class="drawer-nav-icon">📘</span> <span>Facebook : Mounanouira.Oriflame</span>
+      </a>
+      <a href="https://www.instagram.com/mounanouira" target="_blank" rel="noopener noreferrer" class="drawer-nav-item drawer-nav-link" style="color: #E1306C;" aria-label="Suivez-nous sur Instagram">
+        <span class="drawer-nav-icon">📸</span> <span>Instagram : @mounanouira</span>
+      </a>
+      <a href="https://www.tiktok.com/@mounanouira" target="_blank" rel="noopener noreferrer" class="drawer-nav-item drawer-nav-link" style="color: #111827;" aria-label="Suivez-nous sur TikTok">
+        <span class="drawer-nav-icon">🎵</span> <span>TikTok : @mounanouira</span>
+      </a>
+    </nav>
+
+    <div class="mobile-drawer-footer">
+      <label for="mobile-language-select" style="font-size: 0.78rem; font-weight: 600; color: #718096; margin-bottom: 6px; display: block;">Langue :</label>
+      <select id="mobile-language-select" class="lang-selector" style="width: 100%;" aria-label="Sélectionner la langue">
+        <option value="fr">🇫🇷 Français</option>
+        <option value="ar">🇹🇳 العربية</option>
+        <option value="en">🇬🇧 English</option>
+      </select>
+    </div>
+  </div>
+
   <main class="container">
+    <!-- Global Navigation Helper: Back Button & Dynamic Breadcrumb -->
+    <div id="global-navigation-bar" class="global-navigation-bar" style="display: none;">
+      <button id="btn-page-back" class="btn-page-back" aria-label="Retour à la page précédente" title="Retour">
+        <span class="back-arrow" aria-hidden="true">←</span>
+        <span class="back-text">Retour</span>
+      </button>
+      <nav id="global-breadcrumb-nav" class="global-breadcrumb-nav" aria-label="Fil d'Ariane">
+        <ol id="global-breadcrumb-list" class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+          <!-- Populated dynamically by app.js -->
+        </ol>
+      </nav>
+      <button id="btn-share-category" class="btn-share-category" aria-label="Partager cette catégorie" title="Partager cette catégorie">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        <span class="share-cat-text">Partager</span>
+      </button>
+    </div>
+
     <!-- Dynamic Luxury Hero Carousel Banner (Only shown if admin adds slides) -->
     <section id="hero-carousel-section" class="hero-carousel-container" style="display: none;">
       <div id="carousel-slides-wrapper" class="carousel-slides-wrapper"></div>
@@ -261,10 +389,307 @@
         <button class="category-pill deal-pill" data-category="Deals" data-i18n="category_deals">🔥 Offres & Promos</button>
         <button class="category-pill bundle-pill" data-category="Bundles" data-i18n="category_bundles">🎁 Packs & Duos</button>
         <button class="category-pill" data-category="Skincare" data-i18n="category_skincare">Soins de la peau</button>
+        <button class="category-pill" data-category="BodyCare" data-i18n="category_bodycare">🧴 Corps & Bain</button>
         <button class="category-pill" data-category="Makeup" data-i18n="category_makeup">Maquillage</button>
         <button class="category-pill" data-category="Fragrance" data-i18n="category_fragrance">Parfums</button>
-        <button class="category-pill" data-category="Wellness" data-i18n="category_wellness">Bien-être</button>
         <button class="category-pill" data-category="Haircare" data-i18n="category_haircare">Soins capillaires</button>
+      </div>
+
+      <!-- Perfume Specialized Filters Panel (Visible when Fragrance category is selected) -->
+      <div id="fragrance-filters-container" class="fragrance-filters-container" style="display: none;" role="region" aria-label="Filtres pour la catégorie Parfums">
+        <!-- Guide Banner Card -->
+        <div class="fragrance-guide-banner" role="complementary">
+          <div class="fragrance-guide-text">
+            <span class="fragrance-guide-icon" aria-hidden="true">💡</span>
+            <div>
+              <strong>Comment choisir son parfum ?</strong>
+              <p>Guide des concentrations, familles olfactives et conseils de tenue.</p>
+            </div>
+          </div>
+          <a href="/guide-parfum" class="btn-guide-banner" aria-label="Consulter le guide comment choisir son parfum">
+            Consulter le Guide →
+          </a>
+        </div>
+
+        <!-- Filter Groups -->
+        <div class="fragrance-filter-row">
+          <!-- Genre -->
+          <fieldset class="fragrance-filter-group" aria-labelledby="legend-fragrance-gender">
+            <legend id="legend-fragrance-gender" class="fragrance-filter-legend">👤 Genre</legend>
+            <div class="fragrance-pill-options" role="radiogroup" aria-labelledby="legend-fragrance-gender">
+              <button type="button" class="fragrance-filter-pill active" data-filter-type="gender" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="gender" data-filter-val="Femmes" aria-pressed="false">Femmes <span class="filter-count" data-count-for="gender-Femmes"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="gender" data-filter-val="Hommes" aria-pressed="false">Hommes <span class="filter-count" data-count-for="gender-Hommes"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="gender" data-filter-val="Unisexe" aria-pressed="false">Unisexe <span class="filter-count" data-count-for="gender-Unisexe"></span></button>
+            </div>
+          </fieldset>
+
+          <!-- Type de formulation -->
+          <fieldset class="fragrance-filter-group" aria-labelledby="legend-fragrance-formulation">
+            <legend id="legend-fragrance-formulation" class="fragrance-filter-legend">💧 Formulation</legend>
+            <div class="fragrance-pill-options" role="radiogroup" aria-labelledby="legend-fragrance-formulation">
+              <button type="button" class="fragrance-filter-pill active" data-filter-type="formulation" data-filter-val="All" aria-pressed="true">Toutes</button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="formulation" data-filter-val="Eau de toilette" aria-pressed="false">Eau de toilette <span class="filter-count" data-count-for="formulation-Eau de toilette"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="formulation" data-filter-val="Eau de parfum" aria-pressed="false">Eau de parfum <span class="filter-count" data-count-for="formulation-Eau de parfum"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="formulation" data-filter-val="Brume corporelle" aria-pressed="false">Brume corporelle <span class="filter-count" data-count-for="formulation-Brume corporelle"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="formulation" data-filter-val="Parfum" aria-pressed="false">Parfum (extrait) <span class="filter-count" data-count-for="formulation-Parfum"></span></button>
+            </div>
+          </fieldset>
+
+          <!-- Famille olfactive -->
+          <fieldset class="fragrance-filter-group" aria-labelledby="legend-fragrance-family">
+            <legend id="legend-fragrance-family" class="fragrance-filter-legend">🌿 Famille olfactive</legend>
+            <div class="fragrance-pill-options" role="radiogroup" aria-labelledby="legend-fragrance-family">
+              <button type="button" class="fragrance-filter-pill active" data-filter-type="family" data-filter-val="All" aria-pressed="true">Toutes</button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="family" data-filter-val="Florale" aria-pressed="false">Florale <span class="filter-count" data-count-for="family-Florale"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="family" data-filter-val="Boisée" aria-pressed="false">Boisée <span class="filter-count" data-count-for="family-Boisée"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="family" data-filter-val="Ambrée" aria-pressed="false">Ambrée <span class="filter-count" data-count-for="family-Ambrée"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="family" data-filter-val="Fruitée" aria-pressed="false">Fruitée <span class="filter-count" data-count-for="family-Fruitée"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="family" data-filter-val="Aromatique" aria-pressed="false">Aromatique <span class="filter-count" data-count-for="family-Aromatique"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="family" data-filter-val="Agrumes" aria-pressed="false">Agrumes <span class="filter-count" data-count-for="family-Agrumes"></span></button>
+              <button type="button" class="fragrance-filter-pill" data-filter-type="family" data-filter-val="Chyprée" aria-pressed="false">Chyprée <span class="filter-count" data-count-for="family-Chyprée"></span></button>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Filter Actions Bar (Reset & Active Summary) -->
+        <div class="fragrance-filters-footer">
+          <button type="button" id="btn-reset-fragrance-filters" class="btn-reset-fragrance-filters" aria-label="Réinitialiser tous les filtres de parfum">
+            🔄 Réinitialiser les filtres
+          </button>
+          <div id="fragrance-active-summary" class="fragrance-active-summary" aria-live="polite"></div>
+        </div>
+
+        <!-- Accessible polite live region for dynamic updates -->
+        <div id="fragrance-results-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+      </div>
+
+      <!-- Skincare Specialized Filters Panel (Visible when Skincare category is selected) -->
+      <div id="skincare-filters-container" class="skincare-filters-container" style="display: none;" role="region" aria-label="Filtres pour la catégorie Soins de la peau">
+        <!-- Breadcrumb for SEO and accessibility -->
+        <nav id="skincare-breadcrumb" class="category-breadcrumb" aria-label="Fil d'Ariane">
+          <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a href="/" class="breadcrumb-link" itemprop="item"><span itemprop="name">Accueil</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <li class="breadcrumb-separator" aria-hidden="true">›</li>
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+              <span itemprop="name">Soins de la peau</span>
+              <meta itemprop="position" content="2" />
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Filter Groups -->
+        <div class="skincare-filter-row">
+          <!-- Filtre 1 : Type de produit -->
+          <fieldset class="skincare-filter-group" aria-labelledby="legend-skincare-type">
+            <legend id="legend-skincare-type" class="skincare-filter-legend">🧴 Type de produit</legend>
+            <div class="skincare-pill-options" role="radiogroup" aria-labelledby="legend-skincare-type">
+              <button type="button" class="skincare-filter-pill active" data-filter-type="product-type" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="cleanser" aria-pressed="false">Nettoyant / Démaquillant <span class="filter-count" data-count-for="product-type-cleanser"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="toner" aria-pressed="false">Tonique / Lotion <span class="filter-count" data-count-for="product-type-toner"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="serum" aria-pressed="false">Sérum <span class="filter-count" data-count-for="product-type-serum"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="moisturiser" aria-pressed="false">Crème hydratante <span class="filter-count" data-count-for="product-type-moisturiser"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="anti-aging-cream" aria-pressed="false">Crème anti-âge <span class="filter-count" data-count-for="product-type-anti-aging-cream"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="mask" aria-pressed="false">Masque <span class="filter-count" data-count-for="product-type-mask"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="scrub" aria-pressed="false">Gommage / Exfoliant <span class="filter-count" data-count-for="product-type-scrub"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="eye-care" aria-pressed="false">Soin des yeux <span class="filter-count" data-count-for="product-type-eye-care"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="sun-care" aria-pressed="false">Protection solaire <span class="filter-count" data-count-for="product-type-sun-care"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="product-type" data-filter-val="lip-care" aria-pressed="false">Soin des lèvres <span class="filter-count" data-count-for="product-type-lip-care"></span></button>
+            </div>
+          </fieldset>
+
+          <!-- Filtre 2 : Type de peau (Officiel: skin-type) -->
+          <fieldset class="skincare-filter-group" aria-labelledby="legend-skincare-skintype">
+            <legend id="legend-skincare-skintype" class="skincare-filter-legend">✨ Type de peau</legend>
+            <div class="skincare-pill-options" role="radiogroup" aria-labelledby="legend-skincare-skintype">
+              <button type="button" class="skincare-filter-pill active" data-filter-type="skin-type" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="skin-type" data-filter-val="dry" aria-pressed="false">Peau sèche <span class="filter-count" data-count-for="skin-type-dry"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="skin-type" data-filter-val="normal" aria-pressed="false">Peau normale <span class="filter-count" data-count-for="skin-type-normal"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="skin-type" data-filter-val="oily" aria-pressed="false">Peau grasse <span class="filter-count" data-count-for="skin-type-oily"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="skin-type" data-filter-val="combination" aria-pressed="false">Peau mixte <span class="filter-count" data-count-for="skin-type-combination"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="skin-type" data-filter-val="sensitive" aria-pressed="false">Peau sensible <span class="filter-count" data-count-for="skin-type-sensitive"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="skin-type" data-filter-val="mature" aria-pressed="false">Peau mature <span class="filter-count" data-count-for="skin-type-mature"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="skin-type" data-filter-val="breakout-prone" aria-pressed="false">Peau à imperfections <span class="filter-count" data-count-for="skin-type-breakout-prone"></span></button>
+            </div>
+          </fieldset>
+
+          <!-- Filtre 3 : Résultats / Bénéfices (Officiel: benefits) -->
+          <fieldset class="skincare-filter-group" aria-labelledby="legend-skincare-concern">
+            <legend id="legend-skincare-concern" class="skincare-filter-legend">🎯 Résultats & Bénéfices</legend>
+            <div class="skincare-pill-options" role="radiogroup" aria-labelledby="legend-skincare-concern">
+              <button type="button" class="skincare-filter-pill active" data-filter-type="benefits" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="hydrating" aria-pressed="false">Hydratant <span class="filter-count" data-count-for="benefits-hydrating"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="anti-aging" aria-pressed="false">Anti-âge <span class="filter-count" data-count-for="benefits-anti-aging"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="smoothing-lines-and-wrinkles" aria-pressed="false">Lisser rides & lignes <span class="filter-count" data-count-for="benefits-smoothing-lines-and-wrinkles"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="radiant" aria-pressed="false">Rayonnant / Éclat <span class="filter-count" data-count-for="benefits-radiant"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="even-skin-tone" aria-pressed="false">Teint uniforme <span class="filter-count" data-count-for="benefits-even-skin-tone"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="firming-lifting" aria-pressed="false">Raffermissement / Lift <span class="filter-count" data-count-for="benefits-firming-lifting"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="purifying-pore-minimizing" aria-pressed="false">Pores & Purification <span class="filter-count" data-count-for="benefits-purifying-pore-minimizing"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="calming-redness-reduction" aria-pressed="false">Calme & Anti-rougeurs <span class="filter-count" data-count-for="benefits-calming-redness-reduction"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="oil-control-mattifying" aria-pressed="false">Contrôle sébum & Matité <span class="filter-count" data-count-for="benefits-oil-control-mattifying"></span></button>
+              <button type="button" class="skincare-filter-pill" data-filter-type="benefits" data-filter-val="exfoliating" aria-pressed="false">Exfoliant <span class="filter-count" data-count-for="benefits-exfoliating"></span></button>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Filter Actions Bar (Reset & Active Summary) -->
+        <div class="skincare-filters-footer">
+          <button type="button" id="btn-reset-skincare-filters" class="btn-reset-skincare-filters" aria-label="Réinitialiser tous les filtres de soins de la peau">
+            🔄 Réinitialiser les filtres
+          </button>
+          <div id="skincare-active-summary" class="skincare-active-summary" aria-live="polite"></div>
+        </div>
+
+        <!-- Accessible polite live region for dynamic updates -->
+        <div id="skincare-results-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+      </div>
+
+      <!-- BodyCare Specialized Filters Panel (Visible when BodyCare category is selected) -->
+      <div id="bodycare-filters-container" class="bodycare-filters-container" style="display: none;" role="region" aria-label="Filtres pour la catégorie Soins du corps et du bain">
+        <!-- Breadcrumb for SEO and accessibility -->
+        <nav id="bodycare-breadcrumb" class="category-breadcrumb" aria-label="Fil d'Ariane">
+          <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a href="/" class="breadcrumb-link" itemprop="item"><span itemprop="name">Accueil</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <li class="breadcrumb-separator" aria-hidden="true">›</li>
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+              <span itemprop="name">Soins du corps et du bain</span>
+              <meta itemprop="position" content="2" />
+            </li>
+          </ol>
+        </nav>
+
+        <h1 class="sr-only">Soins du corps et du bain</h1>
+
+        <!-- Filter Groups -->
+        <div class="bodycare-filter-row">
+          <!-- Filtre 1 : Type de produit -->
+          <fieldset class="bodycare-filter-group" aria-labelledby="legend-bodycare-type">
+            <legend id="legend-bodycare-type" class="bodycare-filter-legend">🧴 Type de produit</legend>
+            <div class="bodycare-pill-options" role="radiogroup" aria-labelledby="legend-bodycare-type">
+              <button type="button" class="bodycare-filter-pill active" data-filter-type="product-type" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="body-cream" aria-pressed="false">Crèmes corporelles <span class="filter-count" data-count-for="product-type-body-cream"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="body-lotion" aria-pressed="false">Lotions corporelles <span class="filter-count" data-count-for="product-type-body-lotion"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="shower-gel" aria-pressed="false">Gels douche <span class="filter-count" data-count-for="product-type-shower-gel"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="soap" aria-pressed="false">Savons <span class="filter-count" data-count-for="product-type-soap"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="body-scrub" aria-pressed="false">Gommages corps <span class="filter-count" data-count-for="product-type-body-scrub"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="body-butter" aria-pressed="false">Beurres corporels <span class="filter-count" data-count-for="product-type-body-butter"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="bath-shower-oil" aria-pressed="false">Huiles de douche / bain <span class="filter-count" data-count-for="product-type-bath-shower-oil"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="bath-accessories" aria-pressed="false">Accessoires de bain <span class="filter-count" data-count-for="product-type-bath-accessories"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="mousse" aria-pressed="false">Mousses <span class="filter-count" data-count-for="product-type-mousse"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="product-type" data-filter-val="two-in-one" aria-pressed="false">2 en 1 <span class="filter-count" data-count-for="product-type-two-in-one"></span></button>
+            </div>
+          </fieldset>
+
+          <!-- Filtre 2 : Par besoin -->
+          <fieldset class="bodycare-filter-group" aria-labelledby="legend-bodycare-need">
+            <legend id="legend-bodycare-need" class="bodycare-filter-legend">✨ Par besoin</legend>
+            <div class="bodycare-pill-options" role="radiogroup" aria-labelledby="legend-bodycare-need">
+              <button type="button" class="bodycare-filter-pill active" data-filter-type="need" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="need" data-filter-val="hydrating" aria-pressed="false">Hydratation <span class="filter-count" data-count-for="need-hydrating"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="need" data-filter-val="nourishing" aria-pressed="false">Nutrition <span class="filter-count" data-count-for="need-nourishing"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="need" data-filter-val="exfoliating" aria-pressed="false">Exfoliation <span class="filter-count" data-count-for="need-exfoliating"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="need" data-filter-val="calming" aria-pressed="false">Apaisant <span class="filter-count" data-count-for="need-calming"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="need" data-filter-val="firming" aria-pressed="false">Raffermissant <span class="filter-count" data-count-for="need-firming"></span></button>
+              <button type="button" class="bodycare-filter-pill" data-filter-type="need" data-filter-val="fragrance" aria-pressed="false">Parfum / Plaisir <span class="filter-count" data-count-for="need-fragrance"></span></button>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Filter Reset & Results count announcement -->
+        <div class="bodycare-filters-footer">
+          <button type="button" id="btn-reset-bodycare-filters" class="btn-reset-bodycare-filters" aria-label="Réinitialiser tous les filtres de soins du corps et du bain">
+            <span aria-hidden="true">✕</span> Réinitialiser les filtres
+          </button>
+          <div id="bodycare-active-summary" class="bodycare-active-summary" aria-live="polite"></div>
+        </div>
+
+        <!-- Accessible polite live region for dynamic updates -->
+        <div id="bodycare-results-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+      </div>
+
+      <!-- Haircare Specialized Filters Panel (Visible when Haircare category is selected) -->
+      <div id="haircare-filters-container" class="haircare-filters-container" style="display: none;" role="region" aria-label="Filtres pour la catégorie Soins capillaires">
+        <!-- Breadcrumb for SEO and accessibility -->
+        <nav id="haircare-breadcrumb" class="category-breadcrumb" aria-label="Fil d'Ariane">
+          <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a href="/" class="breadcrumb-link" itemprop="item"><span itemprop="name">Accueil</span></a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <li class="breadcrumb-separator" aria-hidden="true">›</li>
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+              <span itemprop="name">Soins capillaires</span>
+              <meta itemprop="position" content="2" />
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Filter Groups -->
+        <div class="haircare-filter-row">
+          <!-- Filtre 1 : Type de produit -->
+          <fieldset class="haircare-filter-group" aria-labelledby="legend-haircare-type">
+            <legend id="legend-haircare-type" class="haircare-filter-legend">🧴 Type de produit</legend>
+            <div class="haircare-pill-options" role="radiogroup" aria-labelledby="legend-haircare-type">
+              <button type="button" class="haircare-filter-pill active" data-filter-type="productType" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="productType" data-filter-val="Conditionneur" aria-pressed="false">Conditionneur <span class="filter-count" data-count-for="productType-Conditionneur"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="productType" data-filter-val="Masque capillaire" aria-pressed="false">Masque capillaire <span class="filter-count" data-count-for="productType-Masque capillaire"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="productType" data-filter-val="Huile capillaire" aria-pressed="false">Huile capillaire <span class="filter-count" data-count-for="productType-Huile capillaire"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="productType" data-filter-val="Soins sans rinçage" aria-pressed="false">Soins sans rinçage <span class="filter-count" data-count-for="productType-Soins sans rinçage"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="productType" data-filter-val="Soins du cuir chevelu" aria-pressed="false">Soins du cuir chevelu <span class="filter-count" data-count-for="productType-Soins du cuir chevelu"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="productType" data-filter-val="Shampooing" aria-pressed="false">Shampooing <span class="filter-count" data-count-for="productType-Shampooing"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="productType" data-filter-val="Outils et accessoires" aria-pressed="false">Outils et accessoires <span class="filter-count" data-count-for="productType-Outils et accessoires"></span></button>
+            </div>
+          </fieldset>
+
+          <!-- Filtre 2 : Type de cheveu -->
+          <fieldset class="haircare-filter-group" aria-labelledby="legend-haircare-hairtype">
+            <legend id="legend-haircare-hairtype" class="haircare-filter-legend">✨ Type de cheveu</legend>
+            <div class="haircare-pill-options" role="radiogroup" aria-labelledby="legend-haircare-hairtype">
+              <button type="button" class="haircare-filter-pill active" data-filter-type="hairType" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="hairType" data-filter-val="Cheveux secs" aria-pressed="false">Cheveux secs <span class="filter-count" data-count-for="hairType-Cheveux secs"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="hairType" data-filter-val="Cheveux gras" aria-pressed="false">Cheveux gras <span class="filter-count" data-count-for="hairType-Cheveux gras"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="hairType" data-filter-val="Cheveux normaux" aria-pressed="false">Cheveux normaux <span class="filter-count" data-count-for="hairType-Cheveux normaux"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="hairType" data-filter-val="Cheveux colorés" aria-pressed="false">Cheveux colorés <span class="filter-count" data-count-for="hairType-Cheveux colorés"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="hairType" data-filter-val="Cheveux fins" aria-pressed="false">Cheveux fins <span class="filter-count" data-count-for="hairType-Cheveux fins"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="hairType" data-filter-val="Cheveux bouclés / frisés" aria-pressed="false">Cheveux bouclés / frisés <span class="filter-count" data-count-for="hairType-Cheveux bouclés / frisés"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="hairType" data-filter-val="Cheveux abîmés / cassants" aria-pressed="false">Cheveux abîmés / cassants <span class="filter-count" data-count-for="hairType-Cheveux abîmés / cassants"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="hairType" data-filter-val="Pellicules / cuir chevelu sensible" aria-pressed="false">Pellicules / cuir chevelu sensible <span class="filter-count" data-count-for="hairType-Pellicules / cuir chevelu sensible"></span></button>
+            </div>
+          </fieldset>
+
+          <!-- Filtre 3 : Besoin / Problématique -->
+          <fieldset class="haircare-filter-group" aria-labelledby="legend-haircare-concern">
+            <legend id="legend-haircare-concern" class="haircare-filter-legend">🎯 Besoin / Problématique</legend>
+            <div class="haircare-pill-options" role="radiogroup" aria-labelledby="legend-haircare-concern">
+              <button type="button" class="haircare-filter-pill active" data-filter-type="concern" data-filter-val="All" aria-pressed="true">Tous</button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="concern" data-filter-val="Hydratation / nutrition" aria-pressed="false">Hydratation / nutrition <span class="filter-count" data-count-for="concern-Hydratation / nutrition"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="concern" data-filter-val="Réparation / reconstruction" aria-pressed="false">Réparation / reconstruction <span class="filter-count" data-count-for="concern-Réparation / reconstruction"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="concern" data-filter-val="Volume / densité" aria-pressed="false">Volume / densité <span class="filter-count" data-count-for="concern-Volume / densité"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="concern" data-filter-val="Brillance" aria-pressed="false">Brillance <span class="filter-count" data-count-for="concern-Brillance"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="concern" data-filter-val="Anti-chute" aria-pressed="false">Anti-chute <span class="filter-count" data-count-for="concern-Anti-chute"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="concern" data-filter-val="Protection couleur" aria-pressed="false">Protection couleur <span class="filter-count" data-count-for="concern-Protection couleur"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="concern" data-filter-val="Lissage / discipline" aria-pressed="false">Lissage / discipline <span class="filter-count" data-count-for="concern-Lissage / discipline"></span></button>
+              <button type="button" class="haircare-filter-pill" data-filter-type="concern" data-filter-val="Purification / anti-pelliculaire" aria-pressed="false">Purification / anti-pelliculaire <span class="filter-count" data-count-for="concern-Purification / anti-pelliculaire"></span></button>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Filter Actions Bar (Reset & Active Summary) -->
+        <div class="haircare-filters-footer">
+          <button type="button" id="btn-reset-haircare-filters" class="btn-reset-haircare-filters" aria-label="Réinitialiser tous les filtres de soins capillaires">
+            🔄 Réinitialiser les filtres
+          </button>
+          <div id="haircare-active-summary" class="haircare-active-summary" aria-live="polite"></div>
+        </div>
+
+        <!-- Accessible polite live region for dynamic updates -->
+        <div id="haircare-results-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
       </div>
     </section>
 
@@ -377,6 +802,23 @@
           <div>
             <div style="font-family: var(--font-serif); font-weight: 700; color: var(--color-primary); font-size: 1.15rem;">Direct</div>
             <div style="font-size: 0.74rem; color: var(--color-text-muted);" data-i18n="trust_fast">Réponse Rapide</div>
+          </div>
+        </div>
+        <div class="about-social-section" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border); text-align: center;">
+          <h5 style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="about_social_title">Suivez Mouna Nouira</h5>
+          <div class="social-links-grid" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <a href="https://www.facebook.com/Mounanouira.Oriflame" target="_blank" rel="noopener noreferrer" class="social-badge-btn social-badge-fb" aria-label="Suivez-nous sur Facebook" title="Facebook">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <span>Facebook</span>
+            </a>
+            <a href="https://www.instagram.com/mounanouira" target="_blank" rel="noopener noreferrer" class="social-badge-btn social-badge-ig" aria-label="Suivez-nous sur Instagram" title="Instagram">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              <span>Instagram</span>
+            </a>
+            <a href="https://www.tiktok.com/@mounanouira" target="_blank" rel="noopener noreferrer" class="social-badge-btn social-badge-tt" aria-label="Suivez-nous sur TikTok" title="TikTok">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+              <span>TikTok</span>
+            </a>
           </div>
         </div>
       </div>
@@ -571,14 +1013,51 @@
       <p style="margin-top: 6px; font-size: 0.76rem; opacity: 0.7;" data-i18n="footer_disclaimer">
         Ce site est un assistant numérique de commande directe via Facebook Messenger en Tunisie.
       </p>
-      <div style="margin-top: 10px;">
-        <a id="footer-facebook-link" href="https://www.facebook.com/Mounanouira.Oriflame" target="_blank" rel="noopener noreferrer" style="color: #1877F2; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; background: rgba(24,119,242,0.08); padding: 6px 14px; border-radius: 20px; transition: all 0.2s ease;">
-          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          <span>Page Facebook Officielle : Mounanouira.Oriflame</span>
-        </a>
+      <!-- Social Media Profiles Section -->
+      <div class="footer-social-section">
+        <span class="footer-social-title" data-i18n="footer_follow_us">Suivez-nous :</span>
+        <div class="footer-social-links">
+          <a id="footer-facebook-link" href="https://www.facebook.com/Mounanouira.Oriflame" target="_blank" rel="noopener noreferrer" class="social-link-btn social-link-fb" aria-label="Suivez-nous sur Facebook" title="Facebook Mouna Nouira">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>Facebook</span>
+          </a>
+          <a id="footer-instagram-link" href="https://www.instagram.com/mounanouira" target="_blank" rel="noopener noreferrer" class="social-link-btn social-link-ig" aria-label="Suivez-nous sur Instagram" title="Instagram Mouna Nouira">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <span>Instagram</span>
+          </a>
+          <a id="footer-tiktok-link" href="https://www.tiktok.com/@mounanouira" target="_blank" rel="noopener noreferrer" class="social-link-btn social-link-tt" aria-label="Suivez-nous sur TikTok" title="TikTok Mouna Nouira">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            <span>TikTok</span>
+          </a>
+        </div>
       </div>
     </div>
   </footer>
+
+  <!-- Category / Page Share Modal Overlay -->
+  <div id="category-share-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cat-share-modal-title">
+    <div class="modal-card" style="max-width: 440px; width: 92vw; padding: 24px; border-radius: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 id="cat-share-modal-title" style="font-family: var(--font-serif); font-size: 1.25rem; margin: 0; color: var(--color-primary);">Partager cette sélection</h3>
+        <button id="btn-close-cat-share" class="btn-close-drawer" aria-label="Fermer la fenêtre de partage">✕</button>
+      </div>
+      <p style="font-size: 0.88rem; color: #64748B; margin: 0 0 14px 0;" id="cat-share-modal-desc">Partagez ce catalogue avec vos proches via vos réseaux préférés :</p>
+      
+      <!-- Visual Share Preview Card (Image + Title + Domain) -->
+      <div id="cat-share-preview-box" style="display: flex; gap: 12px; align-items: center; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 10px; margin-bottom: 16px;">
+        <img id="cat-share-preview-img" src="/assets/og-facebook-preview.jpg" alt="Aperçu du partage" style="width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.08);">
+        <div style="overflow: hidden; text-align: left; min-width: 0; flex: 1;">
+          <div style="font-size: 0.70rem; color: #94A3B8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Aperçu du lien partagé</div>
+          <div id="cat-share-preview-title" style="font-size: 0.85rem; font-weight: 700; color: #1E293B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Catalogue Officiel Oriflame Tunisie</div>
+          <div id="cat-share-preview-url" style="font-size: 0.74rem; color: #2563EB; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">mounanouira.tn</div>
+        </div>
+      </div>
+
+      <div class="category-share-grid" id="category-share-options" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+        <!-- Filled dynamically by app.js -->
+      </div>
+    </div>
+  </div>
 
   <!-- Carousel Image Lightbox -->
   <div id="carousel-lightbox" class="carousel-lightbox" role="dialog" aria-modal="true" aria-label="Image agrandie" style="display:none;">
@@ -591,6 +1070,11 @@
     </div>
     <button class="lightbox-nav lightbox-next" id="lightbox-next-btn" aria-label="Suivant">&#8250;</button>
   </div>
+
+  <!-- Floating Back to Top Button -->
+  <button id="btn-back-to-top" class="btn-back-to-top" aria-label="Retour en haut de page" title="Retour en haut de page" style="display: none;">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
 
   <!-- Application JS Modules -->
   <script type="module" src="js/app.js"></script>

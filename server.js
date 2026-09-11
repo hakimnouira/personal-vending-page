@@ -6,6 +6,7 @@ import path from 'path';
 import crypto from 'crypto';
 import multer from 'multer';
 import axios from 'axios';
+import https from 'https';
 import { Agent as UndiciAgent } from 'undici';
 import { fileURLToPath } from 'url';
 import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/scraper.js';
@@ -183,25 +184,396 @@ app.get('/api/admin/db-info', async (req, res) => {
   }
 });
 
-// Dynamic root route for Open Graph / Facebook Crawler previews
-app.get(['/', '/index.html'], (req, res, next) => {
-  try {
-    const host = req.get('host') || 'mouna-nouira.wasmer.app';
-    const isHttps = req.headers['x-forwarded-proto'] === 'https' || req.secure || !host.includes('localhost');
-    const proto = isHttps ? 'https' : 'http';
-    const baseUrl = `${proto}://${host}`;
+// ─── OPEN GRAPH & SOCIAL METADATA HELPERS ─────────────────────────
+const httpsInsecureAgent = new https.Agent({ rejectUnauthorized: false });
+const ogImageCache = new Map();
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function escapeAttr(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\r?\n|\r/g, ' ')
+    .trim();
+}
+
+function stripHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function getEffectiveBaseUrl(req) {
+  const host = req.get('host') || 'mouna-nouira.wasmer.app';
+  const isHttps = req.headers['x-forwarded-proto'] === 'https' || req.secure || !host.includes('localhost');
+  const proto = isHttps ? 'https' : 'http';
+  return `${proto}://${host}`;
+}
+
+function setMetaTag(html, attrName, attrVal, content) {
+  const regex = new RegExp(`<meta\\s+${attrName}="${attrVal}"\\s+content="[^"]*"\\s*\\/?>`, 'i');
+  const tag = `<meta ${attrName}="${attrVal}" content="${content}" />`;
+  if (regex.test(html)) {
+    return html.replace(regex, tag);
+  }
+  return html.replace('</head>', `  ${tag}\n</head>`);
+}
+
+function injectOpenGraphMetadata(html, meta) {
+  // <title>
+  if (meta.title) {
+    html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(meta.title)}</title>`);
+  }
+  // <meta name="description">
+  if (meta.description) {
+    html = setMetaTag(html, 'name', 'description', escapeAttr(meta.description));
+  }
+  // <link rel="canonical">
+  if (meta.url) {
+    if (html.includes('rel="canonical"')) {
+      html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${meta.url}" />`);
+    } else {
+      html = html.replace('</head>', `  <link rel="canonical" href="${meta.url}" />\n</head>`);
+    }
+  }
+
+  // Open Graph Core Tags
+  html = setMetaTag(html, 'property', 'og:site_name', 'Mouna Nouira — Oriflame Tunisie');
+  if (meta.type) html = setMetaTag(html, 'property', 'og:type', meta.type);
+  if (meta.url) html = setMetaTag(html, 'property', 'og:url', meta.url);
+  if (meta.title) html = setMetaTag(html, 'property', 'og:title', escapeAttr(meta.title));
+  if (meta.description) html = setMetaTag(html, 'property', 'og:description', escapeAttr(meta.description));
+  if (meta.image) {
+    html = setMetaTag(html, 'property', 'og:image', meta.image);
+    html = setMetaTag(html, 'property', 'og:image:secure_url', meta.image);
+  }
+  if (meta.imageType) html = setMetaTag(html, 'property', 'og:image:type', meta.imageType);
+  if (meta.imageWidth) html = setMetaTag(html, 'property', 'og:image:width', String(meta.imageWidth));
+  if (meta.imageHeight) html = setMetaTag(html, 'property', 'og:image:height', String(meta.imageHeight));
+  if (meta.imageAlt) html = setMetaTag(html, 'property', 'og:image:alt', escapeAttr(meta.imageAlt));
+
+  // Twitter Cards
+  html = setMetaTag(html, 'name', 'twitter:card', meta.twitterCard || 'summary_large_image');
+  if (meta.title) html = setMetaTag(html, 'name', 'twitter:title', escapeAttr(meta.title));
+  if (meta.description) html = setMetaTag(html, 'name', 'twitter:description', escapeAttr(meta.description));
+  if (meta.image) html = setMetaTag(html, 'name', 'twitter:image', meta.image);
+
+  // Product Rich Metadata
+  if (meta.type === 'product') {
+    if (meta.price) html = setMetaTag(html, 'property', 'product:price:amount', String(meta.price));
+    html = setMetaTag(html, 'property', 'product:price:currency', 'TND');
+    html = setMetaTag(html, 'property', 'product:availability', meta.inStock ? 'in stock' : 'out of stock');
+  }
+
+  return html;
+}
+
+const CATEGORY_META = {
+  'corps-et-bain': {
+    slug: 'corps-et-bain',
+    title: 'Soins du corps et du bain — Crèmes, gels douche, gommages | Mouna Nouira — Oriflame Tunisie',
+    description: 'Découvrez notre gamme de soins du corps et du bain : crèmes, lotions, gels douche, savons, gommages et beurres corporels. Filtrez par type de produit et besoin.',
+    imageFile: 'og-bodycare.jpg',
+    imageAlt: 'Soins du corps et du bain — Oriflame Tunisie',
+    imageWidth: 800,
+    imageHeight: 800
+  },
+  'soins-de-la-peau': {
+    slug: 'soins-de-la-peau',
+    title: 'Soins de la peau — Sérums, crèmes, nettoyants | Mouna Nouira — Oriflame Tunisie',
+    description: 'Découvrez notre gamme de soins de la peau : nettoyants, sérums, crèmes hydratantes et anti-âge. Filtrez par type de peau et besoin.',
+    imageFile: 'og-skincare.jpg',
+    imageAlt: 'Soins de la peau — Oriflame Tunisie',
+    imageWidth: 800,
+    imageHeight: 800
+  },
+  'parfums': {
+    slug: 'parfums',
+    title: 'Parfums — Eaux de parfum, eaux de toilette | Mouna Nouira — Oriflame Tunisie',
+    description: 'Découvrez notre sélection de parfums pour femmes et hommes : eaux de parfum, eaux de toilette et brumes parfumées Oriflame Tunisie.',
+    imageFile: 'og-fragrance.jpg',
+    imageAlt: 'Parfums femmes et hommes — Oriflame Tunisie',
+    imageWidth: 800,
+    imageHeight: 800
+  },
+  'soins-capillaires': {
+    slug: 'soins-capillaires',
+    title: 'Soins capillaires — Shampooings, masques, huiles | Mouna Nouira — Oriflame Tunisie',
+    description: 'Découvrez notre gamme de soins capillaires : shampooings, conditionneurs, masques, huiles et soins sans rinçage. Filtrez par type de cheveu et besoin.',
+    imageFile: 'og-haircare.jpg',
+    imageAlt: 'Soins capillaires — Oriflame Tunisie',
+    imageWidth: 800,
+    imageHeight: 800
+  },
+  'maquillage': {
+    slug: 'maquillage',
+    title: 'Maquillage — Teint, yeux, lèvres, ongles | Mouna Nouira — Oriflame Tunisie',
+    description: 'Découvrez notre gamme complète de maquillage : fonds de teint, rouges à lèvres, mascaras et vernis à ongles Oriflame Tunisie.',
+    imageFile: 'og-makeup.jpg',
+    imageAlt: 'Maquillage professionnel — Oriflame Tunisie',
+    imageWidth: 800,
+    imageHeight: 800
+  }
+};
+
+function normalizeCategorySlug(rawCat) {
+  if (!rawCat) return null;
+  const c = String(rawCat).toLowerCase().trim();
+  if (c === 'bodycare' || c === 'corps-et-bain' || c === 'corps' || c === 'bain' || c === 'bath-and-body' || c === 'soins-du-corps') return 'corps-et-bain';
+  if (c === 'skincare' || c === 'soins-de-la-peau' || c === 'skin') return 'soins-de-la-peau';
+  if (c === 'fragrance' || c === 'parfums' || c === 'parfum' || c === 'fragrances') return 'parfums';
+  if (c === 'haircare' || c === 'soins-capillaires' || c === 'cheveux') return 'soins-capillaires';
+  if (c === 'makeup' || c === 'maquillage') return 'maquillage';
+  return null;
+}
+
+// Dedicated robots.txt route ensuring immediate 200 response with correct text/plain
+app.get('/robots.txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.sendFile(path.join(__dirname, 'robots.txt'));
+});
+
+// Dedicated Social Image Proxy / Endpoint for Products
+app.get(['/api/og-image/:productId', '/api/og-image/:productId.jpg', '/api/og-image/:productId.png'], async (req, res) => {
+  try {
+    let pid = req.params.productId;
+    if (pid.endsWith('.jpg') || pid.endsWith('.png')) {
+      pid = pid.slice(0, -4);
+    }
+
+    if (ogImageCache.has(pid)) {
+      const cached = ogImageCache.get(pid);
+      res.setHeader('Content-Type', cached.contentType);
+      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+      return res.send(cached.buffer);
+    }
+
+    const products = await getProducts();
+    const product = products.find(p => String(p.product_id) === String(pid));
+
+    if (!product || !product.image_url) {
+      return res.sendFile(path.join(__dirname, 'assets', 'og-facebook-preview.jpg'));
+    }
+
+    if (product.image_url.startsWith('/uploads/') || product.image_url.startsWith('uploads/')) {
+      const rel = product.image_url.startsWith('/') ? product.image_url.slice(1) : product.image_url;
+      const localPath = path.join(__dirname, rel);
+      if (fs.existsSync(localPath)) {
+        res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+        return res.sendFile(localPath);
+      }
+    }
+
+    if (product.image_url.startsWith('http')) {
+      try {
+        let fetchUrl = product.image_url;
+        if (fetchUrl.includes('oriflame.com') && !fetchUrl.includes('&w=')) {
+          fetchUrl += '&w=800';
+        }
+        const resp = await axios.get(fetchUrl, {
+          responseType: 'arraybuffer',
+          httpsAgent: httpsInsecureAgent,
+          timeout: 7000
+        });
+        const contentType = resp.headers['content-type'] || 'image/jpeg';
+        const buffer = Buffer.from(resp.data);
+        ogImageCache.set(pid, { contentType, buffer });
+        res.setHeader('Content-Type', contentType);
+        res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+        return res.send(buffer);
+      } catch (fetchErr) {
+        console.warn(`[OG-IMAGE] Remote fetch failed for product ${pid}:`, fetchErr.message);
+      }
+    }
+
+    return res.sendFile(path.join(__dirname, 'assets', 'og-facebook-preview.jpg'));
+  } catch (err) {
+    console.error('[OG-IMAGE] Error serving OG image:', err);
+    return res.sendFile(path.join(__dirname, 'assets', 'og-facebook-preview.jpg'));
+  }
+});
+
+// Dynamic Root & Product / Category query route
+app.get(['/', '/index.html'], async (req, res, next) => {
+  try {
+    const baseUrl = getEffectiveBaseUrl(req);
     let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
-    html = html.replace(/property="og:url" content="[^"]*"/, `property="og:url" content="${baseUrl}/"`);
-    html = html.replace(/property="og:image" content="[^"]*"/, `property="og:image" content="${baseUrl}/assets/og-facebook-preview.jpg"`);
-    html = html.replace(/property="og:image:secure_url" content="[^"]*"/, `property="og:image:secure_url" content="${baseUrl}/assets/og-facebook-preview.jpg"`);
-    html = html.replace(/name="twitter:image" content="[^"]*"/, `name="twitter:image" content="${baseUrl}/assets/og-facebook-preview.jpg"`);
+
+    // 1. Dynamic Product Share via Query: ?prod=123 or ?productId=123
+    const prodId = req.query.prod || req.query.productId;
+    if (prodId) {
+      const products = await getProducts();
+      const product = products.find(p => String(p.product_id) === String(prodId));
+      if (product) {
+        const prodName = product.name_fr || product.name || 'Produit Oriflame';
+        const priceFormatted = Number(product.price).toFixed(2);
+        const cleanDesc = stripHtml(product.description_fr || product.description || '').slice(0, 190) ||
+          `Commandez ${prodName} (${priceFormatted} DT) sur la boutique officielle Oriflame Tunisie de Mouna Nouira. Commande directe & livraison rapide.`;
+
+        const productOgImage = `${baseUrl}/api/og-image/${encodeURIComponent(product.product_id)}.jpg`;
+        const canonicalUrl = `${baseUrl}/?prod=${encodeURIComponent(product.product_id)}`;
+
+        html = injectOpenGraphMetadata(html, {
+          title: `${prodName} (${priceFormatted} DT) | Mouna Nouira — Oriflame Tunisie`,
+          description: cleanDesc,
+          url: canonicalUrl,
+          type: 'product',
+          price: priceFormatted,
+          inStock: product.in_stock !== false,
+          image: productOgImage,
+          imageType: 'image/jpeg',
+          imageWidth: 800,
+          imageHeight: 800,
+          imageAlt: prodName,
+          twitterCard: 'summary_large_image'
+        });
+
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        return res.send(html);
+      }
+    }
+
+    // 2. Dynamic Category Share via Query: ?category=...
+    const catSlug = normalizeCategorySlug(req.query.category);
+    if (catSlug && CATEGORY_META[catSlug]) {
+      const cMeta = CATEGORY_META[catSlug];
+      html = injectOpenGraphMetadata(html, {
+        title: cMeta.title,
+        description: cMeta.description,
+        url: `${baseUrl}/${cMeta.slug}`,
+        type: 'website',
+        image: `${baseUrl}/assets/${cMeta.imageFile}`,
+        imageType: 'image/jpeg',
+        imageWidth: cMeta.imageWidth,
+        imageHeight: cMeta.imageHeight,
+        imageAlt: cMeta.imageAlt,
+        twitterCard: 'summary_large_image'
+      });
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+
+    // 3. Default Homepage
+    html = injectOpenGraphMetadata(html, {
+      title: "Mouna Nouira — Catalogue Officiel Oriflame Tunisie",
+      description: "Découvrez le catalogue officiel Oriflame Suède Tunisie avec Mouna Nouira. Parfums de luxe, soins et maquillage avec remises exclusives et commande directe.",
+      url: `${baseUrl}/`,
+      type: 'website',
+      image: `${baseUrl}/assets/og-facebook-preview.jpg`,
+      imageType: 'image/jpeg',
+      imageWidth: 1376,
+      imageHeight: 768,
+      imageAlt: "Mouna Nouira — Catalogue Officiel Oriflame Tunisie",
+      twitterCard: 'summary_large_image'
+    });
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.send(html);
+  } catch (err) {
+    next();
+  }
+});
+
+// Dedicated Product SEO & Social URL: /produit/:id or /product/:id
+app.get(['/produit/:id', '/product/:id'], async (req, res, next) => {
+  try {
+    const baseUrl = getEffectiveBaseUrl(req);
+    const pid = req.params.id;
+    const products = await getProducts();
+    const product = products.find(p => String(p.product_id) === String(pid));
+    if (product) {
+      let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+      const prodName = product.name_fr || product.name || 'Produit Oriflame';
+      const priceFormatted = Number(product.price).toFixed(2);
+      const cleanDesc = stripHtml(product.description_fr || product.description || '').slice(0, 190) ||
+        `Commandez ${prodName} (${priceFormatted} DT) sur la boutique officielle Oriflame Tunisie de Mouna Nouira. Commande directe & livraison rapide.`;
+
+      const productOgImage = `${baseUrl}/api/og-image/${encodeURIComponent(product.product_id)}.jpg`;
+      const canonicalUrl = `${baseUrl}/produit/${encodeURIComponent(product.product_id)}`;
+
+      html = injectOpenGraphMetadata(html, {
+        title: `${prodName} (${priceFormatted} DT) | Mouna Nouira — Oriflame Tunisie`,
+        description: cleanDesc,
+        url: canonicalUrl,
+        type: 'product',
+        price: priceFormatted,
+        inStock: product.in_stock !== false,
+        image: productOgImage,
+        imageType: 'image/jpeg',
+        imageWidth: 800,
+        imageHeight: 800,
+        imageAlt: prodName,
+        twitterCard: 'summary_large_image'
+      });
+
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+  } catch (err) {
+    console.error('Error serving product route:', err);
+  }
+  return res.redirect(302, '/');
+});
+
+// Dedicated Perfume Buying Guide Route with dynamic OG tags
+app.get('/guide-parfum', (req, res, next) => {
+  try {
+    const baseUrl = getEffectiveBaseUrl(req);
+    let html = fs.readFileSync(path.join(__dirname, 'guide-parfum.html'), 'utf8');
+    html = injectOpenGraphMetadata(html, {
+      title: "Guide Parfums : Comment choisir sa signature olfactive ? — Oriflame Tunisie",
+      description: "Concentrations, familles olfactives (florale, boisée, ambrée...), conseils de tenue et sélection de fragrances Oriflame Tunisie.",
+      url: `${baseUrl}/guide-parfum`,
+      type: 'article',
+      image: `${baseUrl}/assets/og-guide-parfum.jpg`,
+      imageType: 'image/jpeg',
+      imageWidth: 800,
+      imageHeight: 800,
+      imageAlt: "Guide Parfums : Comment choisir sa signature olfactive ? — Oriflame Tunisie",
+      twitterCard: 'summary_large_image'
+    });
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(html);
   } catch (err) {
     next();
   }
+});
+
+// Dedicated Category Clean SEO & Social Routes
+['corps-et-bain', 'soins-de-la-peau', 'parfums', 'soins-capillaires', 'maquillage'].forEach(slug => {
+  app.get(`/${slug}`, (req, res, next) => {
+    try {
+      const baseUrl = getEffectiveBaseUrl(req);
+      let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+      const cMeta = CATEGORY_META[slug];
+      html = injectOpenGraphMetadata(html, {
+        title: cMeta.title,
+        description: cMeta.description,
+        url: `${baseUrl}/${cMeta.slug}`,
+        type: 'website',
+        image: `${baseUrl}/assets/${cMeta.imageFile}`,
+        imageType: 'image/jpeg',
+        imageWidth: cMeta.imageWidth,
+        imageHeight: cMeta.imageHeight,
+        imageAlt: cMeta.imageAlt,
+        twitterCard: 'summary_large_image'
+      });
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.send(html);
+    } catch (err) {
+      next();
+    }
+  });
 });
 
 // Static files
@@ -212,6 +584,23 @@ app.use('/uploads', express.static(UPLOADS_DIR));
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
+
+// ─── 301 PERMANENT REDIRECTS (Legacy & Alias URLs) ───
+const redirect301 = (targetPath) => (req, res) => {
+  const queryIndex = req.originalUrl.indexOf('?');
+  const qs = queryIndex !== -1 ? req.originalUrl.slice(queryIndex) : '';
+  return res.redirect(301, targetPath + qs);
+};
+
+// Legacy category redirections
+app.get('/soins-de-la-peau/corps', redirect301('/corps-et-bain'));
+app.get(['/skincare', '/skin'], redirect301('/soins-de-la-peau'));
+app.get(['/cheveux', '/haircare'], redirect301('/soins-capillaires'));
+app.get(['/parfum', '/fragrance', '/fragrances'], redirect301('/parfums'));
+app.get(['/comment-choisir-parfum', '/parfums/guide', '/parfum/guide'], redirect301('/guide-parfum'));
+app.get(['/cheveux/guide', '/soins-capillaires/guide'], redirect301('/soins-capillaires'));
+app.get(['/bodycare', '/bath-and-body', '/soins-du-corps', '/body', '/bain'], redirect301('/corps-et-bain'));
+app.get('/makeup', redirect301('/maquillage'));
 
 // Multer Storage Configuration for Product Image Uploads
 const storage = multer.diskStorage({
