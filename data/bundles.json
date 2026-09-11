@@ -1,8 +1,8 @@
 [
   {
-    "id": "bundle-1787403728016",
-    "title": "tret",
-    "title_fr": "tret",
+    "id": "bundle-1789110108574",
+    "title": "aa",
+    "title_fr": "aa",
     "title_ar": "",
     "title_en": "",
     "description": "",
@@ -10,13 +10,52 @@
     "description_ar": "",
     "description_en": "",
     "product_ids": [
-      "42499",
-      "48671"
+      "47724",
+      "44917"
     ],
-    "bundle_price": 50,
+    "bundle_price": 150,
+    "active": false,
+    "created_at": "2026-09-11T07:01:48.574Z",
+    "updated_at": "2026-09-11T07:01:48.574Z"
+  },
+  {
+    "id": "bundle-1789109829911",
+    "title": "Duo Soin Éclat Exceptionnel",
+    "title_fr": "Duo Soin Éclat Exceptionnel",
+    "title_ar": "",
+    "title_en": "",
+    "description": "Le duo parfait pour revitaliser votre peau au quotidien.",
+    "description_fr": "Le duo parfait pour revitaliser votre peau au quotidien.",
+    "description_ar": "",
+    "description_en": "",
+    "product_ids": [
+      "47724",
+      "44917"
+    ],
+    "bundle_price": 59.9,
     "active": true,
-    "updated_at": "2026-08-22T13:02:08.016Z",
-    "created_at": "2026-08-22T13:02:08.016Z"
+    "created_at": "2026-09-11T06:57:09.911Z",
+    "updated_at": "2026-09-11T06:57:09.911Z"
+  },
+  {
+    "id": "bundle-1789109751892",
+    "title": "Trio Beauté Prestige",
+    "title_fr": "Trio Beauté Prestige",
+    "title_ar": "",
+    "title_en": "",
+    "description": "Trois indispensables d'exception pour sublimer votre routine.",
+    "description_fr": "Trois indispensables d'exception pour sublimer votre routine.",
+    "description_ar": "",
+    "description_en": "",
+    "product_ids": [
+      "47724",
+      "44917",
+      "44915"
+    ],
+    "bundle_price": 109.9,
+    "active": true,
+    "created_at": "2026-09-11T06:55:51.892Z",
+    "updated_at": "2026-09-11T06:55:51.892Z"
   },
   {
     "id": "bundle-1787403642290",
@@ -33,9 +72,9 @@
       "42287"
     ],
     "bundle_price": 75,
-    "active": true,
-    "updated_at": "2026-08-22T13:00:42.290Z",
-    "created_at": "2026-08-22T13:00:42.290Z"
+    "active": false,
+    "created_at": "2026-08-22T13:00:42.290Z",
+    "updated_at": "2026-08-22T13:00:42.290Z"
   },
   {
     "id": "bundle-1787340001",
@@ -44,12 +83,16 @@
     "title_ar": "عرض حصري: كريم الجسم + معطر الجسم ايسينزا سوبريم",
     "title_en": "Exclusive Duo: Body Cream + Fragrance Mist Essenza Supreme",
     "description": "Profitez d'un prix exceptionnel en achetant ces 2 soins complémentaires ensemble.",
+    "description_fr": "Profitez d'un prix exceptionnel en achetant ces 2 soins complémentaires ensemble.",
+    "description_ar": "",
+    "description_en": "",
     "product_ids": [
       "46980",
       "47745"
     ],
     "bundle_price": 69.9,
-    "active": true,
-    "created_at": "2026-08-22T12:00:00.000Z"
+    "active": false,
+    "created_at": "2026-08-22T12:00:00.000Z",
+    "updated_at": "2026-09-11T06:50:18.114Z"
   }
 ]

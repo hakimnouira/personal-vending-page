@@ -10,24 +10,11 @@ let productsCacheTime = 0;
 
 // ── PRODUCTS ─────────────────────────────────────────────────────────────
 export async function getProducts(bypassCache = false) {
-  if (!bypassCache && productsCache && (Date.now() - productsCacheTime < 120000)) {
+  if (!bypassCache && productsCache && (Date.now() - productsCacheTime < 30000)) {
     return productsCache;
   }
 
-  // 1. Fast path: load local file cache immediately (0.5ms)
-  try {
-    const localFile = path.join(process.cwd(), 'data', 'products.json');
-    if (fs.existsSync(localFile)) {
-      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
-      if (Array.isArray(data) && data.length > 0) {
-        productsCache = data;
-        productsCacheTime = Date.now();
-        return data;
-      }
-    }
-  } catch (e) {}
-
-  // 2. Fallback: Query remote Postgres
+  // 1. Query remote Postgres first
   try {
     const res = await query('SELECT * FROM products ORDER BY product_id ASC');
     if (res && Array.isArray(res.rows) && res.rows.length > 0) {
@@ -61,31 +48,72 @@ export async function getProducts(bypassCache = false) {
       }));
       productsCache = mapped;
       productsCacheTime = Date.now();
+      try {
+        const localFile = path.join(process.cwd(), 'data', 'products.json');
+        fs.writeFileSync(localFile, JSON.stringify(mapped, null, 2), 'utf8');
+      } catch (e) {}
       return mapped;
     }
   } catch (err) {
-    console.error('getProducts DB query error:', err.message);
+    console.warn('getProducts DB query note:', err.message);
   }
+
+  // 2. Fallback: load local file cache if Postgres query failed or empty
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'products.json');
+    if (fs.existsSync(localFile)) {
+      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+      if (Array.isArray(data) && data.length > 0) {
+        productsCache = data;
+        productsCacheTime = Date.now();
+        return data;
+      }
+    }
+  } catch (e) {}
 
   return [];
 }
 
 export async function saveProducts(products) {
   if (!Array.isArray(products)) return false;
+
+  // Deduplicate products by product_id
+  const uniqueMap = new Map();
+  for (const p of products) {
+    if (p && p.product_id) {
+      uniqueMap.set(String(p.product_id).trim(), p);
+    }
+  }
+  const uniqueProducts = Array.from(uniqueMap.values());
+
+  // Update in-memory cache and write to local data/products.json file immediately
+  productsCache = uniqueProducts;
+  productsCacheTime = Date.now();
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'products.json');
+    fs.writeFileSync(localFile, JSON.stringify(uniqueProducts, null, 2), 'utf8');
+  } catch (fsErr) {
+    console.warn('saveProducts local file sync note:', fsErr.message);
+  }
+
+  if (typeof global.invalidateProductsCache === 'function') {
+    try { global.invalidateProductsCache(); } catch (e) {}
+  }
+
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    const incomingIds = products.map(p => String(p.product_id));
+    const incomingIds = uniqueProducts.map(p => String(p.product_id));
     if (incomingIds.length > 0) {
       await client.query('DELETE FROM products WHERE NOT (product_id = ANY($1::text[]))', [incomingIds]);
     } else {
       await client.query('DELETE FROM products');
     }
 
-    if (products.length > 0) {
+    if (uniqueProducts.length > 0) {
       const BATCH_SIZE = 50;
-      for (let i = 0; i < products.length; i += BATCH_SIZE) {
-        const batch = products.slice(i, i + BATCH_SIZE);
+      for (let i = 0; i < uniqueProducts.length; i += BATCH_SIZE) {
+        const batch = uniqueProducts.slice(i, i + BATCH_SIZE);
         const valuePlaceholders = [];
         const values = [];
         let paramIndex = 1;
@@ -297,6 +325,36 @@ async function ensureDealsColumns() {
 }
 
 export async function getDeals() {
+  await ensureDealsColumns();
+  try {
+    const res = await query('SELECT * FROM deals ORDER BY created_at DESC');
+    if (res && Array.isArray(res.rows)) {
+      const mapped = res.rows.map(row => ({
+        id: String(row.id),
+        title_fr: row.title_fr || '',
+        title_ar: row.title_ar || '',
+        title_en: row.title_en || '',
+        description_fr: row.description_fr || '',
+        threshold_amount: row.threshold_amount != null ? Number(row.threshold_amount) : 0,
+        product_id: row.product_id || '',
+        product_name: row.product_name || '',
+        product_image: row.product_image || '',
+        product_price: row.product_price != null ? Number(row.product_price) : 0,
+        discount_percent: row.discount_percent != null ? Number(row.discount_percent) : 0,
+        active: row.active !== false,
+        end_date: row.end_date ? new Date(row.end_date).toISOString() : null,
+        created_at: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString()
+      }));
+      try {
+        const localFile = path.join(process.cwd(), 'data', 'deals.json');
+        fs.writeFileSync(localFile, JSON.stringify(mapped, null, 2), 'utf8');
+      } catch (e) {}
+      return mapped;
+    }
+  } catch (err) {
+    console.warn('getDeals DB query error, falling back to local file:', err.message);
+  }
+
   try {
     const localFile = path.join(process.cwd(), 'data', 'deals.json');
     if (fs.existsSync(localFile)) {
@@ -304,33 +362,17 @@ export async function getDeals() {
       if (Array.isArray(data)) return data;
     }
   } catch (e) {}
-  await ensureDealsColumns();
-  try {
-    const res = await query('SELECT * FROM deals ORDER BY created_at DESC');
-    return res.rows.map(row => ({
-      id: String(row.id),
-      title_fr: row.title_fr || '',
-      title_ar: row.title_ar || '',
-      title_en: row.title_en || '',
-      description_fr: row.description_fr || '',
-      threshold_amount: row.threshold_amount != null ? Number(row.threshold_amount) : 0,
-      product_id: row.product_id || '',
-      product_name: row.product_name || '',
-      product_image: row.product_image || '',
-      product_price: row.product_price != null ? Number(row.product_price) : 0,
-      discount_percent: row.discount_percent != null ? Number(row.discount_percent) : 0,
-      active: row.active !== false,
-      end_date: row.end_date ? new Date(row.end_date).toISOString() : null,
-      created_at: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString()
-    }));
-  } catch (err) {
-    console.error('getDeals error:', err);
-    return [];
-  }
+
+  return [];
 }
 
 export async function saveDeals(deals) {
   if (!Array.isArray(deals)) return false;
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'deals.json');
+    fs.writeFileSync(localFile, JSON.stringify(deals, null, 2), 'utf8');
+  } catch (e) {}
+
   await ensureDealsColumns();
   const client = await pool.connect();
   try {
@@ -404,41 +446,65 @@ export async function saveDeals(deals) {
 // ── BUNDLES ──────────────────────────────────────────────────────────────
 export async function getBundles() {
   try {
+    const res = await query('SELECT * FROM bundles ORDER BY created_at DESC');
+    if (res && Array.isArray(res.rows)) {
+      const mapped = res.rows.map(row => ({
+        id: String(row.id),
+        title: row.title || '',
+        title_fr: row.title_fr || row.title || '',
+        title_ar: row.title_ar || '',
+        title_en: row.title_en || '',
+        description: row.description || '',
+        description_fr: row.description_fr || row.description || '',
+        description_ar: row.description_ar || '',
+        description_en: row.description_en || '',
+        product_ids: Array.isArray(row.product_ids)
+          ? row.product_ids
+          : (typeof row.product_ids === 'string' ? JSON.parse(row.product_ids || '[]') : []),
+        bundle_price: row.bundle_price != null ? Number(row.bundle_price) : 0,
+        active: row.active !== false,
+        created_at: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
+        updated_at: row.updated_at ? new Date(row.updated_at).toISOString() : new Date().toISOString()
+      }));
+
+      // Keep local file cache synchronized
+      try {
+        const localFile = path.join(process.cwd(), 'data', 'bundles.json');
+        fs.writeFileSync(localFile, JSON.stringify(mapped, null, 2), 'utf8');
+      } catch (e) {}
+
+      return mapped;
+    }
+  } catch (err) {
+    console.warn('getBundles DB query note, falling back to local file:', err.message);
+  }
+
+  // Fallback to local file if DB query failed
+  try {
     const localFile = path.join(process.cwd(), 'data', 'bundles.json');
     if (fs.existsSync(localFile)) {
       const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         return data;
       }
     }
   } catch (e) {}
 
-  try {
-    const res = await query('SELECT * FROM bundles ORDER BY created_at DESC');
-    return res.rows.map(row => ({
-      id: String(row.id),
-      title: row.title || '',
-      title_fr: row.title_fr || row.title || '',
-      title_ar: row.title_ar || '',
-      title_en: row.title_en || '',
-      description: row.description || '',
-      description_fr: row.description_fr || row.description || '',
-      description_ar: row.description_ar || '',
-      description_en: row.description_en || '',
-      product_ids: Array.isArray(row.product_ids) ? row.product_ids : [],
-      bundle_price: row.bundle_price != null ? Number(row.bundle_price) : 0,
-      active: row.active !== false,
-      created_at: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
-      updated_at: row.updated_at ? new Date(row.updated_at).toISOString() : new Date().toISOString()
-    }));
-  } catch (err) {
-    console.error('getBundles error:', err);
-    return [];
-  }
+  return [];
 }
 
 export async function saveBundles(bundles) {
   if (!Array.isArray(bundles)) return false;
+
+  // 1. Immediately update local fallback file
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'bundles.json');
+    fs.writeFileSync(localFile, JSON.stringify(bundles, null, 2), 'utf8');
+  } catch (e) {
+    console.warn('saveBundles local file warning:', e.message);
+  }
+
+  // 2. Persist to Postgres database
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -454,7 +520,7 @@ export async function saveBundles(bundles) {
         id, title, title_fr, title_ar, title_en,
         description, description_fr, description_ar, description_en,
         product_ids, bundle_price, active, created_at, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::jsonb, $11, $12, $13, $14)
       ON CONFLICT (id) DO UPDATE SET
         title = EXCLUDED.title,
         title_fr = EXCLUDED.title_fr,
@@ -494,7 +560,7 @@ export async function saveBundles(bundles) {
     return true;
   } catch (err) {
     await client.query('ROLLBACK');
-    console.error('saveBundles error:', err);
+    console.error('saveBundles DB error:', err);
     return false;
   } finally {
     client.release();
@@ -503,6 +569,33 @@ export async function saveBundles(bundles) {
 
 // ── CAROUSEL ─────────────────────────────────────────────────────────────
 export async function getCarousel() {
+  try {
+    const res = await query('SELECT * FROM carousel');
+    if (res && Array.isArray(res.rows)) {
+      const mapped = res.rows.map(row => ({
+        id: String(row.id),
+        image_url: row.image_url || '',
+        badge: row.badge || '',
+        title: row.title || '',
+        description: row.description || '',
+        button_link: row.button_link || '#catalogue-section',
+        button_text: row.button_text || 'Feuilleter le Catalogue',
+        offer_product_code: row.offer_product_code || '',
+        offer_product_name: row.offer_product_name || '',
+        offer_price: row.offer_price != null ? String(row.offer_price) : '',
+        offer_original_price: row.offer_original_price != null ? String(row.offer_original_price) : '',
+        active: row.active !== false
+      }));
+      try {
+        const localFile = path.join(process.cwd(), 'data', 'carousel.json');
+        fs.writeFileSync(localFile, JSON.stringify(mapped, null, 2), 'utf8');
+      } catch (e) {}
+      return mapped;
+    }
+  } catch (err) {
+    console.warn('getCarousel DB query note, falling back to local file:', err.message);
+  }
+
   try {
     const localFile = path.join(process.cwd(), 'data', 'carousel.json');
     if (fs.existsSync(localFile)) {
@@ -513,30 +606,16 @@ export async function getCarousel() {
     }
   } catch (e) {}
 
-  try {
-    const res = await query('SELECT * FROM carousel');
-    return res.rows.map(row => ({
-      id: String(row.id),
-      image_url: row.image_url || '',
-      badge: row.badge || '',
-      title: row.title || '',
-      description: row.description || '',
-      button_link: row.button_link || '#catalogue-section',
-      button_text: row.button_text || 'Feuilleter le Catalogue',
-      offer_product_code: row.offer_product_code || '',
-      offer_product_name: row.offer_product_name || '',
-      offer_price: row.offer_price != null ? String(row.offer_price) : '',
-      offer_original_price: row.offer_original_price != null ? String(row.offer_original_price) : '',
-      active: row.active !== false
-    }));
-  } catch (err) {
-    console.error('getCarousel error:', err);
-    return [];
-  }
+  return [];
 }
 
 export async function saveCarousel(slides) {
   if (!Array.isArray(slides)) return false;
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'carousel.json');
+    fs.writeFileSync(localFile, JSON.stringify(slides, null, 2), 'utf8');
+  } catch (e) {}
+
   const client = await pool.connect();
   try {
     await client.query('BEGIN');

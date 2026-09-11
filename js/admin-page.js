@@ -150,6 +150,10 @@ class AdminDashboard {
 
     // Featured Special Offers Showcase
     this.selectFeaturedDealProduct = document.getElementById('select-featured-deal-product');
+    this.inputFeaturedDealCode = document.getElementById('input-featured-deal-code');
+    this.featuredDealsAutocompleteList = document.getElementById('featured-deals-autocomplete-list');
+    this.featuredDealCodeFeedback = document.getElementById('featured-deal-code-feedback');
+    this.btnClearFeaturedDealCode = document.getElementById('btn-clear-featured-deal-code');
     this.btnAddFeaturedDeal = document.getElementById('btn-add-featured-deal');
     this.featuredDealsGrid = document.getElementById('featured-deals-admin-grid');
     this.btnSaveFeaturedDeals = document.getElementById('btn-save-featured-deals');
@@ -1131,13 +1135,63 @@ class AdminDashboard {
     }
 
     // Featured Special Offers Showcase Events
-    if (this.btnAddFeaturedDeal && this.selectFeaturedDealProduct) {
+    if (this.btnAddFeaturedDeal) {
       this.btnAddFeaturedDeal.addEventListener('click', () => {
-        const prodId = this.selectFeaturedDealProduct.value;
-        if (!prodId) return alert(this.i18n.getLang() === 'ar' ? 'يرجى اختيار منتج لإضافته' : 'Veuillez sélectionner un produit à ajouter');
-        this.addFeaturedDeal(prodId);
+        this.handleAddFeaturedDealSubmit();
       });
     }
+
+    if (this.inputFeaturedDealCode) {
+      this.inputFeaturedDealCode.addEventListener('input', (e) => {
+        const val = (e.target.value || '').trim();
+        if (this.btnClearFeaturedDealCode) {
+          this.btnClearFeaturedDealCode.style.display = val.length > 0 ? 'block' : 'none';
+        }
+        this.renderFeaturedDealsAutocomplete(val);
+      });
+
+      this.inputFeaturedDealCode.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.handleAddFeaturedDealSubmit();
+        } else if (e.key === 'Escape') {
+          this.hideFeaturedDealsAutocomplete();
+        }
+      });
+    }
+
+    if (this.btnClearFeaturedDealCode) {
+      this.btnClearFeaturedDealCode.addEventListener('click', () => {
+        if (this.inputFeaturedDealCode) {
+          this.inputFeaturedDealCode.value = '';
+          this.inputFeaturedDealCode.focus();
+        }
+        this.btnClearFeaturedDealCode.style.display = 'none';
+        this.hideFeaturedDealsAutocomplete();
+        this.hideFeaturedDealFeedback();
+      });
+    }
+
+    if (this.selectFeaturedDealProduct) {
+      this.selectFeaturedDealProduct.addEventListener('change', () => {
+        const val = this.selectFeaturedDealProduct.value;
+        if (val && this.inputFeaturedDealCode) {
+          this.inputFeaturedDealCode.value = val;
+          if (this.btnClearFeaturedDealCode) this.btnClearFeaturedDealCode.style.display = 'block';
+        }
+        this.hideFeaturedDealsAutocomplete();
+        this.hideFeaturedDealFeedback();
+      });
+    }
+
+    // Close autocomplete on click outside
+    document.addEventListener('click', (e) => {
+      if (this.featuredDealsAutocompleteList && this.inputFeaturedDealCode) {
+        if (!this.inputFeaturedDealCode.contains(e.target) && !this.featuredDealsAutocompleteList.contains(e.target)) {
+          this.hideFeaturedDealsAutocomplete();
+        }
+      }
+    });
 
     if (this.btnSaveFeaturedDeals) {
       this.btnSaveFeaturedDeals.addEventListener('click', async () => {
@@ -2071,15 +2125,194 @@ class AdminDashboard {
     const prods = this.rawProducts || this.products || [];
     const currentVal = this.selectFeaturedDealProduct.value;
 
+    const sortedProds = [...prods].sort((a, b) => {
+      const idA = String(a.product_id || '').trim();
+      const idB = String(b.product_id || '').trim();
+      const numA = parseInt(idA.replace(/\D/g, ''), 10);
+      const numB = parseInt(idB.replace(/\D/g, ''), 10);
+      if (!isNaN(numA) && !isNaN(numB) && numA !== numB) {
+        return numA - numB;
+      }
+      return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
     this.selectFeaturedDealProduct.innerHTML = `
       <option value="">-- Choisir un produit du catalogue à ajouter en promo --</option>
-      ${prods.map(p => `
+      ${sortedProds.map(p => `
         <option value="${p.product_id}" ${this.featuredDealIds.includes(String(p.product_id)) ? 'disabled' : ''}>
-          [${p.product_id}] ${(p.name_fr || p.name || 'Produit')} - ${Number(p.price).toFixed(2)} DT ${this.featuredDealIds.includes(String(p.product_id)) ? '(Déjà dans les offres)' : ''}
+          [${p.product_id}] ${(p.name_fr || p.name || 'Produit')} - ${Number(p.price || 0).toFixed(2)} DT ${this.featuredDealIds.includes(String(p.product_id)) ? '(Déjà dans les offres)' : ''}
         </option>
       `).join('')}
     `;
     if (currentVal) this.selectFeaturedDealProduct.value = currentVal;
+  }
+
+  showFeaturedDealFeedback(msg, isError = true) {
+    if (!this.featuredDealCodeFeedback) return;
+    this.featuredDealCodeFeedback.style.display = 'block';
+    if (isError) {
+      this.featuredDealCodeFeedback.style.background = 'rgba(239, 68, 68, 0.18)';
+      this.featuredDealCodeFeedback.style.color = '#FCA5A5';
+      this.featuredDealCodeFeedback.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+    } else {
+      this.featuredDealCodeFeedback.style.background = 'rgba(16, 185, 129, 0.18)';
+      this.featuredDealCodeFeedback.style.color = '#6EE7B7';
+      this.featuredDealCodeFeedback.style.border = '1px solid rgba(16, 185, 129, 0.4)';
+    }
+    this.featuredDealCodeFeedback.textContent = msg;
+  }
+
+  hideFeaturedDealFeedback() {
+    if (this.featuredDealCodeFeedback) {
+      this.featuredDealCodeFeedback.style.display = 'none';
+      this.featuredDealCodeFeedback.textContent = '';
+    }
+  }
+
+  hideFeaturedDealsAutocomplete() {
+    if (this.featuredDealsAutocompleteList) {
+      this.featuredDealsAutocompleteList.style.display = 'none';
+      this.featuredDealsAutocompleteList.innerHTML = '';
+    }
+  }
+
+  renderFeaturedDealsAutocomplete(rawQuery) {
+    if (!this.featuredDealsAutocompleteList) return;
+    const q = (rawQuery || '').trim().toLowerCase();
+    if (q.length < 2) {
+      this.hideFeaturedDealsAutocomplete();
+      return;
+    }
+
+    const prods = this.rawProducts || this.products || [];
+    const matches = prods.filter(p => {
+      const id = String(p.product_id || '').toLowerCase();
+      const name = String(p.name_fr || p.name || '').toLowerCase();
+      return id.includes(q) || name.includes(q);
+    });
+
+    matches.sort((a, b) => {
+      const idA = String(a.product_id || '').trim();
+      const idB = String(b.product_id || '').trim();
+      const numA = parseInt(idA.replace(/\D/g, ''), 10);
+      const numB = parseInt(idB.replace(/\D/g, ''), 10);
+      if (!isNaN(numA) && !isNaN(numB) && numA !== numB) return numA - numB;
+      return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
+    if (matches.length === 0) {
+      this.featuredDealsAutocompleteList.innerHTML = `
+        <div style="padding: 10px 14px; color: #71717A; font-size: 0.85rem; font-style: italic;">
+          Aucun produit trouvé
+        </div>
+      `;
+      this.featuredDealsAutocompleteList.style.display = 'block';
+      return;
+    }
+
+    this.featuredDealsAutocompleteList.innerHTML = matches.slice(0, 30).map(p => {
+      const isAdded = this.featuredDealIds.includes(String(p.product_id));
+      return `
+        <div class="featured-deal-suggestion-item" data-id="${p.product_id}" style="padding: 9px 12px; cursor: pointer; border-bottom: 1px solid #F4F4F5; display: flex; align-items: center; justify-content: space-between; gap: 8px; transition: background 0.15s ease;">
+          <div style="min-width: 0; flex: 1; text-align: left;">
+            <span style="display: inline-block; background: #FFF7ED; color: #C2410C; border: 1px solid #FDBA74; font-size: 0.75rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-right: 6px;">
+              ${p.product_id}
+            </span>
+            <span style="font-weight: 600; font-size: 0.84rem; color: #18181B;">
+              ${p.name_fr || p.name || 'Produit'}
+            </span>
+            ${isAdded ? '<span style="font-size: 0.72rem; color: #9CA3AF; margin-left: 6px; font-weight: 600;">(Déjà dans les offres)</span>' : ''}
+          </div>
+          <div style="font-weight: 700; font-size: 0.82rem; color: #EA580C; white-space: nowrap;">
+            ${Number(p.price || 0).toFixed(2)} DT
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    this.featuredDealsAutocompleteList.style.display = 'block';
+
+    const items = this.featuredDealsAutocompleteList.querySelectorAll('.featured-deal-suggestion-item');
+    items.forEach(el => {
+      el.addEventListener('mouseenter', () => { el.style.background = '#FFF7ED'; });
+      el.addEventListener('mouseleave', () => { el.style.background = ''; });
+      el.addEventListener('click', () => {
+        const id = el.getAttribute('data-id');
+        if (this.inputFeaturedDealCode) {
+          this.inputFeaturedDealCode.value = id;
+          if (this.btnClearFeaturedDealCode) this.btnClearFeaturedDealCode.style.display = 'block';
+        }
+        if (this.selectFeaturedDealProduct) {
+          this.selectFeaturedDealProduct.value = id;
+        }
+        this.hideFeaturedDealsAutocomplete();
+        this.hideFeaturedDealFeedback();
+      });
+    });
+  }
+
+  handleAddFeaturedDealSubmit() {
+    this.hideFeaturedDealFeedback();
+    const isArabic = this.i18n && typeof this.i18n.getLang === 'function' && this.i18n.getLang() === 'ar';
+    const code = (this.inputFeaturedDealCode ? this.inputFeaturedDealCode.value : '').trim();
+    const dropdownVal = this.selectFeaturedDealProduct ? this.selectFeaturedDealProduct.value : '';
+
+    if (code) {
+      const prods = this.rawProducts || this.products || [];
+      const cleanCode = code.toLowerCase();
+      const found = prods.find(p => String(p.product_id || '').trim().toLowerCase() === cleanCode);
+
+      if (!found) {
+        this.showFeaturedDealFeedback(
+          isArabic ? 'المرجع غير موجود في الكتالوج' : 'Référence introuvable dans le catalogue',
+          true
+        );
+        return;
+      }
+
+      if (this.featuredDealIds.includes(String(found.product_id))) {
+        this.showFeaturedDealFeedback(
+          isArabic ? 'هذا المنتج موجود بالفعل في العروض الخاصة' : 'Ce produit est déjà dans les offres spéciales',
+          true
+        );
+        return;
+      }
+
+      this.addFeaturedDeal(found.product_id);
+      if (this.inputFeaturedDealCode) this.inputFeaturedDealCode.value = '';
+      if (this.btnClearFeaturedDealCode) this.btnClearFeaturedDealCode.style.display = 'none';
+      if (this.selectFeaturedDealProduct) this.selectFeaturedDealProduct.value = '';
+      this.hideFeaturedDealsAutocomplete();
+      this.showFeaturedDealFeedback(
+        isArabic ? `تمت إضافة المنتج [${found.product_id}] بنجاح!` : `✅ Produit [${found.product_id}] ${(found.name_fr || found.name || '')} ajouté avec succès !`,
+        false
+      );
+      setTimeout(() => this.hideFeaturedDealFeedback(), 3500);
+      return;
+    }
+
+    if (dropdownVal) {
+      if (this.featuredDealIds.includes(String(dropdownVal))) {
+        this.showFeaturedDealFeedback(
+          isArabic ? 'هذا المنتج موجود بالفعل في العروض الخاصة' : 'Ce produit est déjà dans les offres spéciales',
+          true
+        );
+        return;
+      }
+      this.addFeaturedDeal(dropdownVal);
+      if (this.selectFeaturedDealProduct) this.selectFeaturedDealProduct.value = '';
+      this.showFeaturedDealFeedback(
+        isArabic ? 'تمت إضافة المنتج بنجاح!' : `✅ Produit [${dropdownVal}] ajouté avec succès !`,
+        false
+      );
+      setTimeout(() => this.hideFeaturedDealFeedback(), 3500);
+      return;
+    }
+
+    this.showFeaturedDealFeedback(
+      isArabic ? 'يرجى إدخال مرجع أو اختيار منتج' : 'Veuillez entrer une référence ou choisir un produit',
+      true
+    );
   }
 
   renderFeaturedDealsAdminGrid() {

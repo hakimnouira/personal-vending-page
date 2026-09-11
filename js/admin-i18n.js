@@ -15,6 +15,8 @@ export const adminTranslations = {
     tab_stock: "📦 Gestion du Stock & Produits",
     tab_scraper: "🤖 Scrapers Oriflame & Flipbook",
     tab_settings: "⚙️ Paramètres & Import/Export CSV",
+    tab_bundles: "🎁 Packs & Offres Combinées",
+    tab_deals: "🎯 Offres Seuil & Deals Conditionnels",
     tab_carousel: "🖼️ Carrousel Page d'Accueil",
     tab_order_detail: "📋 Détail Commande",
 
@@ -118,6 +120,8 @@ export const adminTranslations = {
     tab_stock: "📦 إدارة المخزون والمنتجات",
     tab_scraper: "🤖 سحب الكتالوج والكتيب الرقمي",
     tab_settings: "⚙️ الإعدادات وتصدير/استيراد CSV",
+    tab_bundles: "🎁 عروض الباقات المدمجة",
+    tab_deals: "🎯 عروض التخفيض المشروطة",
     tab_carousel: "🖼️ شريط الصور المتحرك",
     tab_order_detail: "📋 تفاصيل الطلب",
 
@@ -221,6 +225,8 @@ export const adminTranslations = {
     tab_stock: "📦 Stock & Catalog Manager",
     tab_scraper: "🤖 Oriflame & Flipbook Scraper",
     tab_settings: "⚙️ Settings & CSV Data",
+    tab_bundles: "🎁 Combo Deals & Bundles",
+    tab_deals: "🎯 Threshold Deals & Promotions",
     tab_carousel: "🖼️ Homepage Carousel",
     tab_order_detail: "📋 Order Details",
 

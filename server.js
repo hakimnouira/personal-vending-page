@@ -612,6 +612,7 @@ export function invalidateProductsCache() {
   productsCache = null;
   productsCacheTime = 0;
 }
+global.invalidateProductsCache = invalidateProductsCache;
 
 app.get('/api/products', async (req, res) => {
   try {
@@ -1038,16 +1039,22 @@ app.post('/api/products/toggle-discount/:id', requireAdmin, async (req, res) => 
 // SCRAPER APIs
 app.post('/api/scrape/url', requireAdmin, async (req, res) => {
   try {
-    const { url } = req.body;
-    if (!url) return res.status(400).json({ success: false, message: 'URL is required' });
+    const inputUrl = req.body.url || req.body.code;
+    if (!inputUrl) return res.status(400).json({ success: false, message: 'URL ou Code produit requis' });
 
-    const scrapedData = await scrapeProductFromUrl(url);
+    const scrapedData = await scrapeProductFromUrl(inputUrl);
     if (req.body.auto_add === true || req.body.auto_add === 'true') {
-      const products = await getProducts();
-      products.unshift(scrapedData);
+      const products = await getProducts(true);
+      const existingIdx = products.findIndex(p => String(p.product_id).trim() === String(scrapedData.product_id).trim());
+      if (existingIdx >= 0) {
+        products[existingIdx] = { ...products[existingIdx], ...scrapedData };
+      } else {
+        products.unshift(scrapedData);
+      }
       await saveProducts(products);
+      invalidateProductsCache();
     }
-    res.json({ success: true, message: 'Product scraped', data: scrapedData });
+    res.json({ success: true, message: 'Produit scrappé avec succès', data: scrapedData, product: scrapedData });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -1063,10 +1070,11 @@ app.post('/api/scrape/oriflame-catalog', requireAdmin, async (req, res) => {
     settings.company_discount_applied = false;
     await saveSettings(settings);
 
-    // Sync newly scraped products to Postgres
+    // Sync newly scraped products to Postgres and disk
     if (result && Array.isArray(result.products)) {
       await saveProducts(result.products);
     }
+    invalidateProductsCache();
 
     res.json({
       success: true,
@@ -1439,7 +1447,10 @@ app.post('/api/bundles', requireAdmin, async (req, res) => {
       bundles.unshift(newBundle);
     }
 
-    await saveBundles(bundles);
+    const saved = await saveBundles(bundles);
+    if (!saved) {
+      return res.status(500).json({ success: false, message: 'Erreur lors de la sauvegarde du pack en base de données.' });
+    }
     res.json({ success: true, message: 'Pack enregistré avec succès.', data: newBundle });
   } catch (e) {
     res.status(500).json({ success: false, message: 'Erreur lors de l\'enregistrement du pack: ' + e.message });
@@ -1451,7 +1462,10 @@ app.delete('/api/bundles/:id', requireAdmin, async (req, res) => {
     const { id } = req.params;
     let bundles = await getBundles();
     bundles = bundles.filter(b => b.id !== id);
-    await saveBundles(bundles);
+    const saved = await saveBundles(bundles);
+    if (!saved) {
+      return res.status(500).json({ success: false, message: 'Erreur lors de la suppression du pack.' });
+    }
     res.json({ success: true, message: 'Pack supprimé avec succès.' });
   } catch (e) {
     res.status(500).json({ success: false, message: 'Erreur lors de la suppression: ' + e.message });
@@ -1467,7 +1481,10 @@ app.patch('/api/bundles/:id/toggle', requireAdmin, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Pack introuvable.' });
     }
     bundle.active = !bundle.active;
-    await saveBundles(bundles);
+    const saved = await saveBundles(bundles);
+    if (!saved) {
+      return res.status(500).json({ success: false, message: 'Erreur lors de la mise à jour du statut du pack.' });
+    }
     res.json({ success: true, message: `Pack ${bundle.active ? 'activé' : 'désactivé'}.`, active: bundle.active });
   } catch (e) {
     res.status(500).json({ success: false, message: 'Erreur de basculement: ' + e.message });

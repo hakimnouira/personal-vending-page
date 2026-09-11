@@ -1,9 +1,12 @@
 // Comprehensive Multi-Category Oriflame Tunisia Scraper with Diff Engine
 import axios from 'axios';
+import https from 'https';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,7 +27,7 @@ export async function scrapeAllOriflameCategories() {
   // 0. Load current existing products from database first (falling back to disk if needed)
   let currentProducts = [];
   try {
-    const dbProds = await getProducts();
+    const dbProds = await getProducts(true);
     if (Array.isArray(dbProds) && dbProds.length > 0) {
       currentProducts = dbProds;
     } else if (fs.existsSync(PRODUCTS_FILE)) {
@@ -47,6 +50,7 @@ export async function scrapeAllOriflameCategories() {
     console.log(`Fetching live digital catalogue enrichments for active catalogue: ${activeCatalogueCode}...`);
     const catalogueUrl = `https://tn-catalogue.oriflame.com/fr-TN/${activeCatalogueCode}-brp?HideStandardUI=true&Page=1`;
     const catPageRes = await axios.get(catalogueUrl, {
+      httpsAgent,
       headers: { 'User-Agent': USER_AGENT },
       timeout: 12000
     });
@@ -60,7 +64,7 @@ export async function scrapeAllOriflameCategories() {
         const fetchedChunks = await Promise.all(
           chunkEntries.map(async ([key, url]) => {
             try {
-              const cRes = await axios.get(url, { timeout: 10000 });
+              const cRes = await axios.get(url, { httpsAgent, timeout: 10000 });
               return { url, data: cRes.data };
             } catch (err) {
               return null;
@@ -230,6 +234,7 @@ export async function scrapeAllOriflameCategories() {
     try {
       console.log(`Scraping category: ${item.url}...`);
       const res = await axios.get(item.url, {
+        httpsAgent,
         headers: { 'User-Agent': USER_AGENT, 'Accept-Language': 'fr-FR,fr;q=0.9,ar;q=0.8,en;q=0.7' },
         timeout: 10000
       });
@@ -459,6 +464,7 @@ export async function scrapeAllOriflameCategories() {
       let liveShades = null;
       try {
         const liveFamRes = await axios.get(`https://tn.oriflame.com/products/product?code=${fam.parentId}&store=TN-oriflame_1`, {
+          httpsAgent,
           headers: { 'User-Agent': USER_AGENT },
           timeout: 7000
         });
@@ -549,35 +555,78 @@ export async function scrapeAllOriflameCategories() {
       parent.in_stock = shadeList.some(s => s.in_stock !== false);
       allScrapedMap.set(fam.parentId, parent);
 
-      // Remove secondary standalone shade cards from top-level map
+      // Keep every individual shade reference as an accessible product in the catalog
       shadeList.forEach(s => {
-        if (s.product_id !== fam.parentId) {
-          allScrapedMap.delete(s.product_id);
-        }
-      });
-      fam.defaultShades.forEach(s => {
-        if (s.code !== fam.parentId) {
-          allScrapedMap.delete(s.code);
+        if (s.product_id && !allScrapedMap.has(String(s.product_id))) {
+          allScrapedMap.set(String(s.product_id), {
+            product_id: String(s.product_id),
+            name: s.name,
+            name_fr: s.name,
+            category: fam.category,
+            price: s.price,
+            original_price: s.original_price,
+            original_catalog_price: s.price,
+            company_discount_applied: false,
+            company_discount_percent: 0,
+            is_promo: Boolean(s.original_price && s.original_price > s.price),
+            discount_percent: (s.original_price && s.original_price > s.price) ? Math.round(((s.original_price - s.price) / s.original_price) * 100) : 0,
+            size: 'Format Standard',
+            suitable_for: 'Tous types de peaux • Certifié Oriflame Suède',
+            image_url: s.image_url,
+            images: [s.image_url],
+            description: `Produit officiel Oriflame Tunisie (${s.product_id}) : ${s.name}. Formule scandinave haute qualité.`,
+            description_fr: `Produit officiel Oriflame Tunisie (${s.product_id}) : ${s.name}. Formule scandinave haute qualité.`,
+            benefits: ["100% Produit original certifié par Mouna Nouira"],
+            how_to_use: "Appliquer délicatement selon les recommandations officielles.",
+            ingredients: "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+            in_stock: s.in_stock !== false
+          });
         }
       });
     } catch (e) {
-      console.warn(`Family sync error for ${fam.parentId}:`, e.message);
+      console.warn(`Family sync note for ${fam.parentId}:`, e.message);
     }
   }
 
-  // Also deduplicate any dynamically scraped variants from concept.products
-  allScrapedMap.forEach((prod, pId) => {
-    if (Array.isArray(prod.variants) && prod.variants.length > 1) {
-      prod.variants.forEach(v => {
-        if (v.product_id && String(v.product_id) !== String(pId)) {
-          allScrapedMap.delete(String(v.product_id));
-        }
-      });
+  const scrapedProducts = Array.from(allScrapedMap.values());
+  console.log(`Total freshly scraped products from official channels: ${scrapedProducts.length}`);
+
+  // Merge freshly scraped products with existing baseline products:
+  // 1. All existing products in DB are preserved (never deleted silently)
+  // 2. Products present in both are updated with newest prices, promo status, stock and images
+  // 3. New products from the scrape are added
+  const mergedMap = new Map();
+  currentProducts.forEach(p => {
+    if (p && p.product_id) {
+      mergedMap.set(String(p.product_id).trim(), p);
     }
   });
 
-  const scrapedProducts = Array.from(allScrapedMap.values());
-  console.log(`Total unique products after multi-shade grouping: ${scrapedProducts.length}`);
+  scrapedProducts.forEach(sp => {
+    const strId = String(sp.product_id).trim();
+    const existing = mergedMap.get(strId);
+    if (existing) {
+      mergedMap.set(strId, {
+        ...existing,
+        ...sp,
+        price: Number(sp.price),
+        original_price: sp.original_price != null ? Number(sp.original_price) : null,
+        original_catalog_price: Number(sp.original_catalog_price || sp.price),
+        is_promo: Boolean(sp.is_promo),
+        discount_percent: sp.discount_percent || 0,
+        in_stock: sp.in_stock !== false,
+        name: sp.name || existing.name,
+        name_fr: sp.name_fr || existing.name_fr || sp.name,
+        image_url: sp.image_url || existing.image_url,
+        images: (sp.images && sp.images.length > 0) ? sp.images : existing.images
+      });
+    } else {
+      mergedMap.set(strId, sp);
+    }
+  });
+
+  const mergedProducts = Array.from(mergedMap.values());
+  console.log(`Total merged catalogue products in memory: ${mergedProducts.length}`);
 
   // 3. Compute Synchronisation Statistics (New, Modified, Unchanged, Deleted)
   let newCount = 0;
@@ -588,37 +637,29 @@ export async function scrapeAllOriflameCategories() {
   const newItems = [];
   const modifiedItems = [];
 
-  scrapedProducts.forEach(scraped => {
-    const existing = currentMap.get(scraped.product_id);
+  mergedProducts.forEach(prod => {
+    const existing = currentMap.get(String(prod.product_id));
     if (!existing) {
       newCount++;
-      newItems.push({ code: scraped.product_id, name: scraped.name, price: scraped.price, status: 'new' });
+      newItems.push({ code: prod.product_id, name: prod.name, price: prod.price, status: 'new' });
     } else {
-      const priceChanged = Math.abs(Number(existing.price) - Number(scraped.price)) > 0.05;
-      const promoChanged = existing.is_promo !== scraped.is_promo;
-      const nameChanged = existing.name !== scraped.name;
+      const priceChanged = Math.abs(Number(existing.price) - Number(prod.price)) > 0.05;
+      const promoChanged = existing.is_promo !== prod.is_promo;
+      const nameChanged = existing.name !== prod.name;
+      const stockChanged = existing.in_stock !== prod.in_stock;
 
-      if (priceChanged || promoChanged || nameChanged) {
+      if (priceChanged || promoChanged || nameChanged || stockChanged) {
         modifiedCount++;
         modifiedItems.push({
-          code: scraped.product_id,
-          name: scraped.name,
+          code: prod.product_id,
+          name: prod.name,
           old_price: existing.price,
-          new_price: scraped.price,
+          new_price: prod.price,
           status: 'modified'
         });
       } else {
         unchangedCount++;
       }
-    }
-  });
-
-  // Save merged and updated products into database and data/products.json with reset discount
-  const mergedProducts = [...scrapedProducts];
-  // Preserve any custom products added manually that were not in the scrape
-  currentProducts.forEach(p => {
-    if (!allScrapedMap.has(String(p.product_id)) && p.product_id.startsWith('MANUAL-')) {
-      mergedProducts.push(p);
     }
   });
 
@@ -630,10 +671,10 @@ export async function scrapeAllOriflameCategories() {
     company_discount_percent: 0
   }));
 
-  // Save to active database (Neon Postgres) first
+  // Save to active database (Neon Postgres) and local file cache
   try {
     await saveProducts(cleanMerged);
-    console.log(`Persisted ${cleanMerged.length} products to active Neon Postgres database.`);
+    console.log(`Persisted ${cleanMerged.length} products to active Neon Postgres database and local cache.`);
   } catch (dbErr) {
     console.warn("Neon DB sync note during scrape:", dbErr.message);
   }
@@ -680,10 +721,10 @@ export async function scrapeAllOriflameCategories() {
 
 export function classifyCategory(name = '') {
   const lower = name.toLowerCase();
-  if (lower.includes('parfum') || lower.includes('eau de') || lower.includes('toilette') || lower.includes('brume') || lower.includes('déodorant') || lower.includes('deodorant') || lower.includes('roll-on') || lower.includes('glacier') || lower.includes('eclat') || lower.includes('possess') || lower.includes('amber') || lower.includes('giordani gold essenza') || lower.includes('signature') || lower.includes('lucia') || lower.includes('volare') || lower.includes('venture') || lower.includes('joyce')) {
+  if (lower.includes('parfum') || lower.includes('eau de') || lower.includes('toilette') || lower.includes('brume') || lower.includes('déodorant') || lower.includes('deodorant') || lower.includes('roll-on') || lower.includes('glacier') || lower.includes('eclat') || lower.includes('possess') || lower.includes('amber') || lower.includes('giordani gold essenza') || lower.includes('signature') || lower.includes('lucia') || lower.includes('volare') || lower.includes('venture') || lower.includes('joyce') || lower.includes('scents')) {
     return 'Fragrance';
   }
-  if (lower.includes('mascara') || lower.includes('rouge à lèvres') || lower.includes('rouge a levres') || lower.includes('fond de teint') || lower.includes('poudre') || lower.includes('fard') || lower.includes('vernis') || lower.includes('top coat') || lower.includes('eyeliner') || lower.includes('sourcils') || lower.includes('the one') || lower.includes('oncolour') || lower.includes('perles bronzantes') || lower.includes('crayon')) {
+  if (lower.includes('mascara') || lower.includes('rouge à lèvres') || lower.includes('rouge a levres') || lower.includes('lèvres') || lower.includes('levres') || lower.includes('blush') || lower.includes('fond de teint') || lower.includes('poudre') || lower.includes('fard') || lower.includes('vernis') || lower.includes('top coat') || lower.includes('eyeliner') || lower.includes('sourcils') || lower.includes('the one') || lower.includes('oncolour') || lower.includes('perles bronzantes') || lower.includes('crayon') || lower.includes('gloss') || lower.includes('joues')) {
     return 'Makeup';
   }
   if (lower.includes('shampooing') || lower.includes('après-shampooing') || lower.includes('capillaire') || lower.includes('cheveux') || lower.includes('eleo') || lower.includes('hairx') || lower.includes('duologi')) {
@@ -712,101 +753,105 @@ function calculateEstimatedOriginalPrice(price) {
   return null;
 }
 
-export async function scrapeProductFromUrl(url) {
+export async function scrapeProductFromUrl(inputUrl) {
   try {
+    let rawUrl = String(inputUrl || '').trim();
+    let code = '';
+    const codeMatch = rawUrl.match(/(?:code=|^)([0-9]{4,6})/i);
+    if (codeMatch) code = codeMatch[1];
+    let url = rawUrl;
+    if (!url.startsWith('http')) {
+      url = `https://tn.oriflame.com/products/product?code=${code || rawUrl}`;
+    }
+
     const response = await axios.get(url, {
+      httpsAgent,
       headers: {
         'User-Agent': USER_AGENT,
         'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8'
       },
-      timeout: 10000
+      timeout: 15000
     });
 
     const html = response.data;
     const $ = cheerio.load(html);
 
     let title = $('h1').first().text().trim() || $('meta[property="og:title"]').attr('content') || 'Produit Oriflame';
+    title = title.split('|')[0].trim();
+
     let price = 45.00;
     let originalPrice = null;
+    let inStock = true;
     let variants = [];
-    let code = `ORF-${Date.now().toString().slice(-6)}`;
-
-    const codeMatch = url.match(/code=([0-9]+)/i) || title.match(/([0-9]{4,6})/);
-    if (codeMatch) code = codeMatch[1];
-
-    const rawDesc = $('meta[name="description"]').attr('content') || $('.product-description, [data-testid="product-description"]').first().text().trim() || `Produit officiel Oriflame Tunisie (${code}).`;
-    let mainImg = $('meta[property="og:image"]').attr('content') || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_1.png&MediaId=20989035&Version=1`;
-    
-    // Extract any gallery images from the page
-    const foundImages = [mainImg];
-    $('img[src*="oriflame"], [data-testid="product-image"] img').each((i, el) => {
-      const src = $(el).attr('src') || $(el).attr('data-src');
-      if (src && src.startsWith('http') && !foundImages.includes(src)) {
-        foundImages.push(src);
-      }
-    });
-
-    if (foundImages.length === 1 && code && !isNaN(Number(code))) {
-      foundImages.push(
-        `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_2.png&MediaId=20989035&Version=1`,
-        `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_3.png&MediaId=20989035&Version=1`,
-        `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_4.png&MediaId=20989035&Version=1`
-      );
-    }
-
-    const rawHtmlText = $.text() || '';
-    
-    // Check buy button presence in HTML
-    const hasBuyButton = (
-      html.includes('Acheter') ||
-      html.includes('Ajouter au panier') ||
-      html.includes('Ajoutez au panier') ||
-      html.includes('AddToBasket') ||
-      html.includes('AddToBasketVisible') ||
-      html.includes('data-testid="add-to-basket"')
-    );
-
-    let inStock = hasBuyButton && !html.includes('schema.org/OutOfStock') && !html.includes('OutOfStock');
+    let foundImages = [];
+    let description = '';
+    let ingredients = '';
 
     const nextDataStr = $('#__NEXT_DATA__').html();
     if (nextDataStr) {
       try {
         const nextData = JSON.parse(nextDataStr);
-        const jsonLd = nextData.props?.pageProps?.productDetailData?.application?.productDetailPage?.metadata?.jsonLd;
+        const pdp = nextData.props?.pageProps?.productDetailData;
+        const product = pdp?.product;
+        const jsonLd = pdp?.application?.productDetailPage?.metadata?.jsonLd;
+
+        if (jsonLd?.name) title = jsonLd.name.split('|')[0].trim();
+        else if (product?.concept?.name) title = product.concept.name.split('|')[0].trim();
+
+        if (jsonLd?.sku && !code) code = String(jsonLd.sku);
+        else if (product?.productCode && !code) code = String(product.productCode);
+
+        // High resolution images from JSON-LD
+        if (jsonLd?.image) {
+          foundImages = Array.isArray(jsonLd.image) ? [...jsonLd.image] : [jsonLd.image];
+        }
+
+        const conceptProducts = product?.concept?.products || [];
+        const cp = conceptProducts.find(item => String(item.productCode || item.code) === String(code)) || conceptProducts[0];
+        
+        if (cp?.formattedPrice?.price) {
+          const curr = parsePrice(cp.formattedPrice.price.currentPrice);
+          const basic = parsePrice(cp.formattedPrice.price.basicCataloguePrice);
+          if (curr > 0) price = curr;
+          if (basic > curr) originalPrice = basic;
+        } else if (jsonLd?.offers?.price) {
+          price = parsePrice(jsonLd.offers.price);
+        }
+
+        // Stock checks
         if (jsonLd?.offers?.availability) {
-          if (jsonLd.offers.availability.includes('OutOfStock')) {
-            inStock = false;
-          } else if (jsonLd.offers.availability.includes('InStock') && hasBuyButton) {
-            inStock = true;
-          }
+          if (jsonLd.offers.availability.includes('OutOfStock')) inStock = false;
+          else if (jsonLd.offers.availability.includes('InStock')) inStock = true;
+        }
+        if (cp?.labels) {
+          if (cp.labels.some(l => l.labelKey === 'OutOfStock')) inStock = false;
+          if (cp.labels.some(l => l.labelKey === 'AddToBasketVisible')) inStock = true;
+        }
+        if (cp?.isOffStock === true) inStock = false;
+        if (cp?.backInStockAvailability?.showBackInStockNotification === true) inStock = false;
+
+        // Description
+        description = product?.concept?.description || product?.concept?.brand?.description || jsonLd?.description || $('meta[name="description"]').attr('content') || '';
+
+        // Ingredients
+        const ingSection = pdp?.application?.productDetailPage?.sections?.ingredients;
+        if (Array.isArray(ingSection) && ingSection.length > 0) {
+          ingredients = ingSection.map(i => i.text).filter(Boolean).join(' ');
         }
 
-        // Extract accurate prices from formattedPrice object
-        const formattedPriceObj = nextData.props?.pageProps?.productDetailData?.product?.concept?.products?.[0]?.formattedPrice?.price;
-        if (formattedPriceObj) {
-          const currentP = parsePrice(formattedPriceObj.currentPrice);
-          const basicP = parsePrice(formattedPriceObj.basicCataloguePrice);
-          if (currentP > 0) price = currentP;
-          if (basicP > currentP) {
-            originalPrice = basicP;
-          }
-        }
-
-        // Extract multi-shade / color variants from concept.products
-        const conceptProducts = nextData.props?.pageProps?.productDetailData?.product?.concept?.products || [];
+        // Multi-shade variants
         if (Array.isArray(conceptProducts) && conceptProducts.length > 1) {
-          variants = conceptProducts.map(cp => {
-            const pCode = String(cp.productCode || cp.code || '');
-            const sName = cp.shadeName || '';
-            const hex = (Array.isArray(cp.hexColors) && cp.hexColors[0]) || cp.colorImageUrl || '#DE7B90';
-            const vImg = cp.mainImage?.url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${pCode}%2f${pCode}_1.png&MediaId=20989035&Version=1`;
-            const vCurrPrice = parsePrice(cp.formattedPrice?.price?.currentPrice) || price;
-            const vBasicPrice = parsePrice(cp.formattedPrice?.price?.basicCataloguePrice) || (originalPrice || vCurrPrice);
-            const vInStock = cp.backInStockAvailability?.showBackInStockNotification !== true && !cp.isOffStock;
-            
+          variants = conceptProducts.map(item => {
+            const pCode = String(item.productCode || item.code || '');
+            const sName = item.shadeName || '';
+            const hex = (Array.isArray(item.hexColors) && item.hexColors[0]) || item.colorImageUrl || '#DE7B90';
+            const vImg = item.mainImage?.url || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${pCode}%2f${pCode}_1.png&MediaId=20989035&Version=1`;
+            const vCurrPrice = parsePrice(item.formattedPrice?.price?.currentPrice) || price;
+            const vBasicPrice = parsePrice(item.formattedPrice?.price?.basicCataloguePrice) || (originalPrice || vCurrPrice);
+            const vInStock = item.backInStockAvailability?.showBackInStockNotification !== true && !item.isOffStock;
             return {
               product_id: pCode,
-              name: `${title.split('|')[0].trim()} - ${sName || pCode}`,
+              name: `${title} - ${sName || pCode}`,
               shade_name: sName,
               hex_color: hex,
               image_url: vImg,
@@ -816,52 +861,26 @@ export async function scrapeProductFromUrl(url) {
             };
           }).filter(v => v.product_id);
         }
-      } catch (e) {}
-    }
-
-    // Extract dual prices (selling price vs Prix normal) from HTML text
-    const normalMatch = html.match(/Prix\s*(?:normal|régulier|initial|standard)\s*[:：]?\s*([0-9]+[.,][0-9]{2})\s*DT/i) ||
-                        html.match(/السعر\s*(?:العادي|الأصلي|الأساسي)\s*[:：]?\s*([0-9]+[.,][0-9]{2})\s*DT/i);
-    if (normalMatch) {
-      originalPrice = parseFloat(normalMatch[1].replace(',', '.'));
-    }
-
-    const allPrices = Array.from(html.matchAll(/([0-9]+[.,][0-9]{2})\s*DT/gi))
-      .map(m => parseFloat(m[1].replace(',', '.')))
-      .filter(p => p > 5 && p < 1000);
-
-    if (allPrices.length > 0) {
-      if (originalPrice) {
-        const lowerPrices = allPrices.filter(p => p < originalPrice);
-        if (lowerPrices.length > 0) {
-          price = lowerPrices[0];
-        }
-      } else {
-        price = allPrices[0];
-        if (allPrices.length > 1) {
-          const maxP = Math.max(...allPrices);
-          if (maxP > price) originalPrice = maxP;
-        }
+      } catch (e) {
+        console.warn('NextData parse note:', e.message);
       }
     }
 
-    // If this URL is for a specific shade/variant code, resolve shade details
-    if (variants.length > 0) {
-      const matchedVariant = variants.find(v => String(v.product_id) === String(code));
-      if (matchedVariant) {
-        title = matchedVariant.name;
-        price = matchedVariant.price;
-        if (matchedVariant.original_price) originalPrice = matchedVariant.original_price;
-        inStock = matchedVariant.in_stock !== false;
-        if (matchedVariant.image_url) {
-          mainImg = matchedVariant.image_url;
-          foundImages[0] = mainImg;
-        }
-      } else if (variants.some(v => v.in_stock)) {
-        inStock = true;
-      }
-    } else if (inStock) {
-      inStock = isProductInStock(title + ' ' + rawDesc + ' ' + rawHtmlText, { title, description: rawDesc });
+    if (!code) {
+      const fallbackMatch = html.match(/"productCode"\s*:\s*"([0-9]{4,6})"/);
+      if (fallbackMatch) code = fallbackMatch[1];
+      else code = `ORF-${Date.now().toString().slice(-6)}`;
+    }
+
+    const defaultImg = `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_1.png&MediaId=20989035&Version=1`;
+    const mainImg = foundImages[0] || $('meta[property="og:image"]').attr('content') || defaultImg;
+    if (!foundImages.includes(mainImg)) foundImages.unshift(mainImg);
+
+    if (foundImages.length === 1 && code && !isNaN(Number(code))) {
+      foundImages.push(
+        `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_2.png&MediaId=20989035&Version=1`,
+        `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f${code}%2f${code}_3.png&MediaId=20989035&Version=1`
+      );
     }
 
     const isPromo = Boolean(originalPrice && originalPrice > price);
@@ -869,11 +888,11 @@ export async function scrapeProductFromUrl(url) {
 
     return {
       product_id: code,
-      name: title.split('|')[0].trim(),
-      name_fr: title.split('|')[0].trim(),
+      name: title,
+      name_fr: title,
       category: classifyCategory(title),
       price: price,
-      original_price: originalPrice,
+      original_price: isPromo ? originalPrice : null,
       original_catalog_price: price,
       company_discount_applied: false,
       company_discount_percent: 0,
@@ -884,14 +903,18 @@ export async function scrapeProductFromUrl(url) {
       image_url: mainImg,
       images: foundImages,
       variants: variants.length > 0 ? variants : undefined,
-      description: rawDesc,
-      benefits: ["100% Produit original certifié par Mouna Nouira", "Formule suédoise aux extraits naturels bienfaisants"],
-      how_to_use: "Appliquer sur une peau propre selon les recommandations.",
-      ingredients: "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
+      description: description || `Produit officiel Oriflame Tunisie (${code}) : ${title}. Formule scandinave haute performance.`,
+      description_fr: description || `Produit officiel Oriflame Tunisie (${code}) : ${title}. Formule scandinave haute performance.`,
+      benefits: [
+        "100% Produit original certifié par Mouna Nouira",
+        discountPercent > 0 ? `Offre promotionnelle exclusive catalogue : -${discountPercent}%` : "Formule scandinave haute qualité"
+      ],
+      how_to_use: "Appliquer délicatement selon les recommandations officielles Oriflame.",
+      ingredients: ingredients || "Extraits botaniques suédois et complexes actifs certifiés Oriflame.",
       in_stock: inStock
     };
   } catch (err) {
-    throw new Error(`Failed to scrape product from URL: ${err.message}`);
+    throw new Error(`Échec du scraping de la page produit (${inputUrl}) : ${err.message}`);
   }
 }
 

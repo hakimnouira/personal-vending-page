@@ -96,7 +96,7 @@
         <div class="nav-item" data-target="section-carousel" data-admin-i18n="tab_carousel">
           🖼️ Carrousel Page d'Accueil
         </div>
-        <div class="nav-item" data-target="section-deals" style="">
+        <div class="nav-item" data-target="section-deals" data-admin-i18n="tab_deals">
           🎯 Offres Seuil & Deals Conditionnels
         </div>
         <!-- Order Detail nav item — shown dynamically when viewing an order -->
@@ -545,10 +545,10 @@
         <!-- 3. SINGLE PRODUCT URL SCRAPER -->
         <div class="admin-form-box" style="background: #FAF8F5;">
           <h4 style="font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 6px;" data-admin-i18n="single_scrape_title">Scraper une Page Produit Oriflame Unique</h4>
-          <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 14px;" data-admin-i18n="single_scrape_desc">Collez le lien direct d'un produit Oriflame Tunisie pour l'ajouter automatiquement.</p>
+          <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 14px;" data-admin-i18n="single_scrape_desc">Entrez la référence à 5 chiffres (ex: 47724, 47844) ou collez le lien direct d'un produit Oriflame Tunisie pour l'ajouter ou le mettre à jour automatiquement.</p>
           
           <div style="display: flex; gap: 10px;">
-            <input type="url" id="admin-single-url-input" class="form-control" style="margin-bottom: 0;" placeholder="https://tn.oriflame.com/products/product?code=42548" />
+            <input type="text" id="admin-single-url-input" class="form-control" style="margin-bottom: 0;" placeholder="Référence (ex: 47724) ou URL (https://tn.oriflame.com/...)" />
             <button id="btn-scraper-single-url" class="btn-primary" style="width: auto; white-space: nowrap; padding: 0 20px;" data-admin-i18n="btn_scrape_single">
               Scraper & Ajouter le Produit
             </button>
@@ -580,13 +580,41 @@
           </div>
 
           <!-- Add Product to Deals Toolbar -->
-          <div style="background: rgba(255, 255, 255, 0.08); padding: 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.15); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
-            <select id="select-featured-deal-product" class="form-control" style="flex: 1; min-width: 260px; margin-bottom: 0; background: #FFFFFF; color: #18181B; font-weight: 600;">
-              <option value="">-- Choisir un produit du catalogue à ajouter en promo --</option>
-            </select>
-            <button id="btn-add-featured-deal" type="button" class="btn-primary" style="background: #EA580C; border-color: #C2410C; width: auto; padding: 10px 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-              ➕ Ajouter aux Offres
-            </button>
+          <div style="background: rgba(255, 255, 255, 0.08); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: 16px;">
+            <div style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
+              <!-- Direct Reference Search with Autocomplete -->
+              <div style="position: relative; flex: 1 1 220px; min-width: 200px;">
+                <label for="input-featured-deal-code" style="display: block; font-size: 0.78rem; font-weight: 700; color: #FED7AA; margin-bottom: 5px;">
+                  🔍 Saisir directement la référence :
+                </label>
+                <div style="position: relative;">
+                  <input type="text" id="input-featured-deal-code" class="form-control" placeholder="ex: 47724" autocomplete="off" style="margin-bottom: 0; background: #FFFFFF; color: #18181B; font-weight: 700; padding-right: 28px;" />
+                  <span id="btn-clear-featured-deal-code" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #71717A; display: none; font-size: 1.1rem; line-height: 1;" title="Effacer">&times;</span>
+                </div>
+                <!-- Autocomplete Dropdown List -->
+                <div id="featured-deals-autocomplete-list" style="position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 1050; max-height: 250px; overflow-y: auto; background: #FFFFFF; border-radius: 8px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); border: 1px solid #CBD5E1; display: none;"></div>
+              </div>
+
+              <!-- Or Dropdown Select -->
+              <div style="flex: 2 1 300px; min-width: 250px;">
+                <label for="select-featured-deal-product" style="display: block; font-size: 0.78rem; font-weight: 700; color: #FED7AA; margin-bottom: 5px;">
+                  📋 Ou choisir un produit dans la liste (triée par réf) :
+                </label>
+                <select id="select-featured-deal-product" class="form-control" style="margin-bottom: 0; background: #FFFFFF; color: #18181B; font-weight: 600;">
+                  <option value="">-- Choisir un produit du catalogue à ajouter en promo --</option>
+                </select>
+              </div>
+
+              <!-- Action Button -->
+              <div style="flex: 0 0 auto;">
+                <button id="btn-add-featured-deal" type="button" class="btn-primary" style="background: #EA580C; border-color: #C2410C; width: auto; height: 42px; padding: 0 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                  ➕ Ajouter aux Offres
+                </button>
+              </div>
+            </div>
+
+            <!-- Feedback / Error Message -->
+            <div id="featured-deal-code-feedback" style="display: none; margin-top: 10px; padding: 8px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600;"></div>
           </div>
 
           <!-- Active Featured Deals List Grid -->
