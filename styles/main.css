@@ -6249,6 +6249,77 @@ footer a:not(.social-link-btn):hover {
   transform: scale(0.96);
 }
 
+/* Dedicated eCatalogue Share Buttons */
+.btn-share-catalogue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.08) 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.5);
+  border-radius: var(--radius-sm, 10px);
+  color: var(--color-primary, #0D1B2A);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  touch-action: manipulation;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.12);
+}
+
+.btn-share-catalogue:hover,
+.btn-share-catalogue:focus-visible {
+  background: var(--color-primary, #0D1B2A);
+  color: #FFFFFF;
+  border-color: var(--color-primary, #0D1B2A);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(13, 27, 42, 0.25);
+  outline: none;
+}
+
+.btn-share-catalogue:active {
+  transform: scale(0.97);
+}
+
+.ecat-share-spread-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 20px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  touch-action: manipulation;
+  margin-left: 8px;
+}
+
+[dir="rtl"] .ecat-share-spread-btn {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+.ecat-share-spread-btn:hover,
+.ecat-share-spread-btn:focus-visible {
+  background: var(--color-accent, #C5A880);
+  color: #18181B;
+  border-color: var(--color-accent, #C5A880);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.ecat-share-spread-btn:active {
+  transform: scale(0.95);
+}
+
 /* Product QuickView Share Section */
 .product-share-section {
   margin-top: 18px;

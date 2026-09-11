@@ -3881,6 +3881,21 @@ class App {
         }, 300);
       }
 
+      // Direct Catalogue Navigation (e.g. from /catalogue or /catalogue-virtuel or ?catalogue=true)
+      const isCatalogueRoute = pathname === '/catalogue' || pathname === '/catalogue-virtuel' || pathname === '/ecatalogue' || params.has('catalogue');
+      if (isCatalogueRoute) {
+        const catPageParam = params.get('page');
+        setTimeout(() => {
+          const catSec = document.getElementById('catalogue-section');
+          if (catSec) {
+            catSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          if (catPageParam && window.ecatViewer && typeof window.ecatViewer.goToSpreadByPage === 'function') {
+            window.ecatViewer.goToSpreadByPage(parseInt(catPageParam, 10));
+          }
+        }, 350);
+      }
+
       this.updateGlobalNavigationUI();
     } catch (e) {
       console.warn('[APP] Error handling URL params:', e);
@@ -5417,6 +5432,49 @@ class App {
 
   openCategoryShareModal() {
     this.openSiteShareModal();
+  }
+
+  openCatalogueShareModal(spreadIndex = null) {
+    const isArabic = this.i18n.getLang() === 'ar';
+    const baseUrl = window.location.origin;
+
+    // Determine page or cover
+    let pageNum = null;
+    let spreadTitle = null;
+
+    if (spreadIndex !== null && window.ecatViewer?.spreads?.[spreadIndex]) {
+      const sp = window.ecatViewer.spreads[spreadIndex];
+      pageNum = sp.pages?.[0] || (spreadIndex + 1);
+      spreadTitle = sp.title || `Page ${pageNum}`;
+    }
+
+    const shareUrl = pageNum 
+      ? `${baseUrl}/catalogue?page=${pageNum}` 
+      : `${baseUrl}/catalogue`;
+
+    // Dynamic Live Catalogue Cover Image (Non-static, fetched dynamically from active flipbook)
+    const shareImg = pageNum
+      ? `${baseUrl}/api/og-image/catalogue.jpg?page=${pageNum}`
+      : `${baseUrl}/api/og-image/catalogue.jpg`;
+
+    const catCode = window.ecatViewer?.catalogueCode || 'Officiel';
+
+    const modalTitle = pageNum
+      ? (isArabic ? `مشاركة الكتالوج — صفحة ${pageNum}` : `Partager l'eCatalogue — Page ${pageNum}`)
+      : (isArabic ? `مشاركة الكتالوج التفاعلي أوريفليم` : `Partager le Catalogue Virtuel Oriflame`);
+
+    const modalDesc = pageNum
+      ? (isArabic ? `شاركي هذه الصفحة من الكتالوج الرسمي مع صديقاتكِ وعائلتكِ :` : `Partagez cette page du catalogue officiel avec vos proches :`)
+      : (isArabic ? `شاركي الكتالوج التفاعلي الرسمي لأوريفليم السويد مع إمكانية التصفح والطلب المباشر :` : `Partagez le catalogue virtuel interactif Oriflame Tunisie avec vos proches :`);
+
+    const shareText = pageNum
+      ? (isArabic ? `✨ اكتشفي الصفحة ${pageNum} من كتالوج أوريفليم تونس الرسمي مع منى نويرة !` : `✨ Découvrez la page ${pageNum} du catalogue virtuel officiel Oriflame Tunisie avec Mouna Nouira !`)
+      : (isArabic ? `✨ تصفحي الكتالوج التفاعلي الرسمي لأوريفليم السويد في تونس مع منى نويرة !` : `✨ Feuilletez le catalogue virtuel officiel Oriflame Suède Tunisie avec Mouna Nouira : nouveautés, vidéos et commande directe !`);
+
+    const catDisplayName = pageNum ? `Catalogue (Page ${pageNum})` : `Catalogue Virtuel Oriflame`;
+
+    this._showCategoryShareModalDOM(catDisplayName, shareUrl, shareText, shareImg, modalTitle, modalDesc);
+    this.trackShare('Open Catalogue Share Modal', pageNum || 'Cover', 'catalogue');
   }
 
   _showCategoryShareModalDOM(catName, url, text, img = null, customTitle = null, customDesc = null) {

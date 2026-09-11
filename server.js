@@ -350,6 +350,55 @@ app.get(['/api/og-image/:productId', '/api/og-image/:productId.jpg', '/api/og-im
       pid = pid.slice(0, -4);
     }
 
+    // Dynamic Live eCatalogue / Flipbook Cover & Page OG Image (Non-static)
+    if (pid === 'catalogue' || pid === 'flipbook' || pid === 'ecatalogue') {
+      const pageNum = parseInt(req.query.page, 10) || 1;
+      const cacheKey = `catalogue_page_${pageNum}`;
+      if (ogImageCache.has(cacheKey)) {
+        const cached = ogImageCache.get(cacheKey);
+        res.setHeader('Content-Type', cached.contentType);
+        res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
+        return res.send(cached.buffer);
+      }
+
+      let flipbook = null;
+      try {
+        flipbook = getFlipbookData() || JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'flipbook.json'), 'utf8'));
+      } catch (e) {}
+
+      if (flipbook && Array.isArray(flipbook.spreads) && flipbook.spreads.length > 0) {
+        let targetSpread = flipbook.spreads[0];
+        if (pageNum > 1) {
+          const found = flipbook.spreads.find(s => Array.isArray(s.pages) && s.pages.includes(pageNum));
+          if (found) targetSpread = found;
+        }
+
+        const rawImgUrl = targetSpread.images?.[0];
+        if (rawImgUrl) {
+          try {
+            const resp = await axios.get(rawImgUrl, {
+              responseType: 'arraybuffer',
+              httpsAgent: httpsInsecureAgent,
+              headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Referer': 'https://tn-catalogue.oriflame.com/'
+              },
+              timeout: 8000
+            });
+            const contentType = resp.headers['content-type'] || 'image/jpeg';
+            const buffer = Buffer.from(resp.data);
+            ogImageCache.set(cacheKey, { contentType, buffer });
+            res.setHeader('Content-Type', contentType);
+            res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
+            return res.send(buffer);
+          } catch (flipErr) {
+            console.warn('[OG-IMAGE] Flipbook cover fetch note:', flipErr.message);
+          }
+        }
+      }
+      return res.sendFile(path.join(__dirname, 'assets', 'og-facebook-preview.jpg'));
+    }
+
     if (ogImageCache.has(pid)) {
       const cached = ogImageCache.get(pid);
       res.setHeader('Content-Type', cached.contentType);
@@ -544,6 +593,48 @@ app.get('/guide-parfum', (req, res, next) => {
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(html);
+  } catch (err) {
+    next();
+  }
+});
+
+// Dedicated eCatalogue & Virtual Flipbook Route with dynamic OG tags (Non-static live cover image)
+app.get(['/catalogue', '/catalogue-virtuel', '/ecatalogue'], (req, res, next) => {
+  try {
+    const baseUrl = getEffectiveBaseUrl(req);
+    let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+    let flipbook = null;
+    try {
+      flipbook = getFlipbookData() || JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'flipbook.json'), 'utf8'));
+    } catch (e) {}
+
+    const catCode = flipbook?.catalogueCode || 'En cours';
+    const pageNum = req.query.page ? parseInt(req.query.page, 10) : null;
+    const ogImgUrl = `${baseUrl}/api/og-image/catalogue.jpg${pageNum ? '?page=' + pageNum : ''}`;
+
+    const catTitle = pageNum
+      ? `📖 Catalogue Virtuel Oriflame Tunisie — Page ${pageNum} | Mouna Nouira`
+      : `📖 Catalogue Virtuel Officiel Oriflame Tunisie (Campagne ${catCode}) | Mouna Nouira`;
+    const catDesc = pageNum
+      ? `Découvrez la page ${pageNum} du catalogue interactif Oriflame Tunisie. Commandez directement vos articles favoris via Messenger ou WhatsApp !`
+      : `Feuilletez en ligne le catalogue virtuel officiel Oriflame Suède Tunisie. Découvrez les dernières tendances beauté, vidéos exclusives et commandez directement avec Mouna Nouira !`;
+
+    html = injectOpenGraphMetadata(html, {
+      title: catTitle,
+      description: catDesc,
+      url: `${baseUrl}/catalogue${pageNum ? '?page=' + pageNum : ''}`,
+      type: 'article',
+      image: ogImgUrl,
+      imageType: 'image/jpeg',
+      imageWidth: 1200,
+      imageHeight: 630,
+      imageAlt: catTitle,
+      twitterCard: 'summary_large_image'
+    });
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.send(html);
   } catch (err) {
     next();
   }

@@ -24,7 +24,16 @@ export class ECatalogueViewer {
       if (json.success && json.data && Array.isArray(json.data.spreads) && json.data.spreads.length > 0) {
         this.spreads = json.data.spreads;
         this.totalPages = json.data.totalPages || 148;
-        this.renderSpread();
+        this.catalogueCode = json.data.catalogueCode || 'Officiel';
+
+        // Check if page parameter is in URL
+        const params = new URLSearchParams(window.location.search);
+        const pageParam = params.get('page');
+        if (pageParam) {
+          this.goToSpreadByPage(parseInt(pageParam, 10));
+        } else {
+          this.renderSpread();
+        }
         return;
       }
     } catch (e) {
@@ -327,6 +336,24 @@ export class ECatalogueViewer {
   nextSpread() {
     if (this.currentSpread < this.spreads.length - 1) {
       this.goToSpread(this.currentSpread + 1);
+    }
+  }
+
+  goToSpreadByPage(pageNum) {
+    if (!pageNum || !Array.isArray(this.spreads) || this.spreads.length === 0) return;
+    const targetIdx = this.spreads.findIndex(s => Array.isArray(s.pages) && s.pages.includes(Number(pageNum)));
+    if (targetIdx !== -1) {
+      this.goToSpread(targetIdx);
+    } else if (pageNum >= 1 && pageNum <= this.totalPages) {
+      // Find closest spread
+      const approxIdx = this.spreads.findIndex(s => Array.isArray(s.pages) && s.pages[0] >= Number(pageNum));
+      if (approxIdx !== -1) this.goToSpread(approxIdx);
+    }
+  }
+
+  shareCurrentPage() {
+    if (this.app && typeof this.app.openCatalogueShareModal === 'function') {
+      this.app.openCatalogueShareModal(this.currentSpread);
     }
   }
 
