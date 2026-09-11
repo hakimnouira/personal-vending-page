@@ -5,8 +5,10 @@ import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { fetch as undiciFetch, Agent as UndiciAgent } from 'undici';
 
 const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+const undiciAgent = new UndiciAgent({ connect: { rejectUnauthorized: false } });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,6 +17,37 @@ const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const ENRICHMENTS_FILE = path.join(DATA_DIR, 'all-official-enrichments.json');
 
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+
+export async function fetchHtml(url) {
+  // 1. Try undiciFetch first (supports Wasmer Edge / WASIX and ignores invalid SSL certs)
+  try {
+    const res = await undiciFetch(url, {
+      dispatcher: undiciAgent,
+      headers: {
+        'User-Agent': USER_AGENT,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'fr-FR,fr;q=0.9,ar;q=0.8,en;q=0.7'
+      }
+    });
+    if (res.ok) {
+      return await res.text();
+    }
+  } catch (err) {
+    console.warn(`undiciFetch notice for ${url}: ${err.message}, trying axios...`);
+  }
+
+  // 2. Fallback to axios with httpsAgent
+  const response = await axios.get(url, {
+    httpsAgent,
+    headers: {
+      'User-Agent': USER_AGENT,
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'fr-FR,fr;q=0.9,ar;q=0.8,en;q=0.7'
+    },
+    timeout: 15000
+  });
+  return response.data;
+}
 
 import { getProducts, saveProducts } from '../dataAccess.js';
 import { resolveLatestCatalogueCode } from './flipbook-scraper.js';
@@ -233,13 +266,8 @@ export async function scrapeAllOriflameCategories() {
   for (const item of targetCategories) {
     try {
       console.log(`Scraping category: ${item.url}...`);
-      const res = await axios.get(item.url, {
-        httpsAgent,
-        headers: { 'User-Agent': USER_AGENT, 'Accept-Language': 'fr-FR,fr;q=0.9,ar;q=0.8,en;q=0.7' },
-        timeout: 10000
-      });
-
-      const $ = cheerio.load(res.data);
+      const html = await fetchHtml(item.url);
+      const $ = cheerio.load(html);
       const nextDataStr = $('#__NEXT_DATA__').html();
       if (nextDataStr) {
         try {
@@ -764,16 +792,7 @@ export async function scrapeProductFromUrl(inputUrl) {
       url = `https://tn.oriflame.com/products/product?code=${code || rawUrl}`;
     }
 
-    const response = await axios.get(url, {
-      httpsAgent,
-      headers: {
-        'User-Agent': USER_AGENT,
-        'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8'
-      },
-      timeout: 15000
-    });
-
-    const html = response.data;
+    const html = await fetchHtml(url);
     const $ = cheerio.load(html);
 
     let title = $('h1').first().text().trim() || $('meta[property="og:title"]').attr('content') || 'Produit Oriflame';
