@@ -109,10 +109,12 @@ class App {
   }
 
   async fetchSettings() {
+    let serverSuccess = false;
     try {
       const res = await fetch('/api/settings');
       const data = await res.json();
       if (data.success && data.data) {
+        serverSuccess = true;
         if (data.data.facebook_username) {
           this.facebookUsername = data.data.facebook_username;
           const fbUrl = `https://www.facebook.com/${this.facebookUsername}`;
@@ -126,31 +128,36 @@ class App {
         }
         if (data.data.featured_deal_ids && Array.isArray(data.data.featured_deal_ids)) {
           this.featuredDealIds = data.data.featured_deal_ids;
+          try {
+            localStorage.setItem('oriflame_featured_deals_v1', JSON.stringify(this.featuredDealIds));
+          } catch (e) {}
         }
       }
     } catch (e) {
       console.warn("Could not fetch settings", e);
     }
 
-    try {
-      const localSettings = JSON.parse(localStorage.getItem('oriflame_settings_v1') || '{}');
-      if (localSettings.whatsapp_phone || localSettings.phone) {
-        this.whatsappPhone = this.cleanPhoneNumber(localSettings.whatsapp_phone || localSettings.phone);
-      }
-      if (localSettings.facebook_username) {
-        this.facebookUsername = localSettings.facebook_username;
-      }
-      if (localSettings.featured_deal_ids && Array.isArray(localSettings.featured_deal_ids)) {
-        this.featuredDealIds = localSettings.featured_deal_ids;
-      }
-      const cachedDeals = localStorage.getItem('oriflame_featured_deals_v1');
-      if (cachedDeals) {
-        const parsedDeals = JSON.parse(cachedDeals);
-        if (Array.isArray(parsedDeals) && parsedDeals.length > 0) {
-          this.featuredDealIds = parsedDeals;
+    if (!serverSuccess) {
+      try {
+        const localSettings = JSON.parse(localStorage.getItem('oriflame_settings_v1') || '{}');
+        if (localSettings.whatsapp_phone || localSettings.phone) {
+          this.whatsappPhone = this.cleanPhoneNumber(localSettings.whatsapp_phone || localSettings.phone);
         }
-      }
-    } catch (err) {}
+        if (localSettings.facebook_username) {
+          this.facebookUsername = localSettings.facebook_username;
+        }
+        if (localSettings.featured_deal_ids && Array.isArray(localSettings.featured_deal_ids)) {
+          this.featuredDealIds = localSettings.featured_deal_ids;
+        }
+        const cachedDeals = localStorage.getItem('oriflame_featured_deals_v1');
+        if (cachedDeals) {
+          const parsedDeals = JSON.parse(cachedDeals);
+          if (Array.isArray(parsedDeals) && parsedDeals.length > 0) {
+            this.featuredDealIds = parsedDeals;
+          }
+        }
+      } catch (err) {}
+    }
   }
 
   cleanFbUsername(val) {

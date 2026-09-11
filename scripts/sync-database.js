@@ -333,6 +333,72 @@ export async function syncDatabase(direction = 'dev-to-prod', options = {}) {
       console.log('   ✅ Paramètres boutique synchronisés avec succès.\n');
     }
 
+    // 6. TRANSLATION CACHE
+    console.log('🌐 [6/6] Synchronisation du Cache de Traductions (Postgres)...');
+    try {
+      await dstClient.query(`
+        CREATE TABLE IF NOT EXISTS translation_cache (
+          hash_key TEXT PRIMARY KEY,
+          reference_produit TEXT,
+          champ TEXT,
+          langue_source TEXT DEFAULT 'en',
+          langue_cible TEXT DEFAULT 'fr',
+          texte_original TEXT,
+          texte_traduit TEXT,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          last_used TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+        CREATE INDEX IF NOT EXISTS idx_trans_cache_ref ON translation_cache(reference_produit);
+      `);
+
+      const srcCache = await srcClient.query('SELECT * FROM translation_cache');
+      console.log(`   Source: ${srcCache.rows.length} entrées de cache trouvées.`);
+
+      if (srcCache.rows.length > 0) {
+        await dstClient.query('BEGIN');
+        const BATCH_SIZE = 50;
+        for (let i = 0; i < srcCache.rows.length; i += BATCH_SIZE) {
+          const batch = srcCache.rows.slice(i, i + BATCH_SIZE);
+          const valuePlaceholders = [];
+          const values = [];
+          let pIdx = 1;
+          for (const row of batch) {
+            valuePlaceholders.push(`($${pIdx++}, $${pIdx++}, $${pIdx++}, $${pIdx++}, $${pIdx++}, $${pIdx++}, $${pIdx++}, $${pIdx++}, $${pIdx++})`);
+            values.push(
+              row.hash_key,
+              row.reference_produit,
+              row.champ,
+              row.langue_source || 'en',
+              row.langue_cible || 'fr',
+              row.texte_original,
+              row.texte_traduit,
+              row.created_at || new Date(),
+              row.last_used || new Date()
+            );
+          }
+          const batchSql = `
+            INSERT INTO translation_cache (
+              hash_key, reference_produit, champ, langue_source, langue_cible,
+              texte_original, texte_traduit, created_at, last_used
+            ) VALUES ${valuePlaceholders.join(', ')}
+            ON CONFLICT (hash_key) DO UPDATE SET
+              reference_produit = EXCLUDED.reference_produit,
+              champ = EXCLUDED.champ,
+              langue_source = EXCLUDED.langue_source,
+              langue_cible = EXCLUDED.langue_cible,
+              texte_original = EXCLUDED.texte_original,
+              texte_traduit = EXCLUDED.texte_traduit,
+              last_used = EXCLUDED.last_used;
+          `;
+          await dstClient.query(batchSql, values);
+        }
+        await dstClient.query('COMMIT');
+        console.log(`   ✅ ${srcCache.rows.length} entrées de cache synchronisées avec succès.\n`);
+      }
+    } catch (cacheErr) {
+      console.warn('   ⚠️ Note synchronisation translation_cache:', cacheErr.message);
+    }
+
     // Protection des commandes
     if (isDevToProd) {
       console.log('🛡️ Les commandes clients en Production ont été préservées intactes.');

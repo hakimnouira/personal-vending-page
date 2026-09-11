@@ -683,21 +683,12 @@ export async function saveCarousel(slides) {
 
 // ── SETTINGS ─────────────────────────────────────────────────────────────
 export async function getSettings() {
-  try {
-    const localFile = path.join(process.cwd(), 'data', 'settings.json');
-    if (fs.existsSync(localFile)) {
-      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
-      if (data && typeof data === 'object') {
-        return data;
-      }
-    }
-  } catch (e) {}
-
+  // 1. Query remote Postgres first (Single Source of Truth)
   try {
     const res = await query('SELECT * FROM settings WHERE id = 1');
-    if (res.rows.length > 0) {
+    if (res && res.rows && res.rows.length > 0) {
       const s = res.rows[0];
-      return {
+      const clean = {
         facebook_username: s.facebook_username || 'Mounanouira.Oriflame',
         currency: s.currency || 'TND',
         admin_pwd: s.admin_pwd || 'mouna2024',
@@ -709,17 +700,49 @@ export async function getSettings() {
         company_discount_applied_at: s.company_discount_applied_at ? new Date(s.company_discount_applied_at).toISOString() : null,
         featured_deal_ids: Array.isArray(s.featured_deal_ids) ? s.featured_deal_ids : []
       };
+      // Keep disk cache synchronized
+      try {
+        const localFile = path.join(process.cwd(), 'data', 'settings.json');
+        fs.writeFileSync(localFile, JSON.stringify(clean, null, 2), 'utf8');
+      } catch (e) {}
+      return clean;
     }
-    return { facebook_username: 'Mounanouira.Oriflame', currency: 'TND', admin_pwd: 'mouna2024', notification_email: '' };
   } catch (err) {
-    console.error('getSettings error:', err);
-    return { facebook_username: 'Mounanouira.Oriflame', currency: 'TND', admin_pwd: 'mouna2024', notification_email: '' };
+    console.warn('getSettings DB query note:', err.message);
   }
+
+  // 2. Fallback: local disk cache if Postgres is unreachable
+  try {
+    const localFile = path.join(process.cwd(), 'data', 'settings.json');
+    if (fs.existsSync(localFile)) {
+      const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+      if (data && typeof data === 'object') {
+        return {
+          facebook_username: data.facebook_username || 'Mounanouira.Oriflame',
+          currency: data.currency || 'TND',
+          admin_pwd: data.admin_pwd || 'mouna2024',
+          phone: data.phone || '55 756 629',
+          whatsapp_phone: data.whatsapp_phone || '55756629',
+          notification_email: data.notification_email || '',
+          company_discount_applied: Boolean(data.company_discount_applied),
+          company_discount_percent: data.company_discount_percent != null ? Number(data.company_discount_percent) : 20,
+          company_discount_applied_at: data.company_discount_applied_at || null,
+          featured_deal_ids: Array.isArray(data.featured_deal_ids) ? data.featured_deal_ids : []
+        };
+      }
+    }
+  } catch (e) {}
+
+  return { facebook_username: 'Mounanouira.Oriflame', currency: 'TND', admin_pwd: 'mouna2024', notification_email: '', featured_deal_ids: [] };
 }
 
 export async function saveSettings(settings) {
   if (!settings || typeof settings !== 'object') return false;
   try {
+    const cleanFeaturedIds = Array.isArray(settings.featured_deal_ids) 
+      ? settings.featured_deal_ids.map(id => String(id).trim()).filter(Boolean)
+      : [];
+
     const queryText = `
       INSERT INTO settings (
         id, facebook_username, currency, admin_pwd, phone, whatsapp_phone,
@@ -750,14 +773,56 @@ export async function saveSettings(settings) {
       Boolean(settings.company_discount_applied),
       settings.company_discount_percent != null ? Number(settings.company_discount_percent) : 20,
       settings.company_discount_applied_at ? new Date(settings.company_discount_applied_at) : null,
-      JSON.stringify(Array.isArray(settings.featured_deal_ids) ? settings.featured_deal_ids : [])
+      JSON.stringify(cleanFeaturedIds)
     ];
     await query(queryText, values);
+
+    // Synchronize to disk cache data/settings.json immediately
+    const cleanObject = {
+      facebook_username: settings.facebook_username || 'Mounanouira.Oriflame',
+      currency: settings.currency || 'TND',
+      admin_pwd: settings.admin_pwd || 'mouna2024',
+      phone: settings.phone || '55 756 629',
+      whatsapp_phone: settings.whatsapp_phone || '55756629',
+      notification_email: settings.notification_email || '',
+      company_discount_applied: Boolean(settings.company_discount_applied),
+      company_discount_percent: settings.company_discount_percent != null ? Number(settings.company_discount_percent) : 20,
+      company_discount_applied_at: settings.company_discount_applied_at || null,
+      featured_deal_ids: cleanFeaturedIds
+    };
+    try {
+      const localFile = path.join(process.cwd(), 'data', 'settings.json');
+      fs.writeFileSync(localFile, JSON.stringify(cleanObject, null, 2), 'utf8');
+    } catch (fsErr) {
+      console.warn('Could not write local settings cache:', fsErr.message);
+    }
+
+    // Invalidate memory caches
+    if (typeof global.invalidateSettingsCache === 'function') {
+      global.invalidateSettingsCache();
+    }
+
     return true;
   } catch (err) {
     console.error('saveSettings error:', err);
     return false;
   }
+}
+
+// ── FEATURED SPECIAL OFFERS (CATALOGUE EN PROMO) ──────────────────────────
+export async function getFeaturedDeals() {
+  const settings = await getSettings();
+  const ids = Array.isArray(settings.featured_deal_ids) ? settings.featured_deal_ids : [];
+  const products = await getProducts();
+  const pMap = new Map(products.map(p => [String(p.product_id), p]));
+  return ids.map(id => pMap.get(String(id))).filter(Boolean);
+}
+
+export async function saveFeaturedDeals(ids) {
+  const cleanIds = Array.isArray(ids) ? ids.map(id => String(id).trim()).filter(Boolean) : [];
+  const settings = await getSettings();
+  settings.featured_deal_ids = cleanIds;
+  return await saveSettings(settings);
 }
 
 // ── ANALYTICS ────────────────────────────────────────────────────────────
@@ -928,6 +993,112 @@ export async function saveFlipbookToDB(flipbookData) {
     return true;
   } catch (err) {
     console.error('saveFlipbookToDB error:', err.message);
+    return false;
+  }
+}
+
+// ── TRANSLATION CACHE & PRODUCT DESCRIPTION UPDATES ────────────────────────
+let translationTableReady = false;
+
+export async function ensureTranslationCacheTable() {
+  if (translationTableReady) return;
+  try {
+    await query(`
+      CREATE TABLE IF NOT EXISTS translation_cache (
+        hash_key TEXT PRIMARY KEY,
+        reference_produit TEXT,
+        champ TEXT,
+        langue_source TEXT DEFAULT 'en',
+        langue_cible TEXT DEFAULT 'fr',
+        texte_original TEXT,
+        texte_traduit TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_used TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_translation_cache_ref ON translation_cache(reference_produit);
+    `);
+    translationTableReady = true;
+  } catch (err) {
+    console.warn('ensureTranslationCacheTable note:', err.message);
+  }
+}
+
+export async function getCachedTranslation(hashKey) {
+  try {
+    await ensureTranslationCacheTable();
+    const res = await query('SELECT texte_traduit FROM translation_cache WHERE hash_key = $1', [hashKey]);
+    if (res && res.rows && res.rows.length > 0) {
+      query('UPDATE translation_cache SET last_used = NOW() WHERE hash_key = $1', [hashKey]).catch(() => {});
+      return res.rows[0].texte_traduit;
+    }
+  } catch (err) {
+    console.warn('getCachedTranslation note:', err.message);
+  }
+  return null;
+}
+
+export async function saveCachedTranslation({ hashKey, reference, champ, sourceLang = 'en', targetLang = 'fr', originalText, translatedText }) {
+  try {
+    await ensureTranslationCacheTable();
+    await query(`
+      INSERT INTO translation_cache (hash_key, reference_produit, champ, langue_source, langue_cible, texte_original, texte_traduit, created_at, last_used)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())
+      ON CONFLICT (hash_key) DO UPDATE
+        SET texte_traduit = EXCLUDED.texte_traduit,
+            last_used = NOW()
+    `, [hashKey, reference || '', champ || '', sourceLang, targetLang, originalText, translatedText]);
+    return true;
+  } catch (err) {
+    console.warn('saveCachedTranslation note:', err.message);
+    return false;
+  }
+}
+
+export async function getTranslationCacheStats() {
+  try {
+    await ensureTranslationCacheTable();
+    const res = await query('SELECT COUNT(*)::int AS total FROM translation_cache');
+    return {
+      totalCached: res.rows[0]?.total || 0
+    };
+  } catch (err) {
+    return { totalCached: 0 };
+  }
+}
+
+export async function updateProductDescriptions(productId, { description, description_fr, how_to_use }) {
+  try {
+    const idStr = String(productId).trim();
+    // 1. Update in Postgres
+    await query(`
+      UPDATE products
+      SET description = COALESCE($1, description),
+          description_fr = COALESCE($2, description_fr),
+          how_to_use = COALESCE($3, how_to_use)
+      WHERE product_id = $4
+    `, [description ?? null, description_fr ?? null, how_to_use ?? null, idStr]);
+
+    // 2. Sync to in-memory products cache if loaded
+    if (productsCache) {
+      const p = productsCache.find(item => String(item.product_id) === idStr);
+      if (p) {
+        if (description != null) p.description = description;
+        if (description_fr != null) p.description_fr = description_fr;
+        if (how_to_use != null) p.how_to_use = how_to_use;
+      }
+      try {
+        const localFile = path.join(process.cwd(), 'data', 'products.json');
+        fs.writeFileSync(localFile, JSON.stringify(productsCache, null, 2), 'utf8');
+      } catch (e) {}
+    }
+
+    if (typeof global.invalidateProductsCache === 'function') {
+      try { global.invalidateProductsCache(); } catch (e) {}
+    }
+
+    return true;
+  } catch (err) {
+    console.error(`updateProductDescriptions error for ${productId}:`, err.message);
     return false;
   }
 }

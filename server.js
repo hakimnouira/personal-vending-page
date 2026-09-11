@@ -12,6 +12,8 @@ import { scrapeProductFromUrl, scrapeAllOriflameCategories } from './services/sc
 import { scrapeFlipbookFromUrl, getOrRefreshFlipbookData, getFlipbookData, resolveLatestCatalogueCode } from './services/flipbook-scraper.js';
 import { sendOrderConfirmation } from './services/messenger.js';
 import { sendOrderNotificationEmail } from './services/email.js';
+import { enrichCatalog } from './services/product-fallback-enricher.js';
+import { getTranslationMetrics } from './services/translation.js';
 import {
   getProducts, saveProducts,
   getOrders, saveOrders, deleteOrderById,
@@ -1088,6 +1090,35 @@ app.post('/api/scrape/oriflame-catalog', requireAdmin, async (req, res) => {
   }
 });
 
+// ── PRODUCT FALLBACK ENRICHER (UK Oriflame + Google Translate FR) ───────────
+app.post('/api/products/enrich-fallback', requireAdmin, async (req, res) => {
+  try {
+    const { productIds, limit, dryRun, force } = req.body || {};
+    console.log('[Admin] Initiating UK Fallback Enrichment...', { productIds, limit, dryRun, force });
+    const report = await enrichCatalog({ productIds, limit, dryRun, force });
+    invalidateProductsCache();
+    res.json({
+      success: true,
+      message: `Enrichissement terminé : ${report.enriched_count} produit(s) mis à jour, ${report.skipped_count} ignoré(s) (déjà complets), ${report.unmodified_count} non modifié(s).`,
+      ...report,
+      report
+    });
+  } catch (error) {
+    console.error('[Admin] Fallback enricher error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.get('/api/products/enrich-stats', requireAdmin, async (req, res) => {
+  try {
+    const stats = await getTranslationMetrics();
+    res.json({ success: true, stats, metrics: stats });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
 let settingsCache = null;
 let settingsCacheTime = 0;
 
@@ -1095,6 +1126,7 @@ export function invalidateSettingsCache() {
   settingsCache = null;
   settingsCacheTime = 0;
 }
+global.invalidateSettingsCache = invalidateSettingsCache;
 
 // Public GET settings (strips admin_pwd)
 app.get('/api/settings', async (req, res) => {
@@ -1849,6 +1881,72 @@ app.get('/api/export/flipbook', requireAdmin, (req, res) => {
   }
 });
 
+// ── EXPORT: Featured Deals (Offres Spéciales du Catalogue) ───────────────────
+app.get('/api/export/featured-deals', requireAdmin, async (req, res) => {
+  try {
+    const settings = await getSettings();
+    const ids = Array.isArray(settings.featured_deal_ids) ? settings.featured_deal_ids : [];
+    const products = await getProducts();
+    const items = products.filter(p => ids.map(String).includes(String(p.product_id || p.id)));
+    const exportData = {
+      version: '2.2-neon',
+      exported_at: new Date().toISOString(),
+      featured_deal_ids: ids,
+      count: ids.length,
+      products: items
+    };
+    const filename = `oriflame_offres_speciales_${new Date().toISOString().slice(0, 10)}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.send(JSON.stringify(exportData, null, 2));
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Featured deals export failed: ' + e.message });
+  }
+});
+
+// ── IMPORT: Featured Deals only ─────────────────────────────────────────────
+app.post('/api/import/featured-deals', requireAdmin, uploadJson.single('featured_deals'), async (req, res) => {
+  try {
+    let raw = '';
+    if (req.file && req.file.buffer) {
+      raw = req.file.buffer.toString('utf8');
+    } else if (req.body && req.body.data) {
+      raw = typeof req.body.data === 'string' ? req.body.data : JSON.stringify(req.body.data);
+    } else if (req.body && (req.body.featured_deal_ids || req.body.featured_deals || Array.isArray(req.body))) {
+      raw = JSON.stringify(req.body);
+    } else if (typeof req.body === 'object' && Object.keys(req.body).length > 0) {
+      raw = JSON.stringify(req.body);
+    } else {
+      return res.status(400).json({ success: false, message: 'Aucun fichier ou données reçus' });
+    }
+
+    const parsed = JSON.parse(raw);
+    let ids = [];
+    if (Array.isArray(parsed)) {
+      ids = parsed.map(item => typeof item === 'object' ? (item.product_id || item.id) : item).filter(Boolean);
+    } else if (Array.isArray(parsed.featured_deal_ids)) {
+      ids = parsed.featured_deal_ids;
+    } else if (Array.isArray(parsed.featured_deals)) {
+      ids = parsed.featured_deals.map(item => typeof item === 'object' ? (item.product_id || item.id) : item).filter(Boolean);
+    } else if (Array.isArray(parsed.products)) {
+      ids = parsed.products.map(item => typeof item === 'object' ? (item.product_id || item.id) : item).filter(Boolean);
+    }
+
+    const settings = await getSettings();
+    settings.featured_deal_ids = ids;
+    await saveSettings(settings);
+    invalidateSettingsCache();
+
+    res.json({
+      success: true,
+      message: `${ids.length} offre(s) spéciale(s) restaurée(s) avec succès.`,
+      featured_deal_ids: ids
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Erreur lors de l\'importation : ' + e.message });
+  }
+});
+
 // ── EXPORT: COMPLETE SYSTEM BACKUP ──────────────────────────────────────────
 app.get('/api/export/backup', requireAdmin, async (req, res) => {
   try {
@@ -1862,11 +1960,17 @@ app.get('/api/export/backup', requireAdmin, async (req, res) => {
     const safeSettings = { ...settings };
     delete safeSettings.admin_pwd;
 
+    const featuredDealIds = Array.isArray(safeSettings.featured_deal_ids) ? safeSettings.featured_deal_ids : [];
+    const products = await getProducts();
+    const featuredDeals = products.filter(p => featuredDealIds.map(String).includes(String(p.product_id || p.id)));
+
     const backup = {
       version: '2.2-neon',
       exported_at: new Date().toISOString(),
       app_name: 'Mouna Nouira – Oriflame Boutique',
-      products:  await getProducts(),
+      products:  products,
+      featured_deal_ids: featuredDealIds,
+      featured_deals: featuredDeals,
       carousel:  await getCarousel(),
       orders:    await getOrders(),
       bundles:   await getBundles(),
@@ -1934,7 +2038,7 @@ app.post('/api/import/backup', requireAdmin, uploadJson.single('backup'), async 
       raw = req.file.buffer.toString('utf8');
     } else if (req.body && req.body.data) {
       raw = typeof req.body.data === 'string' ? req.body.data : JSON.stringify(req.body.data);
-    } else if (req.body && (req.body.products || req.body.carousel || req.body.orders || req.body.bundles || req.body.deals)) {
+    } else if (req.body && (req.body.products || req.body.carousel || req.body.orders || req.body.bundles || req.body.deals || req.body.featured_deal_ids || req.body.settings)) {
       raw = JSON.stringify(req.body);
     } else if (typeof req.body === 'object' && Object.keys(req.body).length > 0) {
       raw = JSON.stringify(req.body);
@@ -1944,6 +2048,10 @@ app.post('/api/import/backup', requireAdmin, uploadJson.single('backup'), async 
 
     const backup = JSON.parse(raw);
     const restoredSummary = [];
+
+    // Invalidate memory caches
+    invalidateSettingsCache();
+    invalidateProductsCache();
 
     // 1. Products
     const products = Array.isArray(backup.products) 
@@ -1972,13 +2080,28 @@ app.post('/api/import/backup', requireAdmin, uploadJson.single('backup'), async 
       restoredSummary.push(`${backup.bundles.length} packs & bundles`);
     }
 
-    // 5. Deals
+    // 5. Deals (Conditional / Threshold Deals)
     if (Array.isArray(backup.deals) && backup.deals.length > 0) {
       await saveDeals(backup.deals);
       restoredSummary.push(`${backup.deals.length} offres seuils`);
     }
 
-    // 6. Settings (preserve existing admin_pwd if backup does not include one)
+    // 6. Featured Deals ("Offres Spéciales du Catalogue")
+    let restoredFeaturedIds = null;
+    if (Array.isArray(backup.featured_deal_ids)) {
+      restoredFeaturedIds = backup.featured_deal_ids;
+    } else if (Array.isArray(backup.featured_deals)) {
+      restoredFeaturedIds = backup.featured_deals.map(d => typeof d === 'object' ? (d.product_id || d.id) : d).filter(Boolean);
+    } else if (backup.settings && Array.isArray(backup.settings.featured_deal_ids)) {
+      restoredFeaturedIds = backup.settings.featured_deal_ids;
+    } else if (Array.isArray(products)) {
+      const flagged = products.filter(p => p && (p.is_featured_deal === true || p.is_featured_deal === 'true')).map(p => p.product_id || p.id).filter(Boolean);
+      if (flagged.length > 0) {
+        restoredFeaturedIds = flagged;
+      }
+    }
+
+    // 7. Settings (preserve existing admin_pwd if backup does not include one)
     if (backup.settings && typeof backup.settings === 'object') {
       const currentSettings = await getSettings();
       const newSettings = {
@@ -1986,22 +2109,37 @@ app.post('/api/import/backup', requireAdmin, uploadJson.single('backup'), async 
         ...backup.settings,
         admin_pwd: backup.settings.admin_pwd || currentSettings.admin_pwd || 'mouna2024'
       };
+      if (restoredFeaturedIds !== null) {
+        newSettings.featured_deal_ids = restoredFeaturedIds;
+      }
       await saveSettings(newSettings);
       restoredSummary.push(`paramètres de configuration`);
+      if (restoredFeaturedIds !== null) {
+        restoredSummary.push(`${restoredFeaturedIds.length} offres spéciales catalogue`);
+      }
+    } else if (restoredFeaturedIds !== null) {
+      const currentSettings = await getSettings();
+      currentSettings.featured_deal_ids = restoredFeaturedIds;
+      await saveSettings(currentSettings);
+      restoredSummary.push(`${restoredFeaturedIds.length} offres spéciales catalogue`);
     }
 
-    // 7. Flipbook
+    // 8. Flipbook
     const flipbookPath = path.join(DATA_DIR, 'flipbook.json');
     if (backup.flipbook && typeof backup.flipbook === 'object') {
       fs.writeFileSync(flipbookPath, JSON.stringify(backup.flipbook, null, 2), 'utf8');
       restoredSummary.push(`catalogue flipbook interactif`);
     }
 
-    // 8. Analytics
+    // 9. Analytics
     if (backup.analytics && typeof backup.analytics === 'object') {
       await saveAnalytics(backup.analytics);
       restoredSummary.push(`statistiques analytiques`);
     }
+
+    // Invalidate memory caches again so immediate calls get fresh data
+    invalidateSettingsCache();
+    invalidateProductsCache();
 
     if (restoredSummary.length === 0) {
       return res.status(400).json({ 

@@ -1,16 +1,16 @@
 {
-  "facebook_username": "Mounanouira.Oriflame",
+  "facebook_username": "mouna.nouira1",
   "currency": "TND",
   "admin_pwd": "mouna2024",
   "phone": "55 756 629",
   "whatsapp_phone": "55756629",
+  "notification_email": "",
   "company_discount_applied": false,
   "company_discount_percent": 20,
   "company_discount_applied_at": "2026-08-22T18:57:46.099Z",
   "featured_deal_ids": [
-    "46980",
-    "40683",
-    "38557",
-    "42751"
+    "47724",
+    "47844",
+    "12760"
   ]
 }

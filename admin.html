@@ -554,6 +554,60 @@
             </button>
           </div>
         </div>
+
+        <!-- 4. INTELLIGENT PRODUCT FALLBACK ENRICHER (UK ORIFLAME + GOOGLE TRANSLATE FR) -->
+        <div class="admin-form-box" style="background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); color: #FFFFFF; border: 1px solid #818CF8; margin-top: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <span class="deals-tag" style="background: #4F46E5; font-size: 0.72rem; padding: 4px 12px; border-radius: 99px; color: #FFF; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;">FALLBACK INTELLIGENT • UK ➔ FR</span>
+              <h4 style="font-weight: 700; color: #FFFFFF; margin: 8px 0 3px 0; font-size: 1.15rem; font-family: var(--font-serif);">
+                🇬🇧 Enrichisseur Intelligent des Descriptions &amp; Conseils (UK Oriflame ➔ Traduction FR)
+              </h4>
+              <p style="font-size: 0.82rem; color: #C7D2FE; margin: 0;">
+                Détecte automatiquement les descriptions manquantes ou invalides (dimensions logistiques, nom complet) et les remplace par la véritable fiche officielle UK traduite en français avec cache PostgreSQL persistant.
+              </p>
+            </div>
+            <div id="fallback-cache-badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 8px; font-size: 0.78rem; color: #E0E7FF; font-weight: 600;">
+              ⚡ Cache Traductions : <span id="fallback-cache-count">Chargement...</span>
+            </div>
+          </div>
+
+          <div style="background: rgba(255, 255, 255, 0.08); padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: 16px;">
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+              <button id="btn-run-fallback-test" type="button" class="btn-primary" style="background: #4338CA; border-color: #3730A3; width: auto; padding: 10px 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                🧪 Tester Fallback (5 Produits Incomplets)
+              </button>
+              <button id="btn-run-fallback-all" type="button" class="btn-primary" style="background: #059669; border-color: #047857; width: auto; padding: 10px 24px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                🚀 Enrichir Tout le Catalogue
+              </button>
+              <span style="font-size: 0.78rem; color: #A5B4FC;">
+                🔒 <em>Garantie : Prix, promotions et stocks sont 100% intouchés. Seuls description et conseils d'application sont enrichis.</em>
+              </span>
+            </div>
+          </div>
+
+          <!-- Live Status & Feedback -->
+          <div id="fallback-enrich-status" style="display: none; padding: 12px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-bottom: 14px;"></div>
+
+          <!-- Diff Preview Box -->
+          <div id="fallback-enrich-preview" style="display: none; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 16px;">
+            <h5 style="color: #FCD34D; font-size: 0.9rem; margin-bottom: 10px; font-weight: 700;">📋 Aperçu des Produits Enrichis :</h5>
+            <div class="table-responsive">
+              <table class="custom-table" style="font-size: 0.8rem; color: #F3F4F6;">
+                <thead>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                    <th>Réf.</th>
+                    <th>Nom du Produit</th>
+                    <th>Statut</th>
+                    <th>Champs Mis à Jour</th>
+                    <th>Aperçu Avant ➔ Après</th>
+                  </tr>
+                </thead>
+                <tbody id="fallback-enrich-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- SECTION 4: SETTINGS & CSV DATA -->
@@ -622,11 +676,19 @@
             <!-- Rendered dynamically -->
           </div>
 
-          <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
+          <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center; flex-wrap: wrap;">
+            <a href="/api/export/featured-deals" download class="btn-primary" style="background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.25); color: #FFF; width: auto; padding: 10px 18px; font-weight: 600; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="Télécharger la liste des offres spéciales actuelles">
+              ⬇️ Exporter Offres Spéciales JSON
+            </a>
+            <label class="btn-primary" style="background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.25); color: #FFF; width: auto; padding: 10px 18px; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="Restaurer ou charger une liste d'offres spéciales">
+              ⬆️ Importer Offres Spéciales JSON
+              <input type="file" id="featured-deals-import-file" accept=".json" style="display: none;" />
+            </label>
             <button id="btn-save-featured-deals" type="button" class="btn-primary" style="background: #059669; border-color: #047857; width: auto; padding: 10px 26px; font-weight: 700; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 6px;">
               💾 Enregistrer les Offres Spéciales
             </button>
           </div>
+          <div id="featured-deals-import-status" style="margin-top: 8px; font-size: 0.82rem; font-weight: 600; display: none; text-align: right;"></div>
         </div>
 
         <!-- Facebook Settings -->
@@ -796,6 +858,12 @@
               </a>
               <a href="/api/export/bundles" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #C2410C; border-color: #B45309; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 🎁 Packs JSON
+              </a>
+              <a href="/api/export/featured-deals" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #EA580C; border-color: #C2410C; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                🔥 Offres Spéciales JSON
+              </a>
+              <a href="/api/export/deals" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #D97706; border-color: #B45309; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                🎯 Offres Seuils JSON
               </a>
               <a href="/api/export/settings" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #374151; border-color: #1F2937; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 ⚙️ Paramètres JSON

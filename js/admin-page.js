@@ -129,6 +129,14 @@ class AdminDashboard {
     this.btnScraperSingleUrl = document.getElementById('btn-scraper-single-url');
     this.singleUrlInput = document.getElementById('admin-single-url-input');
 
+    // Fallback Enricher Elements
+    this.btnRunFallbackTest = document.getElementById('btn-run-fallback-test');
+    this.btnRunFallbackAll = document.getElementById('btn-run-fallback-all');
+    this.fallbackCacheCount = document.getElementById('fallback-cache-count');
+    this.fallbackEnrichStatus = document.getElementById('fallback-enrich-status');
+    this.fallbackEnrichPreview = document.getElementById('fallback-enrich-preview');
+    this.fallbackEnrichTbody = document.getElementById('fallback-enrich-tbody');
+
     // Settings
     this.fbHandleInput = document.getElementById('setting-fb-handle');
     this.btnSaveFbHandle = document.getElementById('btn-save-fb-handle');
@@ -170,6 +178,10 @@ class AdminDashboard {
       if (s.id === targetId) s.classList.add('active');
       else s.classList.remove('active');
     });
+
+    if (targetId === 'section-scraper') {
+      this.fetchFallbackCacheStats();
+    }
   }
 
   checkSession() {
@@ -199,6 +211,7 @@ class AdminDashboard {
     try { if (typeof this.fetchDeals === 'function') await this.fetchDeals(); } catch (e) { console.warn("fetchDeals error", e); }
     try { await this.fetchDbInfo(); } catch (e) { console.warn("fetchDbInfo error", e); }
     try { await this.fetchCatalogueStatus(); } catch (e) { console.warn("fetchCatalogueStatus error", e); }
+    try { await this.fetchFallbackCacheStats(); } catch (e) { console.warn("fetchFallbackCacheStats error", e); }
 
     const urlParams = new URLSearchParams(window.location.search);
     const orderIdParam = urlParams.get('orderId');
@@ -956,6 +969,18 @@ class AdminDashboard {
       });
     }
 
+    // Fallback Enricher (UK Oriflame ➔ French Translation)
+    if (this.btnRunFallbackTest) {
+      this.btnRunFallbackTest.addEventListener('click', () => this.runFallbackEnrichment(true));
+    }
+    if (this.btnRunFallbackAll) {
+      this.btnRunFallbackAll.addEventListener('click', () => {
+        if (confirm('Lancer l\'enrichissement sur l\'ensemble du catalogue ? Les produits sans description ou avec dimensions logistiques seront mis à jour depuis Oriflame UK.')) {
+          this.runFallbackEnrichment(false);
+        }
+      });
+    }
+
     // Save Settings
     if (this.btnSaveFbHandle && this.fbHandleInput) {
       this.fbHandleInput.addEventListener('input', () => {
@@ -1111,6 +1136,12 @@ class AdminDashboard {
     const carouselImportFileInput = document.getElementById('carousel-import-file');
     if (carouselImportFileInput) {
       carouselImportFileInput.addEventListener('change', (e) => this.importCarouselJson(e));
+    }
+
+    // Featured Deals JSON Restore Listener
+    const featuredDealsImportFileInput = document.getElementById('featured-deals-import-file');
+    if (featuredDealsImportFileInput) {
+      featuredDealsImportFileInput.addEventListener('change', (e) => this.importFeaturedDealsFile(e));
     }
 
     // Products JSON Bulk Import Listeners
@@ -2784,6 +2815,7 @@ class AdminDashboard {
             localStorage.removeItem('oriflame_products_v1');
             localStorage.removeItem('oriflame_discount_overrides_v1');
             localStorage.removeItem('oriflame_settings_v1');
+            localStorage.removeItem('oriflame_featured_deals_v1');
           } catch (e) {}
 
           if (statusEl) {
@@ -2798,6 +2830,8 @@ class AdminDashboard {
           if (typeof this.fetchBundles === 'function') await this.fetchBundles();
           if (typeof this.fetchDeals === 'function') await this.fetchDeals();
           await this.fetchSettings();
+          if (typeof this.renderFeaturedDealsAdminGrid === 'function') this.renderFeaturedDealsAdminGrid();
+          if (typeof this.populateFeaturedDealsDropdown === 'function') this.populateFeaturedDealsDropdown();
           await this.fetchAnalytics();
 
           alert(`✅ Restauration globale réussie !\n\n${data.message}`);
@@ -2810,6 +2844,66 @@ class AdminDashboard {
           statusEl.textContent = '❌ ' + err.message;
         }
         alert('❌ Erreur de restauration JSON: ' + err.message);
+      } finally {
+        event.target.value = '';
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  async importFeaturedDealsFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const statusEl = document.getElementById('featured-deals-import-status');
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.style.color = '#EA580C';
+      statusEl.textContent = '⏳ Restauration des offres spéciales en cours...';
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const text = e.target.result;
+        JSON.parse(text);
+
+        const formData = new FormData();
+        formData.append('featured_deals', file);
+
+        const res = await fetch('/api/import/featured-deals', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          try {
+            localStorage.removeItem('oriflame_featured_deals_v1');
+            const localSettings = JSON.parse(localStorage.getItem('oriflame_settings_v1') || '{}');
+            localSettings.featured_deal_ids = data.featured_deal_ids || [];
+            localStorage.setItem('oriflame_settings_v1', JSON.stringify(localSettings));
+          } catch (e) {}
+
+          if (statusEl) {
+            statusEl.style.color = '#10B981';
+            statusEl.textContent = `✅ ${data.message}`;
+          }
+
+          await this.fetchSettings();
+          if (typeof this.renderFeaturedDealsAdminGrid === 'function') this.renderFeaturedDealsAdminGrid();
+          if (typeof this.populateFeaturedDealsDropdown === 'function') this.populateFeaturedDealsDropdown();
+
+          alert(`✅ Restauration des offres spéciales réussie !\n\n${data.message}`);
+        } else {
+          throw new Error(data.message || 'Erreur lors de la restauration');
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.style.color = '#EF4444';
+          statusEl.textContent = '❌ ' + err.message;
+        }
+        alert('❌ Erreur: ' + err.message);
       } finally {
         event.target.value = '';
       }
@@ -4512,6 +4606,143 @@ class AdminDashboard {
       }
     } catch (err) {
       alert('❌ Erreur réseau: ' + err.message);
+    }
+  }
+
+  async fetchFallbackCacheStats() {
+    try {
+      const res = await fetch('/api/products/enrich-stats', {
+        headers: this.getAuthHeaders(),
+        credentials: 'same-origin'
+      });
+      const data = await res.json();
+      if (data.success && data.metrics) {
+        const countEl = document.getElementById('fallback-cache-count');
+        if (countEl) {
+          countEl.textContent = `${data.metrics.totalCachedInDB || 0} traductions en base (${data.metrics.cacheHits || 0} hits, ratio: ${data.metrics.cacheHitRatio || '0%'})`;
+        }
+      }
+    } catch (e) {
+      console.warn('fetchFallbackCacheStats error:', e.message);
+    }
+  }
+
+  async runFallbackEnrichment(isTest = false) {
+    const btnTest = document.getElementById('btn-run-fallback-test');
+    const btnAll = document.getElementById('btn-run-fallback-all');
+    const statusBox = document.getElementById('fallback-enrich-status');
+    const previewBox = document.getElementById('fallback-enrich-preview');
+    const tbody = document.getElementById('fallback-enrich-tbody');
+
+    if (btnTest) btnTest.disabled = true;
+    if (btnAll) btnAll.disabled = true;
+
+    if (statusBox) {
+      statusBox.style.display = 'block';
+      statusBox.style.background = 'rgba(59, 130, 246, 0.2)';
+      statusBox.style.border = '1px solid #3B82F6';
+      statusBox.style.color = '#93C5FD';
+      statusBox.textContent = isTest 
+        ? '⏳ Test du fallback intelligent sur 5 produits incomplets en cours...'
+        : '⏳ Enrichissement du catalogue en cours (scraping UK + traduction FR)...';
+    }
+
+    try {
+      let targetProductIds = undefined;
+      if (isTest && this.rawProducts && this.rawProducts.length > 0) {
+        const candidates = this.rawProducts.filter(p => {
+          const desc = p.description_fr || p.description || '';
+          const how = p.how_to_use || '';
+          const isBoilerplateDesc = desc.includes('Formule scandinave haute performance') || /(?:dimensions\s*:|nom\s+complet\s+du\s+produit)/i.test(desc) || desc.trim().length < 15;
+          const isBoilerplateHow = how.includes('Appliquer délicatement selon les recommandations') || how.trim().length < 15;
+          return isBoilerplateDesc || isBoilerplateHow;
+        });
+        targetProductIds = candidates.slice(0, 5).map(p => String(p.product_id));
+      }
+
+      const res = await fetch('/api/products/enrich-fallback', {
+        method: 'POST',
+        headers: {
+          ...this.getAuthHeaders(),
+          'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          productIds: targetProductIds,
+          limit: isTest ? 5 : undefined,
+          dryRun: false
+        })
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        throw new Error(data.error || 'Erreur inconnue');
+      }
+
+      if (statusBox) {
+        statusBox.style.background = 'rgba(16, 185, 129, 0.2)';
+        statusBox.style.border = '1px solid #10B981';
+        statusBox.style.color = '#6EE7B7';
+        statusBox.textContent = `✅ Enrichissement terminé ! Vérifiés: ${data.total_checked}, Enrichis: ${data.enriched_count}, Conservés TN: ${data.unmodified_count}, Déjà valides: ${data.skipped_count}, Erreurs: ${data.errors_count}`;
+      }
+
+      await this.fetchFallbackCacheStats();
+
+      if (previewBox && tbody && Array.isArray(data.results)) {
+        previewBox.style.display = 'block';
+        tbody.innerHTML = '';
+
+        data.results.forEach(r => {
+          const tr = document.createElement('tr');
+          tr.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
+
+          let statusBadge = '';
+          if (r.status === 'enriched') {
+            statusBadge = '<span style="background:#059669;color:#FFF;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:700;">✅ Enrichi</span>';
+          } else if (r.status === 'skipped') {
+            statusBadge = '<span style="background:#4B5563;color:#FFF;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:700;">⏭ Déjà complet</span>';
+          } else if (r.status === 'unmodified') {
+            statusBadge = '<span style="background:#D97706;color:#FFF;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:700;">🔒 Conservé TN</span>';
+          } else {
+            statusBadge = '<span style="background:#DC2626;color:#FFF;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:700;">❌ Erreur</span>';
+          }
+
+          const fields = (r.updated_fields || []).join(', ') || (r.kept_tn ? 'Aucun (UK absent/vide)' : 'Aucun');
+          
+          let previewText = '';
+          if (r.status === 'enriched') {
+            const descBefore = (r.before?.description || '').slice(0, 45) + '...';
+            const descAfter = (r.after?.description || '').slice(0, 70) + '...';
+            previewText = `<div style="font-size:0.72rem;color:#9CA3AF;"><strong style="color:#EF4444;">Avant:</strong> ${descBefore}</div>
+                           <div style="font-size:0.72rem;color:#E0E7FF;margin-top:2px;"><strong style="color:#10B981;">Après (FR):</strong> ${descAfter}</div>`;
+          } else {
+            previewText = `<span style="font-size:0.75rem;color:#9CA3AF;">${r.message || r.reason || '-'}</span>`;
+          }
+
+          tr.innerHTML = `
+            <td style="font-weight:700;color:#FCD34D;">${r.product_id}</td>
+            <td style="color:#FFF;">${r.name || '-'}</td>
+            <td>${statusBadge}</td>
+            <td style="font-size:0.75rem;color:#C7D2FE;">${fields}</td>
+            <td>${previewText}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      await this.fetchProducts();
+
+    } catch (err) {
+      if (statusBox) {
+        statusBox.style.background = 'rgba(239, 68, 68, 0.2)';
+        statusBox.style.border = '1px solid #EF4444';
+        statusBox.style.color = '#FCA5A5';
+        statusBox.textContent = '❌ Erreur lors de l\'enrichissement: ' + err.message;
+      }
+    } finally {
+      if (btnTest) btnTest.disabled = false;
+      if (btnAll) btnAll.disabled = false;
     }
   }
 }
