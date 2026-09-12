@@ -645,8 +645,10 @@ class App {
     this.btnCloseDrawer = document.getElementById('btn-close-drawer');
     this.cartItemsList = document.getElementById('cart-items-list');
     this.cartSubtotal = document.getElementById('cart-subtotal');
+    this.cartTotalWithDelivery = document.getElementById('cart-total-with-delivery');
     this.customerNameInput = document.getElementById('customer-name');
     this.customerPhoneInput = document.getElementById('customer-phone');
+    this.customerAddressInput = document.getElementById('customer-address');
     this.btnMessengerCheckout = document.getElementById('btn-messenger-checkout');
     this.btnCopyOrderSummary = document.getElementById('btn-copy-order-summary');
 
@@ -990,13 +992,15 @@ class App {
     };
     if (this.customerNameInput) this.customerNameInput.addEventListener('input', updateMessengerDetails);
     if (this.customerPhoneInput) this.customerPhoneInput.addEventListener('input', updateMessengerDetails);
+    if (this.customerAddressInput) this.customerAddressInput.addEventListener('input', updateMessengerDetails);
 
     // Copy Order Summary
     if (this.btnCopyOrderSummary) {
       this.btnCopyOrderSummary.addEventListener('click', () => {
         const name = this.customerNameInput ? this.customerNameInput.value : '';
         const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
-        const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+        const address = this.customerAddressInput ? this.customerAddressInput.value : '';
+        const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
         if (msg) {
           navigator.clipboard.writeText(msg).then(() => {
             this.showToast(this.i18n.t('toast_copied'));
@@ -1068,6 +1072,7 @@ class App {
 
         const name = (this.customerNameInput ? this.customerNameInput.value : '').trim();
         const phone = (this.customerPhoneInput ? this.customerPhoneInput.value : '').trim();
+        const address = (this.customerAddressInput ? this.customerAddressInput.value : '').trim();
 
         if (!phone) {
           alert('Veuillez renseigner votre numéro de téléphone ou WhatsApp pour que nous puissions vous contacter.');
@@ -1077,7 +1082,7 @@ class App {
 
         // Copy order message immediately upon click while user gesture is active
         const earlyOrderMsg = `Bonjour Mouna ! Je souhaite passer une commande sur votre boutique Oriflame :\n` +
-          this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+          this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
         await copyTextToClipboard(earlyOrderMsg);
 
         // ── Meta Pixel: InitiateCheckout standard event (WhatsApp / Phone) ──
@@ -1106,6 +1111,7 @@ class App {
             body: JSON.stringify({
               customer_name: name || 'Client Téléphone',
               customer_phone: phone,
+              customer_address: address,
               channel: 'phone',
               items: items,
               currency: 'TND'
@@ -1131,7 +1137,7 @@ class App {
               const liveOrderUrl = `${window.location.origin}/admin?orderId=${data.order_id}`;
               const cleanTargetPhone = this.cleanPhoneNumber(this.whatsappPhone || '55756629');
               const rawOrderMsg = `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
-                this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl);
+                this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl, address);
               const orderMsg = encodeURIComponent(rawOrderMsg);
               const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
               successWhatsappBtn.href = waUrl;
@@ -1180,7 +1186,7 @@ class App {
           if (successWhatsappBtn) {
             const cleanTargetPhone = this.cleanPhoneNumber(this.whatsappPhone || '55756629');
             const rawOrderMsg = `Bonjour Mouna ! J'ai passé la commande ${fallbackOrderId} sur votre boutique Oriflame :\n` +
-              this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+              this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
             const orderMsg = encodeURIComponent(rawOrderMsg);
             const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
             successWhatsappBtn.href = waUrl;
@@ -1216,8 +1222,9 @@ class App {
         e.preventDefault();
         const count = this.cartManager.getTotalCount();
         const total = this.cartManager.getSubtotal();
-        const name = this.customerNameInput ? this.customerNameInput.value : '';
-        const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
+        const name = (this.customerNameInput ? this.customerNameInput.value : '').trim();
+        const phone = (this.customerPhoneInput ? this.customerPhoneInput.value : '').trim();
+        const address = (this.customerAddressInput ? this.customerAddressInput.value : '').trim();
         const items = this.cartManager.getCartItems();
 
         if (items.length === 0) {
@@ -1229,7 +1236,7 @@ class App {
         const cleanedFbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
 
         // ── CRITICAL: Copy to clipboard IMMEDIATELY upon user click ──
-        const earlyMsg = this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+        const earlyMsg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
         await copyTextToClipboard(earlyMsg);
 
         // ── Meta Pixel: InitiateCheckout standard event (Facebook Messenger) ──
@@ -1257,6 +1264,7 @@ class App {
             body: JSON.stringify({
               customer_name: name,
               customer_phone: phone,
+              customer_address: address,
               channel: 'messenger',
               items: items,
               currency: 'TND'
@@ -1274,7 +1282,7 @@ class App {
         // Re-generate the message with the order URL (if available) and re-copy
         const liveOrderUrl = orderId ? `${window.location.origin}/admin?orderId=${orderId}` : orderUrl;
         const msg = liveOrderUrl
-          ? this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl)
+          ? this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl, address)
           : earlyMsg;
 
         if (liveOrderUrl) {
@@ -4395,6 +4403,7 @@ class App {
         </div>
       `;
       if (this.cartSubtotal) this.cartSubtotal.textContent = `0.00 ${currencyLabel}`;
+      if (this.cartTotalWithDelivery) this.cartTotalWithDelivery.textContent = `0.000 ${currencyLabel}`;
       if (this.btnMessengerCheckout) {
         this.btnMessengerCheckout.style.opacity = "0.5";
         this.btnMessengerCheckout.style.pointerEvents = "none";
@@ -4413,9 +4422,10 @@ class App {
         : this.i18n.t('send_messenger_desktop');
 
       const fbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
-      const name = this.customerNameInput ? this.customerNameInput.value : '';
-      const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
-      const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND');
+      const name = (this.customerNameInput ? this.customerNameInput.value : '').trim();
+      const phone = (this.customerPhoneInput ? this.customerPhoneInput.value : '').trim();
+      const address = (this.customerAddressInput ? this.customerAddressInput.value : '').trim();
+      const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
       this.btnMessengerCheckout.href = `https://m.me/${fbHandle}?text=${encodeURIComponent(msg)}`;
       this.btnMessengerCheckout.target = "_blank";
     }
@@ -4615,11 +4625,17 @@ class App {
       }
     }
 
+    const totalWithDelivery = this.cartManager.getTotalWithDelivery().toFixed(3);
+    if (this.cartTotalWithDelivery) {
+      this.cartTotalWithDelivery.textContent = `${totalWithDelivery} ${currencyLabel}`;
+    }
+
     if (this.btnMessengerCheckout) {
-      const fbHandle = this.facebookUsername || 'mouna.nouira1';
-      const name = this.customerNameInput ? this.customerNameInput.value : '';
-      const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
-      this.btnMessengerCheckout.href = this.cartManager.generateMessengerLink(fbHandle, name, phone, 'TND');
+      const fbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
+      const name = (this.customerNameInput ? this.customerNameInput.value : '').trim();
+      const phone = (this.customerPhoneInput ? this.customerPhoneInput.value : '').trim();
+      const address = (this.customerAddressInput ? this.customerAddressInput.value : '').trim();
+      this.btnMessengerCheckout.href = this.cartManager.generateMessengerLink(fbHandle, name, phone, 'TND', '', '', address);
       this.btnMessengerCheckout.target = "_blank";
     }
   }

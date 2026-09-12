@@ -342,6 +342,12 @@ app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, 'robots.txt'));
 });
 
+// Dedicated sitemap.xml route ensuring immediate 200 response with correct application/xml
+app.get('/sitemap.xml', (req, res) => {
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+  res.sendFile(path.join(__dirname, 'sitemap.xml'));
+});
+
 // Dedicated Social Image Proxy / Endpoint for Products
 app.get(['/api/og-image/:productId', '/api/og-image/:productId.jpg', '/api/og-image/:productId.png'], async (req, res) => {
   try {
@@ -1759,18 +1765,23 @@ app.get('/api/fb/config', (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   try {
-    const { customer_name, customer_phone, items, currency } = req.body;
+    const { customer_name, customer_phone, customer_address, items, currency } = req.body;
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ success: false, message: 'Cart items are required' });
     }
 
     const orderId = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
-    const totalAmount = items.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
+    const subtotalAmount = items.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
+    const taxesAmount = Number((subtotalAmount * 0.03).toFixed(3));
+    const shippingFee = 9.755;
+    const totalWithDelivery = Number((subtotalAmount + taxesAmount + shippingFee).toFixed(3));
+    const address = (customer_address || req.body.address || '').trim();
 
     const newOrder = {
       order_id: orderId,
       customer_name: customer_name ? customer_name.trim() : 'Client Anonyme',
       customer_phone: customer_phone ? customer_phone.trim() : 'Non renseigné',
+      customer_address: address || 'Non renseignée',
       channel: req.body.channel || (customer_phone ? 'phone' : 'messenger'),
       notes: req.body.notes ? req.body.notes.trim() : '',
       items: items.map(i => ({
@@ -1780,8 +1791,14 @@ app.post('/api/orders', async (req, res) => {
         quantity: Number(i.quantity),
         image_url: i.image_url
       })),
-      total_amount: Number(totalAmount.toFixed(2)),
+      subtotal: Number(subtotalAmount.toFixed(2)),
+      taxes_amount: taxesAmount,
+      shipping_fee: shippingFee,
+      shipping_and_taxes: Number((taxesAmount + shippingFee).toFixed(3)),
+      total_amount: totalWithDelivery,
       currency: currency || 'TND',
+      delivery_estimate: '2 à 3 jours ouvrables',
+      payment_method: 'Paiement à la livraison',
       status: 'pending',
       created_at: new Date().toISOString()
     };

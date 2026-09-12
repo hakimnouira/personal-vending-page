@@ -746,20 +746,39 @@
 
       <div class="drawer-footer">
         <div class="customer-info-box">
-          <h4 style="font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 10px;">
-            👤 Vos Coordonnées (Nom &amp; Téléphone)
+          <h4 id="customer-info-title" style="font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 10px;" data-i18n="customer_details_title">
+            👤 Vos Coordonnées (Nom, Téléphone &amp; Adresse)
           </h4>
           <div class="form-group" style="margin-bottom: 10px;">
-            <input type="text" id="customer-name" class="form-control" autocomplete="name" inputmode="text" placeholder="Votre Nom Complet" />
+            <input type="text" id="customer-name" class="form-control" autocomplete="name" inputmode="text" placeholder="Votre Nom Complet" data-i18n-placeholder="customer_name_placeholder" />
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <input type="tel" id="customer-phone" class="form-control" autocomplete="tel" inputmode="tel" placeholder="Votre N° Téléphone / WhatsApp (ex: 98 123 456)" data-i18n-placeholder="customer_phone_placeholder" />
           </div>
           <div class="form-group" style="margin-bottom: 0;">
-            <input type="tel" id="customer-phone" class="form-control" autocomplete="tel" inputmode="tel" placeholder="Votre N° Téléphone / WhatsApp (ex: 98 123 456)" />
+            <input type="text" id="customer-address" class="form-control" autocomplete="street-address" placeholder="Votre Adresse de Livraison (ex: Ville, Rue...)" data-i18n-placeholder="customer_address_placeholder" />
           </div>
         </div>
 
-        <div class="cart-summary-line">
+        <div class="cart-summary-line cart-summary-subtotal-line">
           <span data-i18n="total_estimate">Total Estimé :</span>
           <span id="cart-subtotal">0.00 TND</span>
+        </div>
+
+        <div class="cart-summary-line cart-summary-delivery-line">
+          <span data-i18n="total_with_delivery">Total avec livraison &amp; taxes :</span>
+          <span id="cart-total-with-delivery">0.000 TND</span>
+        </div>
+
+        <div class="cart-trust-box">
+          <div class="cart-trust-item" style="font-weight: 700; color: #047857;">
+            <span>🚚</span>
+            <span data-i18n="cart_delivery_time">Livraison dans 2 à 3 jours</span>
+          </div>
+          <div class="cart-trust-item" style="color: #166534;">
+            <span>✓</span>
+            <span data-i18n="cart_cod_notice">Aucun paiement en ligne requis. Paiement à la livraison</span>
+          </div>
         </div>
 
         <!-- Dual Choice Ordering Methods -->
@@ -779,10 +798,6 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.516 3.735 7.234V22l3.385-1.86c.928.257 1.91.396 2.88.396 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.09 12.39l-2.545-2.727-4.955 2.727 5.455-5.818 2.618 2.727 4.882-2.727-5.455 5.818z"/></svg>
             <span>💬 Envoyer sur Facebook Messenger</span>
           </a>
-        </div>
-
-        <div class="no-payment-notice" style="margin-top: 10px; font-size: 0.76rem; color: var(--color-text-muted); text-align: center;">
-          ✓ Aucun paiement en ligne requis. Paiement à la livraison / confirmation avec Mouna.
         </div>
       </div>
     </div>

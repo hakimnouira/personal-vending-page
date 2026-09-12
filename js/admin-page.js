@@ -1690,13 +1690,14 @@ class AdminDashboard {
           <td>
             <strong>${o.customer_name || 'Client'}</strong>
             ${phoneHtml}
+            ${o.customer_address && o.customer_address !== 'Non renseignée' ? `<div style="font-size:0.75rem; color:#4B5563; margin-top:3px; line-height:1.25;">📍 ${o.customer_address}</div>` : ''}
           </td>
           <td>${channelBadge}</td>
           <td>
             <div style="font-weight:600;">${itemCount} article(s)</div>
             <div style="font-size:0.76rem; color:#71717A; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${itemsPreview}</div>
           </td>
-          <td><strong style="font-size:0.95rem; color:#18181B;">${Number(o.total_amount).toFixed(2)} ${o.currency || 'TND'}</strong></td>
+          <td><strong style="font-size:0.95rem; color:#18181B;">${Number(o.total_amount).toFixed(3)} ${o.currency || 'TND'}</strong></td>
           <td style="font-size:0.78rem; color:#71717A;">${new Date(o.created_at).toLocaleString()}</td>
           <td>${statusBadge}</td>
           <td>
@@ -1752,6 +1753,15 @@ class AdminDashboard {
             <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">Contact Téléphone / WhatsApp</span>
             <div style="font-weight:700; font-size:1.05rem;">${phoneCallLink}</div>
           </div>
+          ${order.customer_address && order.customer_address !== 'Non renseignée' ? `
+          <div style="grid-column: 1 / -1; border-top: 1px dashed #E8E5DF; padding-top: 10px;">
+            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">📍 Adresse de Livraison</span>
+            <div style="font-weight:700; font-size:1.02rem; color:#111827; margin-top:2px;">${order.customer_address}</div>
+          </div>
+          ` : ''}
+          <div style="grid-column: 1 / -1; background:#F0FDF4; border-radius:6px; padding:8px 10px; font-size:0.8rem; color:#166534; font-weight:600;">
+            🚚 Livraison prévue dans 2 à 3 jours ouvrables • Aucun paiement en ligne requis (Paiement à la livraison)
+          </div>
         </div>
 
         <h4 style="font-weight:700; margin-bottom:10px; font-size:0.95rem;">Articles Commandés (${(order.items || []).length}) :</h4>
@@ -1786,9 +1796,24 @@ class AdminDashboard {
           </table>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; background:#18181B; color:#FFF; padding:14px 18px; border-radius:10px;">
-          <span style="font-weight:600; font-size:0.95rem;">TOTAL DE LA COMMANDE :</span>
-          <span style="font-weight:800; font-size:1.35rem; color:#C5A880;">${Number(order.total_amount).toFixed(2)} ${order.currency || 'TND'}</span>
+        <!-- Breakdown Total -->
+        <div style="background:#FAF8F5; border:1px solid #E8E5DF; border-radius:10px; padding:12px 16px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.88rem; color:#71717A; margin-bottom:6px;">
+            <span>Sous-total articles :</span>
+            <span style="font-weight:600; color:#18181B;">${Number(order.subtotal || 0).toFixed(2)} ${order.currency || 'TND'}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.88rem; color:#71717A; margin-bottom:6px;">
+            <span>Taxes estimées (3%) :</span>
+            <span style="font-weight:600; color:#7C3AED;">+${Number(order.taxes_amount || (Number(order.subtotal || 0) * 0.03)).toFixed(3)} ${order.currency || 'TND'}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.88rem; color:#71717A; margin-bottom:8px; padding-bottom:6px; border-bottom:1px dashed #E8E5DF;">
+            <span>Frais de livraison :</span>
+            <span style="font-weight:600; color:#047857;">+9.755 ${order.currency || 'TND'}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-weight:700; font-size:1rem; color:#18181B;">TOTAL AVEC LIVRAISON &amp; TAXES :</span>
+            <span style="font-weight:800; font-size:1.35rem; color:#059669;">${Number(order.total_amount).toFixed(3)} ${order.currency || 'TND'}</span>
+          </div>
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:20px; border-top:1px solid #E8E5DF; padding-top:16px;">

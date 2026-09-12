@@ -103,6 +103,16 @@ export async function sendOrderNotificationEmail(order, recipientEmail) {
                 <a href="tel:${escapeHtml(order.customer_phone)}" style="color: #059669; text-decoration: none;">${escapeHtml(order.customer_phone || 'Non renseigné')}</a>
               </td>
             </tr>
+            ${order.customer_address && order.customer_address !== 'Non renseignée' ? `
+            <tr>
+              <td style="padding: 4px 0; color: #6B7280;">Adresse de livraison :</td>
+              <td style="padding: 4px 0; font-weight: 700; color: #111827;">${escapeHtml(order.customer_address)}</td>
+            </tr>
+            ` : ''}
+            <tr>
+              <td style="padding: 4px 0; color: #6B7280;">Délai de livraison :</td>
+              <td style="padding: 4px 0; font-weight: 600; color: #047857;">🚚 2 à 3 jours ouvrables (Paiement à la livraison)</td>
+            </tr>
             <tr>
               <td style="padding: 4px 0; color: #6B7280;">Date & Heure :</td>
               <td style="padding: 4px 0; color: #374151;">${new Date(order.created_at || Date.now()).toLocaleString('fr-FR')}</td>
@@ -126,12 +136,26 @@ export async function sendOrderNotificationEmail(order, recipientEmail) {
             </tbody>
           </table>
 
-          <!-- Total -->
-          <div style="background: #FAF8F5; border: 1.5px solid #C5A880; border-radius: 8px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <span style="font-size: 16px; font-weight: 700; color: #18181B;">TOTAL DE LA COMMANDE :</span>
-            <span style="font-size: 20px; font-weight: 800; color: #059669;">
-              ${Number(order.total_amount).toFixed(2)} ${order.currency || 'TND'}
-            </span>
+          <!-- Total Breakdown -->
+          <div style="background: #FAF8F5; border: 1.5px solid #C5A880; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #6B7280; margin-bottom: 6px;">
+              <span>Sous-total articles :</span>
+              <span style="font-weight: 600; color: #18181B;">${Number(order.subtotal || 0).toFixed(2)} ${order.currency || 'TND'}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #6B7280; margin-bottom: 6px;">
+              <span>Taxes estimées (3%) :</span>
+              <span style="font-weight: 600; color: #7C3AED;">+${Number(order.taxes_amount || (Number(order.subtotal || 0) * 0.03)).toFixed(3)} ${order.currency || 'TND'}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #6B7280; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed #E5E7EB;">
+              <span>Frais de livraison :</span>
+              <span style="font-weight: 600; color: #047857;">+9.755 ${order.currency || 'TND'}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 15px; font-weight: 700; color: #18181B;">TOTAL AVEC LIVRAISON &amp; TAXES :</span>
+              <span style="font-size: 20px; font-weight: 800; color: #059669;">
+                ${Number(order.total_amount).toFixed(3)} ${order.currency || 'TND'}
+              </span>
+            </div>
           </div>
 
           <!-- Note -->

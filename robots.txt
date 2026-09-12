@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Allow: /assets/
 Allow: /uploads/
+Allow: /catalogue
 Allow: /guide-parfum
 Allow: /soins-de-la-peau
 Allow: /corps-et-bain

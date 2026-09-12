@@ -392,6 +392,32 @@ export class CartManager {
     return Math.max(0, raw - bundleDiscount - thresholdDiscount);
   }
 
+  // Taxes rate: 3%
+  getTaxesRate() {
+    return 0.03;
+  }
+
+  // Taxes amount: Subtotal * 3%
+  getTaxesAmount() {
+    if (this.cart.length === 0) return 0;
+    return Number((this.getSubtotal() * 0.03).toFixed(3));
+  }
+
+  // Delivery fee fixed amount
+  getShippingFee() {
+    if (this.cart.length === 0) return 0;
+    return 9.755;
+  }
+
+  // Total with delivery & taxes = Total estimé + (Total estimé * 3%) + 9.755
+  getTotalWithDelivery() {
+    if (this.cart.length === 0) return 0;
+    const subtotal = this.getSubtotal();
+    const taxes = Number((subtotal * 0.03).toFixed(3));
+    const shipping = 9.755;
+    return Number((subtotal + taxes + shipping).toFixed(3));
+  }
+
   getTotalPrice() {
     return this.getSubtotal();
   }
@@ -467,7 +493,7 @@ export class CartManager {
   }
 
   // Generate plain text order message formatted in user's active language
-  generateOrderTextMessage(customerName = '', customerPhone = '', currency = 'TND', orderUrl = '') {
+  generateOrderTextMessage(customerName = '', customerPhone = '', currency = 'TND', orderUrl = '', customerAddress = '') {
     if (this.cart.length === 0) return '';
 
     const lang = this.i18n ? this.i18n.getLang() : 'fr';
@@ -477,6 +503,8 @@ export class CartManager {
     const totalLabel = this.i18n ? this.i18n.t('msg_template_total') : 'Total de la commande :';
     const nameLabel = this.i18n ? this.i18n.t('msg_template_name') : 'Nom du Client :';
     const phoneLabel = this.i18n ? this.i18n.t('msg_template_phone') : 'Téléphone :';
+    const addressLabel = (lang === 'ar') ? 'عنوان التوصيل :' : 'Adresse de livraison :';
+    const deliveryTaxLabel = (lang === 'ar') ? 'المجموع مع التوصيل والأداءات :' : 'Total avec livraison & taxes :';
     const footer = this.i18n ? this.i18n.t('msg_template_footer') : 'Merci de confirmer la disponibilité et la livraison en Tunisie. Merci !';
 
     let message = `${header}\n\n`;
@@ -512,6 +540,10 @@ export class CartManager {
     const bundleDiscount = this.getBundleDiscount().toFixed(2);
     const thresholdDiscount = this.getThresholdDealDiscount().toFixed(2);
     const finalTotal = this.getSubtotal().toFixed(2);
+    const subtotalVal = Number(this.getSubtotal());
+    const taxesVal = Number((subtotalVal * 0.03).toFixed(3));
+    const shippingVal = 9.755;
+    const totalWithDelivery = (subtotalVal + taxesVal + shippingVal).toFixed(3);
 
     message += `\n-----------------------------------\n`;
     if (Number(bundleDiscount) > 0 || Number(thresholdDiscount) > 0) {
@@ -524,6 +556,7 @@ export class CartManager {
       }
     }
     message += `${totalLabel} ${finalTotal} ${currencyLabel}\n`;
+    message += `${deliveryTaxLabel} ${totalWithDelivery} ${currencyLabel}\n`;
 
     if (customerName && customerName.trim()) {
       message += `${nameLabel} ${customerName.trim()}\n`;
@@ -531,6 +564,12 @@ export class CartManager {
     if (customerPhone && customerPhone.trim()) {
       message += `${phoneLabel} ${customerPhone.trim()}\n`;
     }
+    if (customerAddress && customerAddress.trim()) {
+      message += `${addressLabel} ${customerAddress.trim()}\n`;
+    }
+    message += (lang === 'ar')
+      ? `🚚 التوصيل خلال 2 إلى 3 أيام (لا يلزم أي دفع إلكتروني. الدفع عند الاستلام)\n`
+      : `🚚 Livraison dans 2 à 3 jours (Aucun paiement en ligne requis. Paiement à la livraison)\n`;
 
     if (orderUrl) {
       message += `\n🔒 Lien Inspection Admin : ${orderUrl}\n`;
@@ -541,10 +580,10 @@ export class CartManager {
   }
 
   // Smart Mobile vs Desktop Facebook / Messenger Link Generator
-  generateMessengerLink(fbUsername = 'Mounanouira.Oriflame', customerName = '', customerPhone = '', currency = 'TND', orderUrl = '', orderId = '') {
+  generateMessengerLink(fbUsername = 'Mounanouira.Oriflame', customerName = '', customerPhone = '', currency = 'TND', orderUrl = '', orderId = '', customerAddress = '') {
     if (this.cart.length === 0) return '#';
 
-    const message = this.generateOrderTextMessage(customerName, customerPhone, currency, orderUrl);
+    const message = this.generateOrderTextMessage(customerName, customerPhone, currency, orderUrl, customerAddress);
     const encodedText = encodeURIComponent(message);
 
     if (this.isMobileDevice()) {
