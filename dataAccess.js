@@ -210,7 +210,48 @@ export async function saveProducts(products) {
 // ── ORDERS ───────────────────────────────────────────────────────────────
 const ORDERS_FILE = path.join(process.cwd(), 'data', 'orders.json');
 
+let ordersTableChecked = false;
+async function ensureOrdersColumns() {
+  if (ordersTableChecked) return;
+  try {
+    await query(`
+      CREATE TABLE IF NOT EXISTS orders (
+        order_id TEXT PRIMARY KEY,
+        order_number TEXT,
+        customer_name TEXT,
+        customer_phone TEXT,
+        delivery_area TEXT,
+        delivery_address TEXT,
+        customer_note TEXT,
+        consent_given BOOLEAN DEFAULT TRUE,
+        channel TEXT DEFAULT 'direct_site',
+        notes TEXT,
+        items JSONB DEFAULT '[]'::jsonb,
+        subtotal NUMERIC DEFAULT 0,
+        discount NUMERIC DEFAULT 0,
+        total_amount NUMERIC DEFAULT 0,
+        currency TEXT DEFAULT 'TND',
+        status TEXT DEFAULT 'nouvelle',
+        notification_status TEXT DEFAULT 'pending',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS order_number TEXT;
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS delivery_area TEXT;
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS delivery_address TEXT;
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_note TEXT;
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS consent_given BOOLEAN DEFAULT TRUE;
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS subtotal NUMERIC DEFAULT 0;
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS discount NUMERIC DEFAULT 0;
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS notification_status TEXT DEFAULT 'pending';
+    `);
+    ordersTableChecked = true;
+  } catch (err) {
+    console.warn('ensureOrdersColumns note:', err?.message || err);
+  }
+}
+
 export async function getOrders() {
+  await ensureOrdersColumns();
   try {
     const res = await query('SELECT * FROM orders ORDER BY created_at DESC');
     if (res && Array.isArray(res.rows)) {
@@ -259,6 +300,7 @@ export async function getOrders() {
 
 export async function saveOrders(orders) {
   if (!Array.isArray(orders)) return false;
+  await ensureOrdersColumns();
 
   // 1. Always save to local data/orders.json for reliable persistent backup
   try {
