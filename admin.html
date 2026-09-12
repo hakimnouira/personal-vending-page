@@ -226,8 +226,15 @@
             <a href="/api/export/orders/csv" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #059669; border-color: #047857; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;" title="Exporter les commandes en CSV (Excel / Google Sheets)">
               📊 CSV Excel
             </a>
+            <!-- ── DEDICATED ORDERS RESTORE BUTTON ── -->
+            <label class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #7C3AED; border-color: #6D28D9; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;" title="Restaurer la base commandes depuis un fichier JSON">
+              ⬆️ Restaurer Commandes (JSON)
+              <input type="file" id="admin-orders-restore-file" accept=".json" style="display: none;" />
+            </label>
           </div>
         </div>
+
+        <div id="orders-restore-status" style="margin-bottom: 16px; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; display: none;"></div>
 
         <!-- Orders Summary Cards -->
         <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px;">
@@ -853,6 +860,10 @@
               <a href="/api/export/orders/csv" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #1E40AF; border-color: #1E3A8A; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 🛍️ Commandes CSV
               </a>
+              <label class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #6D28D9; border-color: #5B21B6; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" title="Restaurer la base commandes depuis un fichier JSON">
+                ⬆️ Restaurer Commandes JSON
+                <input type="file" id="settings-orders-restore-file" accept=".json" style="display: none;" />
+              </label>
               <a href="/api/export/carousel" download class="btn-primary" style="width: auto; padding: 8px 14px; font-size: 0.8rem; background: #7C3AED; border-color: #6D28D9; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 🖼️ Carrousel JSON
               </a>

@@ -2319,6 +2319,8 @@ input, select, textarea {
   width: 100%;
   max-width: 480px;
   height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
   background: var(--color-surface);
   z-index: 1001;
   box-shadow: var(--shadow-drawer);
@@ -7184,26 +7186,40 @@ footer a:not(.social-link-btn):hover {
   border-bottom: 1px solid #F9FAFB;
 }
 
-/* Responsive adjustments */
-@media (max-width: 480px) {
+/* Responsive adjustments for Mobile Viewport & Ergonomics */
+@media (max-width: 600px) {
   .drawer-panel {
     max-width: 100% !important;
     width: 100% !important;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* Cache complètement le bouton flottant du panier quand le tiroir est ouvert */
+  .drawer-overlay.open ~ .floating-cart-btn,
+  body.drawer-open .floating-cart-btn {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(24px) !important;
   }
 
   .checkout-stepper {
-    padding: 10px 14px;
+    padding: 8px 12px;
     gap: 4px;
+    flex-shrink: 0;
   }
 
   .stepper-text {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
   }
 
   .stepper-badge {
-    width: 22px;
-    height: 22px;
-    font-size: 0.7rem;
+    width: 20px;
+    height: 20px;
+    font-size: 0.68rem;
   }
 
   .stepper-line {
@@ -7211,22 +7227,94 @@ footer a:not(.social-link-btn):hover {
   }
 
   .drawer-body {
-    padding: 14px 16px;
+    padding: 12px 14px 22px;
+    flex-grow: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* Footer du panier : surélevé, safe-area, non compressible */
+  .drawer-footer {
+    padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+    flex-shrink: 0 !important;
+    background: #FAF8F5;
+    border-top: 1px solid #E5E7EB;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 10;
+  }
+
+  .cart-summary-line {
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+
+  .cart-summary-delivery-line {
+    margin-bottom: 8px;
+    padding-top: 6px;
+    font-size: 1.05rem;
+  }
+
+  .cart-trust-box {
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 0.74rem;
+  }
+
+  .checkout-actions-wrapper {
+    margin-top: 8px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Barre et bouton "Continuer vers mes coordonnées" ergonomique et surélevé */
+  #btn-goto-details,
+  .btn-checkout-primary {
+    min-height: 52px !important;
+    padding: 12px 18px !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35) !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    position: relative;
+    z-index: 5;
+  }
+
+  #btn-phone-checkout.btn-checkout-link {
+    min-height: 36px;
+    padding: 4px 8px;
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
   }
 
   .checkout-footer-nav {
-    padding: 12px 16px;
+    padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)) !important;
     flex-direction: column;
+    flex-shrink: 0 !important;
+    gap: 8px;
   }
 
   .btn-checkout-secondary {
     width: 100%;
     order: 2;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .btn-checkout-primary,
   .btn-checkout-confirm {
     width: 100%;
     order: 1;
+    min-height: 52px;
+    font-size: 0.95rem;
+    touch-action: manipulation;
   }
 }

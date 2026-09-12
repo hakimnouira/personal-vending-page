@@ -4805,10 +4805,22 @@ class App {
       }
     }
     if (this.cartDrawerOverlay) this.cartDrawerOverlay.classList.add('open');
+    document.body.classList.add('drawer-open');
+    if (this.floatingCartBtn) {
+      this.floatingCartBtn.style.opacity = '0';
+      this.floatingCartBtn.style.visibility = 'hidden';
+      this.floatingCartBtn.style.pointerEvents = 'none';
+    }
   }
 
   closeCartDrawer() {
     if (this.cartDrawerOverlay) this.cartDrawerOverlay.classList.remove('open');
+    document.body.classList.remove('drawer-open');
+    if (this.floatingCartBtn) {
+      this.floatingCartBtn.style.opacity = '';
+      this.floatingCartBtn.style.visibility = '';
+      this.floatingCartBtn.style.pointerEvents = '';
+    }
   }
 
   openModal(overlay) {

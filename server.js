@@ -2618,6 +2618,117 @@ app.post('/api/import/carousel', requireAdmin, uploadJson.single('carousel'), as
   }
 });
 
+// ── IMPORT: Restore Orders Base Only ─────────────────────────────────────────
+app.post('/api/import/orders', requireAdmin, uploadJson.single('orders'), async (req, res) => {
+  try {
+    let raw = '';
+    if (req.file && req.file.buffer) {
+      raw = req.file.buffer.toString('utf8');
+    } else if (req.body && req.body.data) {
+      raw = typeof req.body.data === 'string' ? req.body.data : JSON.stringify(req.body.data);
+    } else if (req.body && (req.body.orders || Array.isArray(req.body))) {
+      raw = JSON.stringify(req.body);
+    } else if (typeof req.body === 'object' && Object.keys(req.body).length > 0) {
+      raw = JSON.stringify(req.body);
+    } else {
+      return res.status(400).json({ success: false, message: 'Aucun fichier ou données reçus pour la restauration des commandes.' });
+    }
+
+    const parsed = JSON.parse(raw);
+    let ordersToRestore = [];
+
+    if (Array.isArray(parsed)) {
+      ordersToRestore = parsed;
+    } else if (parsed && Array.isArray(parsed.orders)) {
+      ordersToRestore = parsed.orders;
+    } else if (parsed && Array.isArray(parsed.data)) {
+      ordersToRestore = parsed.data;
+    } else if (parsed && typeof parsed === 'object' && (parsed.order_id || parsed.order_number)) {
+      ordersToRestore = [parsed];
+    } else {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Format de fichier non reconnu. Veuillez fournir une sauvegarde valide de commandes (format JSON).' 
+      });
+    }
+
+    // Normalisation et validation de chaque commande pour reconstruction à l'identique
+    const normalizedOrders = ordersToRestore.map((o, idx) => {
+      const orderId = String(o.order_id || o.order_number || o.id || `ORD-${Date.now()}-${idx}`).trim();
+      const orderNumber = String(o.order_number || o.order_id || o.id || orderId).trim();
+      const customerName = String(o.customer_name || o.name || 'Client Anonyme').trim();
+      const customerPhone = String(o.customer_phone || o.phone || '').trim();
+      const deliveryArea = String(o.delivery_area || o.city || '').trim();
+      const deliveryAddress = String(o.delivery_address || o.customer_address || o.address || '').trim();
+      const customerNote = String(o.customer_note || o.notes || o.note || '').trim();
+      const consentGiven = Boolean(o.consent_given !== false);
+      const channel = String(o.channel || 'direct_site').trim();
+
+      // Reconstruction exacte des articles
+      const rawItems = Array.isArray(o.items) ? o.items : (typeof o.items === 'string' ? JSON.parse(o.items || '[]') : []);
+      const items = rawItems.map(item => ({
+        product_id: String(item.product_id || item.product_reference || item.id || '').trim(),
+        product_reference: String(item.product_reference || item.product_id || '').trim(),
+        name: item.name || item.product_name || 'Article',
+        product_name: item.product_name || item.name || 'Article',
+        price: item.price != null ? Number(item.price) : (item.unit_price != null ? Number(item.unit_price) : 0),
+        unit_price: item.unit_price != null ? Number(item.unit_price) : (item.price != null ? Number(item.price) : 0),
+        quantity: item.quantity != null ? Math.max(1, parseInt(item.quantity, 10)) : 1,
+        line_total: item.line_total != null ? Number(item.line_total) : ((item.price || 0) * (item.quantity || 1)),
+        image_url: item.image_url || ''
+      }));
+
+      const subtotal = o.subtotal != null ? Number(o.subtotal) : items.reduce((s, i) => s + (i.line_total || 0), 0);
+      const discount = o.discount != null ? Number(o.discount) : 0;
+      const taxesAmount = o.taxes_amount != null ? Number(o.taxes_amount) : Number((subtotal * 0.03).toFixed(3));
+      const shippingFee = o.shipping_fee != null ? Number(o.shipping_fee) : 9.755;
+      const totalAmount = o.total_amount != null ? Number(o.total_amount) : (o.total != null ? Number(o.total) : (subtotal + taxesAmount + shippingFee));
+
+      return {
+        id: orderId,
+        order_id: orderId,
+        order_number: orderNumber,
+        customer_name: customerName,
+        customer_phone: customerPhone,
+        delivery_area: deliveryArea,
+        city: deliveryArea,
+        delivery_address: deliveryAddress,
+        customer_address: deliveryAddress,
+        customer_note: customerNote,
+        consent_given: consentGiven,
+        channel: channel,
+        notes: customerNote,
+        items: items,
+        subtotal: subtotal,
+        discount: discount,
+        taxes_amount: taxesAmount,
+        shipping_fee: shippingFee,
+        shipping_and_taxes: o.shipping_and_taxes != null ? Number(o.shipping_and_taxes) : Number((taxesAmount + shippingFee).toFixed(3)),
+        total_amount: totalAmount,
+        total: totalAmount,
+        currency: o.currency || 'TND',
+        status: o.status || 'nouvelle',
+        notification_status: o.notification_status || 'pending',
+        delivery_estimate: o.delivery_estimate || '2 à 3 jours ouvrables',
+        payment_method: o.payment_method || 'Paiement à la livraison',
+        created_at: o.created_at ? new Date(o.created_at).toISOString() : new Date().toISOString()
+      };
+    });
+
+    await saveOrders(normalizedOrders);
+
+    res.json({
+      success: true,
+      message: `Restauration réussie : ${normalizedOrders.length} commande(s) reconstruite(s) à l'identique.`,
+      restoredCount: normalizedOrders.length,
+      orders: normalizedOrders
+    });
+  } catch (e) {
+    console.error('[Import Orders] Error:', e);
+    res.status(500).json({ success: false, message: 'Erreur lors de la restauration des commandes : ' + e.message });
+  }
+});
+
 // ── IMPORT: Restore from JSON Backup ────────────────────────────────────────
 app.post('/api/import/backup', requireAdmin, uploadJson.single('backup'), async (req, res) => {
   try {
@@ -2656,8 +2767,8 @@ app.post('/api/import/backup', requireAdmin, uploadJson.single('backup'), async 
       restoredSummary.push(`${backup.carousel.length} diapositives carrousel`);
     }
 
-    // 3. Orders
-    if (Array.isArray(backup.orders) && backup.orders.length > 0) {
+    // 3. Orders (Restauration intégrale de la base commandes)
+    if (Array.isArray(backup.orders)) {
       await saveOrders(backup.orders);
       restoredSummary.push(`${backup.orders.length} commandes`);
     }

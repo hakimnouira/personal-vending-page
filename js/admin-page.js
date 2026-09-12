@@ -1144,6 +1144,16 @@ class AdminDashboard {
       featuredDealsImportFileInput.addEventListener('change', (e) => this.importFeaturedDealsFile(e));
     }
 
+    // Dedicated Orders JSON Restore Listeners
+    const ordersRestoreFileInput = document.getElementById('admin-orders-restore-file');
+    if (ordersRestoreFileInput) {
+      ordersRestoreFileInput.addEventListener('change', (e) => this.importOrdersFile(e));
+    }
+    const settingsOrdersRestoreFileInput = document.getElementById('settings-orders-restore-file');
+    if (settingsOrdersRestoreFileInput) {
+      settingsOrdersRestoreFileInput.addEventListener('change', (e) => this.importOrdersFile(e));
+    }
+
     // Products JSON Bulk Import Listeners
     const productsJsonFileInput = document.getElementById('admin-products-json-file');
     if (productsJsonFileInput) {
@@ -2900,6 +2910,75 @@ class AdminDashboard {
           statusEl.textContent = '❌ ' + err.message;
         }
         alert('❌ Erreur de restauration JSON: ' + err.message);
+      } finally {
+        event.target.value = '';
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  async importOrdersFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const isArabic = this.i18n.getLang() === 'ar';
+    const confirmMsg = isArabic
+      ? '⚠️ هل أنت متأكد من استعادة قاعدة بيانات الطلبات؟ سيتم تحديث جميع الطلبات وإعادة بنائها بناءً على هذا الملف.'
+      : '⚠️ Confirmez-vous la restauration de la base COMMANDES ?\n\nCette action va reconstruire l\'ensemble des commandes, coordonnées clients, lignes d\'articles, statuts et montants à partir du fichier sélectionné.';
+
+    if (!confirm(confirmMsg)) {
+      event.target.value = '';
+      return;
+    }
+
+    const statusEl = document.getElementById('orders-restore-status');
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.style.background = '#EFF6FF';
+      statusEl.style.border = '1px solid #BFDBFE';
+      statusEl.style.color = '#1D4ED8';
+      statusEl.textContent = '⏳ Restauration de la base commandes en cours...';
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const text = e.target.result;
+        JSON.parse(text); // validate syntax
+
+        const formData = new FormData();
+        formData.append('orders', file);
+
+        const res = await fetch('/api/import/orders', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          if (statusEl) {
+            statusEl.style.background = '#ECFDF5';
+            statusEl.style.border = '1px solid #A7F3D0';
+            statusEl.style.color = '#065F46';
+            statusEl.textContent = `✅ ${data.message}`;
+          }
+
+          await this.fetchOrders();
+          if (typeof this.showToast === 'function') {
+            this.showToast(data.message || 'Base commandes restaurée avec succès', 'success');
+          }
+          alert(`✅ ${data.message}`);
+        } else {
+          throw new Error(data.message || 'Erreur lors de la restauration');
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.style.background = '#FEF2F2';
+          statusEl.style.border = '1px solid #FECACA';
+          statusEl.style.color = '#DC2626';
+          statusEl.textContent = '❌ ' + err.message;
+        }
+        alert('❌ Erreur de restauration des commandes : ' + err.message);
       } finally {
         event.target.value = '';
       }

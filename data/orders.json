@@ -1,44 +1,90 @@
 [
   {
+    "id": "MN-20260912-5649",
+    "order_id": "MN-20260912-5649",
+    "order_number": "MN-20260912-5649",
+    "customer_name": "test",
+    "customer_phone": "+21697516694",
+    "customer_address": "Ward\nBen Arous",
+    "delivery_address": "Ward\nBen Arous",
+    "delivery_area": "Fouchana",
+    "city": "Fouchana",
+    "customer_note": "test",
+    "consent_given": true,
+    "channel": "direct_site",
+    "notes": "test",
+    "items": [
+      {
+        "name": "Eau de Parfum Amber Elixir Mystery",
+        "price": 76.92,
+        "quantity": 1,
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35681%2f35681_1.png&MediaId=13185811&Version=1",
+        "line_total": 76.92,
+        "product_id": "35681",
+        "unit_price": 76.92,
+        "product_name": "Eau de Parfum Amber Elixir Mystery",
+        "product_reference": "35681"
+      },
+      {
+        "name": "Eau de Parfum Infinita",
+        "price": 69.22,
+        "quantity": 1,
+        "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f35653%2f35653_1.png&MediaId=13078485&Version=2",
+        "line_total": 69.22,
+        "product_id": "35653",
+        "unit_price": 69.22,
+        "product_name": "Eau de Parfum Infinita",
+        "product_reference": "35653"
+      }
+    ],
+    "subtotal": 146.14,
+    "discount": 0,
+    "taxes_amount": 4.384,
+    "shipping_fee": 9.755,
+    "total_amount": 160.28,
+    "total": 160.28,
+    "currency": "TND",
+    "status": "nouvelle",
+    "notification_status": "sent",
+    "created_at": "2026-09-12T15:18:51.939Z"
+  },
+  {
     "id": "MN-20260912-2955",
     "order_id": "MN-20260912-2955",
     "order_number": "MN-20260912-2955",
-    "created_at": "2026-09-12T11:39:57.214Z",
-    "status": "nouvelle",
     "customer_name": "Fatma Triki",
     "customer_phone": "+21622334455",
+    "customer_address": "Avenue Hédi Nouira, Résidence Les Palmiers, Bloc B, Appt 12",
+    "delivery_address": "Avenue Hédi Nouira, Résidence Les Palmiers, Bloc B, Appt 12",
     "delivery_area": "Ariana – Ennasr 2",
     "city": "Ariana – Ennasr 2",
-    "delivery_address": "Avenue Hédi Nouira, Résidence Les Palmiers, Bloc B, Appt 12",
-    "customer_address": "Avenue Hédi Nouira, Résidence Les Palmiers, Bloc B, Appt 12",
     "customer_note": "Sonner à l'interphone B12 svp",
     "consent_given": true,
     "channel": "direct_site",
     "notes": "Sonner à l'interphone B12 svp",
     "items": [
       {
-        "product_id": "40683",
-        "product_reference": "40683",
         "name": "Parfum Giordani Gold Essenza Supreme",
-        "product_name": "Parfum Giordani Gold Essenza Supreme",
         "price": 106.32,
-        "unit_price": 106.32,
         "quantity": 1,
+        "image_url": "",
         "line_total": 106.32,
-        "image_url": ""
+        "product_id": "40683",
+        "unit_price": 106.32,
+        "product_name": "Parfum Giordani Gold Essenza Supreme",
+        "product_reference": "40683"
       }
     ],
     "subtotal": 106.32,
     "discount": 0,
     "taxes_amount": 3.19,
     "shipping_fee": 9.755,
-    "shipping_and_taxes": 12.945,
-    "total": 119.265,
-    "total_amount": 119.265,
+    "total_amount": 119.27,
+    "total": 119.27,
     "currency": "TND",
-    "delivery_estimate": "2 à 3 jours ouvrables",
-    "payment_method": "Paiement à la livraison",
-    "notification_status": "sent"
+    "status": "nouvelle",
+    "notification_status": "sent",
+    "created_at": "2026-09-12T11:39:57.214Z"
   },
   {
     "id": "MN-20260912-2188",
@@ -245,7 +291,11 @@
         "price": 115.42,
         "quantity": 1,
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f40683%2f40683_1.png&MediaId=19144451&Version=1",
-        "product_id": "40683"
+        "line_total": 115.42,
+        "product_id": "40683",
+        "unit_price": 115.42,
+        "product_name": "Parfum Giordani Gold Essenza Supreme",
+        "product_reference": "40683"
       }
     ],
     "subtotal": 0,
@@ -278,7 +328,12 @@
         "name": "Eau de Parfum Volare Tender",
         "price": 63.92,
         "quantity": 1,
-        "product_id": "46052"
+        "image_url": "",
+        "line_total": 63.92,
+        "product_id": "46052",
+        "unit_price": 63.92,
+        "product_name": "Eau de Parfum Volare Tender",
+        "product_reference": "46052"
       }
     ],
     "subtotal": 0,
@@ -311,7 +366,12 @@
         "name": "Eau de Parfum Volare Tender",
         "price": 63.92,
         "quantity": 1,
-        "product_id": "46052"
+        "image_url": "",
+        "line_total": 63.92,
+        "product_id": "46052",
+        "unit_price": 63.92,
+        "product_name": "Eau de Parfum Volare Tender",
+        "product_reference": "46052"
       }
     ],
     "subtotal": 0,
@@ -344,7 +404,12 @@
         "name": "Eau de Parfum Volare Tender",
         "price": 63.92,
         "quantity": 1,
-        "product_id": "46052"
+        "image_url": "",
+        "line_total": 63.92,
+        "product_id": "46052",
+        "unit_price": 63.92,
+        "product_name": "Eau de Parfum Volare Tender",
+        "product_reference": "46052"
       }
     ],
     "subtotal": 0,
@@ -378,7 +443,11 @@
         "price": 146,
         "quantity": 1,
         "image_url": "https://i.postimg.cc/kXY54XjD/Chat-GPT-Image-3-sept-2026-20-11-14.jpg",
-        "product_id": "pack-05"
+        "line_total": 146,
+        "product_id": "pack-05",
+        "unit_price": 146,
+        "product_name": "Offres Packs Sept 2026",
+        "product_reference": "pack-05"
       }
     ],
     "subtotal": 0,
@@ -412,7 +481,11 @@
         "price": 176,
         "quantity": 1,
         "image_url": "https://i.postimg.cc/QCscWsp8/Chat-GPT-Image-9-sept-2026-23-01-49.jpg",
-        "product_id": "45681; 42751"
+        "line_total": 176,
+        "product_id": "45681; 42751",
+        "unit_price": 176,
+        "product_name": "Eau de Parfum Amber Elixir Mystery ; Eau de Parfum Love Potion",
+        "product_reference": "45681; 42751"
       }
     ],
     "subtotal": 0,
@@ -446,7 +519,11 @@
         "price": 176,
         "quantity": 1,
         "image_url": "https://i.postimg.cc/QCscWsp8/Chat-GPT-Image-9-sept-2026-23-01-49.jpg",
-        "product_id": "45681; 42751"
+        "line_total": 176,
+        "product_id": "45681; 42751",
+        "unit_price": 176,
+        "product_name": "Eau de Parfum Amber Elixir Mystery ; Eau de Parfum Love Potion",
+        "product_reference": "45681; 42751"
       }
     ],
     "subtotal": 0,
@@ -480,7 +557,11 @@
         "price": 176,
         "quantity": 1,
         "image_url": "https://i.postimg.cc/QCscWsp8/Chat-GPT-Image-9-sept-2026-23-01-49.jpg",
-        "product_id": "45681; 42751"
+        "line_total": 176,
+        "product_id": "45681; 42751",
+        "unit_price": 176,
+        "product_name": "Eau de Parfum Amber Elixir Mystery ; Eau de Parfum Love Potion",
+        "product_reference": "45681; 42751"
       }
     ],
     "subtotal": 0,
@@ -514,14 +595,22 @@
         "price": 50.32,
         "quantity": 1,
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f40667%2f40667_1.png&MediaId=20989035&Version=1",
-        "product_id": "40667"
+        "line_total": 50.32,
+        "product_id": "40667",
+        "unit_price": 50.32,
+        "product_name": "Eau De Toilette Glacier Extreme",
+        "product_reference": "40667"
       },
       {
         "name": "Eau de Parfum Volare",
         "price": 63.92,
         "quantity": 1,
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f42514%2f42514_1.png&MediaId=20989035&Version=1",
-        "product_id": "42514"
+        "line_total": 63.92,
+        "product_id": "42514",
+        "unit_price": 63.92,
+        "product_name": "Eau de Parfum Volare",
+        "product_reference": "42514"
       }
     ],
     "subtotal": 0,
@@ -534,40 +623,6 @@
     "status": "pending",
     "notification_status": "pending",
     "created_at": "2026-09-06T22:58:50.952Z"
-  },
-  {
-    "id": "ORD-497985",
-    "order_id": "ORD-497985",
-    "order_number": "ORD-497985",
-    "customer_name": "Test chokri",
-    "customer_phone": "97516694",
-    "customer_address": "",
-    "delivery_address": "",
-    "delivery_area": "",
-    "city": "",
-    "customer_note": "",
-    "consent_given": true,
-    "channel": "phone",
-    "notes": "",
-    "items": [
-      {
-        "name": "Offres Packs Sept 2026",
-        "price": 142,
-        "quantity": 1,
-        "image_url": "https://i.postimg.cc/Rh27SWn4/Chat-GPT-Image-3-sept-2026-20-11-42.png",
-        "product_id": "Pack-06"
-      }
-    ],
-    "subtotal": 0,
-    "discount": 0,
-    "taxes_amount": 0,
-    "shipping_fee": 9.755,
-    "total_amount": 142,
-    "total": 142,
-    "currency": "TND",
-    "status": "pending",
-    "notification_status": "pending",
-    "created_at": "2026-09-05T18:44:29.007Z"
   },
   {
     "id": "ORD-680554",
@@ -589,14 +644,22 @@
         "price": 146,
         "quantity": 1,
         "image_url": "https://i.postimg.cc/m2hpT9KW/Chat-GPT-Image-3-sept-2026-20-11-14.png",
-        "product_id": "pack-05"
+        "line_total": 146,
+        "product_id": "pack-05",
+        "unit_price": 146,
+        "product_name": "Offres Packs Sept 2026",
+        "product_reference": "pack-05"
       },
       {
         "name": "Eau de Parfum Giordani Gold Miss Giordani",
         "price": 95.92,
         "quantity": 1,
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47513%2f47513_1.png&MediaId=20989035&Version=1",
-        "product_id": "47513"
+        "line_total": 95.92,
+        "product_id": "47513",
+        "unit_price": 95.92,
+        "product_name": "Eau de Parfum Giordani Gold Miss Giordani",
+        "product_reference": "47513"
       }
     ],
     "subtotal": 0,
@@ -630,7 +693,11 @@
         "price": 11.12,
         "quantity": 10,
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47763%2f47763_1.png&MediaId=20989035&Version=1",
-        "product_id": "47763"
+        "line_total": 111.19999999999999,
+        "product_id": "47763",
+        "unit_price": 11.12,
+        "product_name": "Déodorant Parfumé anti-transpirant à bille Glacier",
+        "product_reference": "47763"
       }
     ],
     "subtotal": 0,
@@ -664,14 +731,22 @@
         "price": 34.9,
         "quantity": 1,
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f46980%2f46980_1.png&MediaId=20191555&Version=3",
-        "product_id": "46980"
+        "line_total": 34.9,
+        "product_id": "46980",
+        "unit_price": 34.9,
+        "product_name": "Crème de Corps Parfumée Giordani Gold Essenza Supreme",
+        "product_reference": "46980"
       },
       {
         "name": "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
         "price": 48.9,
         "quantity": 1,
         "image_url": "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2fProducts%2f47745%2f47745_1.png&MediaId=21055173&Version=1",
-        "product_id": "47745"
+        "line_total": 48.9,
+        "product_id": "47745",
+        "unit_price": 48.9,
+        "product_name": "Brume Parfumée pour le Corps et les Cheveux Giordani Gold Essenza Supreme",
+        "product_reference": "47745"
       }
     ],
     "subtotal": 0,

@@ -269,9 +269,10 @@ export async function saveOrders(orders) {
     console.warn('[Storage] Could not write to data/orders.json:', e?.message || e);
   }
 
-  // 2. Persist to Neon Postgres
-  const client = await pool.connect();
+  // 2. Persist to Neon Postgres (with resilient error handling)
+  let client = null;
   try {
+    client = await pool.connect();
     await client.query('BEGIN');
     const incomingIds = orders.map(o => String(o.order_id || o.order_number));
     if (incomingIds.length > 0) {
@@ -313,11 +314,11 @@ export async function saveOrders(orders) {
       const values = [
         orderId,
         orderNum,
-        o.customer_name || 'Client Anonyme',
-        o.customer_phone || '',
-        o.delivery_area || '',
-        o.delivery_address || o.customer_address || '',
-        o.customer_note || o.notes || '',
+        o.customer_name || o.name || 'Client Anonyme',
+        o.customer_phone || o.phone || '',
+        o.delivery_area || o.city || '',
+        o.delivery_address || o.customer_address || o.address || '',
+        o.customer_note || o.notes || o.note || '',
         Boolean(o.consent_given !== false),
         o.channel || 'web',
         o.notes || o.customer_note || '',
@@ -335,11 +336,15 @@ export async function saveOrders(orders) {
     await client.query('COMMIT');
     return true;
   } catch (err) {
-    await client.query('ROLLBACK');
-    console.error('saveOrders Postgres error:', err?.message || err);
+    if (client) {
+      try { await client.query('ROLLBACK'); } catch (_) {}
+    }
+    console.warn('saveOrders Postgres warning (local backup preserved):', err?.message || err);
     return true;
   } finally {
-    client.release();
+    if (client) {
+      try { client.release(); } catch (_) {}
+    }
   }
 }
 
