@@ -20,18 +20,18 @@
   <meta property="og:url" content="https://mouna-nouira.wasmer.app/" />
   <meta property="og:title" content="Mouna Nouira — Catalogue Officiel Oriflame Tunisie" />
   <meta property="og:description" content="Découvrez le catalogue officiel Oriflame Suède Tunisie avec Mouna Nouira. Parfums de luxe, soins et maquillage avec remises exclusives et commande directe." />
-  <meta property="og:image" content="https://mouna-nouira.wasmer.app/assets/og-facebook-preview.jpg" />
-  <meta property="og:image:secure_url" content="https://mouna-nouira.wasmer.app/assets/og-facebook-preview.jpg" />
+  <meta property="og:image" content="https://mouna-nouira.wasmer.app/public/assets/Oriflame%20by%20Mouna%20Nouira.jpg" />
+  <meta property="og:image:secure_url" content="https://mouna-nouira.wasmer.app/public/assets/Oriflame%20by%20Mouna%20Nouira.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="1730" />
+  <meta property="og:image:height" content="909" />
   <meta property="og:image:alt" content="Mouna Nouira — Catalogue Officiel Oriflame Tunisie" />
 
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mouna Nouira — Catalogue Officiel Oriflame Tunisie" />
   <meta name="twitter:description" content="Découvrez le catalogue officiel Oriflame Suède Tunisie avec Mouna Nouira. Parfums de luxe, soins et maquillage avec remises exclusives." />
-  <meta name="twitter:image" content="https://mouna-nouira.wasmer.app/assets/og-facebook-preview.jpg" />
+  <meta name="twitter:image" content="https://mouna-nouira.wasmer.app/public/assets/Oriflame%20by%20Mouna%20Nouira.jpg" />
   
   <!-- Schema.org Organization with Social Profiles -->
   <script type="application/ld+json">
@@ -40,7 +40,7 @@
     "@type": "Organization",
     "name": "Mouna Nouira — Oriflame Tunisie",
     "url": "https://mouna-nouira.wasmer.app/",
-    "logo": "https://mouna-nouira.wasmer.app/assets/og-facebook-preview.jpg",
+    "logo": "https://mouna-nouira.wasmer.app/public/assets/Oriflame%20by%20Mouna%20Nouira.jpg",
     "sameAs": [
       "https://www.facebook.com/Mounanouira.Oriflame",
       "https://www.instagram.com/mounanouira",
@@ -730,74 +730,292 @@
 
   <!-- Cart Drawer Overlay & Panel -->
   <div id="cart-drawer-overlay" class="drawer-overlay">
-    <div class="drawer-panel">
+    <div class="drawer-panel" id="cart-drawer-panel">
+      <!-- Drawer Header -->
       <div class="drawer-header">
-        <div class="drawer-title">
-          <span data-i18n="shopping_cart">Panier d'Achat</span>
+        <div class="drawer-title" id="drawer-main-title">
+          <span id="drawer-title-text" data-i18n="shopping_cart">Panier d'Achat</span>
         </div>
         <button id="btn-close-drawer" class="btn-close-drawer" aria-label="Fermer le panier">✕</button>
       </div>
 
-      <div class="drawer-body">
-        <div id="cart-items-list" class="cart-items-list">
-          <!-- Cart items rendered here -->
+      <!-- Checkout Stepper Progress Bar -->
+      <div id="checkout-stepper" class="checkout-stepper" style="display: none;">
+        <div class="checkout-step-indicator active" id="stepper-step-1">
+          <span class="stepper-badge">1</span>
+          <span class="stepper-text">Panier</span>
+        </div>
+        <div class="stepper-line" id="stepper-line-1"></div>
+        <div class="checkout-step-indicator" id="stepper-step-2">
+          <span class="stepper-badge">2</span>
+          <span class="stepper-text">Coordonnées</span>
+        </div>
+        <div class="stepper-line" id="stepper-line-2"></div>
+        <div class="checkout-step-indicator" id="stepper-step-3">
+          <span class="stepper-badge">3</span>
+          <span class="stepper-text">Vérification</span>
         </div>
       </div>
 
-      <div class="drawer-footer">
-        <div class="customer-info-box">
-          <h4 id="customer-info-title" style="font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 10px;" data-i18n="customer_details_title">
-            👤 Vos Coordonnées (Nom, Téléphone &amp; Adresse)
-          </h4>
-          <div class="form-group" style="margin-bottom: 10px;">
-            <input type="text" id="customer-name" class="form-control" autocomplete="name" inputmode="text" placeholder="Votre Nom Complet" data-i18n-placeholder="customer_name_placeholder" />
-          </div>
-          <div class="form-group" style="margin-bottom: 10px;">
-            <input type="tel" id="customer-phone" class="form-control" autocomplete="tel" inputmode="tel" placeholder="Votre N° Téléphone / WhatsApp (ex: 98 123 456)" data-i18n-placeholder="customer_phone_placeholder" />
-          </div>
-          <div class="form-group" style="margin-bottom: 0;">
-            <input type="text" id="customer-address" class="form-control" autocomplete="street-address" placeholder="Votre Adresse de Livraison (ex: Ville, Rue...)" data-i18n-placeholder="customer_address_placeholder" />
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <!-- ÉTAPE A : PANIER D'ACHAT                                    -->
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div id="checkout-step-cart" class="checkout-step-view active-step">
+        <div class="drawer-body">
+          <div id="cart-items-list" class="cart-items-list">
+            <!-- Cart items rendered here -->
           </div>
         </div>
 
-        <div class="cart-summary-line cart-summary-subtotal-line">
-          <span data-i18n="total_estimate">Total Estimé :</span>
-          <span id="cart-subtotal">0.00 TND</span>
-        </div>
-
-        <div class="cart-summary-line cart-summary-delivery-line">
-          <span data-i18n="total_with_delivery">Total avec livraison &amp; taxes :</span>
-          <span id="cart-total-with-delivery">0.000 TND</span>
-        </div>
-
-        <div class="cart-trust-box">
-          <div class="cart-trust-item" style="font-weight: 700; color: #047857;">
-            <span>🚚</span>
-            <span data-i18n="cart_delivery_time">Livraison dans 2 à 3 jours</span>
-          </div>
-          <div class="cart-trust-item" style="color: #166534;">
-            <span>✓</span>
-            <span data-i18n="cart_cod_notice">Aucun paiement en ligne requis. Paiement à la livraison</span>
-          </div>
-        </div>
-
-        <!-- Dual Choice Ordering Methods -->
-        <div class="checkout-options-box" style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px;">
-          <div style="font-size: 0.76rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; text-align: center;">
-            — Choisissez votre mode de commande —
+        <div class="drawer-footer">
+          <div class="cart-summary-line cart-summary-subtotal-line">
+            <span data-i18n="total_estimate">Total Estimé :</span>
+            <span id="cart-subtotal">0.00 TND</span>
           </div>
 
-          <!-- Choice 1: Téléphone / WhatsApp -->
-          <button id="btn-phone-checkout" type="button" style="width: 100%; padding: 12px 14px; background: #059669; color: #FFFFFF; border: none; border-radius: 10px; font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 8px rgba(5,150,105,0.25);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-            <span>📞 Commander par Téléphone / WhatsApp</span>
+          <div class="cart-summary-line cart-summary-delivery-line">
+            <span data-i18n="total_with_delivery">Total avec livraison &amp; taxes :</span>
+            <span id="cart-total-with-delivery">0.000 TND</span>
+          </div>
+
+          <div class="cart-trust-box">
+            <div class="cart-trust-item" style="font-weight: 700; color: #047857;">
+              <span>🚚</span>
+              <span data-i18n="cart_delivery_time">Livraison dans 2 à 3 jours</span>
+            </div>
+            <div class="cart-trust-item" style="color: #166534;">
+              <span>✓</span>
+              <span data-i18n="cart_cod_notice">Aucun paiement en ligne requis. Paiement à la livraison</span>
+            </div>
+          </div>
+
+          <div class="checkout-actions-wrapper" style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;">
+            <button id="btn-goto-details" type="button" class="btn-checkout-primary">
+              <span>Continuer vers mes coordonnées</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+
+            <!-- Option secondaire rapide WhatsApp -->
+            <button id="btn-phone-checkout" type="button" class="btn-checkout-link">
+              <span>📞 Ou commander directement par WhatsApp / Téléphone</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <!-- ÉTAPE B : VOS COORDONNÉES                                   -->
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div id="checkout-step-details" class="checkout-step-view" style="display: none;">
+        <div class="drawer-body">
+          <div class="checkout-step-intro">
+            <h3 class="checkout-step-heading">Vos coordonnées</h3>
+            <p class="checkout-step-subheading">Indiquez vos informations de livraison. Vous serez contacté par téléphone pour confirmation.</p>
+          </div>
+
+          <form id="form-checkout-details" novalidate onsubmit="return false;">
+            <!-- Honeypot anti-spam invisible -->
+            <input type="text" name="website" id="checkout-honeypot" style="display:none !important;" tabindex="-1" autocomplete="off" />
+
+            <!-- Bannière d'erreur dynamique -->
+            <div id="checkout-details-errors" class="checkout-error-banner" style="display: none;"></div>
+
+            <!-- Nom et prénom -->
+            <div class="form-group checkout-form-group">
+              <label for="checkout-name" class="checkout-form-label">
+                <span>Nom et prénom</span>
+                <span class="required-badge">*</span>
+              </label>
+              <input type="text" id="checkout-name" class="form-control checkout-input" autocomplete="name" placeholder="Ex : Amira Ben Salem" required />
+            </div>
+
+            <!-- Numéro de téléphone -->
+            <div class="form-group checkout-form-group">
+              <label for="checkout-phone" class="checkout-form-label">
+                <span>Numéro de téléphone</span>
+                <span class="required-badge">*</span>
+              </label>
+              <input type="tel" id="checkout-phone" class="form-control checkout-input" autocomplete="tel" inputmode="tel" placeholder="Ex : 98 123 456 ou 20 123 456" required />
+              <div class="checkout-field-hint">Numéro tunisien à 8 chiffres (pour confirmer la disponibilité et la livraison).</div>
+            </div>
+
+            <!-- Ville ou zone de livraison -->
+            <div class="form-group checkout-form-group">
+              <label for="checkout-city" class="checkout-form-label">
+                <span>Ville ou zone de livraison</span>
+                <span class="required-badge">*</span>
+              </label>
+              <input type="text" id="checkout-city" class="form-control checkout-input" autocomplete="address-level2" placeholder="Ex : Tunis, Ariana, Sousse, Sfax, Bizerte..." required />
+            </div>
+
+            <!-- Adresse de livraison -->
+            <div class="form-group checkout-form-group">
+              <label for="checkout-address" class="checkout-form-label">
+                <span>Adresse de livraison</span>
+                <span class="required-badge">*</span>
+              </label>
+              <textarea id="checkout-address" class="form-control checkout-textarea" rows="2" autocomplete="street-address" placeholder="Ex : 14 Rue Habib Bourguiba, Résidence Les Fleurs, Appt 4" required></textarea>
+            </div>
+
+            <!-- Remarque ou précision (facultatif) -->
+            <div class="form-group checkout-form-group">
+              <label for="checkout-note" class="checkout-form-label">
+                <span>Remarque ou précision pour la livraison</span>
+                <span class="optional-badge">(facultatif)</span>
+              </label>
+              <textarea id="checkout-note" class="form-control checkout-textarea" rows="2" placeholder="Ex : Appeler avant livraison, disponible l'après-midi, étage 2..."></textarea>
+            </div>
+
+            <!-- Consentement obligatoire -->
+            <div class="checkout-consent-container">
+              <label class="checkout-consent-label">
+                <input type="checkbox" id="checkout-consent" required />
+                <span>J’accepte que mes coordonnées soient utilisées pour traiter et confirmer ma commande. <a href="#" id="link-checkout-privacy" class="checkout-privacy-link">Politique de confidentialité</a></span>
+              </label>
+            </div>
+          </form>
+        </div>
+
+        <div class="drawer-footer checkout-footer-nav">
+          <button id="btn-back-to-cart" type="button" class="btn-checkout-secondary">
+            ← Retour au panier
           </button>
+          <button id="btn-goto-review" type="button" class="btn-checkout-primary">
+            <span>Vérifier ma commande</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
+        </div>
+      </div>
 
-          <!-- Choice 2: Facebook Messenger -->
-          <a id="btn-messenger-checkout" href="#" style="width: 100%; padding: 12px 14px; background: #0084FF; color: #FFFFFF; border: none; border-radius: 10px; font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,132,255,0.25);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.516 3.735 7.234V22l3.385-1.86c.928.257 1.91.396 2.88.396 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2zm1.09 12.39l-2.545-2.727-4.955 2.727 5.455-5.818 2.618 2.727 4.882-2.727-5.455 5.818z"/></svg>
-            <span>💬 Envoyer sur Facebook Messenger</span>
-          </a>
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <!-- ÉTAPE C : VÉRIFIEZ VOTRE COMMANDE                           -->
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div id="checkout-step-review" class="checkout-step-view" style="display: none;">
+        <div class="drawer-body">
+          <div class="checkout-step-intro">
+            <h3 class="checkout-step-heading">Vérifiez votre commande</h3>
+          </div>
+
+          <div class="checkout-warning-notice">
+            <span class="warning-icon">⚠️</span>
+            <span>Vérifiez attentivement vos coordonnées et le contenu de votre commande avant de confirmer.</span>
+          </div>
+
+          <!-- Coordonnées saisies -->
+          <div class="checkout-card">
+            <div class="checkout-card-header">
+              <h4>👤 Vos Coordonnées</h4>
+              <button id="btn-edit-details-link" type="button" class="btn-card-action">Modifier</button>
+            </div>
+            <div class="checkout-card-body">
+              <div class="review-meta-item">
+                <span class="meta-label">Nom et prénom :</span>
+                <strong id="review-customer-name" class="meta-val">-</strong>
+              </div>
+              <div class="review-meta-item">
+                <span class="meta-label">Téléphone :</span>
+                <strong id="review-customer-phone" class="meta-val" style="color: #059669;">-</strong>
+              </div>
+              <div class="review-meta-item">
+                <span class="meta-label">Ville / Zone :</span>
+                <span id="review-delivery-city" class="meta-val">-</span>
+              </div>
+              <div class="review-meta-item">
+                <span class="meta-label">Adresse :</span>
+                <span id="review-delivery-address" class="meta-val">-</span>
+              </div>
+              <div id="review-note-wrapper" class="review-meta-item" style="display: none;">
+                <span class="meta-label">Remarque :</span>
+                <span id="review-customer-note" class="meta-val" style="font-style: italic;">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Articles commandés -->
+          <div class="checkout-card">
+            <div class="checkout-card-header">
+              <h4>🛍️ Articles commandés</h4>
+            </div>
+            <div id="review-items-list" class="review-items-list">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Récapitulatif financier -->
+          <div class="checkout-card checkout-financial-card">
+            <div class="financial-row">
+              <span>Sous-total articles :</span>
+              <strong id="review-subtotal">0.00 TND</strong>
+            </div>
+            <div id="review-discount-row" class="financial-row discount-row" style="display: none;">
+              <span>Remise déduite :</span>
+              <strong id="review-discount" style="color: #D97706;">-0.00 TND</strong>
+            </div>
+            <div class="financial-row final-row">
+              <span style="font-weight: 800; color: #18181B;">Total avec livraison &amp; taxes :</span>
+              <strong id="review-total-with-delivery" style="font-size: 1.25rem; font-weight: 800; color: #059669;">0.000 TND</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer-footer checkout-footer-nav">
+          <button id="btn-back-to-details" type="button" class="btn-checkout-secondary">
+            Modifier mes coordonnées
+          </button>
+          <button id="btn-confirm-order" type="button" class="btn-checkout-confirm">
+            <span id="btn-confirm-spinner" style="display: none;">⏳</span>
+            <span id="btn-confirm-label">✓ Confirmer ma commande</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <!-- ÉTAPE D : COMMANDE REÇUE                                    -->
+      <!-- ══════════════════════════════════════════════════════════ -->
+      <div id="checkout-step-success" class="checkout-step-view" style="display: none;">
+        <div class="drawer-body checkout-success-scroll">
+          <div class="checkout-success-icon-box">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+
+          <h3 class="checkout-success-headline">Commande reçue</h3>
+
+          <!-- Message obligatoire de confirmation avec le numéro 55756629 -->
+          <div class="checkout-success-notice-box">
+            Merci pour votre commande. Votre demande a bien été enregistrée. Vous serez appelé au numéro <strong>55756629</strong> pour confirmer la disponibilité des produits, la livraison et le paiement.
+          </div>
+
+          <div class="checkout-card success-recap-card">
+            <div class="success-info-row">
+              <span class="info-label">Numéro unique de commande :</span>
+              <strong id="success-order-number" class="info-val order-num-highlight">MN-20260912-0000</strong>
+            </div>
+            <div class="success-info-row">
+              <span class="info-label">Date et heure :</span>
+              <span id="success-order-date" class="info-val">-</span>
+            </div>
+            <div class="success-info-row">
+              <span class="info-label">Statut :</span>
+              <span class="badge-status-nouvelle">nouvelle</span>
+            </div>
+            <div class="success-info-row success-total-row">
+              <span class="info-label" style="font-weight: 700;">Total final :</span>
+              <strong id="success-order-total" style="font-size: 1.25rem; font-weight: 800; color: #059669;">0.000 TND</strong>
+            </div>
+          </div>
+
+          <div class="checkout-card">
+            <h4 style="font-size: 0.8rem; text-transform: uppercase; color: #6B7280; margin-bottom: 8px; font-weight: 700;">Résumé de la commande</h4>
+            <div id="success-items-summary" class="success-items-list">
+              <!-- Rendered items -->
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer-footer">
+          <button id="btn-continue-shopping" type="button" class="btn-checkout-primary" style="width: 100%;">
+            Continuer mes achats
+          </button>
         </div>
       </div>
     </div>
@@ -1073,7 +1291,7 @@
       
       <!-- Visual Share Preview Card (Image + Title + Domain) -->
       <div id="cat-share-preview-box" style="display: flex; gap: 12px; align-items: center; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 10px; margin-bottom: 16px;">
-        <img id="cat-share-preview-img" src="/assets/og-facebook-preview.jpg" alt="Aperçu du partage" style="width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.08);">
+        <img id="cat-share-preview-img" src="/public/assets/Oriflame%20by%20Mouna%20Nouira.jpg" alt="Aperçu du partage" style="width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.08);">
         <div style="overflow: hidden; text-align: left; min-width: 0; flex: 1;">
           <div style="font-size: 0.70rem; color: #94A3B8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Aperçu du lien partagé</div>
           <div id="cat-share-preview-title" style="font-size: 0.85rem; font-weight: 700; color: #1E293B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Catalogue Officiel Oriflame Tunisie</div>

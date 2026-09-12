@@ -402,7 +402,7 @@ app.get(['/api/og-image/:productId', '/api/og-image/:productId.jpg', '/api/og-im
           }
         }
       }
-      return res.sendFile(path.join(__dirname, 'assets', 'og-facebook-preview.jpg'));
+      return res.sendFile(path.join(__dirname, 'assets', 'Oriflame by Mouna Nouira.jpg'));
     }
 
     if (ogImageCache.has(pid)) {
@@ -416,7 +416,7 @@ app.get(['/api/og-image/:productId', '/api/og-image/:productId.jpg', '/api/og-im
     const product = products.find(p => String(p.product_id) === String(pid));
 
     if (!product || !product.image_url) {
-      return res.sendFile(path.join(__dirname, 'assets', 'og-facebook-preview.jpg'));
+      return res.sendFile(path.join(__dirname, 'assets', 'Oriflame by Mouna Nouira.jpg'));
     }
 
     if (product.image_url.startsWith('/uploads/') || product.image_url.startsWith('uploads/')) {
@@ -450,10 +450,10 @@ app.get(['/api/og-image/:productId', '/api/og-image/:productId.jpg', '/api/og-im
       }
     }
 
-    return res.sendFile(path.join(__dirname, 'assets', 'og-facebook-preview.jpg'));
+    return res.sendFile(path.join(__dirname, 'assets', 'Oriflame by Mouna Nouira.jpg'));
   } catch (err) {
     console.error('[OG-IMAGE] Error serving OG image:', err);
-    return res.sendFile(path.join(__dirname, 'assets', 'og-facebook-preview.jpg'));
+    return res.sendFile(path.join(__dirname, 'assets', 'Oriflame by Mouna Nouira.jpg'));
   }
 });
 
@@ -523,10 +523,10 @@ app.get(['/', '/index.html'], async (req, res, next) => {
       description: "Découvrez le catalogue officiel Oriflame Suède Tunisie avec Mouna Nouira. Parfums de luxe, soins et maquillage avec remises exclusives et commande directe.",
       url: `${baseUrl}/`,
       type: 'website',
-      image: `${baseUrl}/assets/og-facebook-preview.jpg`,
+      image: `${baseUrl}/public/assets/Oriflame%20by%20Mouna%20Nouira.jpg`,
       imageType: 'image/jpeg',
-      imageWidth: 1376,
-      imageHeight: 768,
+      imageWidth: 1730,
+      imageHeight: 909,
       imageAlt: "Mouna Nouira — Catalogue Officiel Oriflame Tunisie",
       twitterCard: 'summary_large_image'
     });
@@ -674,6 +674,8 @@ app.get(['/catalogue', '/catalogue-virtuel', '/ecatalogue'], (req, res, next) =>
 });
 
 // Static files
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname));
 app.use('/uploads', express.static(UPLOADS_DIR));
 
@@ -1765,59 +1767,145 @@ app.get('/api/fb/config', (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   try {
-    const { customer_name, customer_phone, customer_address, items, currency } = req.body;
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ success: false, message: 'Cart items are required' });
+    // 1. Anti-spam honeypot check
+    if (req.body.website && String(req.body.website).trim() !== '') {
+      return res.status(400).json({ success: false, message: 'Spam detected' });
     }
 
-    const orderId = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
-    const subtotalAmount = items.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
-    const taxesAmount = Number((subtotalAmount * 0.03).toFixed(3));
+    const {
+      customer_name,
+      customer_phone,
+      delivery_area,
+      delivery_address,
+      customer_address,
+      customer_note,
+      notes,
+      consent_given,
+      items,
+      currency,
+      subtotal,
+      discount,
+      total
+    } = req.body;
+
+    // 2. Validate Cart Items
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ success: false, message: 'Le panier est vide. Veuillez ajouter des produits.' });
+    }
+
+    for (const item of items) {
+      if (!item.product_id && !item.product_reference) {
+        return res.status(400).json({ success: false, message: 'Un ou plusieurs articles sont invalides (référence manquante).' });
+      }
+      if (Number(item.quantity) <= 0 || isNaN(Number(item.quantity))) {
+        return res.status(400).json({ success: false, message: 'La quantité des articles doit être supérieure à 0.' });
+      }
+      if (Number(item.price) < 0 || isNaN(Number(item.price))) {
+        return res.status(400).json({ success: false, message: 'Le prix d\'un article est invalide.' });
+      }
+    }
+
+    // 3. Validate Customer Details
+    const name = (customer_name || '').trim();
+    if (!name || name.length < 2) {
+      return res.status(400).json({ success: false, message: 'Veuillez renseigner votre nom et prénom.' });
+    }
+
+    const rawPhone = (customer_phone || '').trim();
+    const digitsOnlyPhone = rawPhone.replace(/\D/g, '');
+    if (!rawPhone || digitsOnlyPhone.length < 8) {
+      return res.status(400).json({ success: false, message: 'Veuillez saisir un numéro de téléphone valide (au moins 8 chiffres).' });
+    }
+
+    const area = (delivery_area || req.body.delivery_city || req.body.city || '').trim();
+    if (!area) {
+      return res.status(400).json({ success: false, message: 'Veuillez indiquer votre ville ou zone de livraison.' });
+    }
+
+    const address = (delivery_address || customer_address || req.body.address || '').trim();
+    if (!address) {
+      return res.status(400).json({ success: false, message: 'Veuillez indiquer votre adresse de livraison.' });
+    }
+
+    // 4. Validate Consent
+    const consent = consent_given === true || consent_given === 'true' || consent_given === 1 || consent_given === '1' || consent_given === 'on';
+    if (!consent) {
+      return res.status(400).json({ success: false, message: 'Veuillez accepter l\'utilisation de vos coordonnées pour traiter et confirmer votre commande.' });
+    }
+
+    // 5. Unique Order Number & ID: MN-YYYYMMDD-XXXX
+    const now = new Date();
+    const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
+    const seq = Math.floor(1000 + Math.random() * 9000);
+    const orderNumber = `MN-${dateStr}-${seq}`;
+    const orderId = orderNumber;
+
+    // 6. Reuse & Verify Calculations without modifying existing business logic
+    const calculatedItemsSubtotal = items.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
+    const discountAmount = discount != null ? Number(discount) : 0;
+    const effectiveSubtotal = subtotal != null ? Number(Number(subtotal).toFixed(2)) : Number((calculatedItemsSubtotal - discountAmount).toFixed(2));
+    const taxesAmount = Number((effectiveSubtotal * 0.03).toFixed(3));
     const shippingFee = 9.755;
-    const totalWithDelivery = Number((subtotalAmount + taxesAmount + shippingFee).toFixed(3));
-    const address = (customer_address || req.body.address || '').trim();
+    const calculatedTotalWithDelivery = Number((effectiveSubtotal + taxesAmount + shippingFee).toFixed(3));
+    const finalTotal = total != null ? Number(Number(total).toFixed(3)) : calculatedTotalWithDelivery;
 
     const newOrder = {
+      id: orderNumber,
       order_id: orderId,
-      customer_name: customer_name ? customer_name.trim() : 'Client Anonyme',
-      customer_phone: customer_phone ? customer_phone.trim() : 'Non renseigné',
-      customer_address: address || 'Non renseignée',
-      channel: req.body.channel || (customer_phone ? 'phone' : 'messenger'),
-      notes: req.body.notes ? req.body.notes.trim() : '',
+      order_number: orderNumber,
+      created_at: now.toISOString(),
+      status: 'nouvelle',
+      customer_name: name,
+      customer_phone: rawPhone,
+      delivery_area: area,
+      city: area,
+      delivery_address: address,
+      customer_address: address,
+      customer_note: (customer_note || notes || '').trim(),
+      consent_given: true,
+      channel: req.body.channel || 'direct_site',
+      notes: (customer_note || notes || '').trim(),
       items: items.map(i => ({
-        product_id: i.product_id,
-        name: i.name,
-        price: Number(i.price),
-        quantity: Number(i.quantity),
-        image_url: i.image_url
+        product_id: String(i.product_id || i.product_reference || ''),
+        product_reference: String(i.product_id || i.product_reference || ''),
+        name: String(i.name || i.product_name || ''),
+        product_name: String(i.name || i.product_name || ''),
+        price: Number(i.price || i.unit_price || 0),
+        unit_price: Number(i.price || i.unit_price || 0),
+        quantity: Number(i.quantity || 1),
+        line_total: Number(((Number(i.price || i.unit_price || 0)) * (Number(i.quantity || 1))).toFixed(2)),
+        image_url: i.image_url || ''
       })),
-      subtotal: Number(subtotalAmount.toFixed(2)),
+      subtotal: effectiveSubtotal,
+      discount: discountAmount,
       taxes_amount: taxesAmount,
       shipping_fee: shippingFee,
       shipping_and_taxes: Number((taxesAmount + shippingFee).toFixed(3)),
-      total_amount: totalWithDelivery,
+      total: finalTotal,
+      total_amount: finalTotal,
       currency: currency || 'TND',
       delivery_estimate: '2 à 3 jours ouvrables',
       payment_method: 'Paiement à la livraison',
-      status: 'pending',
-      created_at: new Date().toISOString()
+      notification_status: 'pending'
     };
 
+    // 7. Persist Order First (Neon Postgres + Local data/orders.json backup)
     const orders = await getOrders();
     orders.unshift(newOrder);
     await saveOrders(orders);
 
-    // Asynchronously send email notification to configured admin email address
+    // 8. Attempt Email Notification (resilient to failure)
     try {
       const settings = await getSettings();
-      const targetEmail = settings.notification_email || '';
+      const targetEmail = process.env.ORDER_NOTIFICATION_EMAIL || settings.notification_email || process.env.ADMIN_NOTIFICATION_EMAIL || '';
       if (targetEmail) {
-        sendOrderNotificationEmail(newOrder, targetEmail).catch(err => {
-          console.warn('[Email] Notification dispatch notice:', err?.message || err);
-        });
+        const emailResult = await sendOrderNotificationEmail(newOrder, targetEmail);
+        newOrder.notification_status = emailResult.success ? 'sent' : 'failed';
+        saveOrders(orders).catch(err => console.warn('[Storage] Status update note:', err?.message || err));
       }
     } catch (e) {
-      console.warn('[Email] Could not load settings for email notification:', e?.message || e);
+      console.warn('[Email] Notification dispatch error (order saved):', e?.message || e);
+      newOrder.notification_status = 'failed';
     }
 
     const protocol = req.headers['x-forwarded-proto'] || (req.connection && req.connection.encrypted ? 'https' : 'http') || req.protocol || 'http';
@@ -1827,13 +1915,16 @@ app.post('/api/orders', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Order created',
+      orderNumber: orderNumber,
       order_id: orderId,
+      status: 'nouvelle',
+      message: 'Commande reçue',
       order_url: orderUrl,
       order: newOrder
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Order creation error:', err);
+    res.status(500).json({ success: false, message: 'Impossible d’enregistrer la commande. Veuillez réessayer.' });
   }
 });
 

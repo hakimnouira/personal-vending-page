@@ -643,12 +643,71 @@ class App {
     this.navActionsMenu = document.getElementById('nav-actions-menu');
     this.cartDrawerOverlay = document.getElementById('cart-drawer-overlay');
     this.btnCloseDrawer = document.getElementById('btn-close-drawer');
+    this.drawerMainTitle = document.getElementById('drawer-main-title');
+    this.drawerTitleText = document.getElementById('drawer-title-text');
     this.cartItemsList = document.getElementById('cart-items-list');
     this.cartSubtotal = document.getElementById('cart-subtotal');
     this.cartTotalWithDelivery = document.getElementById('cart-total-with-delivery');
-    this.customerNameInput = document.getElementById('customer-name');
-    this.customerPhoneInput = document.getElementById('customer-phone');
-    this.customerAddressInput = document.getElementById('customer-address');
+
+    // Checkout Stepper & Views
+    this.checkoutStepper = document.getElementById('checkout-stepper');
+    this.stepperStep1 = document.getElementById('stepper-step-1');
+    this.stepperStep2 = document.getElementById('stepper-step-2');
+    this.stepperStep3 = document.getElementById('stepper-step-3');
+    this.stepperLine1 = document.getElementById('stepper-line-1');
+    this.stepperLine2 = document.getElementById('stepper-line-2');
+
+    this.checkoutStepCart = document.getElementById('checkout-step-cart');
+    this.checkoutStepDetails = document.getElementById('checkout-step-details');
+    this.checkoutStepReview = document.getElementById('checkout-step-review');
+    this.checkoutStepSuccess = document.getElementById('checkout-step-success');
+
+    // Checkout Navigation Buttons
+    this.btnGotoDetails = document.getElementById('btn-goto-details');
+    this.btnBackToCart = document.getElementById('btn-back-to-cart');
+    this.btnGotoReview = document.getElementById('btn-goto-review');
+    this.btnBackToDetails = document.getElementById('btn-back-to-details');
+    this.btnEditDetailsLink = document.getElementById('btn-edit-details-link');
+    this.btnConfirmOrder = document.getElementById('btn-confirm-order');
+    this.btnConfirmSpinner = document.getElementById('btn-confirm-spinner');
+    this.btnConfirmLabel = document.getElementById('btn-confirm-label');
+    this.btnContinueShopping = document.getElementById('btn-continue-shopping');
+
+    // Step 2 Form Inputs
+    this.checkoutNameInput = document.getElementById('checkout-name');
+    this.checkoutPhoneInput = document.getElementById('checkout-phone');
+    this.checkoutCityInput = document.getElementById('checkout-city');
+    this.checkoutAddressInput = document.getElementById('checkout-address');
+    this.checkoutNoteInput = document.getElementById('checkout-note');
+    this.checkoutConsentInput = document.getElementById('checkout-consent');
+    this.checkoutDetailsErrors = document.getElementById('checkout-details-errors');
+    this.checkoutDetailsErrorList = document.getElementById('checkout-details-error-list');
+    this.linkCheckoutPrivacy = document.getElementById('link-checkout-privacy');
+    this.checkoutHoneypot = document.getElementById('checkout-honeypot');
+
+    // Step 3 Review Elements
+    this.reviewCustomerName = document.getElementById('review-customer-name');
+    this.reviewCustomerPhone = document.getElementById('review-customer-phone');
+    this.reviewDeliveryCity = document.getElementById('review-delivery-city');
+    this.reviewDeliveryAddress = document.getElementById('review-delivery-address');
+    this.reviewCustomerNote = document.getElementById('review-customer-note');
+    this.reviewNoteWrapper = document.getElementById('review-note-wrapper');
+    this.reviewItemsList = document.getElementById('review-items-list');
+    this.reviewSubtotal = document.getElementById('review-subtotal');
+    this.reviewDiscount = document.getElementById('review-discount');
+    this.reviewDiscountRow = document.getElementById('review-discount-row');
+    this.reviewTotalWithDelivery = document.getElementById('review-total-with-delivery');
+
+    // Step 4 Success Elements
+    this.successOrderNumber = document.getElementById('success-order-number');
+    this.successOrderDate = document.getElementById('success-order-date');
+    this.successOrderTotal = document.getElementById('success-order-total');
+    this.successItemsSummary = document.getElementById('success-items-summary');
+
+    // Backward-compatibility references
+    this.customerNameInput = this.checkoutNameInput;
+    this.customerPhoneInput = this.checkoutPhoneInput;
+    this.customerAddressInput = this.checkoutAddressInput;
     this.btnMessengerCheckout = document.getElementById('btn-messenger-checkout');
     this.btnCopyOrderSummary = document.getElementById('btn-copy-order-summary');
 
@@ -986,277 +1045,289 @@ class App {
       this.updateCartBadge();
     });
 
-    // Customer Input & Messenger Update
-    const updateMessengerDetails = () => {
-      this.renderCart();
-    };
-    if (this.customerNameInput) this.customerNameInput.addEventListener('input', updateMessengerDetails);
-    if (this.customerPhoneInput) this.customerPhoneInput.addEventListener('input', updateMessengerDetails);
-    if (this.customerAddressInput) this.customerAddressInput.addEventListener('input', updateMessengerDetails);
+    // ── Progressive On-Site Checkout Workflow ───────────────────────────────
+    this.currentCheckoutStep = 1;
+    this.isSubmittingOrder = false;
 
-    // Copy Order Summary
-    if (this.btnCopyOrderSummary) {
-      this.btnCopyOrderSummary.addEventListener('click', () => {
-        const name = this.customerNameInput ? this.customerNameInput.value : '';
-        const phone = this.customerPhoneInput ? this.customerPhoneInput.value : '';
-        const address = this.customerAddressInput ? this.customerAddressInput.value : '';
-        const msg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
-        if (msg) {
-          navigator.clipboard.writeText(msg).then(() => {
-            this.showToast(this.i18n.t('toast_copied'));
-            this.telemetry.trackEvent('Copied Order Summary to Clipboard');
-          });
+    this.setCheckoutStep = (stepNumber) => {
+      this.currentCheckoutStep = stepNumber;
+
+      // Views
+      if (this.checkoutStepCart) this.checkoutStepCart.style.display = (stepNumber === 1 ? 'flex' : 'none');
+      if (this.checkoutStepDetails) this.checkoutStepDetails.style.display = (stepNumber === 2 ? 'flex' : 'none');
+      if (this.checkoutStepReview) this.checkoutStepReview.style.display = (stepNumber === 3 ? 'flex' : 'none');
+      if (this.checkoutStepSuccess) this.checkoutStepSuccess.style.display = (stepNumber === 4 ? 'block' : 'none');
+
+      // Stepper Bar
+      if (this.checkoutStepper) {
+        // Stepper is visible in Steps 1, 2, and 3 (hidden on final success confirmation screen)
+        this.checkoutStepper.style.display = (stepNumber >= 1 && stepNumber <= 3) ? 'flex' : 'none';
+
+        // Step 1 Indicator
+        if (this.stepperStep1) {
+          this.stepperStep1.className = 'checkout-step-indicator' + (stepNumber === 1 ? ' active' : (stepNumber > 1 ? ' completed' : ''));
+        }
+        // Step 1-2 Line
+        if (this.stepperLine1) {
+          this.stepperLine1.className = 'stepper-line' + (stepNumber >= 2 ? ' completed' : '');
+        }
+        // Step 2 Indicator
+        if (this.stepperStep2) {
+          this.stepperStep2.className = 'checkout-step-indicator' + (stepNumber === 2 ? ' active' : (stepNumber > 2 ? ' completed' : ''));
+        }
+        // Step 2-3 Line
+        if (this.stepperLine2) {
+          this.stepperLine2.className = 'stepper-line' + (stepNumber >= 3 ? ' completed' : '');
+        }
+        // Step 3 Indicator
+        if (this.stepperStep3) {
+          this.stepperStep3.className = 'checkout-step-indicator' + (stepNumber === 3 ? ' active' : '');
+        }
+      }
+
+      // Dynamic Drawer Header Title
+      if (this.drawerTitleText) {
+        if (stepNumber === 1) this.drawerTitleText.textContent = "Panier d'Achat";
+        else if (stepNumber === 2) this.drawerTitleText.textContent = "Vos Coordonnées";
+        else if (stepNumber === 3) this.drawerTitleText.textContent = "Vérification de la commande";
+        else if (stepNumber === 4) this.drawerTitleText.textContent = "Commande reçue";
+      }
+
+      // Scroll drawer body to top on step transition
+      const activeDrawerBody = document.querySelector('.checkout-step-view[style*="display: flex"] .drawer-body') 
+        || document.querySelector('.checkout-step-view[style*="display: block"] .drawer-body');
+      if (activeDrawerBody) activeDrawerBody.scrollTop = 0;
+    };
+
+    // Validation for Step 2
+    this.validateCheckoutDetails = () => {
+      const errors = [];
+      const name = (this.checkoutNameInput ? this.checkoutNameInput.value : '').trim();
+      const phone = (this.checkoutPhoneInput ? this.checkoutPhoneInput.value : '').trim();
+      const city = (this.checkoutCityInput ? this.checkoutCityInput.value : '').trim();
+      const address = (this.checkoutAddressInput ? this.checkoutAddressInput.value : '').trim();
+      const consent = this.checkoutConsentInput ? this.checkoutConsentInput.checked : false;
+
+      // Clean invalid markers
+      [this.checkoutNameInput, this.checkoutPhoneInput, this.checkoutCityInput, this.checkoutAddressInput].forEach(el => {
+        if (el) el.classList.remove('is-invalid');
+      });
+
+      if (!name || name.length < 2) {
+        errors.push("Veuillez saisir votre nom et prénom (au moins 2 caractères).");
+        if (this.checkoutNameInput) this.checkoutNameInput.classList.add('is-invalid');
+      }
+
+      const digitsOnly = phone.replace(/\D/g, '');
+      if (!digitsOnly || digitsOnly.length < 8) {
+        errors.push("Veuillez saisir un numéro de téléphone valide (au moins 8 chiffres).");
+        if (this.checkoutPhoneInput) this.checkoutPhoneInput.classList.add('is-invalid');
+      }
+
+      if (!city || city.length < 2) {
+        errors.push("Veuillez indiquer votre ville ou zone de livraison.");
+        if (this.checkoutCityInput) this.checkoutCityInput.classList.add('is-invalid');
+      }
+
+      if (!address || address.length < 3) {
+        errors.push("Veuillez renseigner votre adresse de livraison complète.");
+        if (this.checkoutAddressInput) this.checkoutAddressInput.classList.add('is-invalid');
+      }
+
+      if (!consent) {
+        errors.push("Veuillez cocher la case autorisant l'utilisation de vos coordonnées pour le traitement de la commande.");
+      }
+
+      if (this.checkoutDetailsErrors) {
+        if (errors.length > 0) {
+          this.checkoutDetailsErrors.innerHTML = `
+            <strong>Veuillez corriger les informations suivantes :</strong>
+            <ul style="margin: 6px 0 0 18px; padding: 0;">${errors.map(err => `<li>${err}</li>`).join('')}</ul>
+          `;
+          this.checkoutDetailsErrors.style.display = 'block';
+          this.checkoutDetailsErrors.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          return false;
+        } else {
+          this.checkoutDetailsErrors.style.display = 'none';
+          this.checkoutDetailsErrors.innerHTML = '';
+          return true;
+        }
+      }
+
+      return errors.length === 0;
+    };
+
+    // Populate Review Step 3
+    this.populateCheckoutReview = () => {
+      const name = (this.checkoutNameInput ? this.checkoutNameInput.value : '').trim();
+      const phone = (this.checkoutPhoneInput ? this.checkoutPhoneInput.value : '').trim();
+      const city = (this.checkoutCityInput ? this.checkoutCityInput.value : '').trim();
+      const address = (this.checkoutAddressInput ? this.checkoutAddressInput.value : '').trim();
+      const note = (this.checkoutNoteInput ? this.checkoutNoteInput.value : '').trim();
+
+      if (this.reviewCustomerName) this.reviewCustomerName.textContent = name;
+      if (this.reviewCustomerPhone) this.reviewCustomerPhone.textContent = phone;
+      if (this.reviewDeliveryCity) this.reviewDeliveryCity.textContent = city;
+      if (this.reviewDeliveryAddress) this.reviewDeliveryAddress.textContent = address;
+
+      if (this.reviewCustomerNote && this.reviewNoteWrapper) {
+        if (note) {
+          this.reviewCustomerNote.textContent = note;
+          this.reviewNoteWrapper.style.display = 'flex';
+        } else {
+          this.reviewNoteWrapper.style.display = 'none';
+        }
+      }
+
+      // Review Items List
+      const items = this.cartManager.getCartItems();
+      const isArabic = this.i18n ? this.i18n.getLang() === 'ar' : false;
+      const currency = isArabic ? 'د.ت' : 'TND';
+
+      if (this.reviewItemsList) {
+        this.reviewItemsList.innerHTML = items.map(it => `
+          <div class="review-item-row">
+            <img class="review-item-thumb" src="${it.image_url}" alt="${it.name}" onerror="window.handleProductImgError(this)" />
+            <div class="review-item-details">
+              <div class="review-item-name">${it.name}</div>
+              <div class="review-item-sub">
+                ${it.shade_name ? `<span>Nuance : ${it.shade_name} · </span>` : ''}
+                <span>Réf. ${it.product_id}</span>
+              </div>
+            </div>
+            <div class="review-item-qtyprice">
+              <div class="review-item-qty">Qté : ${it.quantity}</div>
+              <div class="review-item-total">${(Number(it.price) * it.quantity).toFixed(2)} ${currency}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Financials
+      const subtotal = this.cartManager.getSubtotal();
+      const rawSubtotal = this.cartManager.getRawSubtotal();
+      const discount = this.cartManager.getTotalDiscount();
+      const totalWithDelivery = this.cartManager.getTotalWithDelivery();
+
+      if (this.reviewSubtotal) {
+        this.reviewSubtotal.textContent = `${subtotal.toFixed(2)} ${currency}`;
+      }
+
+      if (this.reviewDiscountRow && this.reviewDiscount) {
+        if (discount > 0) {
+          this.reviewDiscount.textContent = `-${discount.toFixed(2)} ${currency}`;
+          this.reviewDiscountRow.style.display = 'flex';
+        } else {
+          this.reviewDiscountRow.style.display = 'none';
+        }
+      }
+
+      if (this.reviewTotalWithDelivery) {
+        this.reviewTotalWithDelivery.textContent = `${totalWithDelivery.toFixed(3)} ${currency}`;
+      }
+    };
+
+    // Step 1 -> Step 2
+    if (this.btnGotoDetails) {
+      this.btnGotoDetails.addEventListener('click', () => {
+        const items = this.cartManager.getCartItems();
+        if (items.length === 0) {
+          alert("Votre panier est vide. Veuillez ajouter des produits avant de commander.");
+          return;
+        }
+        this.setCheckoutStep(2);
+        if (this.checkoutNameInput) this.checkoutNameInput.focus();
+      });
+    }
+
+    // Step 2 -> Step 1
+    if (this.btnBackToCart) {
+      this.btnBackToCart.addEventListener('click', () => {
+        this.setCheckoutStep(1);
+      });
+    }
+
+    // Step 2 -> Step 3
+    if (this.btnGotoReview) {
+      this.btnGotoReview.addEventListener('click', () => {
+        if (this.validateCheckoutDetails()) {
+          this.populateCheckoutReview();
+          this.setCheckoutStep(3);
         }
       });
     }
 
-    // Helper for robust clipboard copy across all mobile and desktop browsers
-    const copyTextToClipboard = async (text) => {
-      if (!text) return false;
-      let success = false;
-
-      // Method 1: Modern asynchronous clipboard API
-      if (navigator.clipboard && window.isSecureContext) {
-        try {
-          await navigator.clipboard.writeText(text);
-          success = true;
-        } catch (e) {
-          console.warn('[Clipboard] navigator.clipboard failed, trying fallback', e);
-        }
-      }
-
-      // Method 2: Synchronous DOM-based selection (iOS Safari & Android Chrome safe)
-      if (!success) {
-        try {
-          const textarea = document.createElement('textarea');
-          textarea.value = text;
-          textarea.setAttribute('readonly', '');
-          textarea.style.position = 'fixed';
-          textarea.style.top = '0';
-          textarea.style.left = '0';
-          textarea.style.width = '2em';
-          textarea.style.height = '2em';
-          textarea.style.padding = '0';
-          textarea.style.border = 'none';
-          textarea.style.outline = 'none';
-          textarea.style.boxShadow = 'none';
-          textarea.style.background = 'transparent';
-          textarea.style.opacity = '0.01';
-          textarea.style.zIndex = '-1';
-          document.body.appendChild(textarea);
-
-          textarea.focus();
-          textarea.select();
-          textarea.setSelectionRange(0, textarea.value.length);
-
-          success = document.execCommand('copy');
-          document.body.removeChild(textarea);
-        } catch (e) {
-          console.error('[Clipboard] execCommand failed', e);
-        }
-      }
-
-      return success;
-    };
-
-    // ── Checkout Choice 1: Phone / WhatsApp Order Submission ─────────────────
-    const btnPhone = document.getElementById('btn-phone-checkout');
-    if (btnPhone) {
-      btnPhone.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const items = this.cartManager.getCartItems();
-        if (items.length === 0) {
-          alert('Votre panier est vide.');
-          return;
-        }
-
-        const name = (this.customerNameInput ? this.customerNameInput.value : '').trim();
-        const phone = (this.customerPhoneInput ? this.customerPhoneInput.value : '').trim();
-        const address = (this.customerAddressInput ? this.customerAddressInput.value : '').trim();
-
-        if (!phone) {
-          alert('Veuillez renseigner votre numéro de téléphone ou WhatsApp pour que nous puissions vous contacter.');
-          if (this.customerPhoneInput) this.customerPhoneInput.focus();
-          return;
-        }
-
-        // Copy order message immediately upon click while user gesture is active
-        const earlyOrderMsg = `Bonjour Mouna ! Je souhaite passer une commande sur votre boutique Oriflame :\n` +
-          this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
-        await copyTextToClipboard(earlyOrderMsg);
-
-        // ── Meta Pixel: InitiateCheckout standard event (WhatsApp / Phone) ──
-        try {
-          if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
-            window.fbq('track', 'InitiateCheckout', {
-              content_name: 'Commande WhatsApp / Téléphone',
-              content_ids: items.map(it => String(it.product_id)),
-              content_type: 'product',
-              num_items: this.cartManager.getTotalCount(),
-              value: this.cartManager.getSubtotal(),
-              currency: 'TND'
-            });
-          }
-        } catch (e) {
-          console.warn('[Meta Pixel] InitiateCheckout tracking note:', e);
-        }
-
-        btnPhone.disabled = true;
-        btnPhone.textContent = '⏳ Enregistrement de la commande...';
-
-        try {
-          const res = await fetch('/api/orders', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              customer_name: name || 'Client Téléphone',
-              customer_phone: phone,
-              customer_address: address,
-              channel: 'phone',
-              items: items,
-              currency: 'TND'
-            })
-          });
-          const data = await res.json();
-
-          if (data.success) {
-            if (this.cartDrawerOverlay) this.cartDrawerOverlay.classList.remove('open');
-
-            const successModal = document.getElementById('order-success-modal');
-            const successOrderId = document.getElementById('success-order-id');
-            const successCustomerName = document.getElementById('success-customer-name');
-            const successCustomerPhone = document.getElementById('success-customer-phone');
-            const successWhatsappBtn = document.getElementById('btn-success-whatsapp');
-            const closeSuccessBtn = document.getElementById('btn-close-success-modal');
-
-            if (successOrderId) successOrderId.textContent = data.order_id;
-            if (successCustomerName) successCustomerName.textContent = name || 'Cher Client';
-            if (successCustomerPhone) successCustomerPhone.textContent = phone;
-
-            if (successWhatsappBtn) {
-              const liveOrderUrl = `${window.location.origin}/admin?orderId=${data.order_id}`;
-              const cleanTargetPhone = this.cleanPhoneNumber(this.whatsappPhone || '55756629');
-              const rawOrderMsg = `Bonjour Mouna ! J'ai passé la commande ${data.order_id} sur votre boutique Oriflame :\n` +
-                this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl, address);
-              const orderMsg = encodeURIComponent(rawOrderMsg);
-              const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
-              successWhatsappBtn.href = waUrl;
-
-              // Re-copy with full order ID
-              await copyTextToClipboard(rawOrderMsg);
-
-              // Auto-copy message to clipboard when WhatsApp button is clicked
-              successWhatsappBtn.onclick = async () => {
-                await copyTextToClipboard(rawOrderMsg);
-                this.showToast('📋 ✅ Message copié !');
-              };
-            }
-
-            if (closeSuccessBtn) {
-              closeSuccessBtn.onclick = () => {
-                if (successModal) successModal.classList.remove('open');
-              };
-            }
-
-            if (successModal) successModal.classList.add('open');
-
-            this.cartManager.clearCart();
-            this.renderCart();
-            this.updateCartBadge();
-            this.telemetry.trackEvent(`Completed Phone/WhatsApp Order ${data.order_id}`);
-          } else {
-            alert('Erreur: ' + data.message);
-          }
-        } catch (err) {
-          console.warn('Backend order submission offline, using local fallback:', err);
-          const fallbackOrderId = `ORD-${Date.now().toString().slice(-6)}`;
-          if (this.cartDrawerOverlay) this.cartDrawerOverlay.classList.remove('open');
-
-          const successModal = document.getElementById('order-success-modal');
-          const successOrderId = document.getElementById('success-order-id');
-          const successCustomerName = document.getElementById('success-customer-name');
-          const successCustomerPhone = document.getElementById('success-customer-phone');
-          const successWhatsappBtn = document.getElementById('btn-success-whatsapp');
-          const closeSuccessBtn = document.getElementById('btn-close-success-modal');
-
-          if (successOrderId) successOrderId.textContent = fallbackOrderId;
-          if (successCustomerName) successCustomerName.textContent = name || 'Cher Client';
-          if (successCustomerPhone) successCustomerPhone.textContent = phone;
-
-          if (successWhatsappBtn) {
-            const cleanTargetPhone = this.cleanPhoneNumber(this.whatsappPhone || '55756629');
-            const rawOrderMsg = `Bonjour Mouna ! J'ai passé la commande ${fallbackOrderId} sur votre boutique Oriflame :\n` +
-              this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
-            const orderMsg = encodeURIComponent(rawOrderMsg);
-            const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${orderMsg}`;
-            successWhatsappBtn.href = waUrl;
-            await copyTextToClipboard(rawOrderMsg);
-
-            successWhatsappBtn.onclick = async () => {
-              await copyTextToClipboard(rawOrderMsg);
-              this.showToast('📋 ✅ Message copié !');
-            };
-          }
-
-          if (closeSuccessBtn) {
-            closeSuccessBtn.onclick = () => {
-              if (successModal) successModal.classList.remove('open');
-            };
-          }
-
-          if (successModal) successModal.classList.add('open');
-
-          this.cartManager.clearCart();
-          this.renderCart();
-          this.updateCartBadge();
-        } finally {
-          btnPhone.disabled = false;
-          btnPhone.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><span>📞 Commander par Téléphone / WhatsApp</span>`;
-        }
+    // Step 3 -> Step 2
+    if (this.btnBackToDetails) {
+      this.btnBackToDetails.addEventListener('click', () => {
+        this.setCheckoutStep(2);
+      });
+    }
+    if (this.btnEditDetailsLink) {
+      this.btnEditDetailsLink.addEventListener('click', () => {
+        this.setCheckoutStep(2);
       });
     }
 
-    // ── Checkout Choice 2: Facebook / Messenger Checkout ─────────────────────
-    if (this.btnMessengerCheckout) {
-      this.btnMessengerCheckout.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const count = this.cartManager.getTotalCount();
-        const total = this.cartManager.getSubtotal();
-        const name = (this.customerNameInput ? this.customerNameInput.value : '').trim();
-        const phone = (this.customerPhoneInput ? this.customerPhoneInput.value : '').trim();
-        const address = (this.customerAddressInput ? this.customerAddressInput.value : '').trim();
-        const items = this.cartManager.getCartItems();
+    // Real-time error clearance on input
+    [this.checkoutNameInput, this.checkoutPhoneInput, this.checkoutCityInput, this.checkoutAddressInput].forEach(inp => {
+      if (inp) {
+        inp.addEventListener('input', () => {
+          if (inp.classList.contains('is-invalid')) inp.classList.remove('is-invalid');
+          if (this.checkoutDetailsErrors) this.checkoutDetailsErrors.style.display = 'none';
+        });
+      }
+    });
 
+    // Privacy Policy Modal link from checkout
+    if (this.linkCheckoutPrivacy) {
+      this.linkCheckoutPrivacy.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.openModal(this.privacyModalOverlay);
+      });
+    }
+
+    // Submit Order in Step 3
+    if (this.btnConfirmOrder) {
+      this.btnConfirmOrder.addEventListener('click', async () => {
+        if (this.isSubmittingOrder) return;
+
+        const items = this.cartManager.getCartItems();
         if (items.length === 0) {
-          alert('Votre panier est vide.');
+          alert("Votre panier est vide.");
+          this.setCheckoutStep(1);
           return;
         }
 
-        const isMobile = this.cartManager.isMobileDevice();
-        const cleanedFbHandle = this.cleanFbUsername(this.facebookUsername || 'Mounanouira.Oriflame');
-
-        // ── CRITICAL: Copy to clipboard IMMEDIATELY upon user click ──
-        const earlyMsg = this.cartManager.generateOrderTextMessage(name, phone, 'TND', '', address);
-        await copyTextToClipboard(earlyMsg);
-
-        // ── Meta Pixel: InitiateCheckout standard event (Facebook Messenger) ──
-        try {
-          if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
-            window.fbq('track', 'InitiateCheckout', {
-              content_name: 'Commande Facebook Messenger',
-              content_ids: items.map(it => String(it.product_id)),
-              content_type: 'product',
-              num_items: count,
-              value: total,
-              currency: 'TND'
-            });
-          }
-        } catch (e) {
-          console.warn('[Meta Pixel] InitiateCheckout tracking note:', e);
+        // Validate details once more
+        if (!this.validateCheckoutDetails()) {
+          this.setCheckoutStep(2);
+          return;
         }
 
-        let orderUrl = '';
-        let orderId = '';
+        const name = (this.checkoutNameInput ? this.checkoutNameInput.value : '').trim();
+        const phone = (this.checkoutPhoneInput ? this.checkoutPhoneInput.value : '').trim();
+        const city = (this.checkoutCityInput ? this.checkoutCityInput.value : '').trim();
+        const address = (this.checkoutAddressInput ? this.checkoutAddressInput.value : '').trim();
+        const note = (this.checkoutNoteInput ? this.checkoutNoteInput.value : '').trim();
+        const honeypot = (this.checkoutHoneypot ? this.checkoutHoneypot.value : '').trim();
+
+        // Honeypot anti-spam silent check
+        if (honeypot) {
+          console.warn("[Anti-spam] Honeypot triggered");
+          this.setCheckoutStep(4);
+          return;
+        }
+
+        // Lock button & show spinner (double-click protection)
+        this.isSubmittingOrder = true;
+        this.btnConfirmOrder.disabled = true;
+        if (this.btnConfirmSpinner) this.btnConfirmSpinner.style.display = 'inline-block';
+        if (this.btnConfirmLabel) this.btnConfirmLabel.textContent = 'Enregistrement de la commande...';
+
+        const finalTotalStr = `${this.cartManager.getTotalWithDelivery().toFixed(3)} TND`;
+        const itemsSnapshot = items.map(it => ({ ...it }));
+
         try {
           const res = await fetch('/api/orders', {
             method: 'POST',
@@ -1264,75 +1335,109 @@ class App {
             body: JSON.stringify({
               customer_name: name,
               customer_phone: phone,
-              customer_address: address,
-              channel: 'messenger',
-              items: items,
-              currency: 'TND'
+              delivery_area: city,
+              delivery_city: city,
+              delivery_address: address,
+              customer_note: note,
+              consent_given: true,
+              items: itemsSnapshot,
+              channel: 'direct_site'
             })
           });
+
           const data = await res.json();
+
           if (data.success) {
-            orderId = data.order_id;
-            orderUrl = `${window.location.origin}/admin?orderId=${orderId}`;
+            const orderNumber = data.orderNumber || data.order_number || data.order_id || `MN-${Date.now().toString().slice(-6)}`;
+
+            // Populate Step 4 (Success)
+            if (this.successOrderNumber) this.successOrderNumber.textContent = orderNumber;
+            if (this.successOrderDate) {
+              const now = new Date();
+              this.successOrderDate.textContent = now.toLocaleDateString('fr-FR', {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+              });
+            }
+            if (this.successOrderTotal) this.successOrderTotal.textContent = finalTotalStr;
+
+            if (this.successItemsSummary) {
+              this.successItemsSummary.innerHTML = itemsSnapshot.map(it => `
+                <div class="success-item-mini-row">
+                  <span>${it.name} (x${it.quantity})</span>
+                  <strong>${(Number(it.price) * it.quantity).toFixed(2)} TND</strong>
+                </div>
+              `).join('');
+            }
+
+            // Meta Pixel / Telemetry tracking
+            try {
+              if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+                window.fbq('track', 'Purchase', {
+                  content_name: 'Commande directe sur le site',
+                  content_ids: itemsSnapshot.map(it => String(it.product_id)),
+                  content_type: 'product',
+                  num_items: this.cartManager.getTotalCount(),
+                  value: this.cartManager.getTotalWithDelivery(),
+                  currency: 'TND'
+                });
+              }
+            } catch (e) {}
+
+            this.telemetry.trackEvent(`Completed Direct On-Site Order ${orderNumber}`);
+
+            // Clear Cart
+            this.cartManager.clearCart();
+            this.renderCart();
+            this.updateCartBadge();
+
+            // Clear inputs for subsequent orders
+            if (this.checkoutNameInput) this.checkoutNameInput.value = '';
+            if (this.checkoutPhoneInput) this.checkoutPhoneInput.value = '';
+            if (this.checkoutCityInput) this.checkoutCityInput.value = '';
+            if (this.checkoutAddressInput) this.checkoutAddressInput.value = '';
+            if (this.checkoutNoteInput) this.checkoutNoteInput.value = '';
+            if (this.checkoutConsentInput) this.checkoutConsentInput.checked = false;
+
+            // Transition to Step 4
+            this.setCheckoutStep(4);
+          } else {
+            alert('Erreur lors de la validation de la commande : ' + (data.message || 'Une erreur est survenue.'));
           }
         } catch (err) {
-          console.warn("Could not persist order to server", err);
+          console.error("Order submission network error:", err);
+          alert("Une erreur de réseau est survenue lors de l'envoi de la commande. Veuillez vérifier votre connexion ou nous contacter par téléphone au 55756629.");
+        } finally {
+          this.isSubmittingOrder = false;
+          if (this.btnConfirmOrder) this.btnConfirmOrder.disabled = false;
+          if (this.btnConfirmSpinner) this.btnConfirmSpinner.style.display = 'none';
+          if (this.btnConfirmLabel) this.btnConfirmLabel.textContent = '✓ Confirmer ma commande';
         }
+      });
+    }
 
-        // Re-generate the message with the order URL (if available) and re-copy
-        const liveOrderUrl = orderId ? `${window.location.origin}/admin?orderId=${orderId}` : orderUrl;
-        const msg = liveOrderUrl
-          ? this.cartManager.generateOrderTextMessage(name, phone, 'TND', liveOrderUrl, address)
-          : earlyMsg;
+    // Step 4: Continuer mes achats
+    if (this.btnContinueShopping) {
+      this.btnContinueShopping.addEventListener('click', () => {
+        this.closeCartDrawer();
+        this.setCheckoutStep(1);
+      });
+    }
 
-        if (liveOrderUrl) {
-          await copyTextToClipboard(msg);
+    // Secondary Direct Phone / WhatsApp link in cart (optional shortcut)
+    const btnPhone = document.getElementById('btn-phone-checkout');
+    if (btnPhone) {
+      btnPhone.addEventListener('click', (e) => {
+        e.preventDefault();
+        const items = this.cartManager.getCartItems();
+        if (items.length === 0) {
+          alert('Votre panier est vide.');
+          return;
         }
-
-        const finalMessengerUrl = isMobile
-          ? `https://m.me/${cleanedFbHandle}?text=${encodeURIComponent(msg)}`
-          : `https://www.facebook.com/messages/t/${cleanedFbHandle}`;
-
-        this.showToast(isMobile
-          ? '📋 ✅ Message copié ! Collez-le (appui long → Coller) si besoin dans Messenger.'
-          : this.i18n.t('toast_copied'));
-
-        this.telemetry.trackEvent(`Clicked Facebook/Messenger Checkout (${count} items, Total: ${total} TND)`);
-
-        // Show paste guide modal on ALL devices (Desktop & Mobile) so user has the button and guide
-        const pasteModal = document.getElementById('messenger-paste-modal-overlay');
-        const openMessengerBtn = document.getElementById('btn-paste-modal-open-messenger');
-        const closePasteBtn = document.getElementById('btn-close-paste-modal');
-        const recopyBtn = document.getElementById('btn-recopy-order');
-        const msgPreview = document.getElementById('paste-modal-msg-preview');
-
-        if (pasteModal) {
-          if (msgPreview) {
-            const previewText = msg.replace(/\n/g, '<br>');
-            msgPreview.innerHTML = `<div style="position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: linear-gradient(transparent, #F8FAFC);"></div>${previewText}`;
-          }
-
-          pasteModal.classList.add('open');
-
-          if (openMessengerBtn) {
-            openMessengerBtn.onclick = () => {
-              window.open(finalMessengerUrl, '_blank');
-            };
-          }
-          if (recopyBtn) {
-            recopyBtn.onclick = async () => {
-              await copyTextToClipboard(msg);
-              recopyBtn.textContent = '✅ Recopié !';
-              setTimeout(() => { recopyBtn.textContent = '📋 Recopier'; }, 2000);
-            };
-          }
-          if (closePasteBtn) {
-            closePasteBtn.onclick = () => pasteModal.classList.remove('open');
-          }
-        }
-
-        // Open Messenger with pre-filled text parameter
-        window.open(finalMessengerUrl, '_blank');
+        const cleanTargetPhone = this.cleanPhoneNumber(this.whatsappPhone || '55756629');
+        const rawMsg = `Bonjour Mouna ! Je souhaite commander :\n` + this.cartManager.generateOrderTextMessage('', '', 'TND');
+        const waUrl = `https://wa.me/216${cleanTargetPhone}?text=${encodeURIComponent(rawMsg)}`;
+        window.open(waUrl, '_blank');
       });
     }
 
@@ -3663,6 +3768,12 @@ class App {
       const hasBodyCareFilterSlug = Boolean(filtersParam && (filtersParam.includes('shower-gel') || filtersParam.includes('body-cream') || filtersParam.includes('body-lotion') || filtersParam.includes('soap') || filtersParam.includes('body-butter') || filtersParam.includes('bath-accessories') || filtersParam.includes('two-in-one') || filtersParam.includes('need:')));
       const hasBodyCareDirectParams = params.has('need') || (isBodyCareCat && (params.has('product-type') || params.has('type')));
 
+      // 0b. Skincare URL params
+      const isSkincareBasePath = pathname === '/soins-du-visage' || pathname === '/skincare' || pathname === '/soins-de-la-peau';
+      const isSkincareCat = catParam && (catParam.toLowerCase() === 'skincare' || catParam.toLowerCase() === 'soins-visage' || catParam.toLowerCase() === 'soins');
+      const hasSkincareFilterSlug = Boolean(filtersParam && (filtersParam.includes('skin-type:') || filtersParam.includes('benefits:')));
+      const hasSkincareDirectParams = params.has('skin-type') || params.has('skinType') || params.has('benefits') || (isSkincareCat && (params.has('product-type') || params.has('type')));
+
       if (isBodyCareBasePath || isBodyCareCat || hasBodyCareFilterSlug || hasBodyCareDirectParams) {
         this.activeCategory = 'BodyCare';
 
@@ -4404,6 +4515,11 @@ class App {
       `;
       if (this.cartSubtotal) this.cartSubtotal.textContent = `0.00 ${currencyLabel}`;
       if (this.cartTotalWithDelivery) this.cartTotalWithDelivery.textContent = `0.000 ${currencyLabel}`;
+      if (this.btnGotoDetails) {
+        this.btnGotoDetails.disabled = true;
+        this.btnGotoDetails.style.opacity = "0.5";
+        this.btnGotoDetails.style.pointerEvents = "none";
+      }
       if (this.btnMessengerCheckout) {
         this.btnMessengerCheckout.style.opacity = "0.5";
         this.btnMessengerCheckout.style.pointerEvents = "none";
@@ -4412,6 +4528,12 @@ class App {
         this.btnCopyOrderSummary.style.display = "none";
       }
       return;
+    }
+
+    if (this.btnGotoDetails) {
+      this.btnGotoDetails.disabled = false;
+      this.btnGotoDetails.style.opacity = "1";
+      this.btnGotoDetails.style.pointerEvents = "auto";
     }
 
     if (this.btnMessengerCheckout) {
@@ -4677,6 +4799,11 @@ class App {
   }
 
   openCartDrawer() {
+    if (this.currentCheckoutStep === 4 || this.cartManager.getTotalCount() === 0) {
+      if (typeof this.setCheckoutStep === 'function') {
+        this.setCheckoutStep(1);
+      }
+    }
     if (this.cartDrawerOverlay) this.cartDrawerOverlay.classList.add('open');
   }
 
@@ -4846,7 +4973,7 @@ class App {
     const { totalDiscount, isPromo, displayOrigPrice } = this.calculateDiscountMetrics(activePrice, activeOrigPrice, product);
 
     const prodShareUrl = `${window.location.origin}/?prod=${encodeURIComponent(product.product_id)}`;
-    const prodShareImg = product.image_url ? (product.image_url.startsWith('http') ? product.image_url : window.location.origin + '/' + product.image_url) : `${window.location.origin}/assets/og-facebook-preview.jpg`;
+    const prodShareImg = product.image_url ? (product.image_url.startsWith('http') ? product.image_url : window.location.origin + '/' + product.image_url) : `${window.location.origin}/assets/Oriflame%20by%20Mouna%20Nouira.jpg`;
     const prodShareText = `✨ Découvrez "${prodName}" (${Number(activePrice).toFixed(2)} ${currencyLabel}) sur la boutique Oriflame Tunisie de Mouna Nouira !`;
     const prodEmailSubject = `Recommandation beauté Oriflame : ${prodName}`;
     const prodEmailBody = `Bonjour,\n\nJe te recommande ce produit Oriflame Tunisie chez Mouna Nouira :\n${prodName} (${Number(activePrice).toFixed(2)} ${currencyLabel})\n\nVoir la fiche complète ici :\n${prodShareUrl}`;
@@ -5415,7 +5542,7 @@ class App {
       : this.getCategoryDisplayName(activeCat);
 
     let shareUrl = window.location.origin + '/';
-    let shareImg = `${window.location.origin}/assets/og-facebook-preview.jpg`;
+    let shareImg = `${window.location.origin}/assets/Oriflame%20by%20Mouna%20Nouira.jpg`;
 
     if (!isHome) {
       const catSlug = (activeCat === 'BodyCare') ? 'corps-et-bain' :
@@ -5503,7 +5630,7 @@ class App {
     if (titleEl) titleEl.textContent = customTitle || (isArabic ? `مشاركة : ${catName}` : `Partager : ${catName}`);
     if (descEl) descEl.textContent = customDesc || (isArabic ? 'شاركي هذه التشكيلة مع صديقاتكِ عبر وسائل التواصل :' : 'Partagez cette sélection avec vos proches sur vos réseaux sociaux préférés :');
 
-    const shareImg = img || `${window.location.origin}/assets/og-facebook-preview.jpg`;
+    const shareImg = img || `${window.location.origin}/assets/Oriflame%20by%20Mouna%20Nouira.jpg`;
     const catKey = this.activeCategory || 'All';
 
     // Populate Visual Share Preview Box (Image + Title + URL)

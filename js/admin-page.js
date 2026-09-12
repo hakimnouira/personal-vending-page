@@ -1644,7 +1644,7 @@ class AdminDashboard {
     const orders = this.orders || [];
 
     if (elTotal) elTotal.textContent = orders.length;
-    if (elPending) elPending.textContent = orders.filter(o => o.status === 'pending').length;
+    if (elPending) elPending.textContent = orders.filter(o => o.status === 'pending' || o.status === 'nouvelle').length;
     
     const revenue = orders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
     if (elRevenue) elRevenue.textContent = `${revenue.toFixed(2)} TND`;
@@ -1673,24 +1673,38 @@ class AdminDashboard {
         ? '<span class="badge" style="background:#2563EB; color:#FFF;">🚚 Expédié</span>'
         : o.status === 'cancelled'
         ? '<span class="badge" style="background:#EF4444; color:#FFF;">✕ Annulée</span>'
+        : o.status === 'nouvelle'
+        ? '<span class="badge" style="background:#DBEAFE; color:#1E40AF; border:1px solid #BFDBFE; font-weight:700;">✨ Nouvelle</span>'
         : '<span class="badge" style="background:#FEF3C7; color:#92400E; border:1px solid #FCD34D;">⏳ En attente</span>';
 
-      const channelBadge = o.channel === 'phone'
-        ? '<span class="badge" style="background:#ECFDF5; color:#047857; border:1px solid #A7F3D0; font-size:0.75rem; font-weight:700;">📞 Tél / WhatsApp</span>'
-        : '<span class="badge" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; font-size:0.75rem; font-weight:700;">💬 Messenger</span>';
+      const channelBadge = o.channel === 'direct_site'
+        ? '<span class="badge" style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-size:0.75rem; font-weight:700;">🌐 Site Direct</span>'
+        : o.channel === 'phone'
+        ? '<span class="badge" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; font-size:0.75rem; font-weight:700;">📞 Tél / WhatsApp</span>'
+        : '<span class="badge" style="background:#F3F4F6; color:#374151; border:1px solid #E5E7EB; font-size:0.75rem; font-weight:700;">💬 Messenger</span>';
 
       const cleanPhone = (o.customer_phone || '').replace(/[^0-9+]/g, '');
       const phoneHtml = cleanPhone && cleanPhone !== 'Nonrenseign'
         ? `<div><a href="tel:${cleanPhone}" style="color:#2563EB; font-weight:600; text-decoration:underline;">📞 ${o.customer_phone}</a> <a href="https://wa.me/${cleanPhone.replace('+', '')}" target="_blank" style="display:inline-block; margin-left:4px; font-weight:700; color:#059669; text-decoration:none;" title="Ouvrir WhatsApp">📱</a></div>`
         : `<div style="font-size:0.78rem; color:#8E8D8A;">${o.customer_phone || 'Non renseigné'}</div>`;
 
+      const addressStr = (o.delivery_address || o.customer_address || '').trim();
+      const areaStr = (o.delivery_area || o.city || '').trim();
+      const noteStr = (o.customer_note || o.notes || '').trim();
+
+      const locationParts = [];
+      if (areaStr) locationParts.push(`<strong>${areaStr}</strong>`);
+      if (addressStr && addressStr !== 'Non renseignée' && addressStr !== areaStr) locationParts.push(addressStr);
+      const displayLocationHtml = locationParts.length > 0 ? locationParts.join(' — ') : '';
+
       return `
         <tr>
-          <td><code style="font-weight:700; color:#2563EB;">${o.order_id}</code></td>
+          <td><code style="font-weight:700; color:#2563EB;">${o.order_id || o.order_number}</code></td>
           <td>
             <strong>${o.customer_name || 'Client'}</strong>
             ${phoneHtml}
-            ${o.customer_address && o.customer_address !== 'Non renseignée' ? `<div style="font-size:0.75rem; color:#4B5563; margin-top:3px; line-height:1.25;">📍 ${o.customer_address}</div>` : ''}
+            ${displayLocationHtml ? `<div style="font-size:0.78rem; color:#374151; margin-top:4px; line-height:1.3; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:4px; padding:3px 6px;">📍 ${displayLocationHtml}</div>` : ''}
+            ${noteStr ? `<div style="font-size:0.74rem; color:#92400E; background:#FEF3C7; border:1px solid #FDE68A; border-radius:4px; padding:2px 6px; margin-top:3px; line-height:1.2;">📝 « ${noteStr} »</div>` : ''}
           </td>
           <td>${channelBadge}</td>
           <td>
@@ -1702,15 +1716,15 @@ class AdminDashboard {
           <td>${statusBadge}</td>
           <td>
             <div style="display:flex; gap:6px;">
-              <button class="btn-primary" style="padding:6px 12px; font-size:0.78rem; width:auto; background:#2563EB; border-color:#2563EB;" onclick="window.adminDash.viewOrderDetails('${o.order_id}')">
+              <button class="btn-primary" style="padding:6px 12px; font-size:0.78rem; width:auto; background:#2563EB; border-color:#2563EB;" onclick="window.adminDash.viewOrderDetails('${o.order_id || o.order_number}')">
                 👁️ Inspecter
               </button>
-              ${o.status === 'pending' ? `
-                <button class="btn-primary" style="padding:6px 10px; font-size:0.78rem; width:auto; background:var(--admin-success); border-color:var(--admin-success);" onclick="window.adminDash.updateOrderStatus('${o.order_id}', 'confirmed')">
+              ${(o.status === 'pending' || o.status === 'nouvelle') ? `
+                <button class="btn-primary" style="padding:6px 10px; font-size:0.78rem; width:auto; background:var(--admin-success); border-color:var(--admin-success);" onclick="window.adminDash.updateOrderStatus('${o.order_id || o.order_number}', 'confirmed')">
                   ✓ Valider
                 </button>
               ` : ''}
-              <button class="btn-primary" style="padding:6px 8px; font-size:0.78rem; width:auto; background:var(--admin-danger); border-color:var(--admin-danger);" onclick="window.adminDash.deleteOrder('${o.order_id}')">
+              <button class="btn-primary" style="padding:6px 8px; font-size:0.78rem; width:auto; background:var(--admin-danger); border-color:var(--admin-danger);" onclick="window.adminDash.deleteOrder('${o.order_id || o.order_number}')">
                 🗑️
               </button>
             </div>
@@ -1721,7 +1735,7 @@ class AdminDashboard {
   }
 
   async viewOrderDetails(orderId) {
-    let order = (this.orders || []).find(o => o.order_id === orderId);
+    let order = (this.orders || []).find(o => (o.order_id === orderId || o.order_number === orderId));
     if (!order) {
       try {
         const res = await fetch(`/api/orders/${orderId}`);
@@ -1736,31 +1750,48 @@ class AdminDashboard {
     const subtitleEl = document.getElementById('order-detail-subtitle');
     const contentEl = document.getElementById('order-detail-content');
 
-    if (titleEl) titleEl.textContent = `🛍️ Commande : ${order.order_id}`;
-    if (subtitleEl) subtitleEl.textContent = `Passée le ${new Date(order.created_at).toLocaleString()} • Statut : ${order.status.toUpperCase()} • Canal : ${(order.channel || 'messenger').toUpperCase()}`;
+    if (titleEl) titleEl.textContent = `🛍️ Commande : ${order.order_id || order.order_number}`;
+    if (subtitleEl) subtitleEl.textContent = `Passée le ${new Date(order.created_at).toLocaleString()} • Statut : ${(order.status || '').toUpperCase()} • Canal : ${(order.channel || 'direct_site').toUpperCase()}`;
 
     if (contentEl) {
       const cleanPhone = (order.customer_phone || '').replace(/[^0-9+]/g, '');
-      const phoneCallLink = cleanPhone ? `<a href="tel:${cleanPhone}" style="color:#2563EB; text-decoration:underline;">📞 ${order.customer_phone}</a> <a href="https://wa.me/${cleanPhone.replace('+', '')}" target="_blank" style="margin-left:8px; font-weight:700; color:#059669; text-decoration:none;">📱 WhatsApp</a>` : (order.customer_phone || 'Non renseigné');
+      const phoneCallLink = cleanPhone ? `<a href="tel:${cleanPhone}" style="color:#2563EB; text-decoration:underline; font-weight:700;">📞 ${order.customer_phone}</a> <a href="https://wa.me/${cleanPhone.replace('+', '')}" target="_blank" style="margin-left:10px; font-weight:700; color:#059669; text-decoration:none; background:#ECFDF5; border:1px solid #A7F3D0; padding:2px 8px; border-radius:4px;">📱 WhatsApp</a>` : (order.customer_phone || 'Non renseigné');
+
+      const fullAddress = (order.delivery_address || order.customer_address || '').trim();
+      const area = (order.delivery_area || order.city || '').trim();
+      const note = (order.customer_note || order.notes || '').trim();
 
       contentEl.innerHTML = `
-        <div style="background:#FAF8F5; border:1px solid #E8E5DF; border-radius:10px; padding:14px; margin-bottom:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div style="background:#FAF8F5; border:1px solid #E8E5DF; border-radius:10px; padding:16px; margin-bottom:16px; display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
-            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">Nom du Client</span>
-            <div style="font-weight:700; font-size:1.05rem; color:#18181B;">${order.customer_name}</div>
+            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">👤 Nom du Client</span>
+            <div style="font-weight:700; font-size:1.1rem; color:#18181B; margin-top:2px;">${order.customer_name || 'Client'}</div>
           </div>
           <div>
-            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">Contact Téléphone / WhatsApp</span>
-            <div style="font-weight:700; font-size:1.05rem;">${phoneCallLink}</div>
+            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">📞 Contact Téléphone / WhatsApp</span>
+            <div style="font-size:1.05rem; margin-top:2px;">${phoneCallLink}</div>
           </div>
-          ${order.customer_address && order.customer_address !== 'Non renseignée' ? `
-          <div style="grid-column: 1 / -1; border-top: 1px dashed #E8E5DF; padding-top: 10px;">
-            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">📍 Adresse de Livraison</span>
-            <div style="font-weight:700; font-size:1.02rem; color:#111827; margin-top:2px;">${order.customer_address}</div>
+          ${area ? `
+          <div>
+            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">🏙️ Ville / Zone de Livraison</span>
+            <div style="font-weight:700; font-size:1.02rem; color:#111827; margin-top:2px;">${area}</div>
           </div>
           ` : ''}
-          <div style="grid-column: 1 / -1; background:#F0FDF4; border-radius:6px; padding:8px 10px; font-size:0.8rem; color:#166534; font-weight:600;">
-            🚚 Livraison prévue dans 2 à 3 jours ouvrables • Aucun paiement en ligne requis (Paiement à la livraison)
+          <div style="${area ? '' : 'grid-column: 1 / -1;'}">
+            <span style="font-size:0.75rem; color:#8E8D8A; font-weight:700; text-transform:uppercase;">📍 Adresse Complète de Livraison</span>
+            <div style="font-weight:700; font-size:1.02rem; color:#111827; margin-top:2px;">${fullAddress || 'Non renseignée'}</div>
+          </div>
+          ${note ? `
+          <div style="grid-column: 1 / -1; background:#FEF3C7; border:1px solid #FDE68A; border-radius:8px; padding:10px 12px;">
+            <span style="font-size:0.75rem; color:#92400E; font-weight:700; text-transform:uppercase;">📝 Remarque / Précisions pour le livreur :</span>
+            <div style="font-weight:600; font-size:0.95rem; color:#78350F; margin-top:2px;">« ${note} »</div>
+          </div>
+          ` : ''}
+          <div style="grid-column: 1 / -1; display:flex; flex-wrap:wrap; gap:10px; align-items:center; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:6px; padding:10px 12px; font-size:0.85rem; color:#166534; font-weight:600;">
+            <span>🚚 Livraison prévue dans 2 à 3 jours ouvrables</span>
+            <span>•</span>
+            <span>💵 Aucun paiement en ligne requis (Paiement à la livraison)</span>
+            ${order.consent_given !== false ? '<span>•</span><span>✅ Consentement client accordé</span>' : ''}
           </div>
         </div>
 
@@ -1821,19 +1852,19 @@ class AdminDashboard {
             <button class="btn-primary" style="background:#27272A; border-color:#3F3F46; width:auto; padding:8px 16px; font-size:0.85rem;" onclick="window.adminDash.switchSection('section-orders')">
               ← Retour aux Commandes
             </button>
-            ${order.status === 'pending' ? `
-              <button class="btn-primary" style="background:#059669; border-color:#047857; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.updateOrderStatus('${order.order_id}', 'confirmed')">
+            ${(order.status === 'pending' || order.status === 'nouvelle') ? `
+              <button class="btn-primary" style="background:#059669; border-color:#047857; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.updateOrderStatus('${order.order_id || order.order_number}', 'confirmed')">
                 ✓ Valider la Commande
               </button>
             ` : ''}
             ${order.status !== 'shipped' ? `
-              <button class="btn-primary" style="background:#2563EB; border-color:#1D4ED8; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.updateOrderStatus('${order.order_id}', 'shipped')">
+              <button class="btn-primary" style="background:#2563EB; border-color:#1D4ED8; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.updateOrderStatus('${order.order_id || order.order_number}', 'shipped')">
                 🚚 Marquer Expédiée
               </button>
             ` : ''}
           </div>
           <div>
-            <button class="btn-primary" style="background:#DC2626; border-color:#B91C1C; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.deleteOrder('${order.order_id}')">
+            <button class="btn-primary" style="background:#DC2626; border-color:#B91C1C; width:auto; padding:8px 16px; font-size:0.85rem; font-weight:700;" onclick="window.adminDash.deleteOrder('${order.order_id || order.order_number}')">
               🗑️ Supprimer cette Commande
             </button>
           </div>

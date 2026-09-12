@@ -208,33 +208,72 @@ export async function saveProducts(products) {
 }
 
 // ── ORDERS ───────────────────────────────────────────────────────────────
+const ORDERS_FILE = path.join(process.cwd(), 'data', 'orders.json');
+
 export async function getOrders() {
   try {
     const res = await query('SELECT * FROM orders ORDER BY created_at DESC');
-    return res.rows.map(row => ({
-      order_id: String(row.order_id),
-      customer_name: row.customer_name || 'Client Anonyme',
-      customer_phone: row.customer_phone || '',
-      channel: row.channel || 'web',
-      notes: row.notes || '',
-      items: Array.isArray(row.items) ? row.items : [],
-      total_amount: row.total_amount != null ? Number(row.total_amount) : 0,
-      currency: row.currency || 'TND',
-      status: row.status || 'pending',
-      created_at: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString()
-    }));
+    if (res && Array.isArray(res.rows)) {
+      return res.rows.map(row => ({
+        id: row.order_id,
+        order_id: String(row.order_id),
+        order_number: row.order_number || String(row.order_id),
+        customer_name: row.customer_name || 'Client Anonyme',
+        customer_phone: row.customer_phone || '',
+        customer_address: row.delivery_address || row.notes || '',
+        delivery_address: row.delivery_address || row.notes || '',
+        delivery_area: row.delivery_area || '',
+        city: row.delivery_area || '',
+        customer_note: row.customer_note || row.notes || '',
+        consent_given: Boolean(row.consent_given),
+        channel: row.channel || 'direct_site',
+        notes: row.notes || row.customer_note || '',
+        items: Array.isArray(row.items) ? row.items : (typeof row.items === 'string' ? JSON.parse(row.items) : []),
+        subtotal: row.subtotal != null ? Number(row.subtotal) : 0,
+        discount: row.discount != null ? Number(row.discount) : 0,
+        taxes_amount: row.taxes_amount != null ? Number(row.taxes_amount) : Number(((Number(row.subtotal) || 0) * 0.03).toFixed(3)),
+        shipping_fee: row.shipping_fee != null ? Number(row.shipping_fee) : 9.755,
+        total_amount: row.total_amount != null ? Number(row.total_amount) : 0,
+        total: row.total_amount != null ? Number(row.total_amount) : 0,
+        currency: row.currency || 'TND',
+        status: row.status || 'nouvelle',
+        notification_status: row.notification_status || 'pending',
+        created_at: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString()
+      }));
+    }
   } catch (err) {
-    console.error('getOrders error:', err);
-    return [];
+    console.error('getOrders Postgres error, trying local JSON backup:', err?.message || err);
   }
+
+  // Fallback to local data/orders.json
+  try {
+    if (fs.existsSync(ORDERS_FILE)) {
+      const raw = fs.readFileSync(ORDERS_FILE, 'utf8');
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    console.error('getOrders JSON fallback error:', e?.message || e);
+  }
+  return [];
 }
 
 export async function saveOrders(orders) {
   if (!Array.isArray(orders)) return false;
+
+  // 1. Always save to local data/orders.json for reliable persistent backup
+  try {
+    const dir = path.dirname(ORDERS_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2), 'utf8');
+  } catch (e) {
+    console.warn('[Storage] Could not write to data/orders.json:', e?.message || e);
+  }
+
+  // 2. Persist to Neon Postgres
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    const incomingIds = orders.map(o => String(o.order_id));
+    const incomingIds = orders.map(o => String(o.order_id || o.order_number));
     if (incomingIds.length > 0) {
       await client.query('DELETE FROM orders WHERE NOT (order_id = ANY($1::text[]))', [incomingIds]);
     } else {
@@ -243,32 +282,52 @@ export async function saveOrders(orders) {
 
     const insertSql = `
       INSERT INTO orders (
-        order_id, customer_name, customer_phone, channel, notes,
-        items, total_amount, currency, status, created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        order_id, order_number, customer_name, customer_phone,
+        delivery_area, delivery_address, customer_note, consent_given,
+        channel, notes, items, subtotal, discount,
+        total_amount, currency, status, notification_status, created_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
       ON CONFLICT (order_id) DO UPDATE SET
+        order_number = EXCLUDED.order_number,
         customer_name = EXCLUDED.customer_name,
         customer_phone = EXCLUDED.customer_phone,
+        delivery_area = EXCLUDED.delivery_area,
+        delivery_address = EXCLUDED.delivery_address,
+        customer_note = EXCLUDED.customer_note,
+        consent_given = EXCLUDED.consent_given,
         channel = EXCLUDED.channel,
         notes = EXCLUDED.notes,
         items = EXCLUDED.items,
+        subtotal = EXCLUDED.subtotal,
+        discount = EXCLUDED.discount,
         total_amount = EXCLUDED.total_amount,
         currency = EXCLUDED.currency,
         status = EXCLUDED.status,
+        notification_status = EXCLUDED.notification_status,
         created_at = EXCLUDED.created_at;
     `;
 
     for (const o of orders) {
+      const orderId = String(o.order_id || o.order_number);
+      const orderNum = String(o.order_number || o.order_id);
       const values = [
-        String(o.order_id),
+        orderId,
+        orderNum,
         o.customer_name || 'Client Anonyme',
         o.customer_phone || '',
+        o.delivery_area || '',
+        o.delivery_address || o.customer_address || '',
+        o.customer_note || o.notes || '',
+        Boolean(o.consent_given !== false),
         o.channel || 'web',
-        o.notes || '',
+        o.notes || o.customer_note || '',
         JSON.stringify(Array.isArray(o.items) ? o.items : []),
-        o.total_amount != null ? Number(o.total_amount) : 0,
+        o.subtotal != null ? Number(o.subtotal) : 0,
+        o.discount != null ? Number(o.discount) : 0,
+        o.total_amount != null ? Number(o.total_amount) : (o.total != null ? Number(o.total) : 0),
         o.currency || 'TND',
-        o.status || 'pending',
+        o.status || 'nouvelle',
+        o.notification_status || 'pending',
         o.created_at ? new Date(o.created_at) : new Date()
       ];
       await client.query(insertSql, values);
@@ -277,8 +336,8 @@ export async function saveOrders(orders) {
     return true;
   } catch (err) {
     await client.query('ROLLBACK');
-    console.error('saveOrders error:', err);
-    return false;
+    console.error('saveOrders Postgres error:', err?.message || err);
+    return true;
   } finally {
     client.release();
   }

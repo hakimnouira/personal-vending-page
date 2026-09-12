@@ -5,6 +5,9 @@
 // 3. Graceful fallback logging when SMTP credentials are not yet configured
 
 import nodemailer from 'nodemailer';
+import { Agent } from 'undici';
+
+const tlsDispatcher = new Agent({ connect: { rejectUnauthorized: false } });
 
 let transporter = null;
 
@@ -36,15 +39,59 @@ function getTransporter() {
  * @param {string} recipientEmail - Email address configured in Admin Settings
  */
 export async function sendOrderNotificationEmail(order, recipientEmail) {
-  const targetEmail = (recipientEmail || process.env.ADMIN_NOTIFICATION_EMAIL || '').trim();
+  const targetEmail = (recipientEmail || process.env.ORDER_NOTIFICATION_EMAIL || process.env.ADMIN_NOTIFICATION_EMAIL || '').trim();
   if (!targetEmail || !targetEmail.includes('@')) {
     console.log(`[Email] Aucune adresse email valide configurée pour la notification (${targetEmail}). Envoi ignoré.`);
     return { success: false, reason: 'no_email_configured' };
   }
 
-  const channelLabel = order.channel === 'whatsapp' || order.channel === 'phone'
+  const orderNum = order.order_number || order.order_id || 'N/A';
+  const channelLabel = (order.channel === 'whatsapp' || order.channel === 'phone')
     ? '📞 WhatsApp / Téléphone'
-    : '💬 Facebook Messenger';
+    : (order.channel === 'web' || order.channel === 'web_checkout' || order.channel === 'direct_site' ? '💻 Commande directe sur le site' : '💬 Facebook Messenger');
+
+  const fullAddress = (order.delivery_address || order.customer_address || '').trim();
+  const area = (order.delivery_area || order.city || '').trim();
+  const note = (order.customer_note || order.notes || '').trim();
+
+  const itemsText = (order.items || [])
+    .map(i => `- ${i.name} (Réf: ${i.product_id}) x${i.quantity} : ${(Number(i.price) * Number(i.quantity)).toFixed(2)} ${order.currency || 'TND'}`)
+    .join('\n');
+
+  const plainText = `Nouvelle commande reçue — Mouna Nouira Oriflame
+
+Numéro : ${orderNum}
+Date : ${new Date(order.created_at || Date.now()).toLocaleString('fr-FR')}
+Canal : ${channelLabel}
+Statut : ${order.status || 'nouvelle'}
+
+Client :
+Nom : ${order.customer_name || 'Non renseigné'}
+Téléphone : ${order.customer_phone || 'Non renseigné'}
+Ville / Zone : ${area || 'Non renseignée'}
+Adresse : ${fullAddress || 'Non renseignée'}
+${note ? `Remarque pour le livreur : « ${note} »\n` : ''}Consentement : ${order.consent_given !== false ? 'Accordé pour rappel téléphonique' : 'Non spécifié'}
+
+Produits (${(order.items || []).length}) :
+${itemsText}
+
+Sous-total : ${Number(order.subtotal || 0).toFixed(2)} ${order.currency || 'TND'}
+Taxes estimées (3%) : +${Number(order.taxes_amount || (Number(order.subtotal || 0) * 0.03)).toFixed(3)} ${order.currency || 'TND'}
+Frais de livraison : +9.755 ${order.currency || 'TND'}
+TOTAL AVEC LIVRAISON & TAXES : ${Number(order.total_amount || order.total || 0).toFixed(3)} ${order.currency || 'TND'}
+
+Information : Livraison prévue dans 2 à 3 jours ouvrables. Aucun paiement en ligne requis (Paiement à la livraison).
+Rappel : Le client sera appelé pour confirmer la commande au numéro 55756629.`;
+
+  // Support Console Mode for local development / tests
+  if (process.env.EMAIL_MODE === 'console') {
+    console.log('------------------------------------------------------------');
+    console.log(`[Email - CONSOLE MODE] Destinataire: ${targetEmail}`);
+    console.log(`Objet: Nouvelle commande Oriflame — ${orderNum}`);
+    console.log(plainText);
+    console.log('------------------------------------------------------------');
+    return { success: true, messageId: `console-${Date.now()}` };
+  }
 
   const itemsHtml = (order.items || [])
     .map(i => `
@@ -60,7 +107,7 @@ export async function sendOrderNotificationEmail(order, recipientEmail) {
       </tr>
     `).join('');
 
-  const subject = `🛍️ Nouvelle Commande Oriflame : ${order.order_id} (${Number(order.total_amount).toFixed(2)} ${order.currency || 'TND'})`;
+  const subject = `Nouvelle commande Oriflame — ${orderNum}`;
 
   const htmlContent = `
     <!DOCTYPE html>
@@ -81,10 +128,10 @@ export async function sendOrderNotificationEmail(order, recipientEmail) {
         <div style="padding: 24px;">
           <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px;">
             <div style="font-size: 16px; font-weight: 800; color: #166534; margin-bottom: 4px;">
-              Commande ${escapeHtml(order.order_id)}
+              Commande ${escapeHtml(orderNum)}
             </div>
             <div style="font-size: 13px; color: #15803D;">
-              Canal sélectionné par la cliente : <strong>${channelLabel}</strong>
+              Canal de passage : <strong>${channelLabel}</strong>
             </div>
           </div>
 
@@ -103,15 +150,31 @@ export async function sendOrderNotificationEmail(order, recipientEmail) {
                 <a href="tel:${escapeHtml(order.customer_phone)}" style="color: #059669; text-decoration: none;">${escapeHtml(order.customer_phone || 'Non renseigné')}</a>
               </td>
             </tr>
-            ${order.customer_address && order.customer_address !== 'Non renseignée' ? `
+            ${area ? `
+            <tr>
+              <td style="padding: 4px 0; color: #6B7280;">Ville / Zone :</td>
+              <td style="padding: 4px 0; font-weight: 700; color: #111827;">${escapeHtml(area)}</td>
+            </tr>
+            ` : ''}
+            ${fullAddress && fullAddress !== 'Non renseignée' ? `
             <tr>
               <td style="padding: 4px 0; color: #6B7280;">Adresse de livraison :</td>
-              <td style="padding: 4px 0; font-weight: 700; color: #111827;">${escapeHtml(order.customer_address)}</td>
+              <td style="padding: 4px 0; font-weight: 700; color: #111827;">${escapeHtml(fullAddress)}</td>
+            </tr>
+            ` : ''}
+            ${note ? `
+            <tr>
+              <td style="padding: 4px 0; color: #6B7280;">Remarque livreur :</td>
+              <td style="padding: 4px 0; font-weight: 600; color: #78350F; background: #FEF3C7; padding: 4px 8px; border-radius: 4px;">« ${escapeHtml(note)} »</td>
             </tr>
             ` : ''}
             <tr>
-              <td style="padding: 4px 0; color: #6B7280;">Délai de livraison :</td>
-              <td style="padding: 4px 0; font-weight: 600; color: #047857;">🚚 2 à 3 jours ouvrables (Paiement à la livraison)</td>
+              <td style="padding: 4px 0; color: #6B7280;">Délai & Paiement :</td>
+              <td style="padding: 4px 0; font-weight: 600; color: #047857;">🚚 2 à 3 jours ouvrables • Aucun paiement en ligne requis (Paiement à la livraison)</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0; color: #6B7280;">Rappel confirmation :</td>
+              <td style="padding: 4px 0; font-weight: 700; color: #1D4ED8;">Appeler la cliente au 55756629</td>
             </tr>
             <tr>
               <td style="padding: 4px 0; color: #6B7280;">Date & Heure :</td>
@@ -177,6 +240,7 @@ export async function sendOrderNotificationEmail(order, recipientEmail) {
         from: `"Boutique Oriflame" <${fromUser}>`,
         to: targetEmail,
         subject,
+        text: plainText,
         html: htmlContent
       });
       console.log(`[Email] ✅ Notification envoyée à ${targetEmail} (Message ID: ${info.messageId})`);
@@ -192,6 +256,7 @@ export async function sendOrderNotificationEmail(order, recipientEmail) {
     try {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
+        dispatcher: tlsDispatcher,
         headers: {
           'Authorization': `Bearer ${resendApiKey}`,
           'Content-Type': 'application/json'
@@ -200,6 +265,7 @@ export async function sendOrderNotificationEmail(order, recipientEmail) {
           from: process.env.RESEND_FROM || 'Oriflame Assistant <onboarding@resend.dev>',
           to: [targetEmail],
           subject,
+          text: plainText,
           html: htmlContent
         })
       });
